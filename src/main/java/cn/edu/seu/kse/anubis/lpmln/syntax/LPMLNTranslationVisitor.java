@@ -35,13 +35,13 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             rule=visitFact(ctx.fact());
         }
         List<String> heads=rule.getHead();
+        rule.setId(cnt++);
         if(heads.size() == 0){
             heads.add("csh("+rule.getId()+")");
         }
 
-        rule.setId(cnt++);
         rule.setSoft(false);
-        rule.setText(rule.getText());
+        rule.setText(ctx.getText());
 
         rules.add(rule);
         return rule;
@@ -51,7 +51,12 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     public Rule visitSoft_rule(LPMLNParser.Soft_ruleContext ctx) {
         Rule rule=visitHard_rule(ctx.hard_rule());
         rule.setSoft(true);
-        String weightnode=ctx.DECIMAL().getText();
+        String weightnode=null;
+
+        if(ctx.DECIMAL() != null){
+            weightnode=ctx.DECIMAL().getText();
+        }
+
         if(weightnode == null){
             weightnode=ctx.integer().getText();
         }
@@ -118,12 +123,19 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
 
     @Override
     public HashSet<String> visitExtended_literal(LPMLNParser.Extended_literalContext ctx) {
-        HashSet<String> vars=new HashSet<>();
+        HashSet<String> vars=null;
         LPMLNParser.LiteralContext lctx=ctx.literal();
         if(lctx == null){
             lctx=ctx.default_literal().literal();
         }
-        LPMLNParser.AtomContext actx=lctx.atom();
+        vars=visitLiteral(lctx);
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitLiteral(LPMLNParser.LiteralContext ctx) {
+        HashSet<String> vars=new HashSet<>();
+        LPMLNParser.AtomContext actx=ctx.atom();
 
         String var=null;
 
@@ -133,6 +145,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
                 vars.add(var);
             }
         }
+
         return vars;
     }
 
@@ -142,6 +155,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         for(TerminalNode vtn : ctx.VAR()){
             vars.add(vtn.getText());
         }
+
         return vars;
     }
 
@@ -184,6 +198,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         List<String> heads=rule.getHead();
         for(LPMLNParser.LiteralContext lctx : ctx.literal()){
             heads.add(lctx.getText());
+            visitLiteral(lctx);
         }
 
         return rule;
@@ -194,6 +209,12 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     public int getFactor(){
         int factor=100;
         double tmpremains=0;
+        minremains=Math.abs(minremains);
+        if(minremains < 0.00000001 ){
+            return 1;
+        }
+
+
         while (true){
             tmpremains=minremains*factor;
             if(tmpremains > 1){

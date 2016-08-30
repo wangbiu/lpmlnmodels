@@ -15,10 +15,11 @@ NAF_NOT : 'not';
 STRING : '"' ('\\"'|~('"'))* '"';
 //规则终结符
 FULLSTOP : '.';
-//小数(点表示法)
-DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP ZERO* [0-9]*;
 //正整数
 POSITIVE_INT : [1-9][0-9]*;
+//小数(点表示法)
+DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP ZERO* [1-9]*;
+
 //0
 ZERO : '0';
 //常量
