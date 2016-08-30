@@ -41,7 +41,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
 
         rule.setSoft(false);
-        rule.setText(ctx.getText());
+//        rule.setText(ctx.getText());
 
         rules.add(rule);
         return rule;
@@ -78,6 +78,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             return null;
         }
         Rule rule=visitBody(ctx.body());
+        rule.setText(":- "+ctx.body().getText()+", ");
         return rule;
     }
 
@@ -88,6 +89,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
 
         Rule rule=visitHead(ctx.head());
+        rule.setText(ctx.head().getText() +" :- ");
         return rule;
     }
 
@@ -98,6 +100,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         Rule rb=visitBody(ctx.body());
         Rule rh=visitHead(ctx.head());
+        rb.setText(ctx.head().getText() + " :- "+ctx.body().getText()+", ");
         rb.setHead(rh.getHead());
         return rb;
     }
@@ -154,6 +157,10 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         HashSet<String> vars=new HashSet<>();
         for(TerminalNode vtn : ctx.VAR()){
             vars.add(vtn.getText());
+        }
+
+        for(LPMLNParser.Arithmethic_exprContext actx : ctx.arithmethic_expr()){
+            herbrandUniverse.add(actx.getText());
         }
 
         return vars;
