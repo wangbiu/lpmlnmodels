@@ -1,7 +1,7 @@
 /**
-* ASP4QA词法语法定义
+* LPMLN 词法语法定义
 * 王彬
-* 2015-08-26
+* 2016-08-30
 **/
 grammar LPMLN;
 
@@ -12,7 +12,11 @@ grammar LPMLN;
 //缺省否定关键字
 NAF_NOT : 'not';
 //字符串
-STRING : '"' (~('"'))* '"';
+STRING : '"' ('\\"'|~('"'))* '"';
+//规则终结符
+FULLSTOP : '.';
+//小数(点表示法)
+DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP ZERO* [0-9]*;
 //正整数
 POSITIVE_INT : [1-9][0-9]*;
 //0
@@ -45,8 +49,7 @@ LCBRACK : '{';
 RCBRACK : '}';
 //范围运算
 RANGE : '..';
-//规则终结符
-FULLSTOP : '.';
+
 //逗号
 COMMA : ',';
 //认知析取符
@@ -55,6 +58,8 @@ DISJUNCTION : '|';
 CONDITION : ':';
 //推导符号
 ASSIGN : ':-';
+//弱约束推导符号
+WEAK_ASSIGN : ':~';
 
 //关系运算符
 LESS_THAN : '<';
@@ -64,13 +69,6 @@ GEQ : '>=';
 EQUAL : '=';
 DOUBLE_EQUAL : '==';
 NEQ : '!=';
-
-//连接操作符
-CONNECT_TERM : '&connect';
-//查询操作符
-QUERY_TERM : '&query';
-//前缀操作符
-PREFIX_TERM : '&prefix';
 
 AGGREGATE_OP : '#count' | '#sum' | '#max' | '#min';
 //
@@ -125,26 +123,6 @@ atom :
 //范围整数枚举原子
 range_atom : CONSTANT LPAREN integer RANGE integer RPAREN;
 
-//查询的谓词格式，前缀:谓词名
-query_prefix_term : CONSTANT ':' CONSTANT;
-
-//查询原子
-query_atom :
-    QUERY_TERM LSBRACK CONSTANT COMMA query_prefix_term RSBRACK LPAREN term (COMMA term)* RPAREN |
-    QUERY_TERM LSBRACK query_prefix_term RSBRACK LPAREN term (COMMA term)* RPAREN |
-    QUERY_TERM LSBRACK CONSTANT COMMA query_prefix_term RSBRACK (LPAREN RPAREN)? |
-    QUERY_TERM LSBRACK query_prefix_term RSBRACK (LPAREN  RPAREN)? ;
-
-//缺省查询原子
-default_query_atom : NAF_NOT query_atom;
-
-//连接原子
-connect_atom :
-    CONNECT_TERM LPAREN STRING COMMA STRING RPAREN ;
-    
-//前缀原子
-prefix_atom :
-	PREFIX_TERM LPAREN STRING RPAREN ;
 
 //文字
 literal : atom | MINUS atom;
@@ -153,7 +131,7 @@ literal : atom | MINUS atom;
 default_literal : NAF_NOT literal;
 
 //扩展文字，包含查询原子
-extended_literal : literal | default_literal | query_atom | default_query_atom;
+extended_literal : literal | default_literal;
 
 //聚合运算
 aggregate_atom: AGGREGATE_OP LCBRACK (literal | VAR) CONDITION literal  RCBRACK ;
@@ -181,17 +159,14 @@ constraint : ASSIGN body FULLSTOP;
 //基本规则
 full_rule : head ASSIGN body FULLSTOP;
 
-//连接规则
-connect_rule : CONSTANT ASSIGN connect_atom FULLSTOP;
+//ASP 规则 （hard rule）
+hard_rule :  fact | constraint | full_rule;
 
-//前缀规则
-prefix_rule : CONSTANT ASSIGN prefix_atom FULLSTOP;
-
-//规则
-asp4qa_rule : fact | constraint | full_rule | connect_rule | prefix_rule;
+//弱规则 (soft rule)
+soft_rule : (DECIMAL | integer ) CONDITION hard_rule;
 
 //
 meta_rule : META_OP (MINUS)? CONSTANT SLASH natural_number FULLSTOP;
 
 //ASP4QA程序
-asp4qa : (asp4qa_rule | meta_rule)*;
+lpmln_rule : (hard_rule | soft_rule | meta_rule)*;

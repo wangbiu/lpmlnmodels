@@ -1,1 +1,1 @@
-java org.antlr.v4.Tool -visitor -o ../../java/cn/edu/seu/kse/asp4qa/syntax -package cn.edu.seu.kse.asp4qa.syntax  ASP4QA.g4
+java org.antlr.v4.Tool -visitor -o ../../java/cn/edu/seu/kse/anubis/lpmln/syntax -package cn.edu.seu.kse.anubis.lpmln.syntax  LPMLN.g4
