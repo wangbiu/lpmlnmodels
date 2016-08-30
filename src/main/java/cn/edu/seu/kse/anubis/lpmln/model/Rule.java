@@ -98,7 +98,7 @@ public class Rule {
     public String getRuleLabel() {
         if(ruleLabel == null){
             StringBuilder sb=new StringBuilder();
-            sb.append("rlabel(").append(id);
+            sb.append("rlabel").append(id).append("(").append(id);
             int cnt=0;
             int size=vars.size()-1;
             for(String v:vars){

@@ -3,6 +3,7 @@ package cn.edu.seu.kse.anubis.lpmln.translator;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.syntax.SyntaxModule;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,19 @@ public class ASPTranslatorTest {
         SyntaxModule sm=new SyntaxModule();
         List<Rule> rules= sm.parse(rulef);
         ASPTranslator translator=new ASPTranslator();
+        translator.setFactor(sm.getFactor());
+        translator.setHerbrandUniverse(sm.getHerbrandUniverse());
+        String asprules=translator.translate(rules);
+        System.out.println(asprules);
+    }
+
+    @Test
+    public void testDLVTranslate() throws IOException {
+        String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\friend.txt";
+        File rulef=new File(path);
+        SyntaxModule sm=new SyntaxModule();
+        List<Rule> rules= sm.parse(rulef);
+        DLVTranslator translator=new DLVTranslator();
         translator.setFactor(sm.getFactor());
         translator.setHerbrandUniverse(sm.getHerbrandUniverse());
         String asprules=translator.translate(rules);
