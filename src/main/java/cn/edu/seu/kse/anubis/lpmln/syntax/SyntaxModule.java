@@ -34,8 +34,8 @@ public class SyntaxModule {
         factor=tvisitor.getFactor();
         herbrandUniverse=tvisitor.getHerbrandUniverse();
 
-        System.out.println("factor "+factor);
-        System.out.println("herbrand universe " + herbrandUniverse);
+//        System.out.println("factor "+factor);
+//        System.out.println("herbrand universe " + herbrandUniverse);
         return rules;
     }
 

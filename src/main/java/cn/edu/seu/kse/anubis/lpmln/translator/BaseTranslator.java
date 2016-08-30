@@ -15,11 +15,12 @@ public class BaseTranslator {
     public String translate(List<Rule> rules){
         StringBuilder sb=new StringBuilder();
         String rulestr=null;
+        sb.append(translateDeclarationPart(herbrandUniverse));
         for(Rule r:rules){
             if(r.isSoft()){
-                rulestr=translateHardRule(r);
-            }else {
                 rulestr=translateSoftRule(r);
+            }else {
+                rulestr=translateHardRule(r);
             }
             sb.append(rulestr).append(System.lineSeparator());
         }
@@ -33,6 +34,12 @@ public class BaseTranslator {
     }
 
     public String translateHardRule(Rule rule){
+        StringBuilder sb=new StringBuilder();
+
+        return sb.toString();
+    }
+
+    protected String translateDeclarationPart(HashSet<String> hbu){
         StringBuilder sb=new StringBuilder();
 
         return sb.toString();

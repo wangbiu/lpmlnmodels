@@ -98,18 +98,13 @@ public class Rule {
     public String getRuleLabel() {
         if(ruleLabel == null){
             StringBuilder sb=new StringBuilder();
-            sb.append("rlabel(").append(id).append(", ");
+            sb.append("rlabel(").append(id);
             int cnt=0;
             int size=vars.size()-1;
             for(String v:vars){
-                sb.append(v);
-                if(cnt!=size-1){
-                    sb.append(", ");
-                }else {
-                    sb.append(")");
-                }
-                cnt++;
+                sb.append(", ").append(v);
             }
+            sb.append(")");
             ruleLabel=sb.toString();
         }
         return ruleLabel;
