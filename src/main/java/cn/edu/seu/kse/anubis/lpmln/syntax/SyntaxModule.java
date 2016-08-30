@@ -32,6 +32,10 @@ public class SyntaxModule {
 
         List<Rule> rules=tvisitor.getRules();
         factor=tvisitor.getFactor();
+        herbrandUniverse=tvisitor.getHerbrandUniverse();
+
+        System.out.println("factor "+factor);
+        System.out.println("herbrand universe " + herbrandUniverse);
         return rules;
     }
 

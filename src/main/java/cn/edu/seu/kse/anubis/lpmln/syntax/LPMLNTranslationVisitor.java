@@ -16,6 +16,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     private List<Rule> rules=null;
     private int cnt=0;
     private Double minremains=null;
+    private HashSet<String> herbrandUniverse=new HashSet<>();
 
     public LPMLNTranslationVisitor(){
         rules=new ArrayList<>();
@@ -151,7 +152,25 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         if(vtn!=null){
             var=vtn.getText();
         }
+
+        TerminalNode ctn=ctx.CONSTANT();
+        if(ctn != null){
+            herbrandUniverse.add(ctn.getText());
+        }
+
+        ctn=ctx.STRING();
+        if(ctn!=null){
+            herbrandUniverse.add(ctn.getText());
+        }
+
         return var;
+    }
+
+    @Override
+    public Object visitNegative_int(LPMLNParser.Negative_intContext ctx) {
+        herbrandUniverse.add(ctx.getText());
+
+        return null;
     }
 
     @Override
@@ -169,6 +188,8 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
 
         return rule;
     }
+
+
 
     public int getFactor(){
         int factor=100;
@@ -195,5 +216,13 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
 
     public void setRules(List<Rule> rules) {
         this.rules = rules;
+    }
+
+    public HashSet<String> getHerbrandUniverse() {
+        return herbrandUniverse;
+    }
+
+    public void setHerbrandUniverse(HashSet<String> herbrandUniverse) {
+        this.herbrandUniverse = herbrandUniverse;
     }
 }
