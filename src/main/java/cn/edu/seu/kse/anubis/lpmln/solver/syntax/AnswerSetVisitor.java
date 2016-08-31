@@ -14,7 +14,7 @@ public class AnswerSetVisitor extends DLVResultBaseVisitor {
     public int maxLevel2=0;
     public int maxLevel1=0;
     private List<WeightedAnswerSet>  was=new ArrayList<>();
-    private List<WeightedAnswerSet>  maxWeightAs=new ArrayList<>();
+
 
     @Override
     public Object visitWeighted_answer_set(DLVResultParser.Weighted_answer_setContext ctx) {
@@ -63,29 +63,18 @@ public class AnswerSetVisitor extends DLVResultBaseVisitor {
             visitWeighted_answer_set(wasctx);
         }
 
-        System.out.println("maxlevel 1 "+maxLevel1);
-        System.out.println("maxlevel 2 "+maxLevel2);
+//        System.out.println("maxlevel 1 "+maxLevel1);
+//        System.out.println("maxlevel 2 "+maxLevel2);
 
         for(WeightedAnswerSet as : was){
             if(as.getWeights().get(1) == maxLevel2){
                 result.add(as);
-
-                if(as.getWeights().get(0) == maxLevel1){
-                    maxWeightAs.add(as);
-                }
             }
         }
 
         return result;
     }
 
-    public List<WeightedAnswerSet> getMaxWeightAs() {
-        return maxWeightAs;
-    }
-
-    public void setMaxWeightAs(List<WeightedAnswerSet> maxWeightAs) {
-        this.maxWeightAs = maxWeightAs;
-    }
 
     public String getMaxWeight(){
         StringBuilder sb=new StringBuilder();

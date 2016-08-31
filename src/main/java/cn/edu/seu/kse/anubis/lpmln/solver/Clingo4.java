@@ -24,7 +24,6 @@ public class Clingo4 extends BaseSolver {
         JSONObject obj=JSONObject.fromObject(result);
         JSONArray witnesses=obj.getJSONArray("Call").getJSONObject(0).getJSONArray("Witnesses");
 
-        int maxlevel1=0;
         int maxlevel2=0;
 
         int size=witnesses.size();
@@ -54,27 +53,17 @@ public class Clingo4 extends BaseSolver {
                     if(jtmpweight > maxlevel2){
                         maxlevel2=jtmpweight;
                     }
-                }else {
-                    if(jtmpweight > maxlevel1){
-                        maxlevel1=jtmpweight;
-                    }
                 }
             }
             tmpwas.add(as);
         }
 
-        maxWeightAs=new ArrayList<>();
-        for(WeightedAnswerSet tas : tmpwas){
-            if(as.getWeights().get(1) == maxlevel2){
+        for(WeightedAnswerSet tas:tmpwas){
+            if(tas.getWeights().get(1) == maxlevel2){
                 was.add(tas);
-
-                if(as.getWeights().get(0) == maxlevel1){
-                    maxWeightAs.add(as);
-                }
             }
         }
 
-        maxWeight=""+maxlevel2+"*alpha + "+maxlevel1;
         return was;
     }
 

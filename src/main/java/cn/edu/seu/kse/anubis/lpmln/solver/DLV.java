@@ -23,8 +23,6 @@ public class DLV extends BaseSolver {
         int pos=result.indexOf(System.lineSeparator());
         result=result.substring(pos);
         List<WeightedAnswerSet> was=sm.parse(result);
-        maxWeight=sm.getMaxWeight();
-        maxWeightAs=sm.getMaxWeightAs();
         return was;
     }
 
