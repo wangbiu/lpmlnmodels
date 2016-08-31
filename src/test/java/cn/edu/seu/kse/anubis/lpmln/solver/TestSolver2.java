@@ -22,6 +22,7 @@ public class TestSolver2 {
         System.out.printf("Weighted Answer Set : %s%n maxWeightAs : %s%n maxWeight : %s%n",was,maxWeightAs,maxWeight);
         String marginal=clingo4.marginalDistribution(1);
         System.out.println("marginal results : "+marginal);
+        System.out.println("stats "+clingo4.getStats());
     }
 
     @Test

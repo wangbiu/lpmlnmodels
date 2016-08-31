@@ -58,6 +58,7 @@ public class App
             String marginal=solver.marginalDistribution(1);
             System.out.println("marginal result ");
             System.out.println(marginal);
+            System.out.println(solver.getMarginalTime());
         }else {
             List<WeightedAnswerSet> maxWas=null;
             maxWas=solver.findMaxWeightedAs();
@@ -65,11 +66,19 @@ public class App
             System.out.println("maximal weight possible world ");
             System.out.println(maxWas);
             System.out.println("weight "+solver.getMaxWeight());
+            System.out.println(solver.getMaximalTime());
         }
+
+        printStatsInfo(solver);
 
         Date exit=new Date();
 
         SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
-        System.out.printf("enter %s, exit %s%n", sdf.format(enter),sdf.format(exit));
+        System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
+    }
+
+    public static void printStatsInfo(BaseSolver solver){
+        System.out.println(solver.getStats());
+        System.out.println(solver.getExecuteProfile());
     }
 }

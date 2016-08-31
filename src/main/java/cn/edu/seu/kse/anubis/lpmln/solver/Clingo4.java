@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.anubis.lpmln.solver;
 
+import cn.edu.seu.kse.anubis.lpmln.model.SolverStats;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -11,6 +12,8 @@ import java.util.List;
  * Created by 王彬 on 2016/8/31.
  */
 public class Clingo4 extends BaseSolver {
+    private JSONObject times;
+
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
         StringBuilder cmd=new StringBuilder();
@@ -23,7 +26,7 @@ public class Clingo4 extends BaseSolver {
         List<WeightedAnswerSet> was=new ArrayList<>();
         JSONObject obj=JSONObject.fromObject(result);
         JSONArray witnesses=obj.getJSONArray("Call").getJSONObject(0).getJSONArray("Witnesses");
-
+        times=obj.getJSONObject("Time");
         int maxlevel2=0;
 
         int size=witnesses.size();
@@ -63,16 +66,24 @@ public class Clingo4 extends BaseSolver {
         System.out.println("max level 2 "+maxlevel2);
 
         for(WeightedAnswerSet tas:tmpwas){
-            System.out.printf("tas weight %d, maxlevel2 %d%n",tas.getWeights().get(1),maxlevel2);
+//            System.out.printf("tas weight %d, maxlevel2 %d%n",tas.getWeights().get(1),maxlevel2);
             if(tas.getWeights().get(1) == maxlevel2){
                 was.add(tas);
             }
         }
         tmpwas.clear();
         tmpwas=null;
-
         return was;
     }
 
-
+    @Override
+    public SolverStats genSolverStatisticsInfo() {
+        SolverStats sta=new SolverStats();
+        sta.setTotal(times.getDouble("Total"));
+        sta.setSolve(times.getDouble("Solve"));
+        sta.setModel(times.getDouble("Model"));
+        sta.setUnsat(times.getDouble("Unsat"));
+        sta.setCpu(times.getDouble("CPU"));
+        return sta;
+    }
 }
