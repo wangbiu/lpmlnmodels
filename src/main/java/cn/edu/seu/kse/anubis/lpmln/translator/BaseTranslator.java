@@ -2,6 +2,12 @@ package cn.edu.seu.kse.anubis.lpmln.translator;
 
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -11,6 +17,7 @@ import java.util.List;
 public class BaseTranslator {
     protected int factor=1;
     protected HashSet<String> herbrandUniverse;
+    protected String path="";
 
     public String translate(List<Rule> rules){
         StringBuilder sb=new StringBuilder();
@@ -25,6 +32,17 @@ public class BaseTranslator {
             sb.append(rulestr).append(System.lineSeparator());
         }
         return sb.toString();
+    }
+
+    public String translate2File(List<Rule> rules) throws IOException {
+        Date now=new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String outf=path+"rule"+(int) (Math.random()*1000)+sdf.format(now);
+        BufferedWriter bw=new BufferedWriter(new FileWriter(new File(outf)));
+        String rule=translate(rules);
+        bw.write(rule);
+        bw.close();
+        return outf;
     }
 
     public String translateSoftRule(Rule rule){
