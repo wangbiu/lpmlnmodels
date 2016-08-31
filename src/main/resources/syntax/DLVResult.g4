@@ -78,9 +78,11 @@ literal : atom | MINUS atom;
 
 answer_set : LCBRACK (literal (COMMA literal)*)? RCBRACK;
 
-weight_level : LSBRACK  (WEIGHT | natural_number ) CONDITION (LEVEL | natural_number) RSBRACK;
+weight_level_flag : LSBRACK  WEIGHT CONDITION LEVEL  RSBRACK;
 
-weight : WEIGHT_FLAG LPAREN weight_level RPAREN CONDITION
+weight_level : LSBRACK natural_number  CONDITION natural_number RSBRACK;
+
+weight : WEIGHT_FLAG LPAREN weight_level_flag RPAREN CONDITION
          LESS_THAN weight_level (COMMA weight_level)* GREATER_THAN ;
 
 weighted_answer_set : answer_set weight;

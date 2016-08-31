@@ -112,6 +112,18 @@ public class DLVResultBaseListener implements DLVResultListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterWeight_level_flag(DLVResultParser.Weight_level_flagContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWeight_level_flag(DLVResultParser.Weight_level_flagContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterWeight_level(DLVResultParser.Weight_levelContext ctx) { }
 	/**
 	 * {@inheritDoc}

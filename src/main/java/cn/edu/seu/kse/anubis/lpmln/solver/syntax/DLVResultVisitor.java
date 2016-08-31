@@ -59,6 +59,12 @@ public interface DLVResultVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAnswer_set(DLVResultParser.Answer_setContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link DLVResultParser#weight_level_flag}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWeight_level_flag(DLVResultParser.Weight_level_flagContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link DLVResultParser#weight_level}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -88,6 +88,16 @@ public interface DLVResultListener extends ParseTreeListener {
 	 */
 	void exitAnswer_set(DLVResultParser.Answer_setContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DLVResultParser#weight_level_flag}.
+	 * @param ctx the parse tree
+	 */
+	void enterWeight_level_flag(DLVResultParser.Weight_level_flagContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DLVResultParser#weight_level_flag}.
+	 * @param ctx the parse tree
+	 */
+	void exitWeight_level_flag(DLVResultParser.Weight_level_flagContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DLVResultParser#weight_level}.
 	 * @param ctx the parse tree
 	 */

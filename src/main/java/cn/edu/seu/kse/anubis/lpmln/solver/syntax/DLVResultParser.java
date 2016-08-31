@@ -23,12 +23,13 @@ public class DLVResultParser extends Parser {
 		WS=20;
 	public static final int
 		RULE_negative_int = 0, RULE_integer = 1, RULE_natural_number = 2, RULE_function = 3, 
-		RULE_term = 4, RULE_atom = 5, RULE_literal = 6, RULE_answer_set = 7, RULE_weight_level = 8, 
-		RULE_weight = 9, RULE_weighted_answer_set = 10, RULE_possible_worlds = 11;
+		RULE_term = 4, RULE_atom = 5, RULE_literal = 6, RULE_answer_set = 7, RULE_weight_level_flag = 8, 
+		RULE_weight_level = 9, RULE_weight = 10, RULE_weighted_answer_set = 11, 
+		RULE_possible_worlds = 12;
 	public static final String[] ruleNames = {
 		"negative_int", "integer", "natural_number", "function", "term", "atom", 
-		"literal", "answer_set", "weight_level", "weight", "weighted_answer_set", 
-		"possible_worlds"
+		"literal", "answer_set", "weight_level_flag", "weight_level", "weight", 
+		"weighted_answer_set", "possible_worlds"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -119,9 +120,9 @@ public class DLVResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(24);
+			setState(26);
 			match(MINUS);
-			setState(25);
+			setState(27);
 			match(POSITIVE_INT);
 			}
 		}
@@ -165,26 +166,26 @@ public class DLVResultParser extends Parser {
 		IntegerContext _localctx = new IntegerContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_integer);
 		try {
-			setState(30);
+			setState(32);
 			switch (_input.LA(1)) {
 			case POSITIVE_INT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(27);
+				setState(29);
 				match(POSITIVE_INT);
 				}
 				break;
 			case MINUS:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(28);
+				setState(30);
 				negative_int();
 				}
 				break;
 			case ZERO:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(29);
+				setState(31);
 				match(ZERO);
 				}
 				break;
@@ -232,7 +233,7 @@ public class DLVResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(32);
+			setState(34);
 			_la = _input.LA(1);
 			if ( !(_la==POSITIVE_INT || _la==ZERO) ) {
 			_errHandler.recoverInline(this);
@@ -292,29 +293,29 @@ public class DLVResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(34);
-			match(CONSTANT);
-			setState(35);
-			match(LPAREN);
 			setState(36);
+			match(CONSTANT);
+			setState(37);
+			match(LPAREN);
+			setState(38);
 			term();
-			setState(41);
+			setState(43);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(37);
+				setState(39);
 				match(COMMA);
-				setState(38);
+				setState(40);
 				term();
 				}
 				}
-				setState(43);
+				setState(45);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(44);
+			setState(46);
 			match(RPAREN);
 			}
 		}
@@ -361,33 +362,33 @@ public class DLVResultParser extends Parser {
 		TermContext _localctx = new TermContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_term);
 		try {
-			setState(50);
+			setState(52);
 			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(46);
+				setState(48);
 				match(CONSTANT);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(47);
+				setState(49);
 				function();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(48);
+				setState(50);
 				match(STRING);
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(49);
+				setState(51);
 				integer();
 				}
 				break;
@@ -442,41 +443,41 @@ public class DLVResultParser extends Parser {
 		enterRule(_localctx, 10, RULE_atom);
 		int _la;
 		try {
-			setState(65);
+			setState(67);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(52);
+				setState(54);
 				match(CONSTANT);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(53);
-				match(CONSTANT);
-				setState(54);
-				match(LPAREN);
 				setState(55);
+				match(CONSTANT);
+				setState(56);
+				match(LPAREN);
+				setState(57);
 				term();
-				setState(60);
+				setState(62);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(56);
+					setState(58);
 					match(COMMA);
-					setState(57);
+					setState(59);
 					term();
 					}
 					}
-					setState(62);
+					setState(64);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(63);
+				setState(65);
 				match(RPAREN);
 				}
 				break;
@@ -521,21 +522,21 @@ public class DLVResultParser extends Parser {
 		LiteralContext _localctx = new LiteralContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_literal);
 		try {
-			setState(70);
+			setState(72);
 			switch (_input.LA(1)) {
 			case CONSTANT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(67);
+				setState(69);
 				atom();
 				}
 				break;
 			case MINUS:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(68);
+				setState(70);
 				match(MINUS);
-				setState(69);
+				setState(71);
 				atom();
 				}
 				break;
@@ -593,35 +594,89 @@ public class DLVResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(72);
+			setState(74);
 			match(LCBRACK);
-			setState(81);
+			setState(83);
 			_la = _input.LA(1);
 			if (_la==CONSTANT || _la==MINUS) {
 				{
-				setState(73);
+				setState(75);
 				literal();
-				setState(78);
+				setState(80);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(74);
+					setState(76);
 					match(COMMA);
-					setState(75);
+					setState(77);
 					literal();
 					}
 					}
-					setState(80);
+					setState(82);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(83);
+			setState(85);
 			match(RCBRACK);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Weight_level_flagContext extends ParserRuleContext {
+		public TerminalNode LSBRACK() { return getToken(DLVResultParser.LSBRACK, 0); }
+		public TerminalNode WEIGHT() { return getToken(DLVResultParser.WEIGHT, 0); }
+		public TerminalNode CONDITION() { return getToken(DLVResultParser.CONDITION, 0); }
+		public TerminalNode LEVEL() { return getToken(DLVResultParser.LEVEL, 0); }
+		public TerminalNode RSBRACK() { return getToken(DLVResultParser.RSBRACK, 0); }
+		public Weight_level_flagContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_weight_level_flag; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DLVResultListener ) ((DLVResultListener)listener).enterWeight_level_flag(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DLVResultListener ) ((DLVResultListener)listener).exitWeight_level_flag(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DLVResultVisitor ) return ((DLVResultVisitor<? extends T>)visitor).visitWeight_level_flag(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final Weight_level_flagContext weight_level_flag() throws RecognitionException {
+		Weight_level_flagContext _localctx = new Weight_level_flagContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_weight_level_flag);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(87);
+			match(LSBRACK);
+			setState(88);
+			match(WEIGHT);
+			setState(89);
+			match(CONDITION);
+			setState(90);
+			match(LEVEL);
+			setState(91);
+			match(RSBRACK);
 			}
 		}
 		catch (RecognitionException re) {
@@ -637,16 +692,14 @@ public class DLVResultParser extends Parser {
 
 	public static class Weight_levelContext extends ParserRuleContext {
 		public TerminalNode LSBRACK() { return getToken(DLVResultParser.LSBRACK, 0); }
-		public TerminalNode CONDITION() { return getToken(DLVResultParser.CONDITION, 0); }
-		public TerminalNode RSBRACK() { return getToken(DLVResultParser.RSBRACK, 0); }
-		public TerminalNode WEIGHT() { return getToken(DLVResultParser.WEIGHT, 0); }
 		public List<Natural_numberContext> natural_number() {
 			return getRuleContexts(Natural_numberContext.class);
 		}
 		public Natural_numberContext natural_number(int i) {
 			return getRuleContext(Natural_numberContext.class,i);
 		}
-		public TerminalNode LEVEL() { return getToken(DLVResultParser.LEVEL, 0); }
+		public TerminalNode CONDITION() { return getToken(DLVResultParser.CONDITION, 0); }
+		public TerminalNode RSBRACK() { return getToken(DLVResultParser.RSBRACK, 0); }
 		public Weight_levelContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -668,51 +721,19 @@ public class DLVResultParser extends Parser {
 
 	public final Weight_levelContext weight_level() throws RecognitionException {
 		Weight_levelContext _localctx = new Weight_levelContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_weight_level);
+		enterRule(_localctx, 18, RULE_weight_level);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85);
-			match(LSBRACK);
-			setState(88);
-			switch (_input.LA(1)) {
-			case WEIGHT:
-				{
-				setState(86);
-				match(WEIGHT);
-				}
-				break;
-			case POSITIVE_INT:
-			case ZERO:
-				{
-				setState(87);
-				natural_number();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-			setState(90);
-			match(CONDITION);
 			setState(93);
-			switch (_input.LA(1)) {
-			case LEVEL:
-				{
-				setState(91);
-				match(LEVEL);
-				}
-				break;
-			case POSITIVE_INT:
-			case ZERO:
-				{
-				setState(92);
-				natural_number();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
+			match(LSBRACK);
+			setState(94);
+			natural_number();
 			setState(95);
+			match(CONDITION);
+			setState(96);
+			natural_number();
+			setState(97);
 			match(RSBRACK);
 			}
 		}
@@ -730,15 +751,18 @@ public class DLVResultParser extends Parser {
 	public static class WeightContext extends ParserRuleContext {
 		public TerminalNode WEIGHT_FLAG() { return getToken(DLVResultParser.WEIGHT_FLAG, 0); }
 		public TerminalNode LPAREN() { return getToken(DLVResultParser.LPAREN, 0); }
+		public Weight_level_flagContext weight_level_flag() {
+			return getRuleContext(Weight_level_flagContext.class,0);
+		}
+		public TerminalNode RPAREN() { return getToken(DLVResultParser.RPAREN, 0); }
+		public TerminalNode CONDITION() { return getToken(DLVResultParser.CONDITION, 0); }
+		public TerminalNode LESS_THAN() { return getToken(DLVResultParser.LESS_THAN, 0); }
 		public List<Weight_levelContext> weight_level() {
 			return getRuleContexts(Weight_levelContext.class);
 		}
 		public Weight_levelContext weight_level(int i) {
 			return getRuleContext(Weight_levelContext.class,i);
 		}
-		public TerminalNode RPAREN() { return getToken(DLVResultParser.RPAREN, 0); }
-		public TerminalNode CONDITION() { return getToken(DLVResultParser.CONDITION, 0); }
-		public TerminalNode LESS_THAN() { return getToken(DLVResultParser.LESS_THAN, 0); }
 		public TerminalNode GREATER_THAN() { return getToken(DLVResultParser.GREATER_THAN, 0); }
 		public List<TerminalNode> COMMA() { return getTokens(DLVResultParser.COMMA); }
 		public TerminalNode COMMA(int i) {
@@ -765,42 +789,42 @@ public class DLVResultParser extends Parser {
 
 	public final WeightContext weight() throws RecognitionException {
 		WeightContext _localctx = new WeightContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_weight);
+		enterRule(_localctx, 20, RULE_weight);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(97);
-			match(WEIGHT_FLAG);
-			setState(98);
-			match(LPAREN);
 			setState(99);
-			weight_level();
+			match(WEIGHT_FLAG);
 			setState(100);
-			match(RPAREN);
+			match(LPAREN);
 			setState(101);
-			match(CONDITION);
+			weight_level_flag();
 			setState(102);
-			match(LESS_THAN);
+			match(RPAREN);
 			setState(103);
+			match(CONDITION);
+			setState(104);
+			match(LESS_THAN);
+			setState(105);
 			weight_level();
-			setState(108);
+			setState(110);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(104);
+				setState(106);
 				match(COMMA);
-				setState(105);
+				setState(107);
 				weight_level();
 				}
 				}
-				setState(110);
+				setState(112);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(111);
+			setState(113);
 			match(GREATER_THAN);
 			}
 		}
@@ -843,13 +867,13 @@ public class DLVResultParser extends Parser {
 
 	public final Weighted_answer_setContext weighted_answer_set() throws RecognitionException {
 		Weighted_answer_setContext _localctx = new Weighted_answer_setContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_weighted_answer_set);
+		enterRule(_localctx, 22, RULE_weighted_answer_set);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(113);
+			setState(115);
 			answer_set();
-			setState(114);
+			setState(116);
 			weight();
 			}
 		}
@@ -892,22 +916,22 @@ public class DLVResultParser extends Parser {
 
 	public final Possible_worldsContext possible_worlds() throws RecognitionException {
 		Possible_worldsContext _localctx = new Possible_worldsContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_possible_worlds);
+		enterRule(_localctx, 24, RULE_possible_worlds);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(119);
+			setState(121);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==LCBRACK) {
 				{
 				{
-				setState(116);
+				setState(118);
 				weighted_answer_set();
 				}
 				}
-				setState(121);
+				setState(123);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -925,36 +949,36 @@ public class DLVResultParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\26}\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\4\r\t\r\3\2\3\2\3\2\3\3\3\3\3\3\5\3!\n\3\3\4\3\4\3\5\3\5\3\5\3"+
-		"\5\3\5\7\5*\n\5\f\5\16\5-\13\5\3\5\3\5\3\6\3\6\3\6\3\6\5\6\65\n\6\3\7"+
-		"\3\7\3\7\3\7\3\7\3\7\7\7=\n\7\f\7\16\7@\13\7\3\7\3\7\5\7D\n\7\3\b\3\b"+
-		"\3\b\5\bI\n\b\3\t\3\t\3\t\3\t\7\tO\n\t\f\t\16\tR\13\t\5\tT\n\t\3\t\3\t"+
-		"\3\n\3\n\3\n\5\n[\n\n\3\n\3\n\3\n\5\n`\n\n\3\n\3\n\3\13\3\13\3\13\3\13"+
-		"\3\13\3\13\3\13\3\13\3\13\7\13m\n\13\f\13\16\13p\13\13\3\13\3\13\3\f\3"+
-		"\f\3\f\3\r\7\rx\n\r\f\r\16\r{\13\r\3\r\2\2\16\2\4\6\b\n\f\16\20\22\24"+
-		"\26\30\2\3\3\2\5\6\177\2\32\3\2\2\2\4 \3\2\2\2\6\"\3\2\2\2\b$\3\2\2\2"+
-		"\n\64\3\2\2\2\fC\3\2\2\2\16H\3\2\2\2\20J\3\2\2\2\22W\3\2\2\2\24c\3\2\2"+
-		"\2\26s\3\2\2\2\30y\3\2\2\2\32\33\7\22\2\2\33\34\7\5\2\2\34\3\3\2\2\2\35"+
-		"!\7\5\2\2\36!\5\2\2\2\37!\7\6\2\2 \35\3\2\2\2 \36\3\2\2\2 \37\3\2\2\2"+
-		"!\5\3\2\2\2\"#\t\2\2\2#\7\3\2\2\2$%\7\7\2\2%&\7\13\2\2&+\5\n\6\2\'(\7"+
-		"\24\2\2(*\5\n\6\2)\'\3\2\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2\2\2,.\3\2\2\2-"+
-		"+\3\2\2\2./\7\f\2\2/\t\3\2\2\2\60\65\7\7\2\2\61\65\5\b\5\2\62\65\7\3\2"+
-		"\2\63\65\5\4\3\2\64\60\3\2\2\2\64\61\3\2\2\2\64\62\3\2\2\2\64\63\3\2\2"+
-		"\2\65\13\3\2\2\2\66D\7\7\2\2\678\7\7\2\289\7\13\2\29>\5\n\6\2:;\7\24\2"+
-		"\2;=\5\n\6\2<:\3\2\2\2=@\3\2\2\2><\3\2\2\2>?\3\2\2\2?A\3\2\2\2@>\3\2\2"+
-		"\2AB\7\f\2\2BD\3\2\2\2C\66\3\2\2\2C\67\3\2\2\2D\r\3\2\2\2EI\5\f\7\2FG"+
-		"\7\22\2\2GI\5\f\7\2HE\3\2\2\2HF\3\2\2\2I\17\3\2\2\2JS\7\17\2\2KP\5\16"+
-		"\b\2LM\7\24\2\2MO\5\16\b\2NL\3\2\2\2OR\3\2\2\2PN\3\2\2\2PQ\3\2\2\2QT\3"+
-		"\2\2\2RP\3\2\2\2SK\3\2\2\2ST\3\2\2\2TU\3\2\2\2UV\7\20\2\2V\21\3\2\2\2"+
-		"WZ\7\r\2\2X[\7\t\2\2Y[\5\6\4\2ZX\3\2\2\2ZY\3\2\2\2[\\\3\2\2\2\\_\7\25"+
-		"\2\2]`\7\n\2\2^`\5\6\4\2_]\3\2\2\2_^\3\2\2\2`a\3\2\2\2ab\7\16\2\2b\23"+
-		"\3\2\2\2cd\7\b\2\2de\7\13\2\2ef\5\22\n\2fg\7\f\2\2gh\7\25\2\2hi\7\21\2"+
-		"\2in\5\22\n\2jk\7\24\2\2km\5\22\n\2lj\3\2\2\2mp\3\2\2\2nl\3\2\2\2no\3"+
-		"\2\2\2oq\3\2\2\2pn\3\2\2\2qr\7\23\2\2r\25\3\2\2\2st\5\20\t\2tu\5\24\13"+
-		"\2u\27\3\2\2\2vx\5\26\f\2wv\3\2\2\2x{\3\2\2\2yw\3\2\2\2yz\3\2\2\2z\31"+
-		"\3\2\2\2{y\3\2\2\2\16 +\64>CHPSZ_ny";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\26\177\4\2\t\2\4"+
+		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
+		"\13\4\f\t\f\4\r\t\r\4\16\t\16\3\2\3\2\3\2\3\3\3\3\3\3\5\3#\n\3\3\4\3\4"+
+		"\3\5\3\5\3\5\3\5\3\5\7\5,\n\5\f\5\16\5/\13\5\3\5\3\5\3\6\3\6\3\6\3\6\5"+
+		"\6\67\n\6\3\7\3\7\3\7\3\7\3\7\3\7\7\7?\n\7\f\7\16\7B\13\7\3\7\3\7\5\7"+
+		"F\n\7\3\b\3\b\3\b\5\bK\n\b\3\t\3\t\3\t\3\t\7\tQ\n\t\f\t\16\tT\13\t\5\t"+
+		"V\n\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\13\3\13\3"+
+		"\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\7\fo\n\f\f\f\16\fr\13\f\3\f\3\f\3\r"+
+		"\3\r\3\r\3\16\7\16z\n\16\f\16\16\16}\13\16\3\16\2\2\17\2\4\6\b\n\f\16"+
+		"\20\22\24\26\30\32\2\3\3\2\5\6~\2\34\3\2\2\2\4\"\3\2\2\2\6$\3\2\2\2\b"+
+		"&\3\2\2\2\n\66\3\2\2\2\fE\3\2\2\2\16J\3\2\2\2\20L\3\2\2\2\22Y\3\2\2\2"+
+		"\24_\3\2\2\2\26e\3\2\2\2\30u\3\2\2\2\32{\3\2\2\2\34\35\7\22\2\2\35\36"+
+		"\7\5\2\2\36\3\3\2\2\2\37#\7\5\2\2 #\5\2\2\2!#\7\6\2\2\"\37\3\2\2\2\" "+
+		"\3\2\2\2\"!\3\2\2\2#\5\3\2\2\2$%\t\2\2\2%\7\3\2\2\2&\'\7\7\2\2\'(\7\13"+
+		"\2\2(-\5\n\6\2)*\7\24\2\2*,\5\n\6\2+)\3\2\2\2,/\3\2\2\2-+\3\2\2\2-.\3"+
+		"\2\2\2.\60\3\2\2\2/-\3\2\2\2\60\61\7\f\2\2\61\t\3\2\2\2\62\67\7\7\2\2"+
+		"\63\67\5\b\5\2\64\67\7\3\2\2\65\67\5\4\3\2\66\62\3\2\2\2\66\63\3\2\2\2"+
+		"\66\64\3\2\2\2\66\65\3\2\2\2\67\13\3\2\2\28F\7\7\2\29:\7\7\2\2:;\7\13"+
+		"\2\2;@\5\n\6\2<=\7\24\2\2=?\5\n\6\2><\3\2\2\2?B\3\2\2\2@>\3\2\2\2@A\3"+
+		"\2\2\2AC\3\2\2\2B@\3\2\2\2CD\7\f\2\2DF\3\2\2\2E8\3\2\2\2E9\3\2\2\2F\r"+
+		"\3\2\2\2GK\5\f\7\2HI\7\22\2\2IK\5\f\7\2JG\3\2\2\2JH\3\2\2\2K\17\3\2\2"+
+		"\2LU\7\17\2\2MR\5\16\b\2NO\7\24\2\2OQ\5\16\b\2PN\3\2\2\2QT\3\2\2\2RP\3"+
+		"\2\2\2RS\3\2\2\2SV\3\2\2\2TR\3\2\2\2UM\3\2\2\2UV\3\2\2\2VW\3\2\2\2WX\7"+
+		"\20\2\2X\21\3\2\2\2YZ\7\r\2\2Z[\7\t\2\2[\\\7\25\2\2\\]\7\n\2\2]^\7\16"+
+		"\2\2^\23\3\2\2\2_`\7\r\2\2`a\5\6\4\2ab\7\25\2\2bc\5\6\4\2cd\7\16\2\2d"+
+		"\25\3\2\2\2ef\7\b\2\2fg\7\13\2\2gh\5\22\n\2hi\7\f\2\2ij\7\25\2\2jk\7\21"+
+		"\2\2kp\5\24\13\2lm\7\24\2\2mo\5\24\13\2nl\3\2\2\2or\3\2\2\2pn\3\2\2\2"+
+		"pq\3\2\2\2qs\3\2\2\2rp\3\2\2\2st\7\23\2\2t\27\3\2\2\2uv\5\20\t\2vw\5\26"+
+		"\f\2w\31\3\2\2\2xz\5\30\r\2yx\3\2\2\2z}\3\2\2\2{y\3\2\2\2{|\3\2\2\2|\33"+
+		"\3\2\2\2}{\3\2\2\2\f\"-\66@EJRUp{";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
