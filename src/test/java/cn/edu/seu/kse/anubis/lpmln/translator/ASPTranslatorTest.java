@@ -39,4 +39,17 @@ public class ASPTranslatorTest {
         String asprules=translator.translate(rules);
         System.out.println(asprules);
     }
+
+    @Test
+    public void testPlogTranslator() throws IOException {
+        String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\friend.txt";
+        File rulef=new File(path);
+        SyntaxModule sm=new SyntaxModule();
+        List<Rule> rules= sm.parse(rulef);
+        PlogTranslator translator=new PlogTranslator();
+        translator.setFactor(sm.getFactor());
+        translator.setHerbrandUniverse(sm.getHerbrandUniverse());
+        String asprules=translator.translate(rules);
+        System.out.println(asprules);
+    }
 }
