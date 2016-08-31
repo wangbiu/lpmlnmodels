@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class WeightedAnswerSet {
     private List<Integer> weights;
+    private double probability;
     private AnswerSet answerSet;
 
     public WeightedAnswerSet(){
@@ -31,4 +32,21 @@ public class WeightedAnswerSet {
         this.answerSet = answerSet;
     }
 
+    public double getProbability() {
+        return probability;
+    }
+
+    public void setProbability(double probability) {
+        this.probability = probability;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb=new StringBuilder();
+        sb.append("weights : ").append(weights).append(System.lineSeparator());
+        sb.append("answer set : ").append(answerSet);
+        sb.append("probability : ").append(probability).append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        return sb.toString();
+    }
 }

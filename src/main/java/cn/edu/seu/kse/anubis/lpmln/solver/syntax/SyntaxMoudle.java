@@ -19,9 +19,25 @@ public class SyntaxMoudle {
         CommonTokenStream token=new CommonTokenStream(lexer);
         DLVResultParser parser=new DLVResultParser(token);
         AnswerSetVisitor asvisitor=new AnswerSetVisitor();
-        as= (List<WeightedAnswerSet>) asvisitor.visit(parser.possible_worlds());
+        as=asvisitor.visitPossible_worlds(parser.possible_worlds());
         maxWeight=asvisitor.getMaxWeight();
         maxWeightAs=asvisitor.getMaxWeightAs();
         return as;
+    }
+
+    public List<WeightedAnswerSet> getMaxWeightAs() {
+        return maxWeightAs;
+    }
+
+    public void setMaxWeightAs(List<WeightedAnswerSet> maxWeightAs) {
+        this.maxWeightAs = maxWeightAs;
+    }
+
+    public String getMaxWeight() {
+        return maxWeight;
+    }
+
+    public void setMaxWeight(String maxWeight) {
+        this.maxWeight = maxWeight;
     }
 }

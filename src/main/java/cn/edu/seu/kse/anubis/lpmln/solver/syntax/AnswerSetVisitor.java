@@ -48,7 +48,8 @@ public class AnswerSetVisitor extends DLVResultBaseVisitor {
             }
             cnt++;
         }
-
+//        System.out.println(as);
+        was.add(as);
 
         return null;
     }
@@ -57,6 +58,14 @@ public class AnswerSetVisitor extends DLVResultBaseVisitor {
     public List<WeightedAnswerSet> visitPossible_worlds(DLVResultParser.Possible_worldsContext ctx) {
         List<WeightedAnswerSet> result=new ArrayList<>();
         int weight=0;
+
+        for(DLVResultParser.Weighted_answer_setContext wasctx:ctx.weighted_answer_set()){
+            visitWeighted_answer_set(wasctx);
+        }
+
+        System.out.println("maxlevel 1 "+maxLevel1);
+        System.out.println("maxlevel 2 "+maxLevel2);
+
         for(WeightedAnswerSet as : was){
             if(as.getWeights().get(1) == maxLevel2){
                 result.add(as);
@@ -80,7 +89,7 @@ public class AnswerSetVisitor extends DLVResultBaseVisitor {
 
     public String getMaxWeight(){
         StringBuilder sb=new StringBuilder();
-
+        sb.append(maxLevel2).append("*alpha + ").append(maxLevel1);
         return sb.toString();
     }
 }
