@@ -4,7 +4,10 @@ import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.anubis.lpmln.solver.BaseSolver;
 import cn.edu.seu.kse.anubis.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.anubis.lpmln.solver.DLV;
+import cn.edu.seu.kse.anubis.lpmln.syntax.LPMLNParser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +18,7 @@ public class App
 {
     public static void main( String[] args )
     {
+        Date enter=new Date();
         boolean isMarginal=false;
         boolean showall=false;
         String rulefile=args[args.length-1];
@@ -62,5 +66,10 @@ public class App
             System.out.println(maxWas);
             System.out.println("weight "+solver.getMaxWeight());
         }
+
+        Date exit=new Date();
+
+        SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
+        System.out.printf("enter %s, exit %s%n", sdf.format(enter),sdf.format(exit));
     }
 }
