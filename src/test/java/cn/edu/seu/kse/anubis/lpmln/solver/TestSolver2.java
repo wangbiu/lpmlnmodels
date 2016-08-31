@@ -26,7 +26,7 @@ public class TestSolver2 {
 
     @Test
     public void testDLV(){
-        String rulefile="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\experiment\\dlv\\bird.txt";
+        String rulefile="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\experiment\\dlv\\friend.txt";
         DLV dlv=new DLV();
         List<WeightedAnswerSet> was=dlv.call(rulefile);
         dlv.findMaxWeightedAs();
