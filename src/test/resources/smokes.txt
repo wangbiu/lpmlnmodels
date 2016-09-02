@@ -1,0 +1,9 @@
+1.5 : cancer(X) :- smokes(X).
+2.0 : friends(X,Z) :- friends(X,Y), friends(Y,Z).
+1.1 : smokes(Y) :- smokes(X), friends(X,Y).
+smokes(jerry).
+friends(jerry, elaine).
+friends(elaine, george).
+friends(X,Y) :- person(X),person(Y).
+person(jerry).
+person(elaine). person(george).

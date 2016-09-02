@@ -21,6 +21,7 @@ public class App
         Date enter=new Date();
         boolean isMarginal=false;
         boolean showall=false;
+        int factor=1;
         String rulefile=args[args.length-1];
         String aspsolver=null;
         int cnt=0;
@@ -31,6 +32,8 @@ public class App
                 showall=true;
             }else if(s.indexOf("asp") == 1){
                 aspsolver=args[cnt+1];
+            }else if (s.indexOf("factor")==1){
+                factor=Integer.valueOf(args[cnt+1]);
             }
             cnt++;
         }
@@ -55,7 +58,7 @@ public class App
         }
 
         if(isMarginal){
-            String marginal=solver.marginalDistribution(1);
+            String marginal=solver.marginalDistribution(factor);
             System.out.println("marginal result ");
             System.out.println(marginal);
             System.out.println(solver.getMarginalTime());

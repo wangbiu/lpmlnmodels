@@ -66,7 +66,10 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         if(minremains == null){
             minremains=remains;
         }else if(minremains > remains){
-            minremains=remains;
+            if (Math.abs(remains) > 0.00001){
+                minremains=remains;
+            }
+
         }
         rule.setWeight(weight);
         return rule;
@@ -217,6 +220,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         int factor=100;
         double tmpremains=0;
         minremains=Math.abs(minremains);
+//        System.out.println(minremains);
         if(minremains < 0.00000001 ){
             return 1;
         }
@@ -224,7 +228,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
 
         while (true){
             tmpremains=minremains*factor;
-            if(tmpremains > 1){
+            if(tmpremains > 10){
                 factor/=10;
             }else {
                 break;
