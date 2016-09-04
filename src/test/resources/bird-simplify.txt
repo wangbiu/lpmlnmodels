@@ -1,0 +1,6 @@
+bd(X) :- rb(X).
+bd(X) :- mb(X).
+:- rb(X), mb(X).
+2:rb(jo).
+1:mb(jo).
+
