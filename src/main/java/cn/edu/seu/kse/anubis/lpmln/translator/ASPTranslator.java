@@ -11,6 +11,37 @@ import java.util.StringJoiner;
  * Created by 王彬 on 2016/8/30.
  */
 public class ASPTranslator extends BaseTranslator {
+    public String translate_parts(List<Rule> rules){
+        StringBuilder sb=new StringBuilder();
+        sb.append("%%---- declaration part ----%%").append(System.lineSeparator());
+        sb.append(translateDeclarationPart(herbrandUniverse));
+        sb.append(System.lineSeparator());
+        sb.append("%%---- generation part ----%%").append(System.lineSeparator());
+        for(Rule r:rules){
+            sb.append(translateGenerationPart(r));
+//            sb.append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+
+        sb.append("%%---- test part ----%%").append(System.lineSeparator());
+        for(Rule r:rules){
+            sb.append(translateTestPart(r));
+//            sb.append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+
+        sb.append("%%---- evaluation part ----%%").append(System.lineSeparator());
+        for(Rule r:rules){
+            if(r.isSoft()){
+                sb.append(translateCountingPart(r,true));
+            }else {
+                sb.append(translateCountingPart(r,false));
+            }
+//            sb.append(System.lineSeparator());
+        }
+
+        return sb.toString();
+    }
 
     @Override
     public String translateSoftRule(Rule rule) {
