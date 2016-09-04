@@ -17,7 +17,7 @@ import java.util.List;
  * Created by 王彬 on 2016/8/30.
  */
 public class ASPTranslatorTest {
-    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\bird.txt";
+    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\friend.txt";
     private File rulef=new File(path);
     private int factor=0;
     private List<Rule> rules=null;
@@ -38,7 +38,7 @@ public class ASPTranslatorTest {
         ASPTranslator translator=new ASPTranslator();
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
-        String asprules=translator.translate(rules);
+        String asprules=translator.translate_parts(rules);
         System.out.println(asprules);
         Date end=new Date();
         System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");

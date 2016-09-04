@@ -79,20 +79,14 @@ public class ASPTranslator extends BaseTranslator {
         sb.append(" | -apply(").append(rule.getRuleLabel()).append(") ");
 
         HashSet<String> vars=rule.getVars();
-        int cnt=0;
-        int size=vars.size()-1;
+        int size=vars.size();
 
-        if(size>=0){
+        if(size>0){
             sb.append(":- ");
         }
 
-        for(String v:vars){
-            sb.append("hbu(").append(v).append(")");
-            if(cnt!=size){
-                sb.append(", ");
-            }
-            cnt++;
-        }
+        sb.append(generateHerbrandBody(vars));
+
         sb.append(". ").append(System.lineSeparator());
 
         sb.append(rule.getText()).append(" apply(").append(rule.getRuleLabel()).append(").");
@@ -106,15 +100,14 @@ public class ASPTranslator extends BaseTranslator {
         String sat="sat("+rule.getRuleLabel()+")";
         String head="h("+rule.getRuleLabel()+")";
         String body="b("+rule.getRuleLabel()+")";
+        String hold="hold("+rule.getRuleLabel()+")";
         String apply="apply("+rule.getRuleLabel()+")";
 
         sb.append(":- ").append(sat).append(", -").append(apply).append(".");
         sb.append(System.lineSeparator());
         sb.append(sat).append(" :- ").append(head).append(", ").append(body).append(".");
         sb.append(System.lineSeparator());
-        sb.append(sat).append(" :- not ").append(body).append(", ").append(apply).append(".");
-        sb.append(System.lineSeparator());
-        sb.append(sat).append(" :- not ").append(body).append(", -").append(apply).append(".");
+        sb.append(sat).append(" :- not ").append(body).append(", ").append(hold).append(".");
         sb.append(System.lineSeparator());
         if(rule.getBody().equals("")){
             sb.append(body).append(".");
@@ -126,11 +119,21 @@ public class ASPTranslator extends BaseTranslator {
 
         List<String> heads= rule.getHead();
         for(String h:heads){
-            sb.append(head).append(" :- ").append(h).append(", ").append(apply).append(".");
-            sb.append(System.lineSeparator());
-            sb.append(head).append(" :- ").append(h).append(", -").append(apply).append(".");
+            sb.append(head).append(" :- ").append(h).append(", ").append(hold).append(".");
             sb.append(System.lineSeparator());
         }
+
+        sb.append(hold);
+
+        HashSet<String> vars=rule.getVars();
+        int size=vars.size();
+
+        if(size>0){
+            sb.append(":- ");
+        }
+
+        sb.append(generateHerbrandBody(vars));
+        sb.append(".").append(System.lineSeparator());
 
         return sb.toString();
     }
@@ -141,9 +144,9 @@ public class ASPTranslator extends BaseTranslator {
         sb.append("[");
         if(isSoft){
             int weight= (int) (rule.getWeight()*factor);
-            sb.append(weight).append("@0, ");
+            sb.append(weight).append("@1, ");
         }else {
-            sb.append("1@1, ");
+            sb.append("1@2, ");
         }
         sb.append(rule.getId());
         generateVarString(rule.getVars(),sb);
@@ -155,6 +158,21 @@ public class ASPTranslator extends BaseTranslator {
         for(String v:vars){
             sb.append(", ").append(v);
         }
+    }
+
+    protected String generateHerbrandBody(HashSet<String> vars){
+        StringBuilder sb=new StringBuilder();
+        int cnt=0;
+        int size=vars.size()-1;
+
+        for(String v:vars){
+            sb.append("hbu(").append(v).append(")");
+            if(cnt!=size){
+                sb.append(", ");
+            }
+            cnt++;
+        }
+        return sb.toString();
     }
 
     public int getFactor() {

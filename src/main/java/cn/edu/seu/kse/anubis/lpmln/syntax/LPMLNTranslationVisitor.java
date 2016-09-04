@@ -37,7 +37,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         List<String> heads=rule.getHead();
         rule.setId(cnt++);
         if(heads.size() == 0){
-            heads.add("csh("+rule.getId()+")");
+            heads.add("impossible("+rule.getId()+")");
         }
 
         rule.setSoft(false);
