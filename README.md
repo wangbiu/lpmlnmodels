@@ -11,6 +11,10 @@ files with suffix `dlv` are ASP programs in Clingo syntax.
 + DLV  build Dec 17 2012
 
 # Command line
-+ clingo 0 --opt-mode enum <file>
-+ dlv -costbound=_,_ <file>
++ clingo 0 --opt-mode enum \<file\>
++ dlv -costbound=_,_ \<file\>
+
+# Note
+Syntax about weak constraint is slightly different between Clingo and DLV, 
+but the clingo syntax is standard ASP syntax.
 
