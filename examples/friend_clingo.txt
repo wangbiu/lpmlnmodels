@@ -1,0 +1,43 @@
+hbu(a).
+hbu(b).
+hbu(c).
+
+apply(rlabel0(0)) | -apply(rlabel0(0)) . 
+friend(a,b) :-  apply(rlabel0(0)).
+:- sat(rlabel0(0)), -apply(rlabel0(0)).
+sat(rlabel0(0)) :- h(rlabel0(0)), b(rlabel0(0)).
+sat(rlabel0(0)) :- not b(rlabel0(0)), hold(rlabel0(0)).
+b(rlabel0(0)).
+h(rlabel0(0)) :- friend(a,b), hold(rlabel0(0)).
+hold(rlabel0(0)).
+:~ sat(rlabel0(0)). [1@2, 0]
+
+apply(rlabel1(1)) | -apply(rlabel1(1)) . 
+friend(b,c) :-  apply(rlabel1(1)).
+:- sat(rlabel1(1)), -apply(rlabel1(1)).
+sat(rlabel1(1)) :- h(rlabel1(1)), b(rlabel1(1)).
+sat(rlabel1(1)) :- not b(rlabel1(1)), hold(rlabel1(1)).
+b(rlabel1(1)).
+h(rlabel1(1)) :- friend(b,c), hold(rlabel1(1)).
+hold(rlabel1(1)).
+:~ sat(rlabel1(1)). [1@2, 1]
+
+apply(rlabel2(2, X, Y, Z)) | -apply(rlabel2(2, X, Y, Z)) :- hbu(X), hbu(Y), hbu(Z). 
+influence(X,Y) :- influence(X,Z),influence(Z,Y),  apply(rlabel2(2, X, Y, Z)).
+:- sat(rlabel2(2, X, Y, Z)), -apply(rlabel2(2, X, Y, Z)).
+sat(rlabel2(2, X, Y, Z)) :- h(rlabel2(2, X, Y, Z)), b(rlabel2(2, X, Y, Z)).
+sat(rlabel2(2, X, Y, Z)) :- not b(rlabel2(2, X, Y, Z)), hold(rlabel2(2, X, Y, Z)).
+b(rlabel2(2, X, Y, Z)) :- influence(X,Z),influence(Z,Y).
+h(rlabel2(2, X, Y, Z)) :- influence(X,Y), hold(rlabel2(2, X, Y, Z)).
+hold(rlabel2(2, X, Y, Z)):- hbu(X), hbu(Y), hbu(Z).
+:~ sat(rlabel2(2, X, Y, Z)). [1@2, 2, X, Y, Z]
+
+apply(rlabel3(3, X, Y)) | -apply(rlabel3(3, X, Y)) :- hbu(X), hbu(Y). 
+influence(X,Y) :- friend(X,Y),  apply(rlabel3(3, X, Y)).
+:- sat(rlabel3(3, X, Y)), -apply(rlabel3(3, X, Y)).
+sat(rlabel3(3, X, Y)) :- h(rlabel3(3, X, Y)), b(rlabel3(3, X, Y)).
+sat(rlabel3(3, X, Y)) :- not b(rlabel3(3, X, Y)), hold(rlabel3(3, X, Y)).
+b(rlabel3(3, X, Y)) :- friend(X,Y).
+h(rlabel3(3, X, Y)) :- influence(X,Y), hold(rlabel3(3, X, Y)).
+hold(rlabel3(3, X, Y)):- hbu(X), hbu(Y).
+:~ sat(rlabel3(3, X, Y)). [1@1, 3, X, Y]
