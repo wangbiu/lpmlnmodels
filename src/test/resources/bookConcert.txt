@@ -1,0 +1,4 @@
+concertBooked.
+longDrive :- concertBooked, not cancelled.
+0 : cancelled.
+14 : :- cancelled.
