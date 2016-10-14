@@ -17,7 +17,7 @@ import java.util.List;
  * Created by 王彬 on 2016/8/30.
  */
 public class ASPTranslatorTest {
-    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\bookConcert.txt";
+    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\decision.txt";
     private File rulef=new File(path);
     private int factor=0;
     private List<Rule> rules=null;
