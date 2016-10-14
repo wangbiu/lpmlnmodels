@@ -25,8 +25,10 @@ public class BaseSolver {
 
     public List<WeightedAnswerSet> call(String cmd){
         Date enter=new Date();
-        String[] cmdres= CommandLineExecute.callShellwithReturn(cmd,0);
+        String[] cmdres= CommandLineExecute.callShellwithReturn(cmd,1);
         Date cmdExit=new Date();
+
+//        System.out.println("result "+cmdres[0]);
         List<WeightedAnswerSet> was=solverResultProcess(cmdres[0]);
         weightedAs=was;
         stats=genSolverStatisticsInfo();
