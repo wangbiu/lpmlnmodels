@@ -41,11 +41,12 @@ public class LPMLNApp {
         Options opts= LPMLNOpts.getCommandLineOptions();
         CommandLineParser cmdParser=new DefaultParser();
 
-
         try {
             CommandLine cmd=cmdParser.parse(opts,args);
-            if(cmd.hasOption("help")){
+
+            if(cmd.hasOption("help") || cmd.getOptions().length == 0){
                 HelpFormatter formatter=new HelpFormatter();
+                formatter.setWidth(150);
                 formatter.printHelp("lpmlnmodels <params>",opts);
             }else {
                 //初始化参数
