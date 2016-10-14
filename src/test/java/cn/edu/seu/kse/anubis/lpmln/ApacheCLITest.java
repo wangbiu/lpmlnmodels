@@ -11,7 +11,7 @@ public class ApacheCLITest {
 
     @Test
     public void testOption() throws ParseException {
-        Options opts= LPMLNOpts.getOptions();
+        Options opts= LPMLNOpts.getCommandLineOptions();
         String[] args={"--help","-p", "-m","-a","--asp-solver","clingo","-s","strong","--input-file","lpmln.lp"};
 
         CommandLineParser cmdParser=new DefaultParser();

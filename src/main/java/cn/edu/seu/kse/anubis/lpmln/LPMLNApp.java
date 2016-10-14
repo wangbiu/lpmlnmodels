@@ -8,7 +8,7 @@ import org.apache.commons.cli.*;
  */
 public class LPMLNApp {
     public static void main(String args[]){
-        Options opts= LPMLNOpts.getOptions();
+        Options opts= LPMLNOpts.getCommandLineOptions();
         CommandLineParser cmdParser=new DefaultParser();
         try {
             CommandLine cmd=cmdParser.parse(opts,args);

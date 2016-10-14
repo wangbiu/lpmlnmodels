@@ -3,11 +3,13 @@ package cn.edu.seu.kse.anubis.lpmln.app;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
+import java.util.HashMap;
+
 /**
  * Created by 王彬 on 2016/10/14.
  */
 public class LPMLNOpts {
-    public static Options getOptions(){
+    public static Options getCommandLineOptions(){
         //帮助选项
         Option help=new Option("h", "help", false, "Print Help");
         help.setRequired(false);
@@ -54,6 +56,12 @@ public class LPMLNOpts {
         opts.addOption(reasoner);
         opts.addOption(inputfile);
         opts.addOption(semantics);
+
+        return opts;
+    }
+
+    public static HashMap<String,String> getRuntimeOptions(){
+        HashMap<String,String> opts=new HashMap<>();
 
         return opts;
     }
