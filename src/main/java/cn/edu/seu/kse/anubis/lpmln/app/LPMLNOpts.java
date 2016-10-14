@@ -29,20 +29,27 @@ public class LPMLNOpts {
         //选择使用的推理机 DLV 或 Clingo
         Option reasoner=new Option("r", "asp-solver",true,"specify used ASP solver, dlv and clingo are available");
         reasoner.setValueSeparator(' ');
-        reasoner.setRequired(true);
+        reasoner.setRequired(false);
         reasoner.setOptionalArg(false);
         reasoner.setArgName("reasonername");
 
         //指定输入的LPMLN文件
         Option inputfile=new Option("i", "input-file",true, "specify input lpmln file");
-        inputfile.setRequired(true);
+        inputfile.setRequired(false);
         inputfile.setValueSeparator(' ');
         inputfile.setOptionalArg(false);
         inputfile.setArgName("inputfile");
 
+        //指定转化输出的文件
+        Option transoutfile=new Option("o", "translation-output-file", true,"specify output file of translation");
+        transoutfile.setRequired(false);
+        transoutfile.setArgName("translation-output-file");
+        transoutfile.setValueSeparator(' ');
+        transoutfile.setOptionalArg(false);
+
         //指定LPMLN推理语义 strong weak
         Option semantics=new Option("s", "lpmln-semantics", true, "specify used lpmln semantics");
-        semantics.setRequired(true);
+        semantics.setRequired(false);
         semantics.setValueSeparator(' ');
         semantics.setArgName("semantics");
         semantics.setOptionalArg(false);
@@ -56,12 +63,14 @@ public class LPMLNOpts {
         opts.addOption(reasoner);
         opts.addOption(inputfile);
         opts.addOption(semantics);
+        opts.addOption(transoutfile);
 
         return opts;
     }
 
     public static HashMap<String,String> getRuntimeOptions(){
         HashMap<String,String> opts=new HashMap<>();
+
 
         return opts;
     }
