@@ -34,7 +34,10 @@ public class AnswerSetVisitor extends DLVResultBaseVisitor {
         for(DLVResultParser.Weight_levelContext wlctx : wctx.weight_level()){
 
             weightstr=wlctx.natural_number(0).getText();
-            weight=Integer.valueOf(weightstr);
+
+            //减去 trick part 增加的权值1
+            //TODO 权重变换以后需要注意
+            weight=Integer.valueOf(weightstr)-1;
             weights.add(weight);
 
             if(cnt == 1){
