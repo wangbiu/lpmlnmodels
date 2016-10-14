@@ -49,7 +49,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>cn.edu.seu.kse.anubis.App</mainClass>
+              <mainClass>cn.edu.seu.kse.anubis.lpmln.LPMLNApp</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
