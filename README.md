@@ -1,3 +1,12 @@
+# lpmlnmodels 推理机参数
+```lpmlnmodels <params> <lpmln file>```
+ 
++ `marginal` 可选，计算边缘概率分布，该参数不指定时，计算最大可能稳定模型
++ `showall` 可选，显示全部稳定模型
++ `asp clingo | dlv` 必选，指定使用的ASP推理机
++ `transtype strong | weak` 可选，指定翻译的类型，默认是强翻译
++ `transout <filename>` 可选，将翻译结果输出到指定文件中
+
 # LPMLN Experiments 
 + Bird 
 + Friend 
