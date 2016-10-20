@@ -51,7 +51,11 @@ public class Clingo4 extends BaseSolver {
 
             vsize=jweight.size();
             for(int j=vsize-1;j>=0;j--){
-                jtmpweight=jweight.getInt(j);
+
+                //减去 trick part 增加的权值1
+                //TODO 权重变换以后需要注意
+                jtmpweight=jweight.getInt(j)-1;
+
                 as.getWeights().add(jtmpweight);
                 if(j == 0){
                     if(jtmpweight > maxlevel2){
@@ -63,7 +67,7 @@ public class Clingo4 extends BaseSolver {
             tmpwas.add(as);
         }
 
-        System.out.println("max level 2 "+maxlevel2);
+//        System.out.println("max level 2 "+maxlevel2);
 
         for(WeightedAnswerSet tas:tmpwas){
 //            System.out.printf("tas weight %d, maxlevel2 %d%n",tas.getWeights().get(1),maxlevel2);

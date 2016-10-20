@@ -40,6 +40,18 @@ public class ASPTranslator extends BaseTranslator {
 //            sb.append(System.lineSeparator());
         }
 
+        sb.append(trickPart());
+
+        return sb.toString();
+    }
+
+    @Override
+    public String trickPart(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("kse_solve_trick.  ").append(System.lineSeparator());
+        sb.append(":~ kse_solve_trick. [1@1]").append(System.lineSeparator());
+        sb.append(":~ kse_solve_trick. [1@2]").append(System.lineSeparator());
+
         return sb.toString();
     }
 

@@ -31,7 +31,13 @@ public class BaseTranslator {
             }
             sb.append(rulestr).append(System.lineSeparator());
         }
+
+        sb.append(trickPart());
         return sb.toString();
+    }
+
+    public String trickPart(){
+        return "";
     }
 
     public String translate2File(List<Rule> rules) throws IOException {
