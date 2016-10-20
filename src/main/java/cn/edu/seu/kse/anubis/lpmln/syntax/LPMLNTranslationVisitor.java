@@ -40,6 +40,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             heads.add("impossible("+rule.getId()+")");
         }
 
+
         rule.setSoft(false);
 //        rule.setText(ctx.getText());
 
@@ -82,6 +83,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         Rule rule=visitBody(ctx.body());
         rule.setText(":- "+ctx.body().getText()+", ");
+        rule.setOriginalrule(ctx.getText());
         return rule;
     }
 
@@ -93,6 +95,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
 
         Rule rule=visitHead(ctx.head());
         rule.setText(ctx.head().getText() +" :- ");
+        rule.setOriginalrule(ctx.getText());
         return rule;
     }
 
@@ -105,6 +108,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         Rule rh=visitHead(ctx.head());
         rb.setText(ctx.head().getText() + " :- "+ctx.body().getText()+", ");
         rb.setHead(rh.getHead());
+        rb.setOriginalrule(ctx.getText());
         return rb;
     }
 
