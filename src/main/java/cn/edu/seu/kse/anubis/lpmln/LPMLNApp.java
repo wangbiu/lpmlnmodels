@@ -9,6 +9,8 @@ import cn.edu.seu.kse.anubis.lpmln.solver.DLV;
 import cn.edu.seu.kse.anubis.lpmln.syntax.SyntaxModule;
 import cn.edu.seu.kse.anubis.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.anubis.lpmln.translator.DLVTranslator;
+import cn.edu.seu.kse.anubis.lpmln.translator.WeakASPTranslator;
+import cn.edu.seu.kse.anubis.lpmln.translator.WeakDLVTranslator;
 import org.apache.commons.cli.*;
 
 import java.io.BufferedWriter;
@@ -190,16 +192,24 @@ public class LPMLNApp {
 
         ASPTranslator translator=null;
 
-        if(aspsolver.equals("clingo")){
-            translator=new ASPTranslator();
-            solver=new Clingo4();
-        }else {
-            translator=new DLVTranslator();
-            solver=new DLV();
-        }
+
 
         if(semantics.equals("weak")){
-            throw new RuntimeException("weak translation is not usefule for now");
+            if(aspsolver.equals("clingo")){
+                translator=new WeakASPTranslator();
+                solver=new Clingo4();
+            }else {
+                translator=new WeakDLVTranslator();
+                solver=new DLV();
+            }
+        }else {
+            if(aspsolver.equals("clingo")){
+                translator=new ASPTranslator();
+                solver=new Clingo4();
+            }else {
+                translator=new DLVTranslator();
+                solver=new DLV();
+            }
         }
 
         translator.setFactor(factor);
