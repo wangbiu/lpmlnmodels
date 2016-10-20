@@ -138,7 +138,7 @@ public class LPMLNApp {
 
 
     private static void initLpmlnmodels(CommandLine cmd){
-        if(!cmd.hasOption("input-file")){
+        if(!cmd.hasOption("input-file") && !cmd.hasOption("translation-input-file")){
             throw new RuntimeException("missing parameter input-file");
         }
         lpmlnfile=cmd.getOptionValue("input-file");
