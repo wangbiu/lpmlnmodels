@@ -17,6 +17,7 @@ public class Rule {
     private String body;
     private List<String> head;
     private String ruleLabel=null;
+    private String originalrule;
 
     public Rule(){
         vars=new HashSet<>();
@@ -108,5 +109,13 @@ public class Rule {
             ruleLabel=sb.toString();
         }
         return ruleLabel;
+    }
+
+    public String getOriginalrule() {
+        return originalrule;
+    }
+
+    public void setOriginalrule(String originalrule) {
+        this.originalrule = originalrule;
     }
 }
