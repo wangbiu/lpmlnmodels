@@ -54,6 +54,13 @@ public class LPMLNOpts {
         semantics.setArgName("semantics");
         semantics.setOptionalArg(false);
 
+        //使用转换的文件直接推理
+        Option transinfile=new Option("I", "translation-input-file", true, "optinal, use a translated rulefile to reason");
+        transinfile.setRequired(false);
+        transinfile.setArgName("translation-input-file");
+        transinfile.setValueSeparator(' ');
+        transinfile.setOptionalArg(false);
+
 
         Options opts=new Options();
         opts.addOption(help);
@@ -64,6 +71,7 @@ public class LPMLNOpts {
         opts.addOption(inputfile);
         opts.addOption(semantics);
         opts.addOption(transoutfile);
+        opts.addOption(transinfile);
 
         return opts;
     }

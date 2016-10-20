@@ -49,21 +49,41 @@ public class LPMLNApp {
                 formatter.setWidth(150);
                 formatter.printHelp("lpmlnmodels <params>",opts);
             }else {
+                if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
+                    throw new RuntimeException("i and I are used once at a time");
+                }
+
                 //初始化参数
                 initLpmlnmodels(cmd);
+                BaseSolver solver=null;
 
-                File lpmlnrulefile=new File(lpmlnfile);
-                File translationoutfile=new File(translationfile);
+                if(cmd.hasOption("input-file")){
+                    File lpmlnrulefile=new File(lpmlnfile);
+                    File translationoutfile=new File(translationfile);
 
-                //翻译
-                BaseSolver solver=translation(lpmlnrulefile,translationoutfile,semantics,aspsolver);
+                    //翻译
+                    solver=translation(lpmlnrulefile,translationoutfile,semantics,aspsolver);
 
-                //求解
-                solve(translationoutfile,solver);
+                    //求解
+                    solve(translationoutfile,solver);
 
-                if(!iskeeptranslation){
-                    translationoutfile.delete();
+                    if(!iskeeptranslation){
+                        translationoutfile.delete();
+                    }
+
+                }else if(cmd.hasOption("translation-input-file")){
+
+                    File translationfile=new File(cmd.getOptionValue("translation-input-file"));
+
+                    if(aspsolver.equals("clingo")){
+                        solver=new Clingo4();
+                    }else if(aspsolver.equals("dlv")){
+                        solver=new DLV();
+                    }
+                    
+                    solve(translationfile,solver);
                 }
+
 
                 Date exit=new Date();
 
