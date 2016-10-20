@@ -73,7 +73,7 @@ NEQ : '!=';
 
 AGGREGATE_OP : '#count' | '#sum' | '#max' | '#min';
 //
-META_OP : '#show';
+META_OP : '#show ';
 //单行注释
 LINE_COMMENT : ('%' ~('\r' | '\n')* '\r'? '\n') -> skip;
 //空白字符或换行符
