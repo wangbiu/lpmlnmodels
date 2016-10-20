@@ -24,3 +24,11 @@ win_chg(X) :- change(X), prize(X).
 door(1).
 door(2).
 door(3).
+
+#show select/1.
+#show prize/1.
+#show open/1.
+#show win/1.
+#show change/1.
+#show win_chg/1.
+#show cnt/1.
