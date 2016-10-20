@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.anubis.lpmln.syntax;
 
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
+import cn.edu.seu.kse.anubis.lpmln.solver.syntax.DLVResultParser;
 import org.antlr.v4.runtime.misc.DoubleKeyMap;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -189,6 +190,11 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         ctn=ctx.STRING();
         if(ctn!=null){
             herbrandUniverse.add(ctn.getText());
+        }
+
+        LPMLNParser.IntegerContext ictx=ctx.integer();
+        if(ictx != null){
+            herbrandUniverse.add(ictx.getText());
         }
 
         return var;

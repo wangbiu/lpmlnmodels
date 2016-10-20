@@ -114,7 +114,7 @@ arithmethic_expr:
 function : CONSTANT LPAREN term (COMMA term)* RPAREN;
 
 //项
-term : VAR | CONSTANT | arithmethic_expr | function | STRING;
+term : VAR | CONSTANT | integer | arithmethic_expr | function | STRING;
 
 //原子
 atom :
