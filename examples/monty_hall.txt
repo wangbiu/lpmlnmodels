@@ -1,0 +1,26 @@
+% 每个门都以相同的可能性存在奖品
+1 : prize(X) :- door(X).
+
+% 选手选择每个门的可能性都相同
+1: select(X) :- door(X).
+
+% 选择的门与有奖品的门一样则获胜
+win(X) :- select(X), prize(X).
+
+% 主持人以相同的可能性打开未被选择并且没有奖品的门
+-open(X) :- select(X).
+-open(X) :- prize(X).
+1 : open(X) :- door(X), not -open(X).
+
+% select, open, prize 有且只能有一个
+:- #count{select(X):select(X)} != 1.
+:- #count{open(X):open(X)} != 1.
+:- #count{prize(X):prize(X)} != 1.
+
+% 选手改变选择
+change(X) :- door(X), not select(X), not open(X).
+win_chg(X) :- change(X), prize(X).
+
+door(1).
+door(2).
+door(3).
