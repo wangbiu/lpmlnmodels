@@ -214,6 +214,7 @@ public class LPMLNApp {
 
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
+        translator.setMetarule(sm.getMetarule());
         String asprules=translator.translate(rules);
 
         BufferedWriter bw=new BufferedWriter(new FileWriter(translationOutputFile));

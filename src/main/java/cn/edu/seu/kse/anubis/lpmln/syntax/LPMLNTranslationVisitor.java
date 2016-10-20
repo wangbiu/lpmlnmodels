@@ -18,9 +18,17 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     private int cnt=0;
     private Double minremains=null;
     private HashSet<String> herbrandUniverse=new HashSet<>();
+    private StringBuilder metarule=new StringBuilder();
 
     public LPMLNTranslationVisitor(){
         rules=new ArrayList<>();
+    }
+
+    @Override
+    public Object visitMeta_rule(LPMLNParser.Meta_ruleContext ctx) {
+        metarule.append(ctx.getText()).append(System.lineSeparator());
+
+        return null;
     }
 
     @Override
@@ -267,4 +275,10 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     public void setHerbrandUniverse(HashSet<String> herbrandUniverse) {
         this.herbrandUniverse = herbrandUniverse;
     }
+
+    public String getMetarule() {
+        return metarule.toString();
+    }
+
+
 }
