@@ -97,4 +97,13 @@ public class ASPTranslatorTest {
         Date end=new Date();
         System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
     }
+
+    @Test
+    public void testASPGroundTranslator(){
+        ASPGroundTranslator translator=new ASPGroundTranslator();
+        translator.setFactor(factor);
+        translator.setHerbrandUniverse(herbrandUniverse);
+        String asprules=translator.translate(rules);
+        System.out.println(asprules);
+    }
 }
