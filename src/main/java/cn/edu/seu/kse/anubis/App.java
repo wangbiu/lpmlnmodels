@@ -14,6 +14,7 @@ import java.util.List;
  * Hello world!
  *
  */
+@Deprecated
 public class App 
 {
     public static void main( String[] args )

@@ -3,9 +3,14 @@ package cn.edu.seu.kse.anubis.lpmln.parallel;
 import cn.edu.seu.kse.anubis.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by 王彬 on 2017/3/19.
@@ -62,6 +67,37 @@ public abstract class BasePartition {
             subIdx=selectSubset();
             partitionOneSubset(subIdx);
         }
+    }
+
+    public List<String> genSplitTexts(){
+        List<String> splits=new ArrayList<>();
+        String prog=null;
+        for(AugmentedSubset as:split){
+            prog=as.getTranslationText(rules,asptext);
+            splits.add(prog);
+        }
+        return splits;
+    }
+
+    public List<File> genSplitFiles() throws IOException {
+        List<File> splits=new ArrayList<>();
+        String filename= UUID.randomUUID().toString()+"_sp_";
+        int size=split.size();
+        String prog=null;
+        AugmentedSubset sub=null;
+        File outf=null;
+        BufferedWriter bw=null;
+        for(int i=0;i<size;i++){
+            outf=new File(filename+i+".lp");
+//            System.out.println(outf.getAbsolutePath());
+            bw=new BufferedWriter(new FileWriter(outf));
+            sub=split.get(i);
+            prog=sub.getTranslationText(rules,asptext);
+            bw.write(prog);
+            bw.close();
+            splits.add(outf);
+        }
+        return splits;
     }
 
     public List<AugmentedSubset> getSplit() {

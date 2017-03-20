@@ -38,11 +38,15 @@ public class ASPStochasticPartitionTest {
 
 
     @Test
-    public void test(){
+    public void test() throws IOException {
         System.out.println(rules.size());
         ASPStochasticPartition partition=new ASPStochasticPartition(rules,asptext,factor);
         partition.partition(3);
+        System.out.println(asptext);
         List<AugmentedSubset> split=partition.getSplit();
+        List<File> splits=partition.genSplitFiles();
+        System.out.println(splits);
+
         System.out.println(split);
     }
 

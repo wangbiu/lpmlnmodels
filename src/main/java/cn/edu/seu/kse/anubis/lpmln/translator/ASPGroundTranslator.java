@@ -14,22 +14,22 @@ public class ASPGroundTranslator extends ASPTranslator {
         return "";
     }
 
-    @Override
-    protected String translateCountingPart(Rule rule, boolean isSoft) {
-        StringBuilder sb=new StringBuilder();
-        sb.append("\\text{:~ } sat(").append(rule.getRuleLabel()).append("). ");
-        sb.append("(");
-        if(isSoft){
-            int weight= (int) (rule.getWeight()*factor);
-            sb.append(weight).append("@1, ");
-        }else {
-            sb.append("1@2, ");
-        }
-        sb.append(rule.getId());
-        generateVarString(rule.getVars(),sb);
-        sb.append(")").append(System.lineSeparator());
-        return sb.toString();
-    }
+//    @Override
+//    protected String translateCountingPart(Rule rule, boolean isSoft) {
+//        StringBuilder sb=new StringBuilder();
+//        sb.append(":~ sat(").append(rule.getRuleLabel()).append("). ");
+//        sb.append("[");
+//        if(isSoft){
+//            int weight= (int) (rule.getWeight()*factor);
+//            sb.append(weight).append("@1, ");
+//        }else {
+//            sb.append("1@2, ");
+//        }
+//        sb.append(rule.getId());
+//        generateVarString(rule.getVars(),sb);
+//        sb.append("]").append(System.lineSeparator());
+//        return sb.toString();
+//    }
 
     @Override
     protected String translateTestPart(Rule rule) {
@@ -39,23 +39,23 @@ public class ASPGroundTranslator extends ASPTranslator {
         String body="b("+rule.getRuleLabel()+")";
         String apply="apply("+rule.getRuleLabel()+")";
 
-        sb.append("\\text{:- } ").append(sat).append(", -").append(apply).append(".");
+        sb.append(":- ").append(sat).append(", -").append(apply).append(".");
         sb.append(System.lineSeparator());
-        sb.append(sat).append(" \\text{ :- } ").append(head).append(", ").append(body).append(".");
+        sb.append(sat).append(" :- ").append(head).append(", ").append(body).append(".");
         sb.append(System.lineSeparator());
-        sb.append(sat).append(" \\text{ :- } not ").append(body).append(".");
+        sb.append(sat).append(" :- not ").append(body).append(".");
         sb.append(System.lineSeparator());
         if(rule.getBody().equals("")){
             sb.append(body).append(".");
         }else {
-            sb.append(body).append(" \\text{ :- } ").append(rule.getBody()).append(".");
+            sb.append(body).append(" :- ").append(rule.getBody()).append(".");
         }
 
         sb.append(System.lineSeparator());
 
         List<String> heads= rule.getHead();
         for(String h:heads){
-            sb.append(head).append(" \\text{ :- } ").append(h).append(".");
+            sb.append(head).append(" :- ").append(h).append(".");
             sb.append(System.lineSeparator());
         }
 
@@ -67,13 +67,13 @@ public class ASPGroundTranslator extends ASPTranslator {
         StringBuilder sb=new StringBuilder();
 
         sb.append("apply(").append(rule.getRuleLabel()).append(")");
-        sb.append(" ~or~ \\neg apply(").append(rule.getRuleLabel()).append(") ");
+        sb.append(" | -apply(").append(rule.getRuleLabel()).append(") ");
 
         HashSet<String> vars=rule.getVars();
         int size=vars.size();
 
         if(size>0){
-            sb.append(" \\text{ :- } ");
+            sb.append(" :- ");
         }
 
         sb.append(generateHerbrandBody(vars));
@@ -122,8 +122,10 @@ public class ASPGroundTranslator extends ASPTranslator {
             }
             sb.append(rulestr);
         }
-//        sb.append(trickPart()).append(System.lineSeparator());
-        sb.append(metarule);
+        sb.append(trickPart()).append(System.lineSeparator());
+        if(metarule != null){
+            sb.append(metarule);
+        }
         return sb.toString();
     }
 }
