@@ -7,7 +7,6 @@
 1 : has_key(7) :- box(7).
 1 : has_key(8) :- box(8).
 1 : has_key(9) :- box(9).
-1 : has_key(10) :- box(10).
 
 1 : select(1) :- box(1).
 1 : select(2) :- box(2).
@@ -18,7 +17,6 @@
 1 : select(7) :- box(7).
 1 : select(8) :- box(8).
 1 : select(9) :- box(9).
-1 : select(10) :- box(10).
 
 cannot_open(1) :- select(1).
 cannot_open(2) :- select(2).
@@ -29,7 +27,6 @@ cannot_open(6) :- select(6).
 cannot_open(7) :- select(7).
 cannot_open(8) :- select(8).
 cannot_open(9) :- select(9).
-cannot_open(10) :- select(10).
 cannot_open(1) :- has_key(1).
 cannot_open(2) :- has_key(2).
 cannot_open(3) :- has_key(3).
@@ -39,7 +36,6 @@ cannot_open(6) :- has_key(6).
 cannot_open(7) :- has_key(7).
 cannot_open(8) :- has_key(8).
 cannot_open(9) :- has_key(9).
-cannot_open(10) :- has_key(10).
 1 : open(1) :- box(1), not cannot_open(1).
 1 : open(2) :- box(2), not cannot_open(2).
 1 : open(3) :- box(3), not cannot_open(3).
@@ -49,7 +45,6 @@ cannot_open(10) :- has_key(10).
 1 : open(7) :- box(7), not cannot_open(7).
 1 : open(8) :- box(8), not cannot_open(8).
 1 : open(9) :- box(9), not cannot_open(9).
-1 : open(10) :- box(10), not cannot_open(10).
 
 1 : can_switch(1) :- box(1), not select(1), not open(1).
 1 : can_switch(2) :- box(2), not select(2), not open(2).
@@ -60,7 +55,6 @@ cannot_open(10) :- has_key(10).
 1 : can_switch(7) :- box(7), not select(7), not open(7).
 1 : can_switch(8) :- box(8), not select(8), not open(8).
 1 : can_switch(9) :- box(9), not select(9), not open(9).
-1 : can_switch(10) :- box(10), not select(10), not open(10).
 1 : switch(1) :- can_switch(1).
 1 : switch(2) :- can_switch(2).
 1 : switch(3) :- can_switch(3).
@@ -70,7 +64,6 @@ cannot_open(10) :- has_key(10).
 1 : switch(7) :- can_switch(7).
 1 : switch(8) :- can_switch(8).
 1 : switch(9) :- can_switch(9).
-1 : switch(10) :- can_switch(10).
 
 win_stay :- select(1), has_key(1).
 win_stay :- select(2), has_key(2).
@@ -81,7 +74,6 @@ win_stay :- select(6), has_key(6).
 win_stay :- select(7), has_key(7).
 win_stay :- select(8), has_key(8).
 win_stay :- select(9), has_key(9).
-win_stay :- select(10), has_key(10).
 win_switch :- switch(1), has_key(1).
 win_switch :- switch(2), has_key(2).
 win_switch :- switch(3), has_key(3).
@@ -91,7 +83,6 @@ win_switch :- switch(6), has_key(6).
 win_switch :- switch(7), has_key(7).
 win_switch :- switch(8), has_key(8).
 win_switch :- switch(9), has_key(9).
-win_switch :- switch(10), has_key(10).
 
 -switch(1) :- switch(1), can_switch(1), 1 != 1.
 -switch(2) :- switch(1), can_switch(2), 2 != 1.
@@ -102,7 +93,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(1), can_switch(7), 7 != 1.
 -switch(8) :- switch(1), can_switch(8), 8 != 1.
 -switch(9) :- switch(1), can_switch(9), 9 != 1.
--switch(10) :- switch(1), can_switch(10), 10 != 1.
 -switch(1) :- switch(2), can_switch(1), 1 != 2.
 -switch(2) :- switch(2), can_switch(2), 2 != 2.
 -switch(3) :- switch(2), can_switch(3), 3 != 2.
@@ -112,7 +102,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(2), can_switch(7), 7 != 2.
 -switch(8) :- switch(2), can_switch(8), 8 != 2.
 -switch(9) :- switch(2), can_switch(9), 9 != 2.
--switch(10) :- switch(2), can_switch(10), 10 != 2.
 -switch(1) :- switch(3), can_switch(1), 1 != 3.
 -switch(2) :- switch(3), can_switch(2), 2 != 3.
 -switch(3) :- switch(3), can_switch(3), 3 != 3.
@@ -122,7 +111,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(3), can_switch(7), 7 != 3.
 -switch(8) :- switch(3), can_switch(8), 8 != 3.
 -switch(9) :- switch(3), can_switch(9), 9 != 3.
--switch(10) :- switch(3), can_switch(10), 10 != 3.
 -switch(1) :- switch(4), can_switch(1), 1 != 4.
 -switch(2) :- switch(4), can_switch(2), 2 != 4.
 -switch(3) :- switch(4), can_switch(3), 3 != 4.
@@ -132,7 +120,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(4), can_switch(7), 7 != 4.
 -switch(8) :- switch(4), can_switch(8), 8 != 4.
 -switch(9) :- switch(4), can_switch(9), 9 != 4.
--switch(10) :- switch(4), can_switch(10), 10 != 4.
 -switch(1) :- switch(5), can_switch(1), 1 != 5.
 -switch(2) :- switch(5), can_switch(2), 2 != 5.
 -switch(3) :- switch(5), can_switch(3), 3 != 5.
@@ -142,7 +129,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(5), can_switch(7), 7 != 5.
 -switch(8) :- switch(5), can_switch(8), 8 != 5.
 -switch(9) :- switch(5), can_switch(9), 9 != 5.
--switch(10) :- switch(5), can_switch(10), 10 != 5.
 -switch(1) :- switch(6), can_switch(1), 1 != 6.
 -switch(2) :- switch(6), can_switch(2), 2 != 6.
 -switch(3) :- switch(6), can_switch(3), 3 != 6.
@@ -152,7 +138,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(6), can_switch(7), 7 != 6.
 -switch(8) :- switch(6), can_switch(8), 8 != 6.
 -switch(9) :- switch(6), can_switch(9), 9 != 6.
--switch(10) :- switch(6), can_switch(10), 10 != 6.
 -switch(1) :- switch(7), can_switch(1), 1 != 7.
 -switch(2) :- switch(7), can_switch(2), 2 != 7.
 -switch(3) :- switch(7), can_switch(3), 3 != 7.
@@ -162,7 +147,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(7), can_switch(7), 7 != 7.
 -switch(8) :- switch(7), can_switch(8), 8 != 7.
 -switch(9) :- switch(7), can_switch(9), 9 != 7.
--switch(10) :- switch(7), can_switch(10), 10 != 7.
 -switch(1) :- switch(8), can_switch(1), 1 != 8.
 -switch(2) :- switch(8), can_switch(2), 2 != 8.
 -switch(3) :- switch(8), can_switch(3), 3 != 8.
@@ -172,7 +156,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(8), can_switch(7), 7 != 8.
 -switch(8) :- switch(8), can_switch(8), 8 != 8.
 -switch(9) :- switch(8), can_switch(9), 9 != 8.
--switch(10) :- switch(8), can_switch(10), 10 != 8.
 -switch(1) :- switch(9), can_switch(1), 1 != 9.
 -switch(2) :- switch(9), can_switch(2), 2 != 9.
 -switch(3) :- switch(9), can_switch(3), 3 != 9.
@@ -182,17 +165,6 @@ win_switch :- switch(10), has_key(10).
 -switch(7) :- switch(9), can_switch(7), 7 != 9.
 -switch(8) :- switch(9), can_switch(8), 8 != 9.
 -switch(9) :- switch(9), can_switch(9), 9 != 9.
--switch(10) :- switch(9), can_switch(10), 10 != 9.
--switch(1) :- switch(10), can_switch(1), 1 != 10.
--switch(2) :- switch(10), can_switch(2), 2 != 10.
--switch(3) :- switch(10), can_switch(3), 3 != 10.
--switch(4) :- switch(10), can_switch(4), 4 != 10.
--switch(5) :- switch(10), can_switch(5), 5 != 10.
--switch(6) :- switch(10), can_switch(6), 6 != 10.
--switch(7) :- switch(10), can_switch(7), 7 != 10.
--switch(8) :- switch(10), can_switch(8), 8 != 10.
--switch(9) :- switch(10), can_switch(9), 9 != 10.
--switch(10) :- switch(10), can_switch(10), 10 != 10.
 :- can_switch(1), not switch(1), not -switch(1).
 :- can_switch(2), not switch(2), not -switch(2).
 :- can_switch(3), not switch(3), not -switch(3).
@@ -202,7 +174,6 @@ win_switch :- switch(10), has_key(10).
 :- can_switch(7), not switch(7), not -switch(7).
 :- can_switch(8), not switch(8), not -switch(8).
 :- can_switch(9), not switch(9), not -switch(9).
-:- can_switch(10), not switch(10), not -switch(10).
 
 -select(1) :- select(1), box(1), 1 != 1.
 -select(2) :- select(1), box(2), 2 != 1.
@@ -213,7 +184,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(1), box(7), 7 != 1.
 -select(8) :- select(1), box(8), 8 != 1.
 -select(9) :- select(1), box(9), 9 != 1.
--select(10) :- select(1), box(10), 10 != 1.
 -select(1) :- select(2), box(1), 1 != 2.
 -select(2) :- select(2), box(2), 2 != 2.
 -select(3) :- select(2), box(3), 3 != 2.
@@ -223,7 +193,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(2), box(7), 7 != 2.
 -select(8) :- select(2), box(8), 8 != 2.
 -select(9) :- select(2), box(9), 9 != 2.
--select(10) :- select(2), box(10), 10 != 2.
 -select(1) :- select(3), box(1), 1 != 3.
 -select(2) :- select(3), box(2), 2 != 3.
 -select(3) :- select(3), box(3), 3 != 3.
@@ -233,7 +202,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(3), box(7), 7 != 3.
 -select(8) :- select(3), box(8), 8 != 3.
 -select(9) :- select(3), box(9), 9 != 3.
--select(10) :- select(3), box(10), 10 != 3.
 -select(1) :- select(4), box(1), 1 != 4.
 -select(2) :- select(4), box(2), 2 != 4.
 -select(3) :- select(4), box(3), 3 != 4.
@@ -243,7 +211,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(4), box(7), 7 != 4.
 -select(8) :- select(4), box(8), 8 != 4.
 -select(9) :- select(4), box(9), 9 != 4.
--select(10) :- select(4), box(10), 10 != 4.
 -select(1) :- select(5), box(1), 1 != 5.
 -select(2) :- select(5), box(2), 2 != 5.
 -select(3) :- select(5), box(3), 3 != 5.
@@ -253,7 +220,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(5), box(7), 7 != 5.
 -select(8) :- select(5), box(8), 8 != 5.
 -select(9) :- select(5), box(9), 9 != 5.
--select(10) :- select(5), box(10), 10 != 5.
 -select(1) :- select(6), box(1), 1 != 6.
 -select(2) :- select(6), box(2), 2 != 6.
 -select(3) :- select(6), box(3), 3 != 6.
@@ -263,7 +229,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(6), box(7), 7 != 6.
 -select(8) :- select(6), box(8), 8 != 6.
 -select(9) :- select(6), box(9), 9 != 6.
--select(10) :- select(6), box(10), 10 != 6.
 -select(1) :- select(7), box(1), 1 != 7.
 -select(2) :- select(7), box(2), 2 != 7.
 -select(3) :- select(7), box(3), 3 != 7.
@@ -273,7 +238,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(7), box(7), 7 != 7.
 -select(8) :- select(7), box(8), 8 != 7.
 -select(9) :- select(7), box(9), 9 != 7.
--select(10) :- select(7), box(10), 10 != 7.
 -select(1) :- select(8), box(1), 1 != 8.
 -select(2) :- select(8), box(2), 2 != 8.
 -select(3) :- select(8), box(3), 3 != 8.
@@ -283,7 +247,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(8), box(7), 7 != 8.
 -select(8) :- select(8), box(8), 8 != 8.
 -select(9) :- select(8), box(9), 9 != 8.
--select(10) :- select(8), box(10), 10 != 8.
 -select(1) :- select(9), box(1), 1 != 9.
 -select(2) :- select(9), box(2), 2 != 9.
 -select(3) :- select(9), box(3), 3 != 9.
@@ -293,17 +256,6 @@ win_switch :- switch(10), has_key(10).
 -select(7) :- select(9), box(7), 7 != 9.
 -select(8) :- select(9), box(8), 8 != 9.
 -select(9) :- select(9), box(9), 9 != 9.
--select(10) :- select(9), box(10), 10 != 9.
--select(1) :- select(10), box(1), 1 != 10.
--select(2) :- select(10), box(2), 2 != 10.
--select(3) :- select(10), box(3), 3 != 10.
--select(4) :- select(10), box(4), 4 != 10.
--select(5) :- select(10), box(5), 5 != 10.
--select(6) :- select(10), box(6), 6 != 10.
--select(7) :- select(10), box(7), 7 != 10.
--select(8) :- select(10), box(8), 8 != 10.
--select(9) :- select(10), box(9), 9 != 10.
--select(10) :- select(10), box(10), 10 != 10.
 :- box(1), not select(1), not -select(1).
 :- box(2), not select(2), not -select(2).
 :- box(3), not select(3), not -select(3).
@@ -313,7 +265,6 @@ win_switch :- switch(10), has_key(10).
 :- box(7), not select(7), not -select(7).
 :- box(8), not select(8), not -select(8).
 :- box(9), not select(9), not -select(9).
-:- box(10), not select(10), not -select(10).
 -open(1) :- open(1), box(1), 1 != 1.
 -open(2) :- open(1), box(2), 2 != 1.
 -open(3) :- open(1), box(3), 3 != 1.
@@ -323,7 +274,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(1), box(7), 7 != 1.
 -open(8) :- open(1), box(8), 8 != 1.
 -open(9) :- open(1), box(9), 9 != 1.
--open(10) :- open(1), box(10), 10 != 1.
 -open(1) :- open(2), box(1), 1 != 2.
 -open(2) :- open(2), box(2), 2 != 2.
 -open(3) :- open(2), box(3), 3 != 2.
@@ -333,7 +283,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(2), box(7), 7 != 2.
 -open(8) :- open(2), box(8), 8 != 2.
 -open(9) :- open(2), box(9), 9 != 2.
--open(10) :- open(2), box(10), 10 != 2.
 -open(1) :- open(3), box(1), 1 != 3.
 -open(2) :- open(3), box(2), 2 != 3.
 -open(3) :- open(3), box(3), 3 != 3.
@@ -343,7 +292,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(3), box(7), 7 != 3.
 -open(8) :- open(3), box(8), 8 != 3.
 -open(9) :- open(3), box(9), 9 != 3.
--open(10) :- open(3), box(10), 10 != 3.
 -open(1) :- open(4), box(1), 1 != 4.
 -open(2) :- open(4), box(2), 2 != 4.
 -open(3) :- open(4), box(3), 3 != 4.
@@ -353,7 +301,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(4), box(7), 7 != 4.
 -open(8) :- open(4), box(8), 8 != 4.
 -open(9) :- open(4), box(9), 9 != 4.
--open(10) :- open(4), box(10), 10 != 4.
 -open(1) :- open(5), box(1), 1 != 5.
 -open(2) :- open(5), box(2), 2 != 5.
 -open(3) :- open(5), box(3), 3 != 5.
@@ -363,7 +310,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(5), box(7), 7 != 5.
 -open(8) :- open(5), box(8), 8 != 5.
 -open(9) :- open(5), box(9), 9 != 5.
--open(10) :- open(5), box(10), 10 != 5.
 -open(1) :- open(6), box(1), 1 != 6.
 -open(2) :- open(6), box(2), 2 != 6.
 -open(3) :- open(6), box(3), 3 != 6.
@@ -373,7 +319,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(6), box(7), 7 != 6.
 -open(8) :- open(6), box(8), 8 != 6.
 -open(9) :- open(6), box(9), 9 != 6.
--open(10) :- open(6), box(10), 10 != 6.
 -open(1) :- open(7), box(1), 1 != 7.
 -open(2) :- open(7), box(2), 2 != 7.
 -open(3) :- open(7), box(3), 3 != 7.
@@ -383,7 +328,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(7), box(7), 7 != 7.
 -open(8) :- open(7), box(8), 8 != 7.
 -open(9) :- open(7), box(9), 9 != 7.
--open(10) :- open(7), box(10), 10 != 7.
 -open(1) :- open(8), box(1), 1 != 8.
 -open(2) :- open(8), box(2), 2 != 8.
 -open(3) :- open(8), box(3), 3 != 8.
@@ -393,7 +337,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(8), box(7), 7 != 8.
 -open(8) :- open(8), box(8), 8 != 8.
 -open(9) :- open(8), box(9), 9 != 8.
--open(10) :- open(8), box(10), 10 != 8.
 -open(1) :- open(9), box(1), 1 != 9.
 -open(2) :- open(9), box(2), 2 != 9.
 -open(3) :- open(9), box(3), 3 != 9.
@@ -403,17 +346,6 @@ win_switch :- switch(10), has_key(10).
 -open(7) :- open(9), box(7), 7 != 9.
 -open(8) :- open(9), box(8), 8 != 9.
 -open(9) :- open(9), box(9), 9 != 9.
--open(10) :- open(9), box(10), 10 != 9.
--open(1) :- open(10), box(1), 1 != 10.
--open(2) :- open(10), box(2), 2 != 10.
--open(3) :- open(10), box(3), 3 != 10.
--open(4) :- open(10), box(4), 4 != 10.
--open(5) :- open(10), box(5), 5 != 10.
--open(6) :- open(10), box(6), 6 != 10.
--open(7) :- open(10), box(7), 7 != 10.
--open(8) :- open(10), box(8), 8 != 10.
--open(9) :- open(10), box(9), 9 != 10.
--open(10) :- open(10), box(10), 10 != 10.
 :- box(1), not open(1), not -open(1).
 :- box(2), not open(2), not -open(2).
 :- box(3), not open(3), not -open(3).
@@ -423,7 +355,6 @@ win_switch :- switch(10), has_key(10).
 :- box(7), not open(7), not -open(7).
 :- box(8), not open(8), not -open(8).
 :- box(9), not open(9), not -open(9).
-:- box(10), not open(10), not -open(10).
 -has_key(1) :- has_key(1), box(1), 1 != 1.
 -has_key(2) :- has_key(1), box(2), 2 != 1.
 -has_key(3) :- has_key(1), box(3), 3 != 1.
@@ -433,7 +364,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(1), box(7), 7 != 1.
 -has_key(8) :- has_key(1), box(8), 8 != 1.
 -has_key(9) :- has_key(1), box(9), 9 != 1.
--has_key(10) :- has_key(1), box(10), 10 != 1.
 -has_key(1) :- has_key(2), box(1), 1 != 2.
 -has_key(2) :- has_key(2), box(2), 2 != 2.
 -has_key(3) :- has_key(2), box(3), 3 != 2.
@@ -443,7 +373,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(2), box(7), 7 != 2.
 -has_key(8) :- has_key(2), box(8), 8 != 2.
 -has_key(9) :- has_key(2), box(9), 9 != 2.
--has_key(10) :- has_key(2), box(10), 10 != 2.
 -has_key(1) :- has_key(3), box(1), 1 != 3.
 -has_key(2) :- has_key(3), box(2), 2 != 3.
 -has_key(3) :- has_key(3), box(3), 3 != 3.
@@ -453,7 +382,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(3), box(7), 7 != 3.
 -has_key(8) :- has_key(3), box(8), 8 != 3.
 -has_key(9) :- has_key(3), box(9), 9 != 3.
--has_key(10) :- has_key(3), box(10), 10 != 3.
 -has_key(1) :- has_key(4), box(1), 1 != 4.
 -has_key(2) :- has_key(4), box(2), 2 != 4.
 -has_key(3) :- has_key(4), box(3), 3 != 4.
@@ -463,7 +391,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(4), box(7), 7 != 4.
 -has_key(8) :- has_key(4), box(8), 8 != 4.
 -has_key(9) :- has_key(4), box(9), 9 != 4.
--has_key(10) :- has_key(4), box(10), 10 != 4.
 -has_key(1) :- has_key(5), box(1), 1 != 5.
 -has_key(2) :- has_key(5), box(2), 2 != 5.
 -has_key(3) :- has_key(5), box(3), 3 != 5.
@@ -473,7 +400,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(5), box(7), 7 != 5.
 -has_key(8) :- has_key(5), box(8), 8 != 5.
 -has_key(9) :- has_key(5), box(9), 9 != 5.
--has_key(10) :- has_key(5), box(10), 10 != 5.
 -has_key(1) :- has_key(6), box(1), 1 != 6.
 -has_key(2) :- has_key(6), box(2), 2 != 6.
 -has_key(3) :- has_key(6), box(3), 3 != 6.
@@ -483,7 +409,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(6), box(7), 7 != 6.
 -has_key(8) :- has_key(6), box(8), 8 != 6.
 -has_key(9) :- has_key(6), box(9), 9 != 6.
--has_key(10) :- has_key(6), box(10), 10 != 6.
 -has_key(1) :- has_key(7), box(1), 1 != 7.
 -has_key(2) :- has_key(7), box(2), 2 != 7.
 -has_key(3) :- has_key(7), box(3), 3 != 7.
@@ -493,7 +418,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(7), box(7), 7 != 7.
 -has_key(8) :- has_key(7), box(8), 8 != 7.
 -has_key(9) :- has_key(7), box(9), 9 != 7.
--has_key(10) :- has_key(7), box(10), 10 != 7.
 -has_key(1) :- has_key(8), box(1), 1 != 8.
 -has_key(2) :- has_key(8), box(2), 2 != 8.
 -has_key(3) :- has_key(8), box(3), 3 != 8.
@@ -503,7 +427,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(8), box(7), 7 != 8.
 -has_key(8) :- has_key(8), box(8), 8 != 8.
 -has_key(9) :- has_key(8), box(9), 9 != 8.
--has_key(10) :- has_key(8), box(10), 10 != 8.
 -has_key(1) :- has_key(9), box(1), 1 != 9.
 -has_key(2) :- has_key(9), box(2), 2 != 9.
 -has_key(3) :- has_key(9), box(3), 3 != 9.
@@ -513,17 +436,6 @@ win_switch :- switch(10), has_key(10).
 -has_key(7) :- has_key(9), box(7), 7 != 9.
 -has_key(8) :- has_key(9), box(8), 8 != 9.
 -has_key(9) :- has_key(9), box(9), 9 != 9.
--has_key(10) :- has_key(9), box(10), 10 != 9.
--has_key(1) :- has_key(10), box(1), 1 != 10.
--has_key(2) :- has_key(10), box(2), 2 != 10.
--has_key(3) :- has_key(10), box(3), 3 != 10.
--has_key(4) :- has_key(10), box(4), 4 != 10.
--has_key(5) :- has_key(10), box(5), 5 != 10.
--has_key(6) :- has_key(10), box(6), 6 != 10.
--has_key(7) :- has_key(10), box(7), 7 != 10.
--has_key(8) :- has_key(10), box(8), 8 != 10.
--has_key(9) :- has_key(10), box(9), 9 != 10.
--has_key(10) :- has_key(10), box(10), 10 != 10.
 :- box(1), not has_key(1), not -has_key(1).
 :- box(2), not has_key(2), not -has_key(2).
 :- box(3), not has_key(3), not -has_key(3).
@@ -533,7 +445,6 @@ win_switch :- switch(10), has_key(10).
 :- box(7), not has_key(7), not -has_key(7).
 :- box(8), not has_key(8), not -has_key(8).
 :- box(9), not has_key(9), not -has_key(9).
-:- box(10), not has_key(10), not -has_key(10).
 
 box(1).
 box(2).
@@ -544,7 +455,6 @@ box(6).
 box(7).
 box(8).
 box(9).
-box(10).
 
 
 #show select/1.

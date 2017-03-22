@@ -170,4 +170,12 @@ public class NaiveMontyHallGrounder {
         }
         return isStop;
     }
+
+    public int getBoxNumber() {
+        return boxNumber;
+    }
+
+    public void setBoxNumber(int boxNumber) {
+        this.boxNumber = boxNumber;
+    }
 }
