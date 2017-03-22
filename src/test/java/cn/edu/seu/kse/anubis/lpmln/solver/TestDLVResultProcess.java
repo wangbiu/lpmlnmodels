@@ -24,7 +24,7 @@ public class TestDLVResultProcess {
         int pos=result.toString().indexOf(System.lineSeparator());
         String rawdata=result.toString().substring(pos);
 //        System.out.println(rawdata);
-        List<WeightedAnswerSet> was=sm.parse(rawdata);
+        List<WeightedAnswerSet> was=sm.parseDLVResult(rawdata);
 
         System.out.println(was);
 

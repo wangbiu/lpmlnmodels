@@ -30,7 +30,7 @@ public class Solver {
         SyntaxMoudle sm=new SyntaxMoudle();
         int pos=cmdres[0].indexOf(System.lineSeparator());
         String rawdata=cmdres[0].substring(pos);
-        List<WeightedAnswerSet> was=sm.parse(rawdata);
+        List<WeightedAnswerSet> was=sm.parseDLVResult(rawdata);
         return was;
     }
 
