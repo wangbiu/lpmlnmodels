@@ -56,7 +56,7 @@ public class NaiveMontyHallGrounder {
 
     public String groundSwitchRule(){
         StringBuilder rule=new StringBuilder();
-        String template="1 : can_switch({{1}}) :- box({{1}}), not select({{1}}), not open({{1}}).";
+        String template="can_switch({{1}}) :- box({{1}}), not select({{1}}), not open({{1}}).";
         String tmprule=groundTemplate(template,1);
         rule.append(tmprule);
         template="1 : switch({{1}}) :- can_switch({{1}}).";
