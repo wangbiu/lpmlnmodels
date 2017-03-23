@@ -41,14 +41,14 @@ cannot_open(8) :- has_key(8).
 1 : open(7) :- box(7), not cannot_open(7).
 1 : open(8) :- box(8), not cannot_open(8).
 
-1 : can_switch(1) :- box(1), not select(1), not open(1).
-1 : can_switch(2) :- box(2), not select(2), not open(2).
-1 : can_switch(3) :- box(3), not select(3), not open(3).
-1 : can_switch(4) :- box(4), not select(4), not open(4).
-1 : can_switch(5) :- box(5), not select(5), not open(5).
-1 : can_switch(6) :- box(6), not select(6), not open(6).
-1 : can_switch(7) :- box(7), not select(7), not open(7).
-1 : can_switch(8) :- box(8), not select(8), not open(8).
+can_switch(1) :- box(1), not select(1), not open(1).
+can_switch(2) :- box(2), not select(2), not open(2).
+can_switch(3) :- box(3), not select(3), not open(3).
+can_switch(4) :- box(4), not select(4), not open(4).
+can_switch(5) :- box(5), not select(5), not open(5).
+can_switch(6) :- box(6), not select(6), not open(6).
+can_switch(7) :- box(7), not select(7), not open(7).
+can_switch(8) :- box(8), not select(8), not open(8).
 1 : switch(1) :- can_switch(1).
 1 : switch(2) :- can_switch(2).
 1 : switch(3) :- can_switch(3).
