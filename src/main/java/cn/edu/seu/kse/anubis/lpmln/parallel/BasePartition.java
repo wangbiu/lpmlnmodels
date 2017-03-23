@@ -20,6 +20,7 @@ public abstract class BasePartition {
     protected List<Rule> rules;
     protected String asptext;
     protected int factor;
+    protected boolean isWeakPartition;
 
     public BasePartition(List<Rule> rules, String asptext, int factor){
         this.rules=rules;
@@ -73,6 +74,7 @@ public abstract class BasePartition {
         List<String> splits=new ArrayList<>();
         String prog=null;
         for(AugmentedSubset as:split){
+            as.setWeakTranslate(isWeakPartition);
             prog=as.getTranslationText(rules,asptext);
             splits.add(prog);
         }
@@ -92,6 +94,7 @@ public abstract class BasePartition {
 //            System.out.println(outf.getAbsolutePath());
             bw=new BufferedWriter(new FileWriter(outf));
             sub=split.get(i);
+            sub.setWeakTranslate(isWeakPartition);
             prog=sub.getTranslationText(rules,asptext);
             bw.write(prog);
             bw.close();
@@ -130,5 +133,13 @@ public abstract class BasePartition {
 
     public void setFactor(int factor) {
         this.factor = factor;
+    }
+
+    public boolean isWeakPartition() {
+        return isWeakPartition;
+    }
+
+    public void setWeakPartition(boolean weakPartition) {
+        isWeakPartition = weakPartition;
     }
 }

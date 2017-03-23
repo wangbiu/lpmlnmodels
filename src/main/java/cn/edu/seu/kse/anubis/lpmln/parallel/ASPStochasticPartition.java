@@ -11,7 +11,6 @@ import java.util.Random;
  * Created by 王彬 on 2017/3/19.
  */
 public class ASPStochasticPartition extends BasePartition {
-    private boolean isSoftPartition;
 
     public ASPStochasticPartition(List<Rule> rules, String asptext, int factor) {
         super(rules, asptext, factor);
@@ -35,7 +34,7 @@ public class ASPStochasticPartition extends BasePartition {
             if(asprule.contains(rand) || rejectrule.contains(rand)){
                 continue;
             }else {
-                if(isSoftPartition){
+                if(isWeakPartition){
                     rule=rules.get(rand);
                     if(!rule.isSoft()){
                         continue;
@@ -58,11 +57,11 @@ public class ASPStochasticPartition extends BasePartition {
         return num;
     }
 
-    public boolean isSoftPartition() {
-        return isSoftPartition;
+    public boolean isWeakPartition() {
+        return isWeakPartition;
     }
 
-    public void setSoftPartition(boolean softPartition) {
-        isSoftPartition = softPartition;
+    public void setWeakPartition(boolean weakPartition) {
+        isWeakPartition = weakPartition;
     }
 }

@@ -56,6 +56,7 @@ public class AugmentedSubsetSolver extends BaseSolver {
                     weights=marginalWeight.get(lit);
                 }else {
                     weights=new ArrayList<>();
+                    marginalWeight.put(lit,weights);
                 }
                 weights.add(as.getWeights().get(0));
             }

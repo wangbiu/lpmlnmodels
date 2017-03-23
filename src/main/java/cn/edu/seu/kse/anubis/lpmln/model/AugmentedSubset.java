@@ -9,6 +9,7 @@ import java.util.List;
 public class AugmentedSubset {
     private HashSet<Integer> asprules;
     private HashSet<Integer> rejectrule;
+    private boolean isWeakTranslate=false;
     private int wh;
     private int ws;
 
@@ -65,14 +66,34 @@ public class AugmentedSubset {
         String line=System.lineSeparator();
         sb.append(asptext).append(line);
         String rb=null;
-        for(int r: asprules){
-            rb=rules.get(r).getRuleLabel();
-            sb.append(":- -apply(").append(rb).append(").").append(line);
-        }
+//        for(int r: asprules){
+//            rb=rules.get(r).getRuleLabel();
+//            sb.append("apply(").append(rb).append(").").append(line);
+//        }
+//
+//        for(int r:rejectrule){
+//            rb=rules.get(r).getRuleLabel();
+//            sb.append("-apply(").append(rb).append(").").append(line);
+//        }
 
-        for(int r:rejectrule){
-            rb=rules.get(r).getRuleLabel();
-            sb.append(":- apply(").append(rb).append(").").append(line);
+        int size=rules.size();
+        for(int i=0;i<size;i++){
+            rb=rules.get(i).getRuleLabel();
+            if(asprules.contains(i)){
+                sb.append("apply(").append(rb).append(").").append(line);
+            }else if(rejectrule.contains(i)){
+                sb.append("-apply(").append(rb).append(").").append(line);
+            }else {
+                if(isWeakTranslate){
+                    if(rules.get(i).isSoft()){
+                        sb.append("apply(").append(rb).append(") | -apply(");
+                        sb.append(rb).append(").").append(line);
+                    }
+                }else {
+                    sb.append("apply(").append(rb).append(") | -apply(");
+                    sb.append(rb).append(").").append(line);
+                }
+            }
         }
 
         return sb.toString();
@@ -86,5 +107,13 @@ public class AugmentedSubset {
         sb.append(", ws = ").append(ws);
         sb.append(", wh = ").append(wh);
         return sb.toString();
+    }
+
+    public boolean isWeakTranslate() {
+        return isWeakTranslate;
+    }
+
+    public void setWeakTranslate(boolean weakTranslate) {
+        isWeakTranslate = weakTranslate;
     }
 }

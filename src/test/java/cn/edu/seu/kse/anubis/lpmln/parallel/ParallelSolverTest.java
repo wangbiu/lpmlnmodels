@@ -2,6 +2,7 @@ package cn.edu.seu.kse.anubis.lpmln.parallel;
 
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.syntax.SyntaxModule;
+import cn.edu.seu.kse.anubis.lpmln.translator.ASPGround4ParallelTranslator;
 import cn.edu.seu.kse.anubis.lpmln.translator.ASPGroundTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class ParallelSolverTest {
         metarule=sm.getMetarule();
         herbrandUniverse=sm.getHerbrandUniverse();
         System.out.println("factor "+factor);
-        ASPGroundTranslator translator=new ASPGroundTranslator();
+        ASPGround4ParallelTranslator translator=new ASPGround4ParallelTranslator();
         translator.setWeakTranslate(true);
         translator.setMetarule(metarule);
         translator.setFactor(factor);
@@ -44,7 +45,7 @@ public class ParallelSolverTest {
 //        System.out.println(asptext);
         ParallelSolver solver=new ParallelSolver(rules,asptext,3,factor);
         solver.call();
-        Thread.sleep(5000);
+        Thread.sleep(3000);
         System.out.println("most probable answer set");
         System.out.println(solver.findMaxWeightedAs());
         System.out.println("marginal probability");

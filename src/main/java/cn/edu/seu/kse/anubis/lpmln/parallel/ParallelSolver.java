@@ -3,7 +3,6 @@ package cn.edu.seu.kse.anubis.lpmln.parallel;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.anubis.lpmln.solver.AugmentedSubsetSolver;
-import cn.edu.seu.kse.anubis.lpmln.solver.Solver;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class ParallelSolver {
 
     public void partition() throws IOException {
         ASPStochasticPartition partition = new ASPStochasticPartition(rules, asptext,1);
-        partition.setSoftPartition(true);
+        partition.setWeakPartition(true);
         partition.partition(cores);
         splits=partition.genSplitFiles();
         for(int i=0;i<cores;i++){
@@ -125,10 +124,10 @@ public class ParallelSolver {
                 }
                 sum+=expw;
             }
-            System.out.println("asweight "+asweights);
+//            System.out.println("asweight "+asweights);
         }
 
-        System.out.println("sum: "+sum);
+//        System.out.println("sum: "+sum);
         double expwvalue=0;
         Set<Integer> expwkeyset= expweights.keySet();
         for(int key:expwkeyset){
@@ -137,7 +136,7 @@ public class ParallelSolver {
             expweights.put(key,expwvalue);
         }
 
-        System.out.println("expweight: "+expweights);
+//        System.out.println("expweight: "+expweights);
 
         HashMap<String,List<Integer>> margs=new HashMap<>();
         HashMap<String,List<Integer>> tmpmargs=null;
@@ -146,18 +145,21 @@ public class ParallelSolver {
             tmpmargs=st.getMarginal();
             for(Map.Entry<String,List<Integer>> entry:tmpmargs.entrySet()){
                 if(margs.containsKey(entry.getKey())){
-                    litweights=entry.getValue();
+                    litweights=margs.get(entry.getKey());
                 }else {
                     litweights=new ArrayList<>();
                     margs.put(entry.getKey(),litweights);
                 }
                 litweights.addAll(entry.getValue());
             }
+//            System.out.println("tmpargs "+tmpmargs);
         }
 
+//        System.out.println("marginal: "+margs);
         String litkey=null;
         double litexpw=0;
         for(Map.Entry<String,List<Integer>> entry:margs.entrySet()){
+            litexpw=0;
             litkey=entry.getKey();
             litweights=entry.getValue();
             sb.append(litkey).append(" ");
