@@ -121,11 +121,14 @@ public class ParallelSolver {
                     expw=expweights.get(w);
                 }else {
                     expw=Math.exp(w);
+                    expweights.put(w,expw);
                 }
                 sum+=expw;
             }
+            System.out.println("asweight "+asweights);
         }
 
+        System.out.println("sum: "+sum);
         double expwvalue=0;
         Set<Integer> expwkeyset= expweights.keySet();
         for(int key:expwkeyset){
@@ -133,6 +136,8 @@ public class ParallelSolver {
             expwvalue/=sum;
             expweights.put(key,expwvalue);
         }
+
+        System.out.println("expweight: "+expweights);
 
         HashMap<String,List<Integer>> margs=new HashMap<>();
         HashMap<String,List<Integer>> tmpmargs=null;

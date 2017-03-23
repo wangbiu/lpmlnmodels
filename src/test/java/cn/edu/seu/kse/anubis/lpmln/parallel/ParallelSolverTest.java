@@ -44,7 +44,7 @@ public class ParallelSolverTest {
 //        System.out.println(asptext);
         ParallelSolver solver=new ParallelSolver(rules,asptext,3,factor);
         solver.call();
-        Thread.sleep(10000);
+        Thread.sleep(5000);
         System.out.println("most probable answer set");
         System.out.println(solver.findMaxWeightedAs());
         System.out.println("marginal probability");

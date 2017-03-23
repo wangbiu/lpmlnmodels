@@ -21,8 +21,10 @@ public class AugmentedSubsetSolver extends BaseSolver {
     public List<WeightedAnswerSet> call(String rulefile) {
         StringBuilder cmd=new StringBuilder();
         cmd.append("clingo 0 --opt-mode enum ").append(rulefile).append("");
-        System.out.println(cmd);
-        return super.call(cmd.toString());
+//        System.out.println(cmd);
+        weightedAs=super.call(cmd.toString());
+        fixWeight();
+        return weightedAs;
     }
 
     private void fixWeight(){
@@ -37,7 +39,7 @@ public class AugmentedSubsetSolver extends BaseSolver {
             weight.add(aswh);
             asweights.add(asws);
         }
-
+        System.out.println("origin asweight: "+asweights);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class AugmentedSubsetSolver extends BaseSolver {
             return new ArrayList<>();
         }
         int posend=result.indexOf("OPTIMUM FOUND");
-        System.out.println(result);
+//        System.out.println(result);
         result=result.substring(posstart,posend);
         List<WeightedAnswerSet> was=sm.parseClingoResult(result);
         return was;
