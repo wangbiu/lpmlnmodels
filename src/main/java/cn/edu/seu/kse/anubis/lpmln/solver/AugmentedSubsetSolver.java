@@ -15,7 +15,7 @@ public class AugmentedSubsetSolver extends BaseSolver {
     private int wh;
     private int ws;
     //全部回答集的soft weight
-    private List<Integer> asweights =new ArrayList<>();;
+    private List<Integer> asweights =new ArrayList<>();
 
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
@@ -74,9 +74,20 @@ public class AugmentedSubsetSolver extends BaseSolver {
         }
         int posend=result.indexOf("OPTIMUM FOUND");
 //        System.out.println(result);
-        result=result.substring(posstart,posend);
-        List<WeightedAnswerSet> was=sm.parseClingoResult(result);
+        String asresult=result.substring(posstart,posend);
+
+        List<WeightedAnswerSet> was=sm.parseClingoResult(asresult);
 //        System.out.println("was: "+was);
+
+        // 抽取时间信息
+        String statinfo=result.substring(posend);
+        String[] stats=statinfo.split(System.lineSeparator());
+        statinfo=stats[stats.length-2];
+        posstart=statinfo.indexOf(":")+1;
+        posend=statinfo.indexOf("s");
+        String time=statinfo.substring(posstart,posend).trim();
+        totalSolverTime=Double.valueOf(time);
+
         return was;
     }
 

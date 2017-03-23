@@ -5,19 +5,19 @@ package cn.edu.seu.kse.anubis.experiment.model;
  */
 public class StatInfo {
     // 实验编号
-    String experimentId;
+    public String experimentId;
     // 任务类型 0=MAP 任务， 1=Marginal Distribution 任务
-    int taskType;
+    public int taskType;
     // 该线程求得回答集数
-    int ansNums;
+    public int ansNums;
     // clingo 统计时间
-    double solverTime;
+    public double solverTime;
     // 线程用时
-    double threadTime;
+    public double threadTime;
     // 总线程数
-    int threadNums;
+    public int threadNums;
     // 当前线程编号
-    int threadId;
+    public int threadId;
 
     public String toCSVString(){
         StringBuilder csv=new StringBuilder();

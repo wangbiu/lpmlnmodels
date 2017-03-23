@@ -22,6 +22,7 @@ public class BaseSolver {
     protected SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
     final protected int WIN_NT=1;
     final protected int UNIX=0;
+    protected double totalSolverTime;
 
     public List<WeightedAnswerSet> call(String cmd){
         Date enter=new Date();
@@ -153,5 +154,13 @@ public class BaseSolver {
 
     public void setMaximalTime(String maximalTime) {
         this.maximalTime = maximalTime;
+    }
+
+    public double getTotalSolverTime() {
+        return totalSolverTime;
+    }
+
+    public void setTotalSolverTime(double totalSolverTime) {
+        this.totalSolverTime = totalSolverTime;
     }
 }

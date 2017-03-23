@@ -2,10 +2,12 @@ package cn.edu.seu.kse.anubis.lpmln.solver;
 
 import cn.edu.seu.kse.anubis.lpmln.model.SolverStats;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
+import cn.edu.seu.kse.anubis.lpmln.solver.syntax.SyntaxMoudle;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 /**
@@ -13,16 +15,16 @@ import java.util.List;
  */
 public class Clingo4 extends LPMLNBaseSolver {
     private JSONObject times;
+    private SolverStats sta=new SolverStats();
 
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
         StringBuilder cmd=new StringBuilder();
-        cmd.append("clingo 0 --opt-mode enum --outf 2 ").append(rulefile);
+        cmd.append("clingo 0 --opt-mode enum ").append(rulefile);
         return super.call(cmd.toString());
     }
 
-    @Override
-    public List<WeightedAnswerSet> solverResultProcess(String result) {
+    public List<WeightedAnswerSet> solverJsonResultProcess(String result) {
         List<WeightedAnswerSet> was=new ArrayList<>();
         JSONObject obj=JSONObject.fromObject(result);
         JSONArray witnesses=obj.getJSONArray("Call").getJSONObject(0).getJSONArray("Witnesses");
@@ -81,13 +83,40 @@ public class Clingo4 extends LPMLNBaseSolver {
     }
 
     @Override
+    public List<WeightedAnswerSet> solverResultProcess(String result) {
+        SyntaxMoudle sm=new SyntaxMoudle();
+        int posstart=result.indexOf("Answer: 1");
+        if(posstart <0){
+            return new ArrayList<>();
+        }
+        int posend=result.indexOf("OPTIMUM FOUND");
+//        System.out.println(result);
+        String asresult=result.substring(posstart,posend);
+        List<WeightedAnswerSet> was=sm.parseClingoResult(asresult);
+//        System.out.println("was: "+was);
+        // 抽取时间信息
+        String statinfo=result.substring(posend);
+        String[] stats=statinfo.split(System.lineSeparator());
+        statinfo=stats[stats.length-2];
+//        System.out.println(statinfo);
+        posstart=statinfo.indexOf(":")+1;
+        posend=statinfo.indexOf("s");
+        String time=statinfo.substring(posstart,posend).trim();
+//        System.out.println("statinfo "+statinfo);
+//        System.out.println("time: "+time);
+        sta.setTotal(Double.valueOf(time));
+        totalSolverTime=sta.getTotal();
+        return was;
+    }
+
+    @Override
     public SolverStats genSolverStatisticsInfo() {
-        SolverStats sta=new SolverStats();
-        sta.setTotal(times.getDouble("Total"));
-        sta.setSolve(times.getDouble("Solve"));
-        sta.setModel(times.getDouble("Model"));
-        sta.setUnsat(times.getDouble("Unsat"));
-        sta.setCpu(times.getDouble("CPU"));
+
+//        sta.setTotal(times.getDouble("Total"));
+//        sta.setSolve(times.getDouble("Solve"));
+//        sta.setModel(times.getDouble("Model"));
+//        sta.setUnsat(times.getDouble("Unsat"));
+//        sta.setCpu(times.getDouble("CPU"));
         return sta;
     }
 }
