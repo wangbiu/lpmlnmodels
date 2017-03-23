@@ -70,7 +70,7 @@ public class AugmentedSubsetSolver extends BaseSolver {
         int posend=result.indexOf("OPTIMUM FOUND");
         System.out.println(result);
         result=result.substring(posstart,posend);
-        List<WeightedAnswerSet> was=sm.parseDLVResult(result);
+        List<WeightedAnswerSet> was=sm.parseClingoResult(result);
         return was;
     }
 
