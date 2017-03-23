@@ -15,7 +15,7 @@ public class AugmentedSubsetSolver extends BaseSolver {
     private int wh;
     private int ws;
     //全部回答集的soft weight
-    private List<Integer> asweights =null;
+    private List<Integer> asweights =new ArrayList<>();;
 
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
@@ -25,7 +25,6 @@ public class AugmentedSubsetSolver extends BaseSolver {
     }
 
     private void fixWeight(){
-        asweights =new ArrayList<>();
         int aswh=wh;
         int asws=ws;
         for(WeightedAnswerSet was:weightedAs){
@@ -64,6 +63,9 @@ public class AugmentedSubsetSolver extends BaseSolver {
     public List<WeightedAnswerSet> solverResultProcess(String result) {
         SyntaxMoudle sm=new SyntaxMoudle();
         int posstart=result.indexOf("Answer: 1");
+        if(posstart <0){
+            return new ArrayList<>();
+        }
         int posend=result.indexOf("OPTIMUM FOUND");
         System.out.println(result);
         result=result.substring(posstart,posend);

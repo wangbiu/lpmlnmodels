@@ -127,7 +127,7 @@ public class ParallelSolver {
         }
 
         double expwvalue=0;
-        HashSet<Integer> expwkeyset= (HashSet<Integer>) expweights.keySet();
+        Set<Integer> expwkeyset= expweights.keySet();
         for(int key:expwkeyset){
             expwvalue=expweights.get(key);
             expwvalue/=sum;

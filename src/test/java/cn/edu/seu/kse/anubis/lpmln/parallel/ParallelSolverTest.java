@@ -21,16 +21,19 @@ public class ParallelSolverTest {
     private List<Rule> rules=null;
     private HashSet<String> herbrandUniverse=null;
     private String asptext=null;
+    private String metarule=null;
 
     @Before
     public void parse() throws IOException {
         SyntaxModule sm=new SyntaxModule();
         rules= sm.parse(rulef);
         factor=sm.getFactor();
+        metarule=sm.getMetarule();
         herbrandUniverse=sm.getHerbrandUniverse();
         System.out.println("factor "+factor);
         ASPGroundTranslator translator=new ASPGroundTranslator();
         translator.setWeakTranslate(true);
+        translator.setMetarule(metarule);
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         asptext=translator.translate(rules);
@@ -38,7 +41,7 @@ public class ParallelSolverTest {
 
     @Test
     public void test() throws IOException, InterruptedException {
-        System.out.println(asptext);
+//        System.out.println(asptext);
         ParallelSolver solver=new ParallelSolver(rules,asptext,3,factor);
         solver.call();
         Thread.sleep(10000);
