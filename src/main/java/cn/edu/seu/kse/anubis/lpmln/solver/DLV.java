@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by 王彬 on 2016/8/31.
  */
-public class DLV extends BaseSolver {
+public class DLV extends LPMLNBaseSolver {
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
         StringBuilder cmd=new StringBuilder();

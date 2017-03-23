@@ -3,7 +3,7 @@ package cn.edu.seu.kse.anubis.lpmln;
 import cn.edu.seu.kse.anubis.lpmln.app.LPMLNOpts;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.anubis.lpmln.solver.BaseSolver;
+import cn.edu.seu.kse.anubis.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.anubis.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.anubis.lpmln.solver.DLV;
 import cn.edu.seu.kse.anubis.lpmln.syntax.SyntaxModule;
@@ -57,7 +57,7 @@ public class LPMLNApp {
 
                 //初始化参数
                 initLpmlnmodels(cmd);
-                BaseSolver solver=null;
+                LPMLNBaseSolver solver=null;
 
                 if(cmd.hasOption("input-file")){
                     File lpmlnrulefile=new File(lpmlnfile);
@@ -101,7 +101,7 @@ public class LPMLNApp {
         }
     }
 
-    private static void solve(File translationFile, BaseSolver solver){
+    private static void solve(File translationFile, LPMLNBaseSolver solver){
         List<WeightedAnswerSet> was=solver.call(translationFile.getAbsolutePath());
 
         if(isShowAll){
@@ -131,7 +131,7 @@ public class LPMLNApp {
 
     }
 
-    private static void printStatsInfo(BaseSolver solver){
+    private static void printStatsInfo(LPMLNBaseSolver solver){
         System.out.println(solver.getStats());
         System.out.println(solver.getExecuteProfile());
     }
@@ -181,9 +181,9 @@ public class LPMLNApp {
 
     }
 
-    private static BaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, String aspsolver) throws IOException {
+    private static LPMLNBaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, String aspsolver) throws IOException {
         Date start =new Date();
-        BaseSolver solver=null;
+        LPMLNBaseSolver solver=null;
         SyntaxModule sm=new SyntaxModule();
         List<Rule> rules=rules= sm.parse(lpmlnRuleFile);
         factor=sm.getFactor();

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by 王彬 on 2016/8/31.
  */
-public class Clingo4 extends BaseSolver {
+public class Clingo4 extends LPMLNBaseSolver {
     private JSONObject times;
 
     @Override
