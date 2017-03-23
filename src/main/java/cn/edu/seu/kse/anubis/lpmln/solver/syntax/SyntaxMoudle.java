@@ -16,7 +16,7 @@ public class SyntaxMoudle {
         DLVResultLexer lexer=new DLVResultLexer(new ANTLRInputStream(result));
         CommonTokenStream token=new CommonTokenStream(lexer);
         DLVResultParser parser=new DLVResultParser(token);
-        AnswerSetVisitor asvisitor=new AnswerSetVisitor();
+        DLVAnswerSetVisitor asvisitor=new DLVAnswerSetVisitor();
         as=asvisitor.visitPossible_worlds(parser.possible_worlds());
 
         return as;
@@ -24,10 +24,10 @@ public class SyntaxMoudle {
 
     public List<WeightedAnswerSet> parseClingoResult(String result){
         List<WeightedAnswerSet> as=null;
-        DLVResultLexer lexer=new DLVResultLexer(new ANTLRInputStream(result));
+        ClingoResultLexer lexer=new ClingoResultLexer(new ANTLRInputStream(result));
         CommonTokenStream token=new CommonTokenStream(lexer);
-        DLVResultParser parser=new DLVResultParser(token);
-        AnswerSetVisitor asvisitor=new AnswerSetVisitor();
+        ClingoResultParser parser=new ClingoResultParser(token);
+        ClingoAnswerSetVisitor asvisitor=new ClingoAnswerSetVisitor();
         as=asvisitor.visitPossible_worlds(parser.possible_worlds());
 
         return as;

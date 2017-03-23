@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class TestDLVResultProcess {
     @Test
-    public void testParse() throws IOException {
+    public void testParseDLV() throws IOException {
         File f=new File("G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\dlvresult.txt");
         BufferedReader br=new BufferedReader(new FileReader(f));
         StringBuilder result=new StringBuilder();
@@ -25,6 +25,25 @@ public class TestDLVResultProcess {
         String rawdata=result.toString().substring(pos);
 //        System.out.println(rawdata);
         List<WeightedAnswerSet> was=sm.parseDLVResult(rawdata);
+
+        System.out.println(was);
+
+        br.close();
+    }
+
+    @Test
+    public void testParseClingo() throws IOException {
+        File f=new File("G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\clingoplainresult.txt");
+        BufferedReader br=new BufferedReader(new FileReader(f));
+        StringBuilder result=new StringBuilder();
+        String line=null;
+        while ((line=br.readLine())!=null){
+            result.append(line).append(System.lineSeparator());
+        }
+//        System.out.println(result.toString());
+        SyntaxMoudle sm=new SyntaxMoudle();
+
+        List<WeightedAnswerSet> was=sm.parseClingoResult(result.toString());
 
         System.out.println(was);
 
