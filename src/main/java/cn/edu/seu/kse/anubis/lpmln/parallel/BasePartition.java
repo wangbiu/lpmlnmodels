@@ -83,7 +83,10 @@ public abstract class BasePartition {
 
     public List<File> genSplitFiles() throws IOException {
         List<File> splits=new ArrayList<>();
-        String filename= UUID.randomUUID().toString()+"_sp_";
+        String path="splits/"+UUID.randomUUID().toString();
+        File dir=new File(path);
+        dir.mkdir();
+        String filename= path+"/sp_";
         int size=split.size();
         String prog=null;
         AugmentedSubset sub=null;
