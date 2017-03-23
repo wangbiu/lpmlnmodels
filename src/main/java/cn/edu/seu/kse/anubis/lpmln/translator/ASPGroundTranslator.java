@@ -9,6 +9,8 @@ import java.util.List;
  * Created by 王彬 on 2017/1/3.
  */
 public class ASPGroundTranslator extends ASPTranslator {
+    private boolean isWeakTranslate=false;
+
     @Override
     protected String translateDeclarationPart(HashSet<String> hbu) {
         return "";
@@ -95,9 +97,11 @@ public class ASPGroundTranslator extends ASPTranslator {
 
     @Override
     public String translateHardRule(Rule rule) {
-        StringBuilder sb=basicTranslate(rule);
-//        sb.append(translateCountingPart(rule,false));
-        return sb.toString();
+        if(isWeakTranslate){
+            return rule.getOriginalrule();
+        }else {
+            return basicTranslate(rule).toString();
+        }
     }
 
     @Override
@@ -117,15 +121,26 @@ public class ASPGroundTranslator extends ASPTranslator {
         for(Rule r:rules){
             if(r.isSoft()){
                 rulestr=translateCountingPart(r,true);
+                sb.append(rulestr);
             }else {
-                rulestr=translateCountingPart(r,false);
+                if(!isWeakTranslate){
+                    rulestr=translateCountingPart(r,false);
+                    sb.append(rulestr);
+                }
             }
-            sb.append(rulestr);
         }
         sb.append(trickPart()).append(System.lineSeparator());
         if(metarule != null){
             sb.append(metarule);
         }
         return sb.toString();
+    }
+
+    public boolean isWeakTranslate() {
+        return isWeakTranslate;
+    }
+
+    public void setWeakTranslate(boolean weakTranslate) {
+        isWeakTranslate = weakTranslate;
     }
 }
