@@ -12,16 +12,9 @@ public class ASPGround4ParallelTranslator extends ASPGroundTranslator {
     protected String translateGenerationPart(Rule rule) {
         StringBuilder sb=new StringBuilder();
 
+
         HashSet<String> vars=rule.getVars();
         int size=vars.size();
-
-        if(size>0){
-            sb.append(" :- ");
-        }
-
-        sb.append(generateHerbrandBody(vars));
-
-        sb.append(". ").append(System.lineSeparator());
 
         sb.append(rule.getText()).append(" apply(").append(rule.getRuleLabel()).append(").");
         sb.append(System.lineSeparator());
