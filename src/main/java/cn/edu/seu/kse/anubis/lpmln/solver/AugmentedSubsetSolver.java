@@ -31,6 +31,8 @@ public class AugmentedSubsetSolver extends BaseSolver {
         int aswh=wh;
         int asws=ws;
         for(WeightedAnswerSet was:weightedAs){
+            aswh=wh;
+            asws=ws;
             List<Integer> weight=was.getWeights();
             aswh+=weight.get(1);
             asws+=weight.get(0);
@@ -39,7 +41,7 @@ public class AugmentedSubsetSolver extends BaseSolver {
             weight.add(aswh);
             asweights.add(asws);
         }
-        System.out.println("origin asweight: "+asweights);
+//        System.out.println("origin asweight: "+asweights);
     }
 
     @Override
@@ -73,6 +75,7 @@ public class AugmentedSubsetSolver extends BaseSolver {
 //        System.out.println(result);
         result=result.substring(posstart,posend);
         List<WeightedAnswerSet> was=sm.parseClingoResult(result);
+//        System.out.println("was: "+was);
         return was;
     }
 
