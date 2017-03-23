@@ -20,13 +20,16 @@ public class BaseSolver {
     protected String maximalTime;
     protected List<Long> executeTime=new ArrayList<>();
     protected SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
+    final protected int WIN_NT=1;
+    final protected int UNIX=0;
 
     public List<WeightedAnswerSet> call(String cmd){
         Date enter=new Date();
-        String[] cmdres= CommandLineExecute.callShellwithReturn(cmd,0);
+        String[] cmdres= CommandLineExecute.callShellwithReturn(cmd,WIN_NT);
         Date cmdExit=new Date();
 
-        System.out.println("result "+cmdres[0]);
+//        System.out.println("result "+cmdres[0]);
+//        System.out.println("error: "+cmdres[1]);
         List<WeightedAnswerSet> was=solverResultProcess(cmdres[0]);
         weightedAs=was;
         stats=genSolverStatisticsInfo();

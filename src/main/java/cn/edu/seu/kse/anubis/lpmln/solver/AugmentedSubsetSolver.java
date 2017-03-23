@@ -20,7 +20,8 @@ public class AugmentedSubsetSolver extends BaseSolver {
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
         StringBuilder cmd=new StringBuilder();
-        cmd.append("clingo 0 --opt-mode enum ").append(rulefile);
+        cmd.append("clingo 0 --opt-mode enum ").append(rulefile).append("");
+        System.out.println(cmd);
         return super.call(cmd.toString());
     }
 
