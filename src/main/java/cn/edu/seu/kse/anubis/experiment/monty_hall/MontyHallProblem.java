@@ -162,4 +162,20 @@ public class MontyHallProblem {
     public void setProblemN(int problemN) {
         this.problemN = problemN;
     }
+
+    public String getBasepath() {
+        return basepath;
+    }
+
+    public void setBasepath(String basepath) {
+        this.basepath = basepath;
+    }
+
+    public String getLogfile() {
+        return logfile;
+    }
+
+    public void setLogfile(String logfile) {
+        this.logfile = logfile;
+    }
 }

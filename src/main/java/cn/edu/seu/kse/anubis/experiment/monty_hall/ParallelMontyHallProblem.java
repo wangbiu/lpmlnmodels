@@ -32,9 +32,10 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
 
     @Override
     protected void runExperiment() throws IOException {
+        expStat.threadNums=cores;
         super.runExperiment();
         processThreadStat();
-        expStat.threadNums=cores;
+//        System.out.printf("cores: %d, threadNums: %d",cores,expStat.threadNums);
     }
 
     public void processThreadStat() throws IOException {
@@ -109,5 +110,13 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
 
     public void setCores(int cores) {
         this.cores = cores;
+    }
+
+    public String getThreadlogfile() {
+        return threadlogfile;
+    }
+
+    public void setThreadlogfile(String threadlogfile) {
+        this.threadlogfile = threadlogfile;
     }
 }

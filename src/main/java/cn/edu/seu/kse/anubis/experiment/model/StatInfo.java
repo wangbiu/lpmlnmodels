@@ -23,7 +23,7 @@ public class StatInfo {
         return df.format(num);
     }
 
-    public String getTitle(){
+    public static String getTitle(){
         return null;
     }
 

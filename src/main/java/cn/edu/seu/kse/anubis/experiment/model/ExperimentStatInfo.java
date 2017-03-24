@@ -30,8 +30,7 @@ public class ExperimentStatInfo  extends StatInfo{
         return csv.toString();
     }
 
-    @Override
-    public String getTitle(){
+    public static String getTitle(){
         StringBuilder sb=new StringBuilder();
         sb.append("date").append(",");
         sb.append("experimentId").append(",");

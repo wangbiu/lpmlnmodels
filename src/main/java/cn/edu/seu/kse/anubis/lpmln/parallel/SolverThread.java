@@ -53,7 +53,7 @@ public class SolverThread extends Thread {
         stat.threadTime=duration/1000.0;
         stat.solverTime=assolver.getTotalSolverTime();
         stat.ansNums=weightedAs.size();
-        System.out.println(this.getName()+" runtime: "+duration+"ms");
+//        System.out.println(this.getName()+" runtime: "+duration+"ms");
     }
 
     public AugmentedSubsetSolver getAssolver() {
