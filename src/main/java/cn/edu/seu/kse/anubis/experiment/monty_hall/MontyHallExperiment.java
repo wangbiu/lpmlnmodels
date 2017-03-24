@@ -106,6 +106,7 @@ public class MontyHallExperiment extends Experiment{
         mhp.setRound(round);
         mhp.setTaskType(taskType);
         mhp.runExperiment();
+        mhp=null;
     }
 
     private void startParallel(int problemN, int round, int cores, int taskType) throws IOException {
@@ -116,6 +117,7 @@ public class MontyHallExperiment extends Experiment{
         pmhp.setCores(cores);
         pmhp.setRound(round);
         pmhp.runExperiment();
+        pmhp=null;
     }
 
     private void initSingle(MontyHallProblem mhp) throws IOException {
