@@ -24,6 +24,9 @@ public class MontyHallExperiment extends Experiment{
 
 
     public void test(boolean isParallel, int taskId) throws Exception {
+        //TODO: 用于提前装载所有的类？测试
+        testSingleMAP();
+
         initLogFile();
         parallel=isParallel;
         this.taskId=taskId;
@@ -144,7 +147,7 @@ public class MontyHallExperiment extends Experiment{
     public void emailAlert(String title, String text, String address) throws Exception {
         String line="<br>";
         StringBuilder sb=new StringBuilder();
-        sb.append("实验信息：").append("taskId ").append(taskId).append(", <p style='color:red;'>是否并行</p> ").append(parallel);
+        sb.append("实验信息：").append("taskId ").append(taskId).append(", <span style='color:red;'>是否并行</span> ").append(parallel);
         sb.append(line);
         sb.append("问题信息：").append("problemN ").append(problemN).append(", max problem N ").append(maxProblemN).append(line);
         sb.append("并行信息：").append("cores ").append(cores).append(", max cores ").append(maxCores).append(line);
