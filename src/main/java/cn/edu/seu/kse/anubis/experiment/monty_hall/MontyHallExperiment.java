@@ -163,15 +163,20 @@ public class MontyHallExperiment extends Experiment{
     }
 
     private String readFile(String file) throws IOException {
-        StringBuilder sb=new StringBuilder();
-        BufferedReader br=null;
-        br=new BufferedReader(new FileReader(new File(file)));
-        String line=null;
-        while((line=br.readLine())!=null){
-            sb.append(line).append(System.lineSeparator());
+        File infile=new File(file);
+        if(infile.exists()){
+            StringBuilder sb=new StringBuilder();
+            BufferedReader br=null;
+            br=new BufferedReader(new FileReader(infile));
+            String line=null;
+            while((line=br.readLine())!=null){
+                sb.append(line).append(System.lineSeparator());
+            }
+            br.close();
+            return sb.toString();
+        }else {
+            return null;
         }
-        br.close();
-        return sb.toString();
     }
 
     public String getBasepath() {
