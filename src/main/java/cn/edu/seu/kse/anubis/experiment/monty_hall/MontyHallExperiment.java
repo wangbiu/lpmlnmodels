@@ -24,8 +24,8 @@ public class MontyHallExperiment extends Experiment{
 
 
     public void test(boolean isParallel, int taskId) throws Exception {
-        //TODO: 用于提前装载所有的类？测试
-        testSingleMAP();
+        //TODO: 用于提前装载所有的类，消除首次运行的时间消耗
+        startSingle(3,2,0);
 
         initLogFile();
         parallel=isParallel;
@@ -139,8 +139,8 @@ public class MontyHallExperiment extends Experiment{
     private void initLogFile(){
         Date now=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        logfile=logfile+sdf.format(now)+".log";
-        threadLogFile=threadLogFile+sdf.format(now)+".log";
+        logfile=logfile+"-"+sdf.format(now)+".log";
+        threadLogFile=threadLogFile+"-"+sdf.format(now)+".log";
     }
 
     @Override
