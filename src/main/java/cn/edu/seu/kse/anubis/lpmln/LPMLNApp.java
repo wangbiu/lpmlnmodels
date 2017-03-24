@@ -213,8 +213,12 @@ public class LPMLNApp {
         try {
             mhe.test(isParallel,taskId);
         } catch (Exception e) {
+            StringBuilder sb=new StringBuilder();
             try {
-                mhe.emailWarn(e.toString());
+                for(StackTraceElement ste:e.getStackTrace()){
+                    sb.append(ste.toString()).append("<br>");
+                }
+                mhe.emailWarn(sb.toString());
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

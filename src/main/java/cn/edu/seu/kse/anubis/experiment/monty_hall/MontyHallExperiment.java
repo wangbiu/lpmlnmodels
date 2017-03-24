@@ -142,18 +142,19 @@ public class MontyHallExperiment extends Experiment{
 
     @Override
     public void emailAlert(String title, String text, String address) throws Exception {
+        String line="<br>";
         StringBuilder sb=new StringBuilder();
         sb.append("实验信息：").append("taskId ").append(taskId).append(", 是否并行 ").append(parallel);
-        sb.append(System.lineSeparator());
-        sb.append("问题信息：").append("problemN ").append(problemN).append(", max problem N ").append(maxProblemN).append(System.lineSeparator());
-        sb.append("并行信息：").append("cores ").append(cores).append(", max cores ").append(maxCores).append(System.lineSeparator());
-        sb.append("实验结束，日志文件为：").append(System.lineSeparator());
+        sb.append(line);
+        sb.append("问题信息：").append("problemN ").append(problemN).append(", max problem N ").append(maxProblemN).append(line);
+        sb.append("并行信息：").append("cores ").append(cores).append(", max cores ").append(maxCores).append(line);
+        sb.append("实验结束，日志文件为：").append(line);
         sb.append(logfile).append(", ").append(threadLogFile);
-        sb.append(". ").append(System.lineSeparator());
-        sb.append(logfile).append(System.lineSeparator());
-        sb.append(readFile(logfile)).append(System.lineSeparator());
-        sb.append(threadLogFile).append(System.lineSeparator());
-        sb.append(readFile(threadLogFile)).append(System.lineSeparator());
+        sb.append(". ").append(line);
+        sb.append("<strong>").append(logfile).append("</strong>").append(line);
+        sb.append(readFile(logfile)).append(line);
+        sb.append("<strong>").append(threadLogFile).append("</strong>").append(line);
+        sb.append(readFile(threadLogFile)).append(line);
 
         super.emailAlert("实验完成!!!",sb.toString(), this.email_addr);
     }
@@ -170,7 +171,7 @@ public class MontyHallExperiment extends Experiment{
             br=new BufferedReader(new FileReader(infile));
             String line=null;
             while((line=br.readLine())!=null){
-                sb.append(line).append(System.lineSeparator());
+                sb.append(line).append("<br>");
             }
             br.close();
             return sb.toString();

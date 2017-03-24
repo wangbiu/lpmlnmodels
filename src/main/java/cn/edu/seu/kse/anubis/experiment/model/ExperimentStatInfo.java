@@ -38,7 +38,7 @@ public class ExperimentStatInfo  extends StatInfo{
         sb.append("taskType").append(",");
         sb.append("threadNums").append(",");
         sb.append("solverTime").append(",");
-        sb.append("threadTime").append(",");
+        sb.append("threadTime").append("");
 
         return sb.toString();
     }

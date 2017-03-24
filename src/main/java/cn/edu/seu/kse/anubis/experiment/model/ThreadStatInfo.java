@@ -50,7 +50,7 @@ public class ThreadStatInfo extends StatInfo{
         sb.append("threadTime").append(",");
         sb.append("threadNums").append(",");
         sb.append("threadId").append(",");
-        sb.append("partitionId").append(",");
+        sb.append("partitionId").append("");
         return sb.toString();
     }
 }
