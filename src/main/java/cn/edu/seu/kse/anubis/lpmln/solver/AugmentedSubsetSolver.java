@@ -31,11 +31,16 @@ public class AugmentedSubsetSolver extends BaseSolver {
         int aswh=wh;
         int asws=ws;
         for(WeightedAnswerSet was:weightedAs){
-            aswh=wh;
-            asws=ws;
+//            aswh=wh;
+//            asws=ws;
+            // FIXME: aswh,asws 应该设为augmented subset的base weight
+            aswh=0;
+            asws=0;
             List<Integer> weight=was.getWeights();
+//            System.out.println("weight: "+weight);
             aswh+=weight.get(1);
             asws+=weight.get(0);
+//            System.out.printf("aswh: %d, asws: %d %n",aswh,asws);
             weight.clear();
             weight.add(asws);
             weight.add(aswh);
@@ -97,5 +102,21 @@ public class AugmentedSubsetSolver extends BaseSolver {
 
     public void setAsweights(List<Integer> asweights) {
         this.asweights = asweights;
+    }
+
+    public int getWh() {
+        return wh;
+    }
+
+    public void setWh(int wh) {
+        this.wh = wh;
+    }
+
+    public int getWs() {
+        return ws;
+    }
+
+    public void setWs(int ws) {
+        this.ws = ws;
     }
 }

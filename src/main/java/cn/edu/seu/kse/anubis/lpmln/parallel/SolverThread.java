@@ -20,6 +20,8 @@ public class SolverThread extends Thread {
     private List<WeightedAnswerSet> weightedAs=null;
     private List<WeightedAnswerSet> map=null;
     private HashMap<String,List<Integer>> marginal=null;
+    private int wh;
+    private int ws;
 
     public SolverThread(AugmentedSubsetSolver assolver, File rule) {
         this.assolver = assolver;
@@ -28,6 +30,8 @@ public class SolverThread extends Thread {
 
     @Override
     public void run() {
+//        assolver.setWs(ws);
+//        assolver.setWh(wh);
         Date begin=new Date();
         weightedAs=assolver.call(rule.getAbsolutePath());
         map=assolver.findMaxWeightedAs();
@@ -83,5 +87,21 @@ public class SolverThread extends Thread {
 
     public void setMarginal(HashMap<String, List<Integer>> marginal) {
         this.marginal = marginal;
+    }
+
+    public int getWh() {
+        return wh;
+    }
+
+    public void setWh(int wh) {
+        this.wh = wh;
+    }
+
+    public int getWs() {
+        return ws;
+    }
+
+    public void setWs(int ws) {
+        this.ws = ws;
     }
 }

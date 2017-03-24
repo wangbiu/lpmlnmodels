@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.anubis.lpmln.parallel;
 
+import cn.edu.seu.kse.anubis.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.anubis.lpmln.solver.AugmentedSubsetSolver;
@@ -37,9 +38,12 @@ public class ParallelSolver {
         ASPStochasticPartition partition = new ASPStochasticPartition(rules, asptext,1);
         partition.setWeakPartition(true);
         partition.partition(cores);
+        List<AugmentedSubset> asub=partition.getSplit();
         splits=partition.genSplitFiles();
         for(int i=0;i<cores;i++){
             AugmentedSubsetSolver assolver=new AugmentedSubsetSolver();
+            assolver.setWh(asub.get(i).getWh());
+            assolver.setWs(asub.get(i).getWs());
             solvers.add(assolver);
         }
     }
