@@ -11,12 +11,23 @@ import java.util.List;
  */
 public class SyntaxMoudle {
 
-    public List<WeightedAnswerSet> parse(String result){
+    public List<WeightedAnswerSet> parseDLVResult(String result){
         List<WeightedAnswerSet> as=null;
         DLVResultLexer lexer=new DLVResultLexer(new ANTLRInputStream(result));
         CommonTokenStream token=new CommonTokenStream(lexer);
         DLVResultParser parser=new DLVResultParser(token);
-        AnswerSetVisitor asvisitor=new AnswerSetVisitor();
+        DLVAnswerSetVisitor asvisitor=new DLVAnswerSetVisitor();
+        as=asvisitor.visitPossible_worlds(parser.possible_worlds());
+
+        return as;
+    }
+
+    public List<WeightedAnswerSet> parseClingoResult(String result){
+        List<WeightedAnswerSet> as=null;
+        ClingoResultLexer lexer=new ClingoResultLexer(new ANTLRInputStream(result));
+        CommonTokenStream token=new CommonTokenStream(lexer);
+        ClingoResultParser parser=new ClingoResultParser(token);
+        ClingoAnswerSetVisitor asvisitor=new ClingoAnswerSetVisitor();
         as=asvisitor.visitPossible_worlds(parser.possible_worlds());
 
         return as;

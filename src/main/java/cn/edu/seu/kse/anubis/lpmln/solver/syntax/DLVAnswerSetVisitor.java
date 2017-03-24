@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by 王彬 on 2016/8/31.
  */
-public class AnswerSetVisitor extends DLVResultBaseVisitor {
+public class DLVAnswerSetVisitor extends DLVResultBaseVisitor {
     public int maxLevel2=0;
     public int maxLevel1=0;
     private List<WeightedAnswerSet>  was=new ArrayList<>();

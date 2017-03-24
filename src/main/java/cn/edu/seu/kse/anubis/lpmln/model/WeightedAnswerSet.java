@@ -7,6 +7,7 @@ import java.util.List;
  * Created by 王彬 on 2016/8/31.
  */
 public class WeightedAnswerSet {
+    // weights[0] soft weight， weights[1] hard weight
     private List<Integer> weights;
     private double probability;
     private AnswerSet answerSet;

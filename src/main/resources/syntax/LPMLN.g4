@@ -10,7 +10,7 @@ grammar LPMLN;
 **/
 
 //缺省否定关键字
-NAF_NOT : 'not';
+NAF_NOT : 'not ';
 //字符串
 STRING : '"' ('\\"'|~('"'))* '"';
 //规则终结符
@@ -18,7 +18,7 @@ FULLSTOP : '.';
 //正整数
 POSITIVE_INT : [1-9][0-9]*;
 //小数(点表示法)
-DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP ZERO* [1-9]*;
+DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP [0-9] ZERO* [1-9]*;
 
 //0
 ZERO : '0';
@@ -73,7 +73,7 @@ NEQ : '!=';
 
 AGGREGATE_OP : '#count' | '#sum' | '#max' | '#min';
 //
-META_OP : '#show';
+META_OP : '#show ';
 //单行注释
 LINE_COMMENT : ('%' ~('\r' | '\n')* '\r'? '\n') -> skip;
 //空白字符或换行符
@@ -114,7 +114,7 @@ arithmethic_expr:
 function : CONSTANT LPAREN term (COMMA term)* RPAREN;
 
 //项
-term : VAR | CONSTANT | arithmethic_expr | function | STRING;
+term : VAR | CONSTANT | integer | arithmethic_expr | function | STRING;
 
 //原子
 atom :
@@ -137,7 +137,9 @@ extended_literal : literal | default_literal;
 //聚合运算
 aggregate_atom: AGGREGATE_OP LCBRACK (literal | VAR) CONDITION literal  RCBRACK ;
 //聚合运算表达式
-aggregate_expr: VAR relation_op aggregate_atom ;
+aggregate_expr: (VAR | aggregate_atom | integer) relation_op aggregate_atom |
+                aggregate_atom relation_op (VAR | integer) |
+                VAR EQUAL aggregate_atom;
 
 //关系运算表达式
 relation_expr :

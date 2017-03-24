@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.anubis.lpmln.syntax;
 
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
+import cn.edu.seu.kse.anubis.lpmln.solver.syntax.DLVResultParser;
 import org.antlr.v4.runtime.misc.DoubleKeyMap;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -17,9 +18,17 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     private int cnt=0;
     private Double minremains=null;
     private HashSet<String> herbrandUniverse=new HashSet<>();
+    private StringBuilder metarule=new StringBuilder();
 
     public LPMLNTranslationVisitor(){
         rules=new ArrayList<>();
+    }
+
+    @Override
+    public Object visitMeta_rule(LPMLNParser.Meta_ruleContext ctx) {
+        metarule.append(ctx.getText()).append(System.lineSeparator());
+
+        return null;
     }
 
     @Override
@@ -39,6 +48,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         if(heads.size() == 0){
             heads.add("impossible("+rule.getId()+")");
         }
+
 
         rule.setSoft(false);
 //        rule.setText(ctx.getText());
@@ -82,6 +92,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         Rule rule=visitBody(ctx.body());
         rule.setText(":- "+ctx.body().getText()+", ");
+        rule.setOriginalrule(ctx.getText());
         return rule;
     }
 
@@ -93,6 +104,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
 
         Rule rule=visitHead(ctx.head());
         rule.setText(ctx.head().getText() +" :- ");
+        rule.setOriginalrule(ctx.getText());
         return rule;
     }
 
@@ -105,6 +117,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         Rule rh=visitHead(ctx.head());
         rb.setText(ctx.head().getText() + " :- "+ctx.body().getText()+", ");
         rb.setHead(rh.getHead());
+        rb.setOriginalrule(ctx.getText());
         return rb;
     }
 
@@ -187,6 +200,11 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             herbrandUniverse.add(ctn.getText());
         }
 
+        LPMLNParser.IntegerContext ictx=ctx.integer();
+        if(ictx != null){
+            herbrandUniverse.add(ictx.getText());
+        }
+
         return var;
     }
 
@@ -257,4 +275,10 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     public void setHerbrandUniverse(HashSet<String> herbrandUniverse) {
         this.herbrandUniverse = herbrandUniverse;
     }
+
+    public String getMetarule() {
+        return metarule.toString();
+    }
+
+
 }

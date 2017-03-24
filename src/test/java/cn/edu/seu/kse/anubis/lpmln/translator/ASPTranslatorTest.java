@@ -17,7 +17,7 @@ import java.util.List;
  * Created by 王彬 on 2016/8/30.
  */
 public class ASPTranslatorTest {
-    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\decision.txt";
+    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\bird.txt";
     private File rulef=new File(path);
     private int factor=0;
     private List<Rule> rules=null;
@@ -68,6 +68,39 @@ public class ASPTranslatorTest {
     @Test
     public void testPlogCRRuleTranslator(){
         PlogCRRuleTranslator translator=new PlogCRRuleTranslator();
+        translator.setFactor(factor);
+        translator.setHerbrandUniverse(herbrandUniverse);
+        String asprules=translator.translate(rules);
+        System.out.println(asprules);
+    }
+
+    @Test
+    public void testWeakASPTranslator(){
+        Date start =new Date();
+        WeakASPTranslator translator=new WeakASPTranslator();
+        translator.setFactor(factor);
+        translator.setHerbrandUniverse(herbrandUniverse);
+        String asprules=translator.translate_parts(rules);
+        System.out.println(asprules);
+        Date end=new Date();
+        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
+    }
+
+    @Test
+    public void testWeakDLVTranslator(){
+        Date start =new Date();
+        WeakDLVTranslator translator=new WeakDLVTranslator();
+        translator.setFactor(factor);
+        translator.setHerbrandUniverse(herbrandUniverse);
+        String asprules=translator.translate(rules);
+        System.out.println(asprules);
+        Date end=new Date();
+        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
+    }
+
+    @Test
+    public void testASPGroundTranslator(){
+        ASPGroundTranslator translator=new ASPGroundTranslator();
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         String asprules=translator.translate(rules);

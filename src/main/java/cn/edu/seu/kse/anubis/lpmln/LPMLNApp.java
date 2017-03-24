@@ -1,14 +1,17 @@
 package cn.edu.seu.kse.anubis.lpmln;
 
+import cn.edu.seu.kse.anubis.experiment.monty_hall.MontyHallExperiment;
 import cn.edu.seu.kse.anubis.lpmln.app.LPMLNOpts;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.anubis.lpmln.solver.BaseSolver;
+import cn.edu.seu.kse.anubis.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.anubis.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.anubis.lpmln.solver.DLV;
 import cn.edu.seu.kse.anubis.lpmln.syntax.SyntaxModule;
 import cn.edu.seu.kse.anubis.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.anubis.lpmln.translator.DLVTranslator;
+import cn.edu.seu.kse.anubis.lpmln.translator.WeakASPTranslator;
+import cn.edu.seu.kse.anubis.lpmln.translator.WeakDLVTranslator;
 import org.apache.commons.cli.*;
 
 import java.io.BufferedWriter;
@@ -48,22 +51,45 @@ public class LPMLNApp {
                 HelpFormatter formatter=new HelpFormatter();
                 formatter.setWidth(150);
                 formatter.printHelp("lpmlnmodels <params>",opts);
-            }else {
+            }else if(cmd.hasOption("experiment")){
+                experiment(cmd);
+            }
+            else {
+                if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
+                    throw new RuntimeException("i and I are used once at a time");
+                }
+
                 //初始化参数
                 initLpmlnmodels(cmd);
+                LPMLNBaseSolver solver=null;
 
-                File lpmlnrulefile=new File(lpmlnfile);
-                File translationoutfile=new File(translationfile);
+                if(cmd.hasOption("input-file")){
+                    File lpmlnrulefile=new File(lpmlnfile);
+                    File translationoutfile=new File(translationfile);
 
-                //翻译
-                BaseSolver solver=translation(lpmlnrulefile,translationoutfile,semantics,aspsolver);
+                    //翻译
+                    solver=translation(lpmlnrulefile,translationoutfile,semantics,aspsolver);
 
-                //求解
-                solve(translationoutfile,solver);
+                    //求解
+                    solve(translationoutfile,solver);
 
-                if(!iskeeptranslation){
-                    translationoutfile.delete();
+                    if(!iskeeptranslation){
+                        translationoutfile.delete();
+                    }
+
+                }else if(cmd.hasOption("translation-input-file")){
+
+                    File translationfile=new File(cmd.getOptionValue("translation-input-file"));
+
+                    if(aspsolver.equals("clingo")){
+                        solver=new Clingo4();
+                    }else if(aspsolver.equals("dlv")){
+                        solver=new DLV();
+                    }
+                    
+                    solve(translationfile,solver);
                 }
+
 
                 Date exit=new Date();
 
@@ -79,7 +105,7 @@ public class LPMLNApp {
         }
     }
 
-    private static void solve(File translationFile, BaseSolver solver){
+    private static void solve(File translationFile, LPMLNBaseSolver solver){
         List<WeightedAnswerSet> was=solver.call(translationFile.getAbsolutePath());
 
         if(isShowAll){
@@ -109,14 +135,14 @@ public class LPMLNApp {
 
     }
 
-    private static void printStatsInfo(BaseSolver solver){
+    private static void printStatsInfo(LPMLNBaseSolver solver){
         System.out.println(solver.getStats());
         System.out.println(solver.getExecuteProfile());
     }
 
 
     private static void initLpmlnmodels(CommandLine cmd){
-        if(!cmd.hasOption("input-file")){
+        if(!cmd.hasOption("input-file") && !cmd.hasOption("translation-input-file")){
             throw new RuntimeException("missing parameter input-file");
         }
         lpmlnfile=cmd.getOptionValue("input-file");
@@ -159,9 +185,50 @@ public class LPMLNApp {
 
     }
 
-    private static BaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, String aspsolver) throws IOException {
+    private static void experiment(CommandLine cmd){
+        int problemN,maxProblemN,cores,maxCores,round,taskId;
+        boolean isParallel;
+        if(cmd.hasOption("parallel")){
+            isParallel=true;
+        }else {
+            isParallel=false;
+        }
+
+        problemN=Integer.valueOf(cmd.getOptionValue("exp-problem-n"));
+        maxProblemN=Integer.valueOf(cmd.getOptionValue("exp-max-problem-n"));
+        cores=Integer.valueOf(cmd.getOptionValue("exp-cores"));
+        maxCores=Integer.valueOf(cmd.getOptionValue("exp-max-cores"));
+        round=Integer.valueOf(cmd.getOptionValue("exp-round"));
+        taskId=Integer.valueOf(cmd.getOptionValue("exp-task-id"));
+
+//        System.out.printf("problemN: %d, maxPN: %d, cores: %d, maxCores: %d, round: %d, taskId: %d",problemN,maxProblemN,cores,
+//                maxCores,round,taskId);
+        MontyHallExperiment mhe=new MontyHallExperiment();
+        mhe.setProblemN(problemN);
+        mhe.setCores(cores);
+        mhe.setMaxCores(maxCores);
+        mhe.setMaxProblemN(maxProblemN);
+        mhe.setRound(round);
+
+        try {
+            mhe.test(isParallel,taskId);
+        } catch (Exception e) {
+            StringBuilder sb=new StringBuilder();
+            try {
+                for(StackTraceElement ste:e.getStackTrace()){
+                    sb.append(ste.toString()).append("<br>");
+                }
+                mhe.emailWarn(sb.toString());
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
+
+    }
+
+    private static LPMLNBaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, String aspsolver) throws IOException {
         Date start =new Date();
-        BaseSolver solver=null;
+        LPMLNBaseSolver solver=null;
         SyntaxModule sm=new SyntaxModule();
         List<Rule> rules=rules= sm.parse(lpmlnRuleFile);
         factor=sm.getFactor();
@@ -170,20 +237,29 @@ public class LPMLNApp {
 
         ASPTranslator translator=null;
 
-        if(aspsolver.equals("clingo")){
-            translator=new ASPTranslator();
-            solver=new Clingo4();
-        }else {
-            translator=new DLVTranslator();
-            solver=new DLV();
-        }
+
 
         if(semantics.equals("weak")){
-            throw new RuntimeException("weak translation is not usefule for now");
+            if(aspsolver.equals("clingo")){
+                translator=new WeakASPTranslator();
+                solver=new Clingo4();
+            }else {
+                translator=new WeakDLVTranslator();
+                solver=new DLV();
+            }
+        }else {
+            if(aspsolver.equals("clingo")){
+                translator=new ASPTranslator();
+                solver=new Clingo4();
+            }else {
+                translator=new DLVTranslator();
+                solver=new DLV();
+            }
         }
 
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
+        translator.setMetarule(sm.getMetarule());
         String asprules=translator.translate(rules);
 
         BufferedWriter bw=new BufferedWriter(new FileWriter(translationOutputFile));

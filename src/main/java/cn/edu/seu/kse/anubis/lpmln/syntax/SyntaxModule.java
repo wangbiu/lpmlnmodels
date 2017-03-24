@@ -20,6 +20,7 @@ public class SyntaxModule {
     private HashSet<String> herbrandUniverse;
     private HashSet<Function> functions;
     private HashSet<String> relationnames;
+    private String metarule;
     private int factor=0;
 
     public List<Rule> parse(File file) throws IOException {
@@ -33,6 +34,7 @@ public class SyntaxModule {
         List<Rule> rules=tvisitor.getRules();
         factor=tvisitor.getFactor();
         herbrandUniverse=tvisitor.getHerbrandUniverse();
+        metarule=tvisitor.getMetarule();
 
 //        System.out.println("factor "+factor);
 //        System.out.println("herbrand universe " + herbrandUniverse);
@@ -69,5 +71,13 @@ public class SyntaxModule {
 
     public void setFactor(int factor) {
         this.factor = factor;
+    }
+
+    public String getMetarule() {
+        return metarule;
+    }
+
+    public void setMetarule(String metarule) {
+        this.metarule = metarule;
     }
 }

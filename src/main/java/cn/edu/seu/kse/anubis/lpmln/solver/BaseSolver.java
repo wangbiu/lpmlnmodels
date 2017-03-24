@@ -3,14 +3,12 @@ package cn.edu.seu.kse.anubis.lpmln.solver;
 import cn.edu.seu.kse.anubis.lpmln.model.SolverStats;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.anubis.util.CommandLineExecute;
-import net.sf.json.JSONObject;
-import net.sf.json.filters.MappingPropertyFilter;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by 王彬 on 2016/8/31.
+ * Created by 王彬 on 2017/3/23.
  */
 public class BaseSolver {
     protected List<WeightedAnswerSet> weightedAs=null;
@@ -22,13 +20,17 @@ public class BaseSolver {
     protected String maximalTime;
     protected List<Long> executeTime=new ArrayList<>();
     protected SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
+    final protected int WIN_NT=1;
+    final protected int UNIX=0;
+    protected double totalSolverTime;
 
     public List<WeightedAnswerSet> call(String cmd){
         Date enter=new Date();
-        String[] cmdres= CommandLineExecute.callShellwithReturn(cmd,1);
+        String[] cmdres= CommandLineExecute.callShellwithReturn(cmd,UNIX);
         Date cmdExit=new Date();
 
 //        System.out.println("result "+cmdres[0]);
+//        System.out.println("error: "+cmdres[1]);
         List<WeightedAnswerSet> was=solverResultProcess(cmdres[0]);
         weightedAs=was;
         stats=genSolverStatisticsInfo();
@@ -67,7 +69,16 @@ public class BaseSolver {
                 maxWeightAs.add(as);
             }
         }
-        maxWeight=""+level2+"*alpha + "+maxlevel1;
+
+        if(level2!=0){
+            maxWeight=""+level2+"*alpha + "+maxlevel1;
+        }else {
+            maxWeight=String.valueOf(maxlevel1);
+        }
+
+//        System.out.println(maxWeight);
+//        System.out.println("maxWeightAS "+maxWeightAs);
+
         Date exit=new Date();
         StringBuilder sb=new StringBuilder();
         sb.append("求最大权重可能世界用时：").append(exit.getTime()-enter.getTime()).append(" ms");
@@ -76,53 +87,11 @@ public class BaseSolver {
         return maxWeightAs;
     }
 
-    public String marginalDistribution(int factor){
-        Date enter=new Date();
-        HashMap<String,Double> result=new HashMap<>();
-        double wsum=0;
-        double expw=0;
-        for(WeightedAnswerSet as:weightedAs){
-            expw= Math.exp(as.getWeights().get(0)*1.0/factor);
-            wsum+=expw;
-            as.setProbability(expw);
-        }
-
-        for(WeightedAnswerSet as:weightedAs){
-            expw=as.getProbability();
-            as.setProbability(expw/wsum);
-        }
-
-        HashSet<String> literals=null;
-        for(WeightedAnswerSet as : weightedAs){
-            expw=as.getProbability();
-            literals=as.getAnswerSet().getLiterals();
-            for(String lit:literals){
-                if(result.containsKey(lit)){
-                    wsum=result.get(lit);
-                }else {
-                    wsum=0;
-                }
-                wsum+=expw;
-                result.put(lit,wsum);
-            }
-        }
-
-        String res= formateMarginalResult(result);
-        Date exit=new Date();
-        StringBuilder sb=new StringBuilder();
-        sb.append("求边缘分布用时：").append(exit.getTime()-enter.getTime()).append(" ms");
-        sb.append(System.lineSeparator());
-        marginalTime=sb.toString();
-        return res;
+    public Object marginalDistribution(int factor){
+        return null;
     }
 
-    public String formateMarginalResult(HashMap<String, Double> result){
-        StringBuilder fres=new StringBuilder();
-        for(HashMap.Entry<String,Double> entry:result.entrySet()){
-            fres.append(entry.getKey()).append("  ").append(entry.getValue()).append(System.lineSeparator());
-        }
-        return fres.toString();
-    }
+
 
     public SolverStats genSolverStatisticsInfo(){
         SolverStats sta = new SolverStats();
@@ -188,5 +157,13 @@ public class BaseSolver {
 
     public void setMaximalTime(String maximalTime) {
         this.maximalTime = maximalTime;
+    }
+
+    public double getTotalSolverTime() {
+        return totalSolverTime;
+    }
+
+    public void setTotalSolverTime(double totalSolverTime) {
+        this.totalSolverTime = totalSolverTime;
     }
 }

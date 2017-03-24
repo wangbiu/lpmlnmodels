@@ -40,7 +40,8 @@ public class ASPTranslator extends BaseTranslator {
 //            sb.append(System.lineSeparator());
         }
 
-        sb.append(trickPart());
+        sb.append(trickPart()).append(System.lineSeparator());
+        sb.append(metarule);
 
         return sb.toString();
     }
@@ -198,5 +199,11 @@ public class ASPTranslator extends BaseTranslator {
     public void setHerbrandUniverse(HashSet<String> herbrandUniverse){
         this.herbrandUniverse=herbrandUniverse;
     }
+
+    public void setMetarule(String metarule){
+        this.metarule=metarule;
+    }
+
+
 
 }

@@ -188,14 +188,14 @@ public class CommandLineExecute {
                             BufferedReader br=null;
                             try {
 
-                                String errres="";
+                                StringBuilder errres=new StringBuilder();
                                 br=new BufferedReader(new InputStreamReader(stderr));
                                 String eline=null;
                                 while((eline=br.readLine()) != null){
-                                    errres+=eline;
+                                    errres.append(eline).append(System.lineSeparator());
                                 }
 
-                                results[1]=errres;
+                                results[1]=errres.toString();
 
                             } catch (IOException ex) {
 
@@ -215,17 +215,16 @@ public class CommandLineExecute {
             //标准输出
             br=new BufferedReader(new InputStreamReader(p.getInputStream()));
 
-            String res="";
+            StringBuilder res=new StringBuilder();
 
 
             while((line=br.readLine())!=null){
-                res+=line;
-                res+=System.lineSeparator();
+                res.append(line).append(System.lineSeparator());
             }
 
 
             int exitVal = p.waitFor();
-            results[0]=res;
+            results[0]=res.toString();
 
         } catch (IOException ex) {
 

@@ -18,6 +18,7 @@ public class BaseTranslator {
     protected int factor=1;
     protected HashSet<String> herbrandUniverse;
     protected String path="";
+    protected String metarule=null;
 
     public String translate(List<Rule> rules){
         StringBuilder sb=new StringBuilder();
@@ -32,7 +33,8 @@ public class BaseTranslator {
             sb.append(rulestr).append(System.lineSeparator());
         }
 
-        sb.append(trickPart());
+        sb.append(trickPart()).append(System.lineSeparator());
+        sb.append(metarule);
         return sb.toString();
     }
 

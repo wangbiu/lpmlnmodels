@@ -14,9 +14,11 @@ public class Rule {
     private HashSet<String> vars;
     private boolean isSoft;
     private double weight;
+    private int innerweight;
     private String body;
     private List<String> head;
     private String ruleLabel=null;
+    private String originalrule;
 
     public Rule(){
         vars=new HashSet<>();
@@ -37,6 +39,14 @@ public class Rule {
         sb.append("rule head ").append(head).append(ls);
         sb.append("");
         return sb.toString();
+    }
+
+    public int getInnerweight() {
+        return innerweight;
+    }
+
+    public void setInnerweight(int innerweight) {
+        this.innerweight = innerweight;
     }
 
     public String getText() {
@@ -98,15 +108,30 @@ public class Rule {
     public String getRuleLabel() {
         if(ruleLabel == null){
             StringBuilder sb=new StringBuilder();
-            sb.append("rlabel").append(id).append("(").append(id);
+            sb.append("rb").append("(").append(id);
             int cnt=0;
             int size=vars.size()-1;
             for(String v:vars){
                 sb.append(", ").append(v);
             }
+            if(isSoft){
+                sb.append(", 1, ").append((int)weight);
+            }else {
+                sb.append(", 2, 1");
+            }
+
+
             sb.append(")");
             ruleLabel=sb.toString();
         }
         return ruleLabel;
+    }
+
+    public String getOriginalrule() {
+        return originalrule;
+    }
+
+    public void setOriginalrule(String originalrule) {
+        this.originalrule = originalrule;
     }
 }
