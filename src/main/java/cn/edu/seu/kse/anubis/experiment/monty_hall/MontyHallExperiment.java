@@ -3,6 +3,8 @@ package cn.edu.seu.kse.anubis.experiment.monty_hall;
 import cn.edu.seu.kse.anubis.experiment.Experiment;
 import cn.edu.seu.kse.anubis.experiment.model.ExperimentStatInfo;
 import cn.edu.seu.kse.anubis.experiment.model.ThreadStatInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -22,10 +24,13 @@ public class MontyHallExperiment extends Experiment{
     private int taskId;
     private boolean parallel;
 
+    private static Logger logger= LogManager.getLogger(MontyHallExperiment.class.getName());
+
 
     public void test(boolean isParallel, int taskId) throws Exception {
         //TODO: 用于提前装载所有的类，消除首次运行的时间消耗
         startSingle(3,2,0);
+        logger.info("实验开始： isParallel={}, taskId={}",isParallel,taskId);
 
         initLogFile();
         parallel=isParallel;
@@ -65,6 +70,7 @@ public class MontyHallExperiment extends Experiment{
     public void testSingleMAP() throws IOException {
         writeTitle(logfile, ExperimentStatInfo.getTitle());
         for(int i=problemN;i<=maxProblemN;i++){
+            logger.info("MAP 任务： problemN={}", problemN);
             startSingle(i,round,0);
         }
     }
@@ -75,6 +81,7 @@ public class MontyHallExperiment extends Experiment{
         writeTitle(threadLogFile, ThreadStatInfo.getTitle());
         for(int c=cores;c<=maxCores;c++){
             for(int p=problemN;p<=maxProblemN;p++){
+                logger.info("MPD 任务： problemN={}, cores={}",problemN,cores);
                 startParallel(p,round,c,0);
             }
         }
