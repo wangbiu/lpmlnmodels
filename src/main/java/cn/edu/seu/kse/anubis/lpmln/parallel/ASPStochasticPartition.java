@@ -6,6 +6,7 @@ import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by 王彬 on 2017/3/19.
@@ -14,6 +15,7 @@ public class ASPStochasticPartition extends BasePartition {
 
     public ASPStochasticPartition(List<Rule> rules, String asptext, int factor) {
         super(rules, asptext, factor);
+        partitionId= UUID.randomUUID().toString();
     }
 
     @Override

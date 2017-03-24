@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.anubis.lpmln.parallel;
 
+import cn.edu.seu.kse.anubis.experiment.model.ThreadStatInfo;
 import cn.edu.seu.kse.anubis.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
@@ -20,22 +21,32 @@ public class ParallelSolver {
     private List<AugmentedSubsetSolver> solvers;
     private List<File> splits=null;
     List<SolverThread> threads=null;
+    // 0 MAP  1 MPD
+    private int taskType=2;
+    private String tmpfilepath="";
+    private String partitionId;
+
+    List<ThreadStatInfo> statInfos=null;
 
     public ParallelSolver(){
         solvers=new ArrayList<>();
         factor=1;
     }
 
-    public ParallelSolver(List<Rule> rules, String asptext, int cores, int factor) {
+    public ParallelSolver(List<Rule> rules, String asptext, int cores, int factor, int taskType) {
         this();
         this.rules = rules;
         this.asptext = asptext;
         this.cores = cores;
         this.factor=factor;
+        this.taskType=taskType;
+        statInfos=new ArrayList<>();
     }
 
     public void partition() throws IOException {
         ASPStochasticPartition partition = new ASPStochasticPartition(rules, asptext,1);
+        partitionId=partition.getPartitionId();
+        partition.setBasepath(tmpfilepath);
         partition.setWeakPartition(true);
         partition.partition(cores);
         List<AugmentedSubset> asub=partition.getSplit();
@@ -50,21 +61,30 @@ public class ParallelSolver {
 
     public void call() throws IOException {
         partition();
-        threads=new ArrayList<>();
+        callWithLastPartition();
+    }
 
+    public void callWithLastPartition(){
+        threads=new ArrayList<>();
+        ThreadStatInfo stat=null;
         for(int i=0;i<cores;i++){
-            SolverThread t=new SolverThread(solvers.get(i),splits.get(i));
+
+            SolverThread t=new SolverThread(solvers.get(i),splits.get(i),taskType);
+            if(statInfos.size() <= i){
+                stat=new ThreadStatInfo();
+                statInfos.add(stat);
+                stat.threadId=i;
+                stat.partitionId=partitionId;
+            }
+
             t.setName("solver #"+i);
             t.setDaemon(false);
             threads.add(t);
             t.start();
         }
-
-//        while (!isStop(threads)){}
-
     }
 
-    private boolean isStop(List<SolverThread> threads){
+    public boolean isStop(){
         boolean stop=true;
         for(SolverThread st:threads){
             if(st.isAlive()){
@@ -105,6 +125,7 @@ public class ParallelSolver {
                 max.addAll(map);
             }
         }
+        extractStatInfo(threads);
 
         return max;
     }
@@ -173,8 +194,21 @@ public class ParallelSolver {
             sb.append(litexpw).append(System.lineSeparator());
 
         }
-
+        extractStatInfo(threads);
         return sb.toString();
+    }
+
+    public void extractStatInfo(List<SolverThread> threads){
+        ThreadStatInfo recordstat=null;
+        ThreadStatInfo thstat=null;
+
+        for(int i=0;i<cores;i++){
+            recordstat=statInfos.get(i);
+            thstat=threads.get(i).getStat();
+            recordstat.ansNums=thstat.ansNums;
+            recordstat.solverTime+=thstat.solverTime;
+            recordstat.threadTime+=thstat.threadTime;
+        }
     }
 
 
@@ -204,5 +238,27 @@ public class ParallelSolver {
         this.cores = cores;
     }
 
+    public int getTaskType() {
+        return taskType;
+    }
 
+    public void setTaskType(int taskType) {
+        this.taskType = taskType;
+    }
+
+    public List<ThreadStatInfo> getStatInfos() {
+        return statInfos;
+    }
+
+    public void setStatInfos(List<ThreadStatInfo> statInfos) {
+        this.statInfos = statInfos;
+    }
+
+    public String getTmpfilepath() {
+        return tmpfilepath;
+    }
+
+    public void setTmpfilepath(String tmpfilepath) {
+        this.tmpfilepath = tmpfilepath;
+    }
 }

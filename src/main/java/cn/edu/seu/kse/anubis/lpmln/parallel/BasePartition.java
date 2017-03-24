@@ -21,6 +21,8 @@ public abstract class BasePartition {
     protected String asptext;
     protected int factor;
     protected boolean isWeakPartition;
+    protected String basepath="";
+    protected String partitionId=null;
 
     public BasePartition(List<Rule> rules, String asptext, int factor){
         this.rules=rules;
@@ -83,7 +85,7 @@ public abstract class BasePartition {
 
     public List<File> genSplitFiles() throws IOException {
         List<File> splits=new ArrayList<>();
-        String path="splits/"+UUID.randomUUID().toString();
+        String path=basepath+"/splits/"+partitionId;
         File dir=new File(path);
         dir.mkdir();
         String filename= path+"/sp_";
@@ -144,5 +146,21 @@ public abstract class BasePartition {
 
     public void setWeakPartition(boolean weakPartition) {
         isWeakPartition = weakPartition;
+    }
+
+    public String getBasepath() {
+        return basepath;
+    }
+
+    public void setBasepath(String basepath) {
+        this.basepath = basepath;
+    }
+
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    public void setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
     }
 }

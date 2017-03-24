@@ -75,12 +75,22 @@ public class MontyHallProblem {
     }
 
     protected String translation(ASPTranslator translator, String inputFilePath) throws IOException {
-        String transFilePath=inputFilePath+".trans";
+
 //        WeakASPTranslator translator=new WeakASPTranslator();
+        translateRules(translator);
+
+        return writeTranslation2File(inputFilePath);
+    }
+
+    protected void translateRules(ASPTranslator translator){
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         translator.setMetarule(metaRule);
         aspTranslation=translator.translate(rules);
+    }
+
+    protected String writeTranslation2File(String inputFilePath) throws IOException {
+        String transFilePath=inputFilePath+".trans";
         BufferedWriter bw=new BufferedWriter(new FileWriter(transFilePath));
         bw.write(aspTranslation);
         bw.close();
