@@ -12,9 +12,6 @@ import java.util.Date;
  * Created by 王彬 on 2017/3/24.
  */
 public class MontyHallExperiment extends Experiment{
-    private String basepath="G:/expriment/parallel_reasoning/monty_hall";
-    private String logfile=basepath+"/monty-hall-single";
-    private String threadLogFile=basepath+"/thread-log";
 
     private int round=1;
     private int cores=1;
@@ -36,7 +33,7 @@ public class MontyHallExperiment extends Experiment{
             testSingleTask(taskId);
         }
 
-        emailAlert(null,email_addr);
+        emailAlert(null,null,email_addr);
     }
 
     public void testSingleTask(int taskId) throws IOException {
@@ -144,7 +141,7 @@ public class MontyHallExperiment extends Experiment{
     }
 
     @Override
-    public void emailAlert(String text, String address) throws Exception {
+    public void emailAlert(String title, String text, String address) throws Exception {
         StringBuilder sb=new StringBuilder();
         sb.append("实验信息：").append("taskId ").append(taskId).append(", 是否并行 ").append(parallel);
         sb.append(System.lineSeparator());
@@ -158,11 +155,11 @@ public class MontyHallExperiment extends Experiment{
         sb.append(threadLogFile).append(System.lineSeparator());
         sb.append(readFile(threadLogFile)).append(System.lineSeparator());
 
-        super.emailAlert(sb.toString(), this.email_addr);
+        super.emailAlert("实验完成!!!",sb.toString(), this.email_addr);
     }
 
     public void emailWarn(String text) throws Exception {
-        super.emailAlert(text,email_addr);
+        super.emailAlert("实验失败!!!",text,email_addr);
     }
 
     private String readFile(String file) throws IOException {
