@@ -50,8 +50,9 @@ public class SolverThread extends Thread {
         }
         Date end=new Date();
         long duration=end.getTime()-begin.getTime();
-        stat.threadTime=duration/1000;
+        stat.threadTime=duration/1000.0;
         stat.solverTime=assolver.getTotalSolverTime();
+        stat.ansNums=weightedAs.size();
         System.out.println(this.getName()+" runtime: "+duration+"ms");
     }
 

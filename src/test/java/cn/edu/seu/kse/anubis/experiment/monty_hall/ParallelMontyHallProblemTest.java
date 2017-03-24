@@ -13,7 +13,7 @@ public class ParallelMontyHallProblemTest {
     @Test
     public void testMAP() throws IOException, InterruptedException {
         ParallelMontyHallProblem pmhp=new ParallelMontyHallProblem();
-        pmhp.setProblemN(4);
+        pmhp.setProblemN(3);
         pmhp.setTaskType(0);
         pmhp.setCores(3);
         pmhp.setRound(10);
@@ -25,7 +25,7 @@ public class ParallelMontyHallProblemTest {
     @Test
     public void testMPD() throws IOException, InterruptedException {
         ParallelMontyHallProblem pmhp=new ParallelMontyHallProblem();
-        pmhp.setProblemN(4);
+        pmhp.setProblemN(3);
         pmhp.setTaskType(1);
         pmhp.setCores(3);
         pmhp.setRound(10);

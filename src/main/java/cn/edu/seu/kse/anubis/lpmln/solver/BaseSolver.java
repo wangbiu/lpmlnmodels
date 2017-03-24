@@ -76,6 +76,9 @@ public class BaseSolver {
             maxWeight=String.valueOf(maxlevel1);
         }
 
+//        System.out.println(maxWeight);
+//        System.out.println("maxWeightAS "+maxWeightAs);
+
         Date exit=new Date();
         StringBuilder sb=new StringBuilder();
         sb.append("求最大权重可能世界用时：").append(exit.getTime()-enter.getTime()).append(" ms");

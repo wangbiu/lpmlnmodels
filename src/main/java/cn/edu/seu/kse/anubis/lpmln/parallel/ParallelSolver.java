@@ -103,6 +103,7 @@ public class ParallelSolver {
         List<WeightedAnswerSet> map=null;
         for(SolverThread st:threads){
             map=st.getMap();
+//            System.out.println("map "+map);
             if(!map.isEmpty()){
                 curSoftWeight=map.get(0).getWeights().get(0);
             }else {
@@ -208,6 +209,7 @@ public class ParallelSolver {
             recordstat.ansNums=thstat.ansNums;
             recordstat.solverTime+=thstat.solverTime;
             recordstat.threadTime+=thstat.threadTime;
+//            System.out.printf("thread #%d: solvertime: %f, threadtime: %f%n",i,recordstat.solverTime,recordstat.threadTime);
         }
     }
 

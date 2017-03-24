@@ -21,10 +21,13 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
     private int cores;
     private ParallelSolver psolver=null;
     private List<ThreadStatInfo> tstatInfos;
+    private ASPGround4ParallelTranslator translator;
 
     public ParallelMontyHallProblem(){
         expStat=new ExperimentStatInfo();
         translator=new ASPGround4ParallelTranslator();
+        translator.setWeakTranslate(true);
+
     }
 
     @Override
@@ -63,8 +66,8 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
             }
 
             while (!psolver.isStop()){}
-            System.out.println(psolver.findMaxWeightedAs());
-//            psolver.findMaxWeightedAs();
+//            System.out.println(psolver.findMaxWeightedAs());
+            psolver.findMaxWeightedAs();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,8 +87,8 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
             }
 
             while (!psolver.isStop()){}
-            System.out.println(psolver.marginalDistribution(factor));
-//            psolver.marginalDistribution(factor);
+//            System.out.println(psolver.marginalDistribution(factor));
+            psolver.marginalDistribution(factor);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,6 +98,7 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
     @Override
     protected String translation(ASPTranslator translator, String inputFilePath) throws IOException {
         translateRules(translator);
+        writeTranslation2File(inputFilePath);
         return  null;
     }
 
