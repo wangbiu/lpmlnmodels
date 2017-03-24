@@ -6,9 +6,7 @@ import java.util.Date;
 /**
  * Created by 王彬 on 2017/3/23.
  */
-public class ThreadStatInfo {
-    //
-    public Date now;
+public class ThreadStatInfo extends StatInfo{
     // 实验编号
     public String experimentId;
     // 任务类型 0=MAP 任务， 1=Marginal Distribution 任务
@@ -32,11 +30,10 @@ public class ThreadStatInfo {
 
     public String toCSVString(){
         StringBuilder csv=new StringBuilder();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        csv.append(sdf.format(now)).append(",");
+        csv.append(formatDate(now)).append(",");
         csv.append(experimentId).append(",").append(taskType);
-        csv.append(",").append(ansNums).append(",").append(solverTime);
-        csv.append(",").append(threadTime);
+        csv.append(",").append(ansNums).append(",").append(formatDouble(solverTime,precise));
+        csv.append(",").append(formatDouble(threadTime,precise));
         csv.append(",").append(threadNums).append(",").append(threadId);
         csv.append(",").append(partitionId);
         return csv.toString();

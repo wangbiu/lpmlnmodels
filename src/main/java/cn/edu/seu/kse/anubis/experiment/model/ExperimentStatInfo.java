@@ -6,9 +6,7 @@ import java.util.Date;
 /**
  * Created by 王彬 on 2017/3/23.
  */
-public class ExperimentStatInfo {
-    // 时间
-    public Date now;
+public class ExperimentStatInfo  extends StatInfo{
     // 实验编号
     public String experimentId;
     // 问题规模 盒子个数
@@ -22,10 +20,9 @@ public class ExperimentStatInfo {
 
     public String toCSVString(){
         StringBuilder csv=new StringBuilder();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        csv.append(sdf.format(now)).append(",");
+        csv.append(formatDate(now)).append(",");
         csv.append(experimentId).append(",").append(problemN).append(",").append(taskType);
-        csv.append(",").append(cpuTime).append(",").append(time);
+        csv.append(",").append(formatDouble(cpuTime,precise)).append(",").append(formatDouble(time,precise));
         return csv.toString();
     }
 }
