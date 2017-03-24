@@ -144,13 +144,14 @@ public class MontyHallExperiment extends Experiment{
     public void emailAlert(String title, String text, String address) throws Exception {
         String line="<br>";
         StringBuilder sb=new StringBuilder();
-        sb.append("实验信息：").append("taskId ").append(taskId).append(", 是否并行 ").append(parallel);
+        sb.append("实验信息：").append("taskId ").append(taskId).append(", <p style='color:red;'>是否并行</p> ").append(parallel);
         sb.append(line);
         sb.append("问题信息：").append("problemN ").append(problemN).append(", max problem N ").append(maxProblemN).append(line);
         sb.append("并行信息：").append("cores ").append(cores).append(", max cores ").append(maxCores).append(line);
         sb.append("实验结束，日志文件为：").append(line);
         sb.append(logfile).append(", ").append(threadLogFile);
-        sb.append(". ").append(line);
+        sb.append(". ").append(line).append(line);
+        sb.append("日志内容：").append(line);
         sb.append("<strong>").append(logfile).append("</strong>").append(line);
         sb.append(readFile(logfile)).append(line);
         sb.append("<strong>").append(threadLogFile).append("</strong>").append(line);

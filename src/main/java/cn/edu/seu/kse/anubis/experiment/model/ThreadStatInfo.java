@@ -45,10 +45,10 @@ public class ThreadStatInfo extends StatInfo{
         sb.append("date").append(",");
         sb.append("experimentId").append(",");
         sb.append("taskType").append(",");
-        sb.append("ansNums").append(",");
-        sb.append("solverTime").append(",");
-        sb.append("threadTime").append(",");
-        sb.append("threadNums").append(",");
+        sb.append("number of stable models").append(",");
+        sb.append("solver run time of an augmented subset").append(",");
+        sb.append("total run time of an augmented subset").append(",");
+        sb.append("number of processors").append(",");
         sb.append("threadId").append(",");
         sb.append("partitionId").append("");
         return sb.toString();

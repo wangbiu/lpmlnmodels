@@ -34,11 +34,11 @@ public class ExperimentStatInfo  extends StatInfo{
         StringBuilder sb=new StringBuilder();
         sb.append("date").append(",");
         sb.append("experimentId").append(",");
-        sb.append("problemN").append(",");
+        sb.append("number of boxes").append(",");
         sb.append("taskType").append(",");
-        sb.append("threadNums").append(",");
-        sb.append("solverTime").append(",");
-        sb.append("threadTime").append("");
+        sb.append("number of processors").append(",");
+        sb.append("solver run time").append(",");
+        sb.append("total run time").append("");
 
         return sb.toString();
     }
