@@ -26,7 +26,7 @@ public class BaseSolver {
 
     public List<WeightedAnswerSet> call(String cmd){
         Date enter=new Date();
-        String[] cmdres= CommandLineExecute.callShellwithReturn(cmd,WIN_NT);
+        String[] cmdres= CommandLineExecute.callShellwithReturn(cmd,UNIX);
         Date cmdExit=new Date();
 
 //        System.out.println("result "+cmdres[0]);

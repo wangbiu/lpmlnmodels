@@ -11,7 +11,8 @@ import java.util.Properties;
  * Created by 王彬 on 2017/3/24.
  */
 public class Experiment {
-    protected String basepath="G:/expriment/parallel_reasoning/monty_hall";
+//    protected String basepath="G:/expriment/parallel_reasoning/monty_hall";
+    protected String basepath="/home/wangbin/experiments/parallel_reasoning/monty_hall";
     protected String logfile=basepath+"/monty-hall-single";
     protected String threadLogFile=basepath+"/thread-log";
     protected String email_addr="wangbiu@foxmail.com";
