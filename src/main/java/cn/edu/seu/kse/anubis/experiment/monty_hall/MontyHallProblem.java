@@ -51,11 +51,13 @@ public class MontyHallProblem {
         expStat.problemN=problemN;
         for(int i=0;i<round;i++){
             call(progFilePath,taskType);
+//            System.out.printf("round #%d: cputime: %f%n",i,expStat.cpuTime);
         }
         Date end=new Date();
 //        expStat.time=(end.getTime()-begin.getTime())/1000;
-        expStat.time=(end.getTime()-begin.getTime())/1000/round;
+        expStat.time=(end.getTime()-begin.getTime())*1.0/1000/round;
         expStat.cpuTime/=round;
+//        System.out.printf("time: %f, cputime: %f%n",expStat.time,expStat.cpuTime);
         writeLog();
     }
 
@@ -102,14 +104,14 @@ public class MontyHallProblem {
         solver.call(translationFilePath);
         List<WeightedAnswerSet> maxWas=null;
         maxWas=solver.findMaxWeightedAs();
-        expStat.cpuTime=solver.getTotalSolverTime();
+        expStat.cpuTime+=solver.getTotalSolverTime();
     }
 
     protected void solveMarginalProbability(){
         Clingo4 solver=new Clingo4();
         solver.call(translationFilePath);
         String marginal=solver.marginalDistribution(factor);
-        expStat.cpuTime=solver.getTotalSolverTime();
+        expStat.cpuTime+=solver.getTotalSolverTime();
     }
 
 
