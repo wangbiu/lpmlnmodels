@@ -27,7 +27,7 @@ public class NaiveMontyHallGrounderTest {
         File outf=null;
         BufferedWriter bw =null;
 
-        for(int i=3;i<=10;i++){
+        for(int i=3;i<=20;i++){
             outf=new File("m-"+i+".txt");
             bw=new BufferedWriter(new FileWriter(outf));
             grounder.setBoxNumber(i);

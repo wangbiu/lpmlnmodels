@@ -128,7 +128,7 @@ public class MontyHallProblem {
     }
 
     protected String getProgramFilePath(int n){
-        return basepath+"/"+programPrefix+n+".txt";
+        return basepath+"/programs/"+programPrefix+n+".txt";
     }
 
     protected void writeLog() throws IOException {

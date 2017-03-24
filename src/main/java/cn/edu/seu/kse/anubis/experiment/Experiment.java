@@ -13,8 +13,8 @@ import java.util.Properties;
 public class Experiment {
 //    protected String basepath="G:/expriment/parallel_reasoning/monty_hall";
     protected String basepath="/home/wangbin/experiments/parallel_reasoning/monty_hall";
-    protected String logfile=basepath+"/monty-hall-single";
-    protected String threadLogFile=basepath+"/thread-log";
+    protected String logfile=basepath+"/log/monty-hall-single";
+    protected String threadLogFile=basepath+"/log/thread-log";
     protected String email_addr="wangbiu@foxmail.com";
 
     public void emailAlert(String title, String text,String address) throws Exception {
