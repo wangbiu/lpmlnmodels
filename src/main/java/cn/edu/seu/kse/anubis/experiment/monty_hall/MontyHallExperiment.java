@@ -4,24 +4,62 @@ import cn.edu.seu.kse.anubis.experiment.Experiment;
 import cn.edu.seu.kse.anubis.experiment.model.ExperimentStatInfo;
 import cn.edu.seu.kse.anubis.experiment.model.ThreadStatInfo;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by 王彬 on 2017/3/24.
  */
 public class MontyHallExperiment extends Experiment{
     private String basepath="G:/expriment/parallel_reasoning/monty_hall";
-    private String logfile=basepath+"/monty-hall-single.log";
-    private String threadLogFile=basepath+"/thread-log.log";
+    private String logfile=basepath+"/monty-hall-single";
+    private String threadLogFile=basepath+"/thread-log";
 
     private int round=1;
     private int cores=1;
     private int maxCores=16;
     private int problemN=3;
     private int maxProblemN=3;
+
+    private int taskId;
+    private boolean parallel;
+
+
+    public void test(boolean isParallel, int taskId) throws Exception {
+        initLogFile();
+        parallel=isParallel;
+        this.taskId=taskId;
+        if(isParallel){
+            testParallelTask(taskId);
+        }else {
+            testSingleTask(taskId);
+        }
+
+        emailAlert(null,email_addr);
+    }
+
+    public void testSingleTask(int taskId) throws IOException {
+        if(taskId==0){
+            testSingleMAP();
+        }else if(taskId==1){
+            testSingleMPD();
+        }else {
+            testSingleMAP();
+            testSingleMPD();
+        }
+    }
+
+    public void testParallelTask(int taskId) throws IOException {
+        if(taskId==0){
+            testParallelMAP();
+        }else if(taskId==1){
+            testParallelMPD();
+        }else {
+            testParallelMAP();
+            testParallelMPD();
+        }
+    }
 
 
     public void testSingleMAP() throws IOException {
@@ -98,6 +136,47 @@ public class MontyHallExperiment extends Experiment{
         bw.close();
     }
 
+    private void initLogFile(){
+        Date now=new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        logfile=logfile+sdf.format(now)+".log";
+        threadLogFile=threadLogFile+sdf.format(now)+".log";
+    }
+
+    @Override
+    public void emailAlert(String text, String address) throws Exception {
+        StringBuilder sb=new StringBuilder();
+        sb.append("实验信息：").append("taskId ").append(taskId).append(", 是否并行 ").append(parallel);
+        sb.append(System.lineSeparator());
+        sb.append("问题信息：").append("problemN ").append(problemN).append(", max problem N ").append(maxProblemN).append(System.lineSeparator());
+        sb.append("并行信息：").append("cores ").append(cores).append(", max cores ").append(maxCores).append(System.lineSeparator());
+        sb.append("实验结束，日志文件为：").append(System.lineSeparator());
+        sb.append(logfile).append(", ").append(threadLogFile);
+        sb.append(". ").append(System.lineSeparator());
+        sb.append(logfile).append(System.lineSeparator());
+        sb.append(readFile(logfile)).append(System.lineSeparator());
+        sb.append(threadLogFile).append(System.lineSeparator());
+        sb.append(readFile(threadLogFile)).append(System.lineSeparator());
+
+        super.emailAlert(sb.toString(), this.email_addr);
+    }
+
+    public void emailWarn(String text) throws Exception {
+        super.emailAlert(text,email_addr);
+    }
+
+    private String readFile(String file) throws IOException {
+        StringBuilder sb=new StringBuilder();
+        BufferedReader br=null;
+        br=new BufferedReader(new FileReader(new File(file)));
+        String line=null;
+        while((line=br.readLine())!=null){
+            sb.append(line).append(System.lineSeparator());
+        }
+        br.close();
+        return sb.toString();
+    }
+
     public String getBasepath() {
         return basepath;
     }
@@ -161,4 +240,6 @@ public class MontyHallExperiment extends Experiment{
     public void setMaxProblemN(int maxProblemN) {
         this.maxProblemN = maxProblemN;
     }
+
+
 }

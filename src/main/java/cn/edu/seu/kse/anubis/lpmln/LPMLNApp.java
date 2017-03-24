@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.anubis.lpmln;
 
+import cn.edu.seu.kse.anubis.experiment.monty_hall.MontyHallExperiment;
 import cn.edu.seu.kse.anubis.lpmln.app.LPMLNOpts;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
@@ -50,7 +51,10 @@ public class LPMLNApp {
                 HelpFormatter formatter=new HelpFormatter();
                 formatter.setWidth(150);
                 formatter.printHelp("lpmlnmodels <params>",opts);
-            }else {
+            }else if(cmd.hasOption("experiment")){
+                experiment(cmd);
+            }
+            else {
                 if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
                     throw new RuntimeException("i and I are used once at a time");
                 }
@@ -177,6 +181,43 @@ public class LPMLNApp {
 
         if(cmd.hasOption("show-all-stable-models")){
             isShowAll=true;
+        }
+
+    }
+
+    private static void experiment(CommandLine cmd){
+        int problemN,maxProblemN,cores,maxCores,round,taskId;
+        boolean isParallel;
+        if(cmd.hasOption("parallel")){
+            isParallel=true;
+        }else {
+            isParallel=false;
+        }
+
+        problemN=Integer.valueOf(cmd.getOptionValue("exp-problem-n"));
+        maxProblemN=Integer.valueOf(cmd.getOptionValue("exp-max-problem-n"));
+        cores=Integer.valueOf(cmd.getOptionValue("exp-cores"));
+        maxCores=Integer.valueOf(cmd.getOptionValue("exp-max-cores"));
+        round=Integer.valueOf(cmd.getOptionValue("exp-round"));
+        taskId=Integer.valueOf(cmd.getOptionValue("exp-task-id"));
+
+//        System.out.printf("problemN: %d, maxPN: %d, cores: %d, maxCores: %d, round: %d, taskId: %d",problemN,maxProblemN,cores,
+//                maxCores,round,taskId);
+        MontyHallExperiment mhe=new MontyHallExperiment();
+        mhe.setProblemN(problemN);
+        mhe.setCores(cores);
+        mhe.setMaxCores(maxCores);
+        mhe.setMaxProblemN(maxProblemN);
+        mhe.setRound(round);
+
+        try {
+            mhe.test(isParallel,taskId);
+        } catch (Exception e) {
+            try {
+                mhe.emailWarn(e.toString());
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
 
     }
