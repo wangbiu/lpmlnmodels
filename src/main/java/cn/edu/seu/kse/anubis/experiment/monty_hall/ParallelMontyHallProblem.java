@@ -17,7 +17,7 @@ import java.util.List;
  * Created by 王彬 on 2017/3/23.
  */
 public class ParallelMontyHallProblem extends MontyHallProblem {
-    private final String threadlogfile=basepath+"/thread-log.log";
+    private String threadlogfile=basepath+"/thread-log.log";
     private int cores;
     private ParallelSolver psolver=null;
     private List<ThreadStatInfo> tstatInfos;
@@ -34,6 +34,7 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
     protected void runExperiment() throws IOException {
         super.runExperiment();
         processThreadStat();
+        expStat.threadNums=cores;
     }
 
     public void processThreadStat() throws IOException {

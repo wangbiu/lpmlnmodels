@@ -22,4 +22,10 @@ public class StatInfo {
         df.setMaximumFractionDigits(precise);
         return df.format(num);
     }
+
+    public String getTitle(){
+        return null;
+    }
+
+    public String toCSVString(){return null;}
 }

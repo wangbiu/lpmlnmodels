@@ -28,6 +28,7 @@ public class ThreadStatInfo extends StatInfo{
         now=new Date();
     }
 
+    @Override
     public String toCSVString(){
         StringBuilder csv=new StringBuilder();
         csv.append(formatDate(now)).append(",");
@@ -37,5 +38,20 @@ public class ThreadStatInfo extends StatInfo{
         csv.append(",").append(threadNums).append(",").append(threadId);
         csv.append(",").append(partitionId);
         return csv.toString();
+    }
+
+    @Override
+    public String getTitle(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("date").append(",");
+        sb.append("experimentId").append(",");
+        sb.append("taskType").append(",");
+        sb.append("ansNums").append(",");
+        sb.append("solverTime").append(",");
+        sb.append("threadTime").append(",");
+        sb.append("threadNums").append(",");
+        sb.append("threadId").append(",");
+        sb.append("partitionId").append(",");
+        return sb.toString();
     }
 }

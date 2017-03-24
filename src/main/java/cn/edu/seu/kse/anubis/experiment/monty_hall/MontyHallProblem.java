@@ -22,7 +22,7 @@ import java.util.UUID;
  * Created by 王彬 on 2017/3/23.
  */
 public class MontyHallProblem {
-    final protected String basepath="G:/expriment/parallel_reasoning/monty_hall";
+    protected String basepath="G:/expriment/parallel_reasoning/monty_hall";
     protected String logfile=basepath+"/monty-hall-single.log";
     final protected String programPrefix="m-";
     protected List<Rule> rules;
