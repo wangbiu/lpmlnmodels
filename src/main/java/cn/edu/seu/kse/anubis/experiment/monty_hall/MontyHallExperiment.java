@@ -81,7 +81,7 @@ public class MontyHallExperiment extends Experiment{
         writeTitle(threadLogFile, ThreadStatInfo.getTitle());
         for(int c=cores;c<=maxCores;c++){
             for(int p=problemN;p<=maxProblemN;p++){
-                logger.info("MPD 任务： problemN={}, cores={}",problemN,cores);
+                logger.info("MPD 任务： problemN={}, cores={}",p,c);
                 startParallel(p,round,c,0);
             }
         }
