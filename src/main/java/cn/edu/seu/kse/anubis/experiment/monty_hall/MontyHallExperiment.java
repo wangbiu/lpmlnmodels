@@ -3,6 +3,8 @@ package cn.edu.seu.kse.anubis.experiment.monty_hall;
 import cn.edu.seu.kse.anubis.experiment.Experiment;
 import cn.edu.seu.kse.anubis.experiment.model.ExperimentStatInfo;
 import cn.edu.seu.kse.anubis.experiment.model.ThreadStatInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -22,10 +24,13 @@ public class MontyHallExperiment extends Experiment{
     private int taskId;
     private boolean parallel;
 
+    private static Logger logger= LogManager.getLogger(MontyHallExperiment.class.getName());
+
 
     public void test(boolean isParallel, int taskId) throws Exception {
         //TODO: 用于提前装载所有的类，消除首次运行的时间消耗
         startSingle(3,2,0);
+        logger.info("实验开始： isParallel={}, taskId={}",isParallel,taskId);
 
         initLogFile();
         parallel=isParallel;
@@ -63,18 +68,20 @@ public class MontyHallExperiment extends Experiment{
 
 
     public void testSingleMAP() throws IOException {
-        writeTitle(logfile, ExperimentStatInfo.getTitle());
+//        writeTitle(logfile, ExperimentStatInfo.getTitle());
         for(int i=problemN;i<=maxProblemN;i++){
+            logger.info("MAP 任务： problemN={}", i);
             startSingle(i,round,0);
         }
     }
 
 
     public void testParallelMAP() throws IOException{
-        writeTitle(logfile, ExperimentStatInfo.getTitle());
-        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
+//        writeTitle(logfile, ExperimentStatInfo.getTitle());
+//        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
         for(int c=cores;c<=maxCores;c++){
             for(int p=problemN;p<=maxProblemN;p++){
+                logger.info("MAP 任务： problemN={}, cores={}",p,c);
                 startParallel(p,round,c,0);
             }
         }
@@ -82,17 +89,19 @@ public class MontyHallExperiment extends Experiment{
     }
 
     public void testSingleMPD() throws IOException {
-        writeTitle(logfile, ExperimentStatInfo.getTitle());
+//        writeTitle(logfile, ExperimentStatInfo.getTitle());
         for(int i=problemN;i<=maxProblemN;i++){
+            logger.info("MPD 任务： problemN={}", i);
             startSingle(i,round,1);
         }
     }
 
     public void testParallelMPD() throws IOException{
-        writeTitle(logfile, ExperimentStatInfo.getTitle());
-        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
+//        writeTitle(logfile, ExperimentStatInfo.getTitle());
+//        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
         for(int p=problemN;p<=maxProblemN;p++){
             for(int c=cores;c<=maxCores;c++){
+                logger.info("MPD 任务： problemN={}, cores={}",p,c);
                 startParallel(p,round,c,1);
             }
         }
@@ -105,7 +114,10 @@ public class MontyHallExperiment extends Experiment{
         mhp.setProblemN(problemN);
         mhp.setRound(round);
         mhp.setTaskType(taskType);
+        mhp.setTestId(testId);
         mhp.runExperiment();
+
+        mhp=null;
     }
 
     private void startParallel(int problemN, int round, int cores, int taskType) throws IOException {
@@ -115,7 +127,10 @@ public class MontyHallExperiment extends Experiment{
         pmhp.setTaskType(taskType);
         pmhp.setCores(cores);
         pmhp.setRound(round);
+        pmhp.setTestId(testId);
         pmhp.runExperiment();
+
+        pmhp=null;
     }
 
     private void initSingle(MontyHallProblem mhp) throws IOException {
@@ -156,8 +171,10 @@ public class MontyHallExperiment extends Experiment{
         sb.append(". ").append(line).append(line);
         sb.append("日志内容：").append(line);
         sb.append("<strong>").append(logfile).append("</strong>").append(line);
+        sb.append(ExperimentStatInfo.getTitle()).append(line).append(line);
         sb.append(readFile(logfile)).append(line);
         sb.append("<strong>").append(threadLogFile).append("</strong>").append(line);
+        sb.append(ThreadStatInfo.getTitle()).append(line).append(line);
         sb.append(readFile(threadLogFile)).append(line);
 
         super.emailAlert("实验完成!!!",sb.toString(), this.email_addr);

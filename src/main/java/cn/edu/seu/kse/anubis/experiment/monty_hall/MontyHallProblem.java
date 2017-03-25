@@ -37,6 +37,8 @@ public class MontyHallProblem {
     protected int round;
     protected int problemN=3;
 
+    protected String testId;
+
     public MontyHallProblem(){
         expStat=new ExperimentStatInfo();
         translator=new WeakASPTranslator();
@@ -57,6 +59,7 @@ public class MontyHallProblem {
 //        expStat.time=(end.getTime()-begin.getTime())/1000;
         expStat.time=(end.getTime()-begin.getTime())*1.0/1000/round;
         expStat.cpuTime/=round;
+        expStat.testId=testId;
 //        System.out.printf("time: %f, cputime: %f%n",expStat.time,expStat.cpuTime);
         writeLog();
     }
@@ -177,5 +180,13 @@ public class MontyHallProblem {
 
     public void setLogfile(String logfile) {
         this.logfile = logfile;
+    }
+
+    public String getTestId() {
+        return testId;
+    }
+
+    public void setTestId(String testId) {
+        this.testId = testId;
     }
 }

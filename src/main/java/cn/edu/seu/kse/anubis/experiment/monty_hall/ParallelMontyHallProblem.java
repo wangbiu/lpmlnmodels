@@ -46,6 +46,8 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
             ts.threadNums=cores;
             ts.threadTime/=round;
             ts.solverTime/=round;
+            ts.problemN=problemN;
+            ts.testId=testId;
         }
         File logf=new File(threadlogfile);
         BufferedWriter bw=new BufferedWriter(new FileWriter(logf,true));
@@ -74,7 +76,6 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
             e.printStackTrace();
         }
 
-        super.solveMAP();
     }
 
     @Override
@@ -94,7 +95,6 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        super.solveMarginalProbability();
     }
 
     @Override

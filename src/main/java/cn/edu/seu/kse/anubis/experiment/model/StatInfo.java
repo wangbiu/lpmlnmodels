@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class StatInfo {
     public Date now;
+    public String testId;
     protected int precise=4;
 
     public String formatDate(Date date){

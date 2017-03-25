@@ -92,10 +92,14 @@ public class Clingo4 extends LPMLNBaseSolver {
         int posend=result.indexOf("OPTIMUM FOUND");
 //        System.out.println(result);
         String asresult=result.substring(posstart,posend);
+        String statinfo=result.substring(posend);
+        result=null;
         List<WeightedAnswerSet> was=sm.parseClingoResult(asresult);
+        sm=null;
 //        System.out.println("was: "+was);
         // 抽取时间信息
-        String statinfo=result.substring(posend);
+
+
         String[] stats=statinfo.split(System.lineSeparator());
         statinfo=stats[stats.length-2];
 //        System.out.println(statinfo);

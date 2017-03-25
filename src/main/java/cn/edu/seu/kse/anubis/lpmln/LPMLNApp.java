@@ -13,6 +13,8 @@ import cn.edu.seu.kse.anubis.lpmln.translator.DLVTranslator;
 import cn.edu.seu.kse.anubis.lpmln.translator.WeakASPTranslator;
 import cn.edu.seu.kse.anubis.lpmln.translator.WeakDLVTranslator;
 import org.apache.commons.cli.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,6 +39,8 @@ public class LPMLNApp {
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
+
+    private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 
     public static void main(String args[]) throws IOException {
         Date enter=new Date();
@@ -217,7 +221,9 @@ public class LPMLNApp {
             try {
                 for(StackTraceElement ste:e.getStackTrace()){
                     sb.append(ste.toString()).append("<br>");
+
                 }
+                logger.error(e.getMessage());
                 mhe.emailWarn(sb.toString());
             } catch (Exception e1) {
                 e1.printStackTrace();
