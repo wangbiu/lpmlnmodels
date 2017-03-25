@@ -43,7 +43,7 @@ public class ParallelSolverTest {
     @Test
     public void test() throws IOException, InterruptedException {
 //        System.out.println(asptext);
-        ParallelSolver solver=new ParallelSolver(rules,asptext,3,factor,2);
+        ParallelSolver solver=new ParallelSolver(rules,asptext,6,factor,2);
         solver.call();
         Thread.sleep(3000);
         System.out.println("most probable answer set");

@@ -21,7 +21,7 @@ public abstract class BasePartition {
     protected String asptext;
     protected int factor;
     protected boolean isWeakPartition;
-    protected String basepath="";
+    protected String basepath="G:\\expriment\\parallel_reasoning\\monty_hall";
     protected String partitionId=null;
 
     public BasePartition(List<Rule> rules, String asptext, int factor){
@@ -61,8 +61,8 @@ public abstract class BasePartition {
         }
 
         split.remove(subsetIdx);
-        split.add(sub1);
         split.add(sub2);
+        split.add(sub1);
     }
 
     public void partition(int n){

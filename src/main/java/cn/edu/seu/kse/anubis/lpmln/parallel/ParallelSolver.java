@@ -23,7 +23,7 @@ public class ParallelSolver {
     List<SolverThread> threads=null;
     // 0 MAP  1 MPD
     private int taskType=2;
-    private String tmpfilepath="";
+    private String tmpfilepath="G:\\expriment\\parallel_reasoning\\monty_hall";
     private String partitionId;
 
     List<ThreadStatInfo> statInfos=null;
@@ -44,7 +44,7 @@ public class ParallelSolver {
     }
 
     public void partition() throws IOException {
-        ASPStochasticPartition partition = new ASPStochasticPartition(rules, asptext,1);
+        MontyHallPartition partition = new MontyHallPartition(rules, asptext,1);
         partitionId=partition.getPartitionId();
         partition.setBasepath(tmpfilepath);
         partition.setWeakPartition(true);
