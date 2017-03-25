@@ -23,25 +23,28 @@ public class ExperimentStatInfo  extends StatInfo{
     @Override
     public String toCSVString(){
         StringBuilder csv=new StringBuilder();
-        csv.append(formatDate(now)).append(",");
+        csv.append(testId).append(",");
         csv.append(experimentId).append(",");
         csv.append(problemN).append(",");
         csv.append(taskType).append(",");
         csv.append(threadNums).append(",");
         csv.append(formatDouble(cpuTime,precise)).append(",");
-        csv.append(formatDouble(time,precise));
+        csv.append(formatDouble(time,precise)).append(",");
+        csv.append(formatDate(now));
         return csv.toString();
     }
 
     public static String getTitle(){
         StringBuilder sb=new StringBuilder();
-        sb.append("date").append(",");
+        sb.append("testId").append(",");
+
         sb.append("experimentId").append(",");
         sb.append("number of boxes").append(",");
         sb.append("taskType").append(",");
         sb.append("number of processors").append(",");
         sb.append("solver run time").append(",");
-        sb.append("total run time").append("");
+        sb.append("total run time").append(",");
+        sb.append("date").append("");
 
         return sb.toString();
     }
