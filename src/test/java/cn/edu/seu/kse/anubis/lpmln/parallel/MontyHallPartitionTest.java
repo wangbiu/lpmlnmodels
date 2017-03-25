@@ -42,7 +42,8 @@ public class MontyHallPartitionTest {
     public void test() throws IOException {
         System.out.println(rules.size());
         MontyHallPartition partition=new MontyHallPartition(rules,asptext,factor);
-        partition.partition(16);
+        partition.setProblemN(3);
+        partition.partition(6);
 //        System.out.println(asptext);
         List<AugmentedSubset> split=partition.getSplit();
 //        List<File> splits=partition.genSplitFiles();

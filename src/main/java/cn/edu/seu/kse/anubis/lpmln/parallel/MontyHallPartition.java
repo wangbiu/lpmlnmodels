@@ -11,7 +11,9 @@ import java.util.List;
 public class MontyHallPartition extends BasePartition {
     private int cnt=0;
     private int rsize;
-    private double base=Math.log(2);
+
+    // 至少需要8个门
+    private int problemN=3;
 
 
     public MontyHallPartition(List<Rule> rules, String asptext, int factor) {
@@ -27,6 +29,25 @@ public class MontyHallPartition extends BasePartition {
     @Override
     public int selectRule(AugmentedSubset subset) {
         boolean isok=false;
+
+        Rule rule=null;
+
+        for(int i=cnt;i<rsize;i++){
+            if(i%problemN == problemN -1){
+                continue;
+            }
+            rule=rules.get(i);
+            isok = rule.isSoft() && !subset.getAsprules().contains(i) && !subset.getRejectrule().contains(i);
+            if(isok){
+                cnt=i+1;
+                break;
+            }
+        }
+        return cnt-1;
+    }
+
+    public int selectSeqRule(AugmentedSubset subset) {
+        boolean isok=false;
         Rule rule=null;
         for(int i=cnt;i<rsize;i++){
             rule=rules.get(i);
@@ -37,5 +58,13 @@ public class MontyHallPartition extends BasePartition {
             }
         }
         return cnt-1;
+    }
+
+    public int getProblemN() {
+        return problemN;
+    }
+
+    public void setProblemN(int problemN) {
+        this.problemN = problemN;
     }
 }
