@@ -6,6 +6,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * Created by 王彬 on 2017/3/24.
@@ -16,6 +17,7 @@ public class Experiment {
     protected String logfile=basepath+"/log/monty-hall-single";
     protected String threadLogFile=basepath+"/log/thread-log";
     protected String email_addr="wangbiu@foxmail.com";
+    protected String testId= UUID.randomUUID().toString();
 
     public void emailAlert(String title, String text,String address) throws Exception {
         Properties props=new Properties();

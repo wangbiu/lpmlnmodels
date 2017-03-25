@@ -112,7 +112,9 @@ public class MontyHallExperiment extends Experiment{
         mhp.setProblemN(problemN);
         mhp.setRound(round);
         mhp.setTaskType(taskType);
+        mhp.setTestId(testId);
         mhp.runExperiment();
+
         mhp=null;
     }
 
@@ -123,7 +125,9 @@ public class MontyHallExperiment extends Experiment{
         pmhp.setTaskType(taskType);
         pmhp.setCores(cores);
         pmhp.setRound(round);
+        pmhp.setTestId(testId);
         pmhp.runExperiment();
+
         pmhp=null;
     }
 
