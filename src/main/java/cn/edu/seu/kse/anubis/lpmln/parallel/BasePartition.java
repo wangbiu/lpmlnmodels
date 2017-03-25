@@ -31,6 +31,7 @@ public abstract class BasePartition {
         split=new ArrayList<>();
         AugmentedSubset subset=new AugmentedSubset();
         split.add(subset);
+        partitionId= UUID.randomUUID().toString();
     }
 
 
