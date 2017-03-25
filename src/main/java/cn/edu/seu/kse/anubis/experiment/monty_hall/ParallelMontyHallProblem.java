@@ -46,6 +46,7 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
             ts.threadNums=cores;
             ts.threadTime/=round;
             ts.solverTime/=round;
+            ts.problemN=problemN;
         }
         File logf=new File(threadlogfile);
         BufferedWriter bw=new BufferedWriter(new FileWriter(logf,true));

@@ -9,6 +9,8 @@ import java.util.Date;
 public class ThreadStatInfo extends StatInfo{
     // 实验编号
     public String experimentId;
+    // 盒子数量
+    public int problemN;
     // 任务类型 0=MAP 任务， 1=Marginal Distribution 任务
     public int taskType;
     // 该线程求得回答集数
@@ -32,11 +34,15 @@ public class ThreadStatInfo extends StatInfo{
     public String toCSVString(){
         StringBuilder csv=new StringBuilder();
         csv.append(formatDate(now)).append(",");
-        csv.append(experimentId).append(",").append(taskType);
-        csv.append(",").append(ansNums).append(",").append(formatDouble(solverTime,precise));
-        csv.append(",").append(formatDouble(threadTime,precise));
-        csv.append(",").append(threadNums).append(",").append(threadId);
-        csv.append(",").append(partitionId);
+        csv.append(experimentId).append(",");
+        csv.append(problemN).append(",");
+        csv.append(taskType).append(",");
+        csv.append(ansNums).append(",");
+        csv.append(formatDouble(solverTime,precise)).append(",");
+        csv.append(formatDouble(threadTime,precise)).append(",");
+        csv.append(threadNums).append(",");
+        csv.append(threadId).append(",");
+        csv.append(partitionId);
         return csv.toString();
     }
 
@@ -44,6 +50,7 @@ public class ThreadStatInfo extends StatInfo{
         StringBuilder sb=new StringBuilder();
         sb.append("date").append(",");
         sb.append("experimentId").append(",");
+        sb.append("number of boxes").append(",");
         sb.append("taskType").append(",");
         sb.append("number of stable models").append(",");
         sb.append("solver run time of an augmented subset").append(",");

@@ -24,9 +24,12 @@ public class ExperimentStatInfo  extends StatInfo{
     public String toCSVString(){
         StringBuilder csv=new StringBuilder();
         csv.append(formatDate(now)).append(",");
-        csv.append(experimentId).append(",").append(problemN).append(",").append(taskType);
-        csv.append(",").append(threadNums);
-        csv.append(",").append(formatDouble(cpuTime,precise)).append(",").append(formatDouble(time,precise));
+        csv.append(experimentId).append(",");
+        csv.append(problemN).append(",");
+        csv.append(taskType).append(",");
+        csv.append(threadNums).append(",");
+        csv.append(formatDouble(cpuTime,precise)).append(",");
+        csv.append(formatDouble(time,precise));
         return csv.toString();
     }
 
