@@ -74,7 +74,6 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
             e.printStackTrace();
         }
 
-        super.solveMAP();
     }
 
     @Override
@@ -94,7 +93,6 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        super.solveMarginalProbability();
     }
 
     @Override
