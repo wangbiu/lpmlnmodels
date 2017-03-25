@@ -70,7 +70,7 @@ public class MontyHallExperiment extends Experiment{
     public void testSingleMAP() throws IOException {
 //        writeTitle(logfile, ExperimentStatInfo.getTitle());
         for(int i=problemN;i<=maxProblemN;i++){
-            logger.info("MAP 任务： problemN={}", problemN);
+            logger.info("MAP 任务： problemN={}", i);
             startSingle(i,round,0);
         }
     }
@@ -81,7 +81,7 @@ public class MontyHallExperiment extends Experiment{
 //        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
         for(int c=cores;c<=maxCores;c++){
             for(int p=problemN;p<=maxProblemN;p++){
-                logger.info("MPD 任务： problemN={}, cores={}",p,c);
+                logger.info("MAP 任务： problemN={}, cores={}",p,c);
                 startParallel(p,round,c,0);
             }
         }
@@ -91,6 +91,7 @@ public class MontyHallExperiment extends Experiment{
     public void testSingleMPD() throws IOException {
 //        writeTitle(logfile, ExperimentStatInfo.getTitle());
         for(int i=problemN;i<=maxProblemN;i++){
+            logger.info("MPD 任务： problemN={}", i);
             startSingle(i,round,1);
         }
     }
@@ -100,6 +101,7 @@ public class MontyHallExperiment extends Experiment{
 //        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
         for(int p=problemN;p<=maxProblemN;p++){
             for(int c=cores;c<=maxCores;c++){
+                logger.info("MPD 任务： problemN={}, cores={}",p,c);
                 startParallel(p,round,c,1);
             }
         }
