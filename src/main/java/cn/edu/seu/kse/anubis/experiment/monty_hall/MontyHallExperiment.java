@@ -68,7 +68,7 @@ public class MontyHallExperiment extends Experiment{
 
 
     public void testSingleMAP() throws IOException {
-        writeTitle(logfile, ExperimentStatInfo.getTitle());
+//        writeTitle(logfile, ExperimentStatInfo.getTitle());
         for(int i=problemN;i<=maxProblemN;i++){
             logger.info("MAP 任务： problemN={}", problemN);
             startSingle(i,round,0);
@@ -77,8 +77,8 @@ public class MontyHallExperiment extends Experiment{
 
 
     public void testParallelMAP() throws IOException{
-        writeTitle(logfile, ExperimentStatInfo.getTitle());
-        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
+//        writeTitle(logfile, ExperimentStatInfo.getTitle());
+//        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
         for(int c=cores;c<=maxCores;c++){
             for(int p=problemN;p<=maxProblemN;p++){
                 logger.info("MPD 任务： problemN={}, cores={}",p,c);
@@ -89,15 +89,15 @@ public class MontyHallExperiment extends Experiment{
     }
 
     public void testSingleMPD() throws IOException {
-        writeTitle(logfile, ExperimentStatInfo.getTitle());
+//        writeTitle(logfile, ExperimentStatInfo.getTitle());
         for(int i=problemN;i<=maxProblemN;i++){
             startSingle(i,round,1);
         }
     }
 
     public void testParallelMPD() throws IOException{
-        writeTitle(logfile, ExperimentStatInfo.getTitle());
-        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
+//        writeTitle(logfile, ExperimentStatInfo.getTitle());
+//        writeTitle(threadLogFile, ThreadStatInfo.getTitle());
         for(int p=problemN;p<=maxProblemN;p++){
             for(int c=cores;c<=maxCores;c++){
                 startParallel(p,round,c,1);
@@ -169,8 +169,10 @@ public class MontyHallExperiment extends Experiment{
         sb.append(". ").append(line).append(line);
         sb.append("日志内容：").append(line);
         sb.append("<strong>").append(logfile).append("</strong>").append(line);
+        sb.append(ExperimentStatInfo.getTitle()).append(line).append(line);
         sb.append(readFile(logfile)).append(line);
         sb.append("<strong>").append(threadLogFile).append("</strong>").append(line);
+        sb.append(ThreadStatInfo.getTitle()).append(line).append(line);
         sb.append(readFile(threadLogFile)).append(line);
 
         super.emailAlert("实验完成!!!",sb.toString(), this.email_addr);
