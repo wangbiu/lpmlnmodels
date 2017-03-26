@@ -15,6 +15,7 @@ public class BirdPartition extends BasePartition {
 
     public BirdPartition(List<Rule> rules, String asptext, int factor) {
         super(rules, asptext, factor);
+        rsize=rules.size();
     }
 
 

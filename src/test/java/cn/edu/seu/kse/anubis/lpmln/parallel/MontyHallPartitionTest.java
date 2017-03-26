@@ -17,7 +17,7 @@ import java.util.List;
  * Created by 王彬 on 2017/3/25.
  */
 public class MontyHallPartitionTest {
-    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\bird\\m-3.txt";
+    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\bird\\b-10.txt";
     private File rulef=new File(path);
     private int factor=0;
     private List<Rule> rules=null;
@@ -32,6 +32,7 @@ public class MontyHallPartitionTest {
         herbrandUniverse=sm.getHerbrandUniverse();
         System.out.println("factor "+factor);
         ASPGround4ParallelTranslator translator=new ASPGround4ParallelTranslator();
+        translator.setWeakTranslate(true);
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         asptext=translator.translate(rules);
@@ -46,20 +47,21 @@ public class MontyHallPartitionTest {
         partition.partition(6);
 //        System.out.println(asptext);
         List<AugmentedSubset> split=partition.getSplit();
-//        List<File> splits=partition.genSplitFiles();
+        List<File> splits=partition.genSplitFiles();
 //        System.out.println(splits);
 
         System.out.println(split);
     }
 
     @Test
-    public void testBirdPartition(){
+    public void testBirdPartition() throws IOException {
         System.out.println(rules.size());
         BirdPartition partition=new BirdPartition(rules,asptext,factor);
-        partition.partition(6);
+        partition.setWeakPartition(true);
+        partition.partition(16);
 //        System.out.println(asptext);
         List<AugmentedSubset> split=partition.getSplit();
-//        List<File> splits=partition.genSplitFiles();
+        List<File> splits=partition.genSplitFiles();
 //        System.out.println(splits);
 
         System.out.println(split);

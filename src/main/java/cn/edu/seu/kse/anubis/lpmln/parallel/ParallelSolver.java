@@ -48,7 +48,10 @@ public class ParallelSolver {
         BasePartition partition=null;
         if(experimentName.equals("monty_hall")){
             partition = new MontyHallPartition(rules, asptext,1);
-        }else {
+        }else if(experimentName.equals("bird")){
+            partition = new BirdPartition(rules,asptext,1);
+        }
+        else {
             partition= new ASPStochasticPartition(rules,asptext,1);
         }
 

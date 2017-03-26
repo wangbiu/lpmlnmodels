@@ -24,7 +24,7 @@ public abstract class BasePartition {
     protected String asptext;
     protected int factor;
     protected boolean isWeakPartition;
-    protected String basepath="G:\\expriment\\parallel_reasoning\\friend";
+    protected String basepath="G:\\expriment\\parallel_reasoning\\bird";
     protected String partitionId=null;
     private static Logger logger = LogManager.getLogger(BasePartition.class.getName());
 
