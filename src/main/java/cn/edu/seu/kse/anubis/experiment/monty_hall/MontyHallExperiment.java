@@ -30,7 +30,7 @@ public class MontyHallExperiment extends Experiment{
     public void test(boolean isParallel, int taskId) throws Exception {
         //TODO: 用于提前装载所有的类，消除首次运行的时间消耗
         startSingle(3,2,0);
-        logger.info("实验开始： isParallel={}, taskId={}",isParallel,taskId);
+        logger.info("实验开始： isParallel={}, taskId={}, experimentName={}, programPrefix={}",isParallel,taskId,experimentName,programPrefix);
 
         initLogFile();
         parallel=isParallel;
@@ -170,6 +170,7 @@ public class MontyHallExperiment extends Experiment{
         StringBuilder sb=new StringBuilder();
         sb.append("实验信息：").append("taskId ").append(taskId).append(", <span style='color:red;'>是否并行</span> ").append(parallel);
         sb.append(line);
+        sb.append("实验名称： ").append(experimentName).append(", file prefix: ").append(programPrefix).append(line);
         sb.append("问题信息：").append("problemN ").append(problemN).append(", max problem N ").append(maxProblemN).append(line);
         sb.append("并行信息：").append("cores ").append(cores).append(", max cores ").append(maxCores).append(line);
         sb.append("实验结束，日志文件为：").append(line);
@@ -183,7 +184,7 @@ public class MontyHallExperiment extends Experiment{
         sb.append(ThreadStatInfo.getTitle()).append(line).append(line);
         sb.append(readFile(threadLogFile)).append(line);
 
-        super.emailAlert("实验完成!!!",sb.toString(), this.email_addr);
+        super.emailAlert(experimentName+"实验完成!!!",sb.toString(), this.email_addr);
     }
 
     public void emailWarn(String text) throws Exception {
