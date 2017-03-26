@@ -192,6 +192,7 @@ public class LPMLNApp {
     private static void experiment(CommandLine cmd){
         int problemN,maxProblemN,cores,maxCores,round,taskId;
         boolean isParallel;
+        String expName,expFPrefix;
         if(cmd.hasOption("parallel")){
             isParallel=true;
         }else {
@@ -204,6 +205,8 @@ public class LPMLNApp {
         maxCores=Integer.valueOf(cmd.getOptionValue("exp-max-cores"));
         round=Integer.valueOf(cmd.getOptionValue("exp-round"));
         taskId=Integer.valueOf(cmd.getOptionValue("exp-task-id"));
+        expName=cmd.getOptionValue("exp-name");
+        expFPrefix=cmd.getOptionValue("exp-file-prefix");
 
 //        System.out.printf("problemN: %d, maxPN: %d, cores: %d, maxCores: %d, round: %d, taskId: %d",problemN,maxProblemN,cores,
 //                maxCores,round,taskId);
