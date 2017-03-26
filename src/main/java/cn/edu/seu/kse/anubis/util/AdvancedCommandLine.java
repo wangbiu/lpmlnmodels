@@ -3,13 +3,14 @@ package cn.edu.seu.kse.anubis.util;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.anubis.lpmln.solver.ClingoResultProcessor;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -25,6 +26,7 @@ public class AdvancedCommandLine {
     protected List<WeightedAnswerSet> was=null;
     protected double cputime=0;
     final public String killSig="--END of Process--";
+    final private static Logger logger= LogManager.getLogger();
 
 
     public AdvancedCommandLine() {
@@ -93,7 +95,7 @@ public class AdvancedCommandLine {
                                     try {
                                         br.close();
                                     } catch (IOException e) {
-                                        e.printStackTrace();
+                                        logger.error(e.getMessage());
                                     }
                             }
                         }
@@ -139,9 +141,9 @@ public class AdvancedCommandLine {
             }
 
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         } catch (InterruptedException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
         finally {
             if (br!=null){
