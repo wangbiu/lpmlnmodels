@@ -2,6 +2,8 @@ package cn.edu.seu.kse.anubis.lpmln.solver;
 
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.anubis.lpmln.solver.syntax.SyntaxMoudle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ public class ClingoResultProcessor extends Thread {
     private double cputime=0;
     private boolean hascputime=false;
     private String killSig=null;
+    private Logger logger= LogManager.getLogger(ClingoResultProcessor.class.getName());
 
 
     public ClingoResultProcessor(LinkedBlockingDeque<String> ans,String killSig){
@@ -38,6 +41,7 @@ public class ClingoResultProcessor extends Thread {
             try {
                 sm=new SyntaxMoudle();
                 as=answers.take();
+//                logger.debug(as);
 //                System.out.println(as);
 
                 //线程终止逻辑，收到终止信号即可停止
@@ -56,7 +60,14 @@ public class ClingoResultProcessor extends Thread {
                     as=as.substring(0,optpos);
 //                    System.out.println(as);
                 }
-                tmpwas=sm.parseClingoResult(as);
+
+                try{
+                    tmpwas=sm.parseClingoResult(as);
+                }catch (RuntimeException re){
+//                    logger.debug(as);
+                    logger.error(re.getMessage());
+                }
+
                 was.addAll(tmpwas);
 
             } catch (InterruptedException e) {

@@ -26,7 +26,7 @@ public class AdvancedCommandLine {
     protected List<WeightedAnswerSet> was=null;
     protected double cputime=0;
     final public String killSig="--END of Process--";
-    final private static Logger logger= LogManager.getLogger();
+    final private static Logger logger= LogManager.getLogger(AdvancedCommandLine.class.getName());
 
 
     public AdvancedCommandLine() {
@@ -128,7 +128,7 @@ public class AdvancedCommandLine {
                     if(res.indexOf("OPTIMUM FOUND")<0){
                         progOut.add(res.toString());
                         res=new StringBuilder();
-                        cnt=1;
+                        cnt=0;
                     }
                 }
                 cnt++;
