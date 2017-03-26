@@ -2,6 +2,9 @@ package cn.edu.seu.kse.anubis.lpmln.parallel;
 
 import cn.edu.seu.kse.anubis.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sun.rmi.runtime.Log;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,6 +26,7 @@ public abstract class BasePartition {
     protected boolean isWeakPartition;
     protected String basepath="G:\\expriment\\parallel_reasoning\\monty_hall";
     protected String partitionId=null;
+    private static Logger logger = LogManager.getLogger(BasePartition.class.getName());
 
     public BasePartition(List<Rule> rules, String asptext, int factor){
         this.rules=rules;
@@ -104,8 +108,10 @@ public abstract class BasePartition {
             prog=sub.getTranslationText(rules,asptext);
             bw.write(prog);
             bw.close();
+
             splits.add(outf);
         }
+        logger.debug("partitionId = {}, files = {}",partitionId,splits);
         return splits;
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
  * Created by 王彬 on 2017/3/23.
  */
 public class ParallelSolverTest {
-    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\monty_hall\\m-3.txt";
+    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\monty_hall\\m-20.txt";
     private File rulef=new File(path);
     private int factor=0;
     private List<Rule> rules=null;
@@ -45,7 +45,7 @@ public class ParallelSolverTest {
 //        System.out.println(asptext);
         ParallelSolver solver=new ParallelSolver(rules,asptext,6,factor,2);
         solver.call();
-        Thread.sleep(3000);
+        Thread.sleep(6000);
         System.out.println("most probable answer set");
         System.out.println(solver.findMaxWeightedAs());
         System.out.println("marginal probability");
