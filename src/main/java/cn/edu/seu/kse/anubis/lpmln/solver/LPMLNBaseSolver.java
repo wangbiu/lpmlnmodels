@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Created by 王彬 on 2016/8/31.
  */
-public class LPMLNBaseSolver extends BaseSolver {
+public class LPMLNBaseSolver extends AdvancedBaseSolver {
 
     @Override
     public String marginalDistribution(int factor){

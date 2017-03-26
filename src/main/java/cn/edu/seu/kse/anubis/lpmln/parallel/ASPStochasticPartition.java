@@ -15,7 +15,6 @@ public class ASPStochasticPartition extends BasePartition {
 
     public ASPStochasticPartition(List<Rule> rules, String asptext, int factor) {
         super(rules, asptext, factor);
-        partitionId= UUID.randomUUID().toString();
     }
 
     @Override

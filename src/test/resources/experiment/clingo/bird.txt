@@ -53,3 +53,7 @@ b(rlabel4(4)).
 h(rlabel4(4)) :- migratoryBird(jo), apply(rlabel4(4)).
 h(rlabel4(4)) :- migratoryBird(jo), -apply(rlabel4(4)).
 :~ sat(rlabel4(4)). [1@0, 4]
+
+kse_trick.
+:~ kse_trick. [1@0]
+:~ kse_trick. [1@1]
