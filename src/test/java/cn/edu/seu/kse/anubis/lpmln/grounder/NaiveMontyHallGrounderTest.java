@@ -30,7 +30,7 @@ public class NaiveMontyHallGrounderTest {
         for(int i=3;i<=40;i++){
             outf=new File("m-"+i+".txt");
             bw=new BufferedWriter(new FileWriter(outf));
-            grounder.setBoxNumber(i);
+            grounder.setVarNumber(i);
             bw.write(grounder.ground());
             bw.write(System.lineSeparator());
             bw.write("#show select/1.");
