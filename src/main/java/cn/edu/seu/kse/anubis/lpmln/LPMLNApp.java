@@ -216,6 +216,8 @@ public class LPMLNApp {
         mhe.setMaxCores(maxCores);
         mhe.setMaxProblemN(maxProblemN);
         mhe.setRound(round);
+        mhe.setExperimentName(expName);
+        mhe.setProgramPrefix(expFPrefix);
 
         try {
             mhe.test(isParallel,taskId);

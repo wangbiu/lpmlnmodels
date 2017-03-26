@@ -16,11 +16,17 @@ public class Experiment {
     protected String experimentName="monty_hall";
     protected String programPrefix="m-";
 
-    protected String basepath="/home/wangbin/experiments/parallel_reasoning/"+experimentName;
-    protected String logfile=basepath+"/log/"+experimentName+"-single";
-    protected String threadLogFile=basepath+"/log/"+experimentName+"-thread-log";
+    protected String basepath="/home/wangbin/experiments/parallel_reasoning/";
+    protected String logfile=null;
+    protected String threadLogFile=null;
     protected String email_addr="wangbiu@foxmail.com";
     protected String testId= UUID.randomUUID().toString();
+
+    protected void initParameters(){
+        basepath=basepath+experimentName;
+        logfile=basepath+"/log/"+experimentName+"-single";
+        threadLogFile=basepath+"/log/"+experimentName+"-thread-log";
+    }
 
 
     public void emailAlert(String title, String text,String address) throws Exception {
@@ -83,5 +89,11 @@ public class Experiment {
         this.experimentName = experimentName;
     }
 
+    public String getProgramPrefix() {
+        return programPrefix;
+    }
 
+    public void setProgramPrefix(String programPrefix) {
+        this.programPrefix = programPrefix;
+    }
 }

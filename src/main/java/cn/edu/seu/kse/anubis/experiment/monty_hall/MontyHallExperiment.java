@@ -28,9 +28,10 @@ public class MontyHallExperiment extends Experiment{
 
 
     public void test(boolean isParallel, int taskId) throws Exception {
+        logger.info("实验开始： isParallel={}, taskId={}, experimentName={}, programPrefix={}",isParallel,taskId,experimentName,programPrefix);
+        initParameters();
         //TODO: 用于提前装载所有的类，消除首次运行的时间消耗
         startSingle(3,2,0);
-        logger.info("实验开始： isParallel={}, taskId={}, experimentName={}, programPrefix={}",isParallel,taskId,experimentName,programPrefix);
 
         initLogFile();
         parallel=isParallel;
