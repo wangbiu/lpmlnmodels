@@ -1,0 +1,38 @@
+1 : residentBird(1). 
+2 : migratoryBird(1).
+1 : residentBird(2). 
+2 : migratoryBird(2).
+1 : residentBird(3). 
+2 : migratoryBird(3).
+1 : residentBird(4). 
+2 : migratoryBird(4).
+1 : residentBird(5). 
+2 : migratoryBird(5).
+1 : residentBird(6). 
+2 : migratoryBird(6).
+1 : residentBird(7). 
+2 : migratoryBird(7).
+
+bird(1) :- residentBird(1).
+bird(2) :- residentBird(2).
+bird(3) :- residentBird(3).
+bird(4) :- residentBird(4).
+bird(5) :- residentBird(5).
+bird(6) :- residentBird(6).
+bird(7) :- residentBird(7).
+bird(1) :- migratoryBird(1).
+bird(2) :- migratoryBird(2).
+bird(3) :- migratoryBird(3).
+bird(4) :- migratoryBird(4).
+bird(5) :- migratoryBird(5).
+bird(6) :- migratoryBird(6).
+bird(7) :- migratoryBird(7).
+ :- migratoryBird(1), residentBird(1).
+ :- migratoryBird(2), residentBird(2).
+ :- migratoryBird(3), residentBird(3).
+ :- migratoryBird(4), residentBird(4).
+ :- migratoryBird(5), residentBird(5).
+ :- migratoryBird(6), residentBird(6).
+ :- migratoryBird(7), residentBird(7).
+
+#show bird/1.
