@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by 王彬 on 2017/3/23.
  */
-public class AugmentedSubsetSolver extends BaseSolver {
+public class AugmentedSubsetSolver extends AdvancedBaseSolver {
     private int wh;
     private int ws;
     //全部回答集的soft weight

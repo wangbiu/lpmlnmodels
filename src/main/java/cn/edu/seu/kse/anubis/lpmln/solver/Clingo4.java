@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Clingo4 extends LPMLNBaseSolver {
     private JSONObject times;
-    private SolverStats sta=new SolverStats();
+//    private SolverStats sta=new SolverStats();
 
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
@@ -115,12 +115,11 @@ public class Clingo4 extends LPMLNBaseSolver {
 
     @Override
     public SolverStats genSolverStatisticsInfo() {
-
 //        sta.setTotal(times.getDouble("Total"));
 //        sta.setSolve(times.getDouble("Solve"));
 //        sta.setModel(times.getDouble("Model"));
 //        sta.setUnsat(times.getDouble("Unsat"));
 //        sta.setCpu(times.getDouble("CPU"));
-        return sta;
+        return super.genSolverStatisticsInfo();
     }
 }

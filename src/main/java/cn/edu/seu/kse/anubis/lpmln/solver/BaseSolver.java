@@ -23,6 +23,7 @@ public class BaseSolver {
     final protected int WIN_NT=1;
     final protected int UNIX=0;
     protected double totalSolverTime;
+    protected SolverStats sta = new SolverStats();
 
     public List<WeightedAnswerSet> call(String cmd){
         Date enter=new Date();
@@ -94,8 +95,7 @@ public class BaseSolver {
 
 
     public SolverStats genSolverStatisticsInfo(){
-        SolverStats sta = new SolverStats();
-
+        sta.setTotal(totalSolverTime);
         return sta;
     }
 
