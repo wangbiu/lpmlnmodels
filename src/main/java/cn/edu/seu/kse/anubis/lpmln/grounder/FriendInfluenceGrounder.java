@@ -29,12 +29,12 @@ public class FriendInfluenceGrounder extends BaseGrounder {
     }
 
     public String groundInfluenceFriend(){
-        String temp="1 : influence({{1}},{{2}}) :- friend({{1}},{{2}}).";
+        String temp="influence({{1}},{{2}}) :- friend({{1}},{{2}}).";
         return groundTemplate(temp,2);
     }
 
     public String groundInfluenceTransity(){
-        String temp="influence({{1}},{{2}}) :- influence({{1}},{{3}}), influence({{3}},{{2}}).";
+        String temp="1 : influence({{1}},{{2}}) :- influence({{1}},{{3}}), influence({{3}},{{2}}).";
         return groundTemplate(temp,3);
     }
 

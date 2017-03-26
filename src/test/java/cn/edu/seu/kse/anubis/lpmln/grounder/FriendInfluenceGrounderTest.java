@@ -24,7 +24,7 @@ public class FriendInfluenceGrounderTest {
         File outf=null;
         BufferedWriter bw =null;
 
-        for(int i=3;i<=40;i++){
+        for(int i=3;i<=20;i++){
             outf=new File("f-"+i+".txt");
             bw=new BufferedWriter(new FileWriter(outf));
             grounder.setVarNumber(i);
