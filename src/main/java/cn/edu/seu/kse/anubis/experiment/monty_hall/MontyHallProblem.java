@@ -38,6 +38,7 @@ public class MontyHallProblem {
     protected int problemN=3;
 
     protected String testId;
+    protected String experimentName=null;
 
     public MontyHallProblem(){
         expStat=new ExperimentStatInfo();
@@ -196,5 +197,13 @@ public class MontyHallProblem {
 
     public void setProgramPrefix(String programPrefix) {
         this.programPrefix = programPrefix;
+    }
+
+    public String getExperimentName() {
+        return experimentName;
+    }
+
+    public void setExperimentName(String experimentName) {
+        this.experimentName = experimentName;
     }
 }
