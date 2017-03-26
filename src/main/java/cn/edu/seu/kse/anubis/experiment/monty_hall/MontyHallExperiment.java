@@ -136,12 +136,14 @@ public class MontyHallExperiment extends Experiment{
     private void initSingle(MontyHallProblem mhp) throws IOException {
         mhp.setBasepath(basepath);
         mhp.setLogfile(logfile);
+        mhp.setProgramPrefix(programPrefix);
     }
 
     private void initParallel(ParallelMontyHallProblem pmhp) throws IOException {
         pmhp.setBasepath(basepath);
         pmhp.setLogfile(logfile);
         pmhp.setThreadlogfile(threadLogFile);
+        pmhp.setProgramPrefix(programPrefix);
     }
 
     private void writeTitle(String filePath, String text) throws IOException {
@@ -181,7 +183,7 @@ public class MontyHallExperiment extends Experiment{
     }
 
     public void emailWarn(String text) throws Exception {
-        super.emailAlert("实验失败!!!",text,email_addr);
+        super.emailAlert(experimentName+" 实验失败!!!",text,email_addr);
     }
 
     private String readFile(String file) throws IOException {
@@ -201,29 +203,9 @@ public class MontyHallExperiment extends Experiment{
         }
     }
 
-    public String getBasepath() {
-        return basepath;
-    }
 
-    public void setBasepath(String basepath) {
-        this.basepath = basepath;
-    }
 
-    public String getLogfile() {
-        return logfile;
-    }
 
-    public void setLogfile(String logfile) {
-        this.logfile = logfile;
-    }
-
-    public String getThreadLogFile() {
-        return threadLogFile;
-    }
-
-    public void setThreadLogFile(String threadLogFile) {
-        this.threadLogFile = threadLogFile;
-    }
 
     public int getRound() {
         return round;

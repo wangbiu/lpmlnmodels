@@ -24,7 +24,7 @@ import java.util.UUID;
 public class MontyHallProblem {
     protected String basepath="G:/expriment/parallel_reasoning/monty_hall";
     protected String logfile=basepath+"/monty-hall-single.log";
-    final protected String programPrefix="m-";
+    protected String programPrefix="m-";
     protected List<Rule> rules;
     protected int factor;
     protected HashSet<String> herbrandUniverse;
@@ -188,5 +188,13 @@ public class MontyHallProblem {
 
     public void setTestId(String testId) {
         this.testId = testId;
+    }
+
+    public String getProgramPrefix() {
+        return programPrefix;
+    }
+
+    public void setProgramPrefix(String programPrefix) {
+        this.programPrefix = programPrefix;
     }
 }
