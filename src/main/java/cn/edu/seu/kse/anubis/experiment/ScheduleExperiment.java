@@ -41,7 +41,7 @@ public class ScheduleExperiment {
         experiment.setProblemN(12);
         experiment.setCores(1);
         experiment.setMaxCores(16);
-        experiment.setMaxProblemN(14);
+        experiment.setMaxProblemN(13);
         experiment.setRound(5);
         experiment.setExperimentName("bird_sto");
         experiment.setProgramPrefix("b-");
@@ -54,7 +54,7 @@ public class ScheduleExperiment {
         experiment.setProblemN(12);
         experiment.setCores(1);
         experiment.setMaxCores(16);
-        experiment.setMaxProblemN(14);
+        experiment.setMaxProblemN(13);
         experiment.setRound(5);
         experiment.setExperimentName("bird");
         experiment.setProgramPrefix("b-");
