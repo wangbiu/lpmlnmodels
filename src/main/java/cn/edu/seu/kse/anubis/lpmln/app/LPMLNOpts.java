@@ -123,6 +123,9 @@ public class LPMLNOpts {
         exp_file_prefix.setValueSeparator(' ');
         exp_file_prefix.setOptionalArg(false);
 
+        Option schedule=new Option("se","schedule",false,"scheduel experiment");
+        exp_parallel.setRequired(false);
+
 
 
         Options opts=new Options();
@@ -147,6 +150,8 @@ public class LPMLNOpts {
 
         opts.addOption(exp_file_prefix);
         opts.addOption(exp_name);
+
+        opts.addOption(schedule);
 
         return opts;
     }

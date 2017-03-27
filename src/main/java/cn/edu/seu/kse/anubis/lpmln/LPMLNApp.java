@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.anubis.lpmln;
 
+import cn.edu.seu.kse.anubis.experiment.ScheduleExperiment;
 import cn.edu.seu.kse.anubis.experiment.monty_hall.MontyHallExperiment;
 import cn.edu.seu.kse.anubis.lpmln.app.LPMLNOpts;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
@@ -57,6 +58,9 @@ public class LPMLNApp {
                 formatter.printHelp("lpmlnmodels <params>",opts);
             }else if(cmd.hasOption("experiment")){
                 experiment(cmd);
+            }else if(cmd.hasOption("schedule")){
+                ScheduleExperiment se=new ScheduleExperiment();
+                se.startTest();
             }
             else {
                 if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
