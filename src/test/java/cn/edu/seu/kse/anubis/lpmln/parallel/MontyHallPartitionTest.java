@@ -17,7 +17,7 @@ import java.util.List;
  * Created by 王彬 on 2017/3/25.
  */
 public class MontyHallPartitionTest {
-    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\bird\\b-10.txt";
+    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\bird\\b-11.txt";
     private File rulef=new File(path);
     private int factor=0;
     private List<Rule> rules=null;
@@ -35,6 +35,7 @@ public class MontyHallPartitionTest {
         translator.setWeakTranslate(true);
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
+        translator.setMetarule(sm.getMetarule());
         asptext=translator.translate(rules);
     }
 
@@ -58,7 +59,7 @@ public class MontyHallPartitionTest {
         System.out.println(rules.size());
         BirdPartition partition=new BirdPartition(rules,asptext,factor);
         partition.setWeakPartition(true);
-        partition.partition(16);
+        partition.partition(1);
 //        System.out.println(asptext);
         List<AugmentedSubset> split=partition.getSplit();
         List<File> splits=partition.genSplitFiles();
