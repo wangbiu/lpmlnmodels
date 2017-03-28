@@ -1,4 +1,4 @@
-package cn.edu.seu.kse.anubis.lpmln;
+package cn.edu.seu.kse.anubis.lpmln.misc;
 
 import cn.edu.seu.kse.anubis.lpmln.app.LPMLNOpts;
 import org.apache.commons.cli.*;

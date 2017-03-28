@@ -23,7 +23,7 @@ public class BirdGrounderTest {
         File outf=null;
         BufferedWriter bw =null;
 
-        for(int i=3;i<=60;i++){
+        for(int i=1;i<=2;i++){
             outf=new File("b-"+i+".txt");
             bw=new BufferedWriter(new FileWriter(outf));
             grounder.setVarNumber(i);
