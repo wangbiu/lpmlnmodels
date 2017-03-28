@@ -16,8 +16,8 @@ public class ScheduleExperiment {
     public void startTest(){
         try {
             testParallelBirdSto();
-            testParallelBirdHeu();
             testParallelMHSto();
+            testParallelBirdHeu();
             testParallelMHHeu();
         } catch (Exception e) {
             StringBuilder sb=new StringBuilder();
@@ -38,9 +38,9 @@ public class ScheduleExperiment {
     public void testParallelBirdSto() throws Exception {
         experiment=null;
         experiment=new MontyHallExperiment();
-        experiment.setProblemN(12);
+        experiment.setProblemN(13);
         experiment.setCores(1);
-        experiment.setMaxCores(16);
+        experiment.setMaxCores(32);
         experiment.setMaxProblemN(13);
         experiment.setRound(5);
         experiment.setExperimentName("bird_sto");
@@ -51,9 +51,9 @@ public class ScheduleExperiment {
     public void testParallelBirdHeu() throws Exception {
         experiment=null;
         experiment=new MontyHallExperiment();
-        experiment.setProblemN(12);
+        experiment.setProblemN(13);
         experiment.setCores(1);
-        experiment.setMaxCores(16);
+        experiment.setMaxCores(32);
         experiment.setMaxProblemN(13);
         experiment.setRound(5);
         experiment.setExperimentName("bird");
@@ -64,9 +64,9 @@ public class ScheduleExperiment {
     public void testParallelMHSto() throws Exception {
         experiment=null;
         experiment=new MontyHallExperiment();
-        experiment.setProblemN(38);
+        experiment.setProblemN(40);
         experiment.setCores(1);
-        experiment.setMaxCores(16);
+        experiment.setMaxCores(32);
         experiment.setMaxProblemN(40);
         experiment.setRound(5);
         experiment.setExperimentName("monty_hall_sto");
@@ -77,9 +77,9 @@ public class ScheduleExperiment {
     public void testParallelMHHeu() throws Exception {
         experiment=null;
         experiment=new MontyHallExperiment();
-        experiment.setProblemN(38);
+        experiment.setProblemN(40);
         experiment.setCores(1);
-        experiment.setMaxCores(16);
+        experiment.setMaxCores(32);
         experiment.setMaxProblemN(40);
         experiment.setRound(5);
         experiment.setExperimentName("monty_hall");
