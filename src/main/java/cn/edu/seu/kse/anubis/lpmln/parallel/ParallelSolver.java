@@ -25,6 +25,7 @@ public class ParallelSolver {
     private int taskType=2;
     private String tmpfilepath="G:\\expriment\\parallel_reasoning\\monty_hall";
     private String partitionId;
+    private String experimentName="";
 
     List<ThreadStatInfo> statInfos=null;
 
@@ -44,7 +45,16 @@ public class ParallelSolver {
     }
 
     public void partition() throws IOException {
-        MontyHallPartition partition = new MontyHallPartition(rules, asptext,1);
+        BasePartition partition=null;
+        if(experimentName.equals("monty_hall")){
+            partition = new MontyHallPartition(rules, asptext,1);
+        }else if(experimentName.equals("bird")){
+            partition = new BirdPartition(rules,asptext,1);
+        }
+        else {
+            partition= new ASPStochasticPartition(rules,asptext,1);
+        }
+
         partitionId=partition.getPartitionId();
         partition.setBasepath(tmpfilepath);
         partition.setWeakPartition(true);
@@ -262,5 +272,13 @@ public class ParallelSolver {
 
     public void setTmpfilepath(String tmpfilepath) {
         this.tmpfilepath = tmpfilepath;
+    }
+
+    public String getExperimentName() {
+        return experimentName;
+    }
+
+    public void setExperimentName(String experimentName) {
+        this.experimentName = experimentName;
     }
 }

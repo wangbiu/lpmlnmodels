@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.anubis.lpmln;
 
+import cn.edu.seu.kse.anubis.experiment.ScheduleExperiment;
 import cn.edu.seu.kse.anubis.experiment.monty_hall.MontyHallExperiment;
 import cn.edu.seu.kse.anubis.lpmln.app.LPMLNOpts;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
@@ -57,6 +58,9 @@ public class LPMLNApp {
                 formatter.printHelp("lpmlnmodels <params>",opts);
             }else if(cmd.hasOption("experiment")){
                 experiment(cmd);
+            }else if(cmd.hasOption("schedule")){
+                ScheduleExperiment se=new ScheduleExperiment();
+                se.startTest();
             }
             else {
                 if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
@@ -192,6 +196,7 @@ public class LPMLNApp {
     private static void experiment(CommandLine cmd){
         int problemN,maxProblemN,cores,maxCores,round,taskId;
         boolean isParallel;
+        String expName,expFPrefix;
         if(cmd.hasOption("parallel")){
             isParallel=true;
         }else {
@@ -204,6 +209,8 @@ public class LPMLNApp {
         maxCores=Integer.valueOf(cmd.getOptionValue("exp-max-cores"));
         round=Integer.valueOf(cmd.getOptionValue("exp-round"));
         taskId=Integer.valueOf(cmd.getOptionValue("exp-task-id"));
+        expName=cmd.getOptionValue("exp-name");
+        expFPrefix=cmd.getOptionValue("exp-file-prefix");
 
 //        System.out.printf("problemN: %d, maxPN: %d, cores: %d, maxCores: %d, round: %d, taskId: %d",problemN,maxProblemN,cores,
 //                maxCores,round,taskId);
@@ -213,6 +220,8 @@ public class LPMLNApp {
         mhe.setMaxCores(maxCores);
         mhe.setMaxProblemN(maxProblemN);
         mhe.setRound(round);
+        mhe.setExperimentName(expName);
+        mhe.setProgramPrefix(expFPrefix);
 
         try {
             mhe.test(isParallel,taskId);

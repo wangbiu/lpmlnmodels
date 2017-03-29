@@ -111,6 +111,21 @@ public class LPMLNOpts {
         Option exp_parallel=new Option("epa","parallel",false,"parallel");
         exp_parallel.setRequired(false);
 
+        Option exp_name=new Option("en","exp-name",true,"experiment name (directory)");
+        exp_name.setRequired(false);
+        exp_name.setArgName("exp-name");
+        exp_name.setValueSeparator(' ');
+        exp_name.setOptionalArg(false);
+
+        Option exp_file_prefix=new Option("efp","exp-file-prefix",true,"experiment program file prefix");
+        exp_file_prefix.setRequired(false);
+        exp_file_prefix.setArgName("exp-file-prefix");
+        exp_file_prefix.setValueSeparator(' ');
+        exp_file_prefix.setOptionalArg(false);
+
+        Option schedule=new Option("se","schedule",false,"scheduel experiment");
+        exp_parallel.setRequired(false);
+
 
 
         Options opts=new Options();
@@ -132,6 +147,11 @@ public class LPMLNOpts {
         opts.addOption(exp_maxPN);
         opts.addOption(exp_taskId);
         opts.addOption(exp_parallel);
+
+        opts.addOption(exp_file_prefix);
+        opts.addOption(exp_name);
+
+        opts.addOption(schedule);
 
         return opts;
     }

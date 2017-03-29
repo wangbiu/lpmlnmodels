@@ -9,7 +9,7 @@ import java.util.List;
  * Created by 王彬 on 2017/1/3.
  */
 public class ASPGroundTranslator extends ASPTranslator {
-    private boolean isWeakTranslate=false;
+
 
     @Override
     protected String translateDeclarationPart(HashSet<String> hbu) {
@@ -134,13 +134,5 @@ public class ASPGroundTranslator extends ASPTranslator {
             sb.append(metarule);
         }
         return sb.toString();
-    }
-
-    public boolean isWeakTranslate() {
-        return isWeakTranslate;
-    }
-
-    public void setWeakTranslate(boolean weakTranslate) {
-        isWeakTranslate = weakTranslate;
     }
 }

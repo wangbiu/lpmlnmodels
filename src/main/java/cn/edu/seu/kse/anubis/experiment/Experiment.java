@@ -13,11 +13,21 @@ import java.util.UUID;
  */
 public class Experiment {
 //    protected String basepath="G:/expriment/parallel_reasoning/monty_hall";
-    protected String basepath="/home/wangbin/experiments/parallel_reasoning/monty_hall";
-    protected String logfile=basepath+"/log/monty-hall-single";
-    protected String threadLogFile=basepath+"/log/thread-log";
+    protected String experimentName="monty_hall";
+    protected String programPrefix="m-";
+
+    protected String basepath="/home/wangbin/experiments/parallel_reasoning/";
+    protected String logfile=null;
+    protected String threadLogFile=null;
     protected String email_addr="wangbiu@foxmail.com";
     protected String testId= UUID.randomUUID().toString();
+
+    protected void initParameters(){
+        basepath=basepath+experimentName;
+        logfile=basepath+"/log/"+experimentName+"-single";
+        threadLogFile=basepath+"/log/"+experimentName+"-thread-log";
+    }
+
 
     public void emailAlert(String title, String text,String address) throws Exception {
         Properties props=new Properties();
@@ -45,5 +55,45 @@ public class Experiment {
         transport.connect("seukse@126.com","kse123");
         transport.sendMessage(msg,msg.getAllRecipients());
         transport.close();
+    }
+
+    public String getBasepath() {
+        return basepath;
+    }
+
+    public void setBasepath(String basepath) {
+        this.basepath = basepath;
+    }
+
+    public String getLogfile() {
+        return logfile;
+    }
+
+    public void setLogfile(String logfile) {
+        this.logfile = logfile;
+    }
+
+    public String getThreadLogFile() {
+        return threadLogFile;
+    }
+
+    public void setThreadLogFile(String threadLogFile) {
+        this.threadLogFile = threadLogFile;
+    }
+
+    public String getExperimentName() {
+        return experimentName;
+    }
+
+    public void setExperimentName(String experimentName) {
+        this.experimentName = experimentName;
+    }
+
+    public String getProgramPrefix() {
+        return programPrefix;
+    }
+
+    public void setProgramPrefix(String programPrefix) {
+        this.programPrefix = programPrefix;
     }
 }

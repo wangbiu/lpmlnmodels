@@ -28,9 +28,10 @@ public class MontyHallExperiment extends Experiment{
 
 
     public void test(boolean isParallel, int taskId) throws Exception {
+        logger.info("实验开始： isParallel={}, taskId={}, experimentName={}, programPrefix={}",isParallel,taskId,experimentName,programPrefix);
+        initParameters();
         //TODO: 用于提前装载所有的类，消除首次运行的时间消耗
         startSingle(3,2,0);
-        logger.info("实验开始： isParallel={}, taskId={}",isParallel,taskId);
 
         initLogFile();
         parallel=isParallel;
@@ -115,6 +116,8 @@ public class MontyHallExperiment extends Experiment{
         mhp.setRound(round);
         mhp.setTaskType(taskType);
         mhp.setTestId(testId);
+        mhp.setExperimentName(experimentName);
+        mhp.setProgramPrefix(programPrefix);
         mhp.runExperiment();
 
         mhp=null;
@@ -128,6 +131,8 @@ public class MontyHallExperiment extends Experiment{
         pmhp.setCores(cores);
         pmhp.setRound(round);
         pmhp.setTestId(testId);
+        pmhp.setExperimentName(experimentName);
+        pmhp.setProgramPrefix(programPrefix);
         pmhp.runExperiment();
 
         pmhp=null;
@@ -136,12 +141,14 @@ public class MontyHallExperiment extends Experiment{
     private void initSingle(MontyHallProblem mhp) throws IOException {
         mhp.setBasepath(basepath);
         mhp.setLogfile(logfile);
+        mhp.setProgramPrefix(programPrefix);
     }
 
     private void initParallel(ParallelMontyHallProblem pmhp) throws IOException {
         pmhp.setBasepath(basepath);
         pmhp.setLogfile(logfile);
         pmhp.setThreadlogfile(threadLogFile);
+        pmhp.setProgramPrefix(programPrefix);
     }
 
     private void writeTitle(String filePath, String text) throws IOException {
@@ -164,6 +171,7 @@ public class MontyHallExperiment extends Experiment{
         StringBuilder sb=new StringBuilder();
         sb.append("实验信息：").append("taskId ").append(taskId).append(", <span style='color:red;'>是否并行</span> ").append(parallel);
         sb.append(line);
+        sb.append("实验名称： ").append(experimentName).append(", file prefix: ").append(programPrefix).append(line);
         sb.append("问题信息：").append("problemN ").append(problemN).append(", max problem N ").append(maxProblemN).append(line);
         sb.append("并行信息：").append("cores ").append(cores).append(", max cores ").append(maxCores).append(line);
         sb.append("实验结束，日志文件为：").append(line);
@@ -177,11 +185,11 @@ public class MontyHallExperiment extends Experiment{
         sb.append(ThreadStatInfo.getTitle()).append(line).append(line);
         sb.append(readFile(threadLogFile)).append(line);
 
-        super.emailAlert("实验完成!!!",sb.toString(), this.email_addr);
+        super.emailAlert(experimentName+"实验完成!!!",sb.toString(), this.email_addr);
     }
 
     public void emailWarn(String text) throws Exception {
-        super.emailAlert("实验失败!!!",text,email_addr);
+        super.emailAlert(experimentName+" 实验失败!!!",text,email_addr);
     }
 
     private String readFile(String file) throws IOException {
@@ -201,29 +209,9 @@ public class MontyHallExperiment extends Experiment{
         }
     }
 
-    public String getBasepath() {
-        return basepath;
-    }
 
-    public void setBasepath(String basepath) {
-        this.basepath = basepath;
-    }
 
-    public String getLogfile() {
-        return logfile;
-    }
 
-    public void setLogfile(String logfile) {
-        this.logfile = logfile;
-    }
-
-    public String getThreadLogFile() {
-        return threadLogFile;
-    }
-
-    public void setThreadLogFile(String threadLogFile) {
-        this.threadLogFile = threadLogFile;
-    }
 
     public int getRound() {
         return round;

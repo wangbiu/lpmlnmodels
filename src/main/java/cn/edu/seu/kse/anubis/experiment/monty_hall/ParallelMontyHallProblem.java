@@ -21,7 +21,7 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
     private int cores;
     private ParallelSolver psolver=null;
     private List<ThreadStatInfo> tstatInfos;
-    private ASPGround4ParallelTranslator translator;
+//    private ASPGround4ParallelTranslator translator;
 
     public ParallelMontyHallProblem(){
         expStat=new ExperimentStatInfo();
@@ -63,6 +63,7 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
         try {
             if(psolver == null){
                 psolver=new ParallelSolver(rules,aspTranslation,cores,factor,0);
+                psolver.setExperimentName(experimentName);
                 psolver.setTmpfilepath(basepath);
                 psolver.call();
             }else {
@@ -84,6 +85,7 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
             if(psolver == null){
                 psolver=new ParallelSolver(rules,aspTranslation,cores,factor,1);
                 psolver.setTmpfilepath(basepath);
+                psolver.setExperimentName(experimentName);
                 psolver.call();
             }else{
                 psolver.callWithLastPartition();

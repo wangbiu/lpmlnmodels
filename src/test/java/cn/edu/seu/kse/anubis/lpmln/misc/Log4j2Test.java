@@ -1,4 +1,4 @@
-package cn.edu.seu.kse.anubis;
+package cn.edu.seu.kse.anubis.lpmln.misc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

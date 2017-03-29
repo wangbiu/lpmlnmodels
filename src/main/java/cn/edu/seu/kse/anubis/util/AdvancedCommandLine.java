@@ -133,7 +133,9 @@ public class AdvancedCommandLine {
                 }
                 cnt++;
             }
-            progOut.add(res.toString());
+            if(!isBegin){
+                progOut.add(res.toString());
+            }
             int exitVal = p.waitFor();
             //进程结束后发出终止信号
             for(int i=0;i<ansProcessorNums;i++){

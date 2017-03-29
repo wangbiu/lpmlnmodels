@@ -3,6 +3,7 @@ package cn.edu.seu.kse.anubis.lpmln.parallel;
 import cn.edu.seu.kse.anubis.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.syntax.SyntaxModule;
+import cn.edu.seu.kse.anubis.lpmln.translator.ASPGround4ParallelTranslator;
 import cn.edu.seu.kse.anubis.lpmln.translator.ASPGroundTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by 王彬 on 2017/3/19.
  */
 public class ASPStochasticPartitionTest {
-    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\bird.txt";
+    private String path="G:\\IdeaProjects\\lpmlnmodels\\src\\test\\resources\\friend\\f-10.txt";
     private File rulef=new File(path);
     private int factor=0;
     private List<Rule> rules=null;
@@ -30,7 +31,8 @@ public class ASPStochasticPartitionTest {
         factor=sm.getFactor();
         herbrandUniverse=sm.getHerbrandUniverse();
         System.out.println("factor "+factor);
-        ASPGroundTranslator translator=new ASPGroundTranslator();
+        ASPGround4ParallelTranslator translator=new ASPGround4ParallelTranslator();
+        translator.setWeakTranslate(true);
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         asptext=translator.translate(rules);
@@ -41,8 +43,8 @@ public class ASPStochasticPartitionTest {
     public void test() throws IOException {
         System.out.println(rules.size());
         ASPStochasticPartition partition=new ASPStochasticPartition(rules,asptext,factor);
-        partition.partition(3);
-        System.out.println(asptext);
+        partition.partition(5);
+//        System.out.println(asptext);
         List<AugmentedSubset> split=partition.getSplit();
         List<File> splits=partition.genSplitFiles();
         System.out.println(splits);
