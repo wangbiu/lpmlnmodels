@@ -11,6 +11,8 @@ import java.util.StringJoiner;
  * Created by 王彬 on 2016/8/30.
  */
 public class ASPTranslator extends BaseTranslator {
+    protected boolean isWeakTranslate=false;
+
     public String translate_parts(List<Rule> rules){
         StringBuilder sb=new StringBuilder();
         sb.append("%%---- declaration part ----%%").append(System.lineSeparator());
@@ -204,6 +206,12 @@ public class ASPTranslator extends BaseTranslator {
         this.metarule=metarule;
     }
 
+    public boolean isWeakTranslate() {
+        return isWeakTranslate;
+    }
 
+    public void setWeakTranslate(boolean weakTranslate) {
+        isWeakTranslate = weakTranslate;
+    }
 
 }

@@ -21,7 +21,7 @@ public class ParallelMontyHallProblem extends MontyHallProblem {
     private int cores;
     private ParallelSolver psolver=null;
     private List<ThreadStatInfo> tstatInfos;
-    private ASPGround4ParallelTranslator translator;
+//    private ASPGround4ParallelTranslator translator;
 
     public ParallelMontyHallProblem(){
         expStat=new ExperimentStatInfo();
