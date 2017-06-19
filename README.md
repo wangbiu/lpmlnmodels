@@ -1,4 +1,10 @@
-# lpmlnmodels 推理机参数
+# Status
+LPMLN: a language combining non-monotonic logic and Markov Networks.
+This repository is an implementation of LPMLN solver.
+The implementation is currently under development and is not ready to use. 
+
+
+# lpmlnmodels parameters
 ```lpmlnmodels <params> <lpmln file>```
  
 + `--marginal` 可选，计算边缘概率分布，该参数不指定时，计算最大可能稳定模型
@@ -15,6 +21,7 @@
 + `--parallel` 可选，是否使用并行模式
 + `--exp=cores` 必填，并行模式下的最小线程数
 + `--exp-max-cores` 必填，并行模式下的最大线程数
+
 
 # LPMLN Experiments 
 + Bird 
