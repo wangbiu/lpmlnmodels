@@ -1,3 +1,8 @@
+# Status
+LPMLN: a language combining non-monotonic logic and Markov Networks.
+This repository is an implementation of LPMLN solver.
+The implementation is currently under development and is not ready to use. 
+
 # LPMLN Experiments 
 + Bird 
 + Friend 
