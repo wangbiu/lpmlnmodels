@@ -78,7 +78,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>cn.edu.seu.kse.anubis.lpmln.LPMLNApp</mainClass>
+              <mainClass>cn.edu.seu.kse.lpmln.app.LPMLNApp</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

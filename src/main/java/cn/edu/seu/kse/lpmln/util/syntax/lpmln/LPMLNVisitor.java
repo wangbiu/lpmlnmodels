@@ -1,0 +1,175 @@
+// Generated from LPMLN.g4 by ANTLR 4.5.1
+package cn.edu.seu.kse.lpmln.util.syntax.lpmln;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+
+/**
+ * This interface defines a complete generic visitor for a parseLPMLN tree produced
+ * by {@link LPMLNParser}.
+ *
+ * @param <T> The return type of the visit operation. Use {@link Void} for
+ * operations with no return type.
+ */
+public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#negative_int}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitNegative_int(LPMLNParser.Negative_intContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#integer}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitInteger(LPMLNParser.IntegerContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#natural_number}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitNatural_number(LPMLNParser.Natural_numberContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#arithmetic_op}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitArithmetic_op(LPMLNParser.Arithmetic_opContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#relation_op}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitRelation_op(LPMLNParser.Relation_opContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#simple_arithmetic_expr}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitSimple_arithmetic_expr(LPMLNParser.Simple_arithmetic_exprContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#simple_arithmetic_expr2}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitSimple_arithmetic_expr2(LPMLNParser.Simple_arithmetic_expr2Context ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#arithmethic_expr}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitArithmethic_expr(LPMLNParser.Arithmethic_exprContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#function}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitFunction(LPMLNParser.FunctionContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#term}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitTerm(LPMLNParser.TermContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#atom}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitAtom(LPMLNParser.AtomContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#range_atom}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitRange_atom(LPMLNParser.Range_atomContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#literal}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitLiteral(LPMLNParser.LiteralContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#default_literal}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitDefault_literal(LPMLNParser.Default_literalContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#extended_literal}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitExtended_literal(LPMLNParser.Extended_literalContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#aggregate_atom}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitAggregate_atom(LPMLNParser.Aggregate_atomContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#aggregate_expr}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitAggregate_expr(LPMLNParser.Aggregate_exprContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#relation_expr}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitRelation_expr(LPMLNParser.Relation_exprContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#head}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitHead(LPMLNParser.HeadContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#body}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitBody(LPMLNParser.BodyContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#fact}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitFact(LPMLNParser.FactContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#constraint}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitConstraint(LPMLNParser.ConstraintContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#full_rule}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitFull_rule(LPMLNParser.Full_ruleContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#hard_rule}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitHard_rule(LPMLNParser.Hard_ruleContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#soft_rule}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitSoft_rule(LPMLNParser.Soft_ruleContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#meta_rule}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitMeta_rule(LPMLNParser.Meta_ruleContext ctx);
+	/**
+	 * Visit a parseLPMLN tree produced by {@link LPMLNParser#lpmln_rule}.
+	 * @param ctx the parseLPMLN tree
+	 * @return the visitor result
+	 */
+	T visitLpmln_rule(LPMLNParser.Lpmln_ruleContext ctx);
+}
