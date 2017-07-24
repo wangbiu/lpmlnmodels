@@ -194,54 +194,6 @@ public class LPMLNApp {
 
     }
 
-//    private static void experiment(CommandLine cmd){
-//        int problemN,maxProblemN,cores,maxCores,round,taskId;
-//        boolean isParallel;
-//        String expName,expFPrefix;
-//        if(cmd.hasOption("parallel")){
-//            isParallel=true;
-//        }else {
-//            isParallel=false;
-//        }
-//
-//        problemN=Integer.valueOf(cmd.getOptionValue("exp-problem-n"));
-//        maxProblemN=Integer.valueOf(cmd.getOptionValue("exp-max-problem-n"));
-//        cores=Integer.valueOf(cmd.getOptionValue("exp-cores"));
-//        maxCores=Integer.valueOf(cmd.getOptionValue("exp-max-cores"));
-//        round=Integer.valueOf(cmd.getOptionValue("exp-round"));
-//        taskId=Integer.valueOf(cmd.getOptionValue("exp-task-id"));
-//        expName=cmd.getOptionValue("exp-name");
-//        expFPrefix=cmd.getOptionValue("exp-file-prefix");
-//
-////        System.out.printf("problemN: %d, maxPN: %d, cores: %d, maxCores: %d, round: %d, taskId: %d",problemN,maxProblemN,cores,
-////                maxCores,round,taskId);
-//        MontyHallExperiment mhe=new MontyHallExperiment();
-//        mhe.setProblemN(problemN);
-//        mhe.setCores(cores);
-//        mhe.setMaxCores(maxCores);
-//        mhe.setMaxProblemN(maxProblemN);
-//        mhe.setRound(round);
-//        mhe.setExperimentName(expName);
-//        mhe.setProgramPrefix(expFPrefix);
-//
-//        try {
-//            mhe.test(isParallel,taskId);
-//        } catch (Exception e) {
-//            StringBuilder sb=new StringBuilder();
-//            try {
-//                for(StackTraceElement ste:e.getStackTrace()){
-//                    sb.append(ste.toString()).append("<br>");
-//
-//                }
-//                logger.error(e.getMessage());
-//                mhe.emailWarn(sb.toString());
-//            } catch (Exception e1) {
-//                e1.printStackTrace();
-//            }
-//        }
-//
-//    }
-
     private static LPMLNBaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, String aspsolver) throws IOException {
         Date start =new Date();
         LPMLNBaseSolver solver=null;

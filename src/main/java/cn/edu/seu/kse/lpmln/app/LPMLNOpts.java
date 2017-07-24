@@ -61,73 +61,6 @@ public class LPMLNOpts {
         transinfile.setValueSeparator(' ');
         transinfile.setOptionalArg(false);
 
-        //是否进行实验
-        Option experiment=new Option("e","experiment", false,"optinal, carry out experiment");
-        experiment.setRequired(false);
-
-//        private int round=1;
-        Option exp_round=new Option("er","exp-round",true,"optinal, round");
-        exp_round.setRequired(false);
-        exp_round.setArgName("exp-round");
-        exp_round.setValueSeparator(' ');
-        exp_round.setOptionalArg(false);
-
-//        private int cores=1;
-        Option exp_cores=new Option("ec","exp-cores",true,"cores");
-        exp_cores.setRequired(false);
-        exp_cores.setArgName("exp-cores");
-        exp_cores.setValueSeparator(' ');
-        exp_cores.setOptionalArg(false);
-
-//        private int maxCores=16;
-        Option exp_maxCores=new Option("emc","exp-max-cores",true,"max cores");
-        exp_maxCores.setRequired(false);
-        exp_maxCores.setArgName("exp-max-cores");
-        exp_maxCores.setValueSeparator(' ');
-        exp_maxCores.setOptionalArg(false);
-
-//        private int problemN=3;
-        Option exp_problemN=new Option("epn","exp-problem-n",true,"problem N");
-        exp_problemN.setRequired(false);
-        exp_problemN.setArgName("exp-problem-n");
-        exp_problemN.setValueSeparator(' ');
-        exp_problemN.setOptionalArg(false);
-
-//        private int maxProblemN=3;
-        Option exp_maxPN=new Option("empn","exp-max-problem-n",true,"max problem N");
-        exp_maxPN.setRequired(false);
-        exp_maxPN.setArgName("exp-max-problem-n");
-        exp_maxPN.setValueSeparator(' ');
-        exp_maxPN.setOptionalArg(false);
-
-
-        Option exp_taskId=new Option("et","exp-task-id",true,"taskId: 0 = MAP, 1=MPD, 2 = ALL");
-        exp_taskId.setRequired(false);
-        exp_taskId.setArgName("exp-task-id");
-        exp_taskId.setValueSeparator(' ');
-        exp_taskId.setOptionalArg(false);
-
-
-        Option exp_parallel=new Option("epa","parallel",false,"parallel");
-        exp_parallel.setRequired(false);
-
-        Option exp_name=new Option("en","exp-name",true,"experiment name (directory)");
-        exp_name.setRequired(false);
-        exp_name.setArgName("exp-name");
-        exp_name.setValueSeparator(' ');
-        exp_name.setOptionalArg(false);
-
-        Option exp_file_prefix=new Option("efp","exp-file-prefix",true,"experiment program file prefix");
-        exp_file_prefix.setRequired(false);
-        exp_file_prefix.setArgName("exp-file-prefix");
-        exp_file_prefix.setValueSeparator(' ');
-        exp_file_prefix.setOptionalArg(false);
-
-        Option schedule=new Option("se","schedule",false,"scheduel experiment");
-        exp_parallel.setRequired(false);
-
-
-
         Options opts=new Options();
         opts.addOption(help);
         opts.addOption(margianl);
@@ -138,20 +71,6 @@ public class LPMLNOpts {
         opts.addOption(semantics);
         opts.addOption(transoutfile);
         opts.addOption(transinfile);
-
-        opts.addOption(experiment);
-        opts.addOption(exp_cores);
-        opts.addOption(exp_round);
-        opts.addOption(exp_maxCores);
-        opts.addOption(exp_problemN);
-        opts.addOption(exp_maxPN);
-        opts.addOption(exp_taskId);
-        opts.addOption(exp_parallel);
-
-        opts.addOption(exp_file_prefix);
-        opts.addOption(exp_name);
-
-        opts.addOption(schedule);
 
         return opts;
     }
