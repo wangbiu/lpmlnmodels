@@ -1,7 +1,5 @@
 package cn.edu.seu.kse.lpmln.app;
 
-//import cn.edu.seu.kse.lpmln.experiment.ScheduleExperiment;
-//import cn.edu.seu.kse.lpmln.experiment.monty_hall.MontyHallExperiment;
 import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
@@ -56,13 +54,6 @@ public class LPMLNApp {
                 formatter.setWidth(150);
                 formatter.printHelp("lpmlnmodels <params>",opts);
             }
-//            else if(cmd.hasOption("experiment")){
-//                experiment(cmd);
-//            }
-//            else if(cmd.hasOption("schedule")){
-//                ScheduleExperiment se=new ScheduleExperiment();
-//                se.startTest();
-//            }
             else {
                 if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
                     throw new RuntimeException("i and I are used once at a time");
