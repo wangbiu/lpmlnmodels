@@ -61,6 +61,8 @@ CONDITION : ':';
 ASSIGN : ':-';
 //弱约束推导符号
 WEAK_ASSIGN : ':~';
+//分号
+SEMICOLON : ';';
 
 //关系运算符
 LESS_THAN : '<';
@@ -89,7 +91,7 @@ integer : POSITIVE_INT | negative_int | ZERO;
 natural_number : POSITIVE_INT | ZERO;
 //四则运算符
 arithmetic_op : PLUS | MINUS | STAR | SLASH;
-//关系运算符
+//关系运算符(comparison predicates)
 relation_op : LESS_THAN | LEQ | GREATER_THAN | GEQ | EQUAL | DOUBLE_EQUAL | NEQ;
 
 //简单四则运算算术表达式，不加括号
@@ -134,12 +136,29 @@ default_literal : NAF_NOT literal;
 //扩展文字，包含查询原子
 extended_literal : literal | default_literal;
 
-//聚合运算
-aggregate_atom: AGGREGATE_OP LCBRACK (literal | VAR) CONDITION literal  RCBRACK ;
+//项元组
+term_tuple : term (COMMA term)*;
+
+//文字元组
+literal_tuple : literal (COMMA literal)*;
+
+//聚合元素
+aggregate_elements : term_tuple CONDITION literal_tuple (SEMICOLON term_tuple CONDITION literal_tuple)*;
+
+//带条件的聚合元素
+aggregate_elements_condition : term_tuple CONDITION literal_tuple CONDITION literal_tuple (SEMICOLON term_tuple CONDITION literal_tuple CONDITION literal_tuple)*;
+
+//体部聚合原子
+body_aggregate : (term relation_op?)? AGGREGATE_OP? LCBRACK aggregate_elements RCBRACK (relation_op? term)?;
+//aggregate_atom : AGGREGATE_OP LCBRACK (literal | VAR) CONDITION literal  RCBRACK ;
+
+//头部聚合原子
+head_aggregate : (term relation_op?)? AGGREGATE_OP? LCBRACK aggregate_elements_condition RCBRACK (relation_op? term)?;
+
 //聚合运算表达式
-aggregate_expr: (VAR | aggregate_atom | integer) relation_op aggregate_atom |
-                aggregate_atom relation_op (VAR | integer) |
-                VAR EQUAL aggregate_atom;
+//aggregate_expr: (VAR | aggregate_atom | integer) relation_op aggregate_atom |
+//                aggregate_atom relation_op (VAR | integer) |
+//                VAR EQUAL aggregate_atom;
 
 //关系运算表达式
 relation_expr :
@@ -148,10 +167,10 @@ relation_expr :
     ((MINUS)? VAR  | arithmethic_expr) relation_op ((MINUS)? VAR | arithmethic_expr);
 
 //规则头部
-head : literal (DISJUNCTION literal)*;
+head : literal (DISJUNCTION literal)* | head_aggregate;
 
 //规则体部
-body : (extended_literal | relation_expr | aggregate_expr) (COMMA (extended_literal | relation_expr | aggregate_expr))*;
+body : (extended_literal | relation_expr | body_aggregate) (COMMA (extended_literal | relation_expr | body_aggregate))*;
 
 //事实
 fact : (head | range_atom) FULLSTOP;
