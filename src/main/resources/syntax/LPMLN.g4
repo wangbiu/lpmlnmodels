@@ -143,10 +143,10 @@ term_tuple : term (COMMA term)*;
 literal_tuple : literal (COMMA literal)*;
 
 //聚合元素
-aggregate_elements : term_tuple CONDITION literal_tuple (SEMICOLON term_tuple CONDITION literal_tuple)*;
+aggregate_elements : (term_tuple CONDITION)? literal_tuple (SEMICOLON (term_tuple CONDITION)? literal_tuple)*;
 
 //带条件的聚合元素
-aggregate_elements_condition : term_tuple CONDITION literal_tuple CONDITION literal_tuple (SEMICOLON term_tuple CONDITION literal_tuple CONDITION literal_tuple)*;
+aggregate_elements_condition : (term_tuple CONDITION)? literal_tuple CONDITION literal_tuple (SEMICOLON (term_tuple CONDITION)? literal_tuple CONDITION literal_tuple)*;
 
 //体部聚合原子
 body_aggregate : (term relation_op?)? AGGREGATE_OP? LCBRACK aggregate_elements RCBRACK (relation_op? term)?;
