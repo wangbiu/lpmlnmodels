@@ -196,25 +196,73 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAggregate_atom(LPMLNParser.Aggregate_atomContext ctx) { }
+	@Override public void enterTerm_tuple(LPMLNParser.Term_tupleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAggregate_atom(LPMLNParser.Aggregate_atomContext ctx) { }
+	@Override public void exitTerm_tuple(LPMLNParser.Term_tupleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAggregate_expr(LPMLNParser.Aggregate_exprContext ctx) { }
+	@Override public void enterLiteral_tuple(LPMLNParser.Literal_tupleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAggregate_expr(LPMLNParser.Aggregate_exprContext ctx) { }
+	@Override public void exitLiteral_tuple(LPMLNParser.Literal_tupleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAggregate_elements(LPMLNParser.Aggregate_elementsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAggregate_elements(LPMLNParser.Aggregate_elementsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAggregate_elements_condition(LPMLNParser.Aggregate_elements_conditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAggregate_elements_condition(LPMLNParser.Aggregate_elements_conditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBody_aggregate(LPMLNParser.Body_aggregateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBody_aggregate(LPMLNParser.Body_aggregateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterHead_aggregate(LPMLNParser.Head_aggregateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHead_aggregate(LPMLNParser.Head_aggregateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
