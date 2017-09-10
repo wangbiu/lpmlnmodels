@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * Created by 许鸿翔 on 2017/9/10.
  */
 public class BotWithTop {
-    public static String baseDir = "/home/xhx/experiments";
+    public static String baseDir = "/home/wangbin/experiments/splitting-bird";
     public static void executeExperiment(int splitCount,int splitMaxCount){
         Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, "Spe start range"+splitCount+" to "+splitMaxCount);
         int expCount = splitMaxCount-splitCount+1;
