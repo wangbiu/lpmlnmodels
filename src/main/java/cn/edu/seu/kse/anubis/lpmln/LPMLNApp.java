@@ -5,9 +5,10 @@ import cn.edu.seu.kse.anubis.experiment.monty_hall.MontyHallExperiment;
 import cn.edu.seu.kse.anubis.lpmln.app.LPMLNOpts;
 import cn.edu.seu.kse.anubis.lpmln.model.Rule;
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.anubis.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.anubis.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.anubis.lpmln.solver.DLV;
+import cn.edu.seu.kse.anubis.lpmln.solver.LPMLNBaseSolver;
+import cn.edu.seu.kse.anubis.lpmln.splitting.BotWithTop;
 import cn.edu.seu.kse.anubis.lpmln.syntax.SyntaxModule;
 import cn.edu.seu.kse.anubis.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.anubis.lpmln.translator.DLVTranslator;
@@ -69,8 +70,17 @@ public class LPMLNApp {
                 //翻译
                 translation(lpmlnrulefile,translationoutfile,semantics,aspsolver);
 
-            }
-            else {
+            } else if(cmd.hasOption("spe")){
+                String pn = cmd.getOptionValue("split-problem-n");
+                pn = pn==null?"10":pn;
+                String pmn = cmd.getOptionValue("split-max-problem-n");
+                pmn = pmn==null?"14":pmn;
+                int splitCount = Integer.valueOf(pn);
+                int splitMaxCount = Integer.valueOf(pmn);
+                for(int i=splitCount;i<=splitMaxCount;i++){
+                    BotWithTop.getRealAnswerset(i);
+                }
+            }else {
                 if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
                     throw new RuntimeException("i and I are used once at a time");
                 }
