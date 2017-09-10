@@ -126,6 +126,21 @@ public class LPMLNOpts {
         Option schedule=new Option("se","schedule",false,"scheduel experiment");
         exp_parallel.setRequired(false);
 
+        Option split=new Option("spe","split",false,"split experiment");
+        split.setRequired(false);
+
+        Option split_min=new Option("spn","split-problem-n",false,"split experiment problem count");
+        split_min.setRequired(false);
+        split_min.setArgName("split-problem-n");
+        split_min.setValueSeparator(' ');
+        split_min.setOptionalArg(false);
+
+        Option split_max=new Option("smpn","split-max-problem-n",false,"split experiment max problem count");
+        split_max.setRequired(false);
+        split_max.setArgName("split-max-problem-n");
+        split_max.setValueSeparator(' ');
+        split_max.setOptionalArg(false);
+
 
 
         Options opts=new Options();
@@ -152,6 +167,11 @@ public class LPMLNOpts {
         opts.addOption(exp_name);
 
         opts.addOption(schedule);
+
+        //split选项
+        opts.addOption(split);
+        opts.addOption(split_min);
+        opts.addOption(split_max);
 
         return opts;
     }
