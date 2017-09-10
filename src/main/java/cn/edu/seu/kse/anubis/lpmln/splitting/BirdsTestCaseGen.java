@@ -11,15 +11,16 @@ import java.io.IOException;
 public class BirdsTestCaseGen {
     /**
      * 鸟类问题的分割集求解程序生成器
-     * 分割集 U = {residentBird(1..n), migratoryBird(1..n)}
+     * 分割集 U = {residentBird(1..n)}
      * n 为鸟个数的 1/3
      * bottom part :
      *              2 : residentBird(1).
-     *              1 : migratoryBird(1).
+     *
      * top part ：
-     *              1: bird(1) :- residentBird(1).
-     *              1: bird(1) :- migratoryBird(1).
-     *              1: :- migratoryBird(1), residentBird(1).
+     *              bird(1) :- residentBird(1).
+     *              1 : migratoryBird(1).
+     *              bird(1) :- migratoryBird(1).
+     *              :- migratoryBird(1), residentBird(1).
      *              #show migratoryBird/1.
      *              #show residentBird/1.
      *              #show bird/1.
@@ -34,9 +35,9 @@ public class BirdsTestCaseGen {
         StringBuilder sb=new StringBuilder();
         for(int i=1;i<=botBirdNum;i++){
             sb.append("2 : residentBird(").append(i).append(").").append(System.lineSeparator());
-            sb.append("1 : migratoryBird(").append(i).append(").").append(System.lineSeparator());
+//            sb.append("1 : migratoryBird(").append(i).append(").").append(System.lineSeparator());
         }
-        sb.append("#show migratoryBird/1.  #show residentBird/1.").append(System.lineSeparator());
+        sb.append("#show  residentBird/1.").append(System.lineSeparator());
         System.out.println(sb.toString());
         writeFile(basedir+"\\bird"+birdNum+"\\bot.txt",sb.toString());
     }
@@ -44,14 +45,13 @@ public class BirdsTestCaseGen {
     public String genPartialEvalPart(int bird, int cases){
         StringBuilder sb=new StringBuilder();
         if(cases == 0){
-            sb.append("").append(System.lineSeparator());
+            sb.append("bird(").append(bird).append(") :- migratoryBird("+bird+").").append(System.lineSeparator());
+            sb.append("1 : migratoryBird("+bird+").").append(System.lineSeparator());
         }else  if(cases ==1){
-            sb.append("1 : bird(").append(bird).append(").").append(System.lineSeparator());
-        }else if(cases == 2){
-            sb.append("1 : bird(").append(bird).append(").").append(System.lineSeparator());
-        }else if(cases == 3){
-            sb.append("2 : bird(").append(bird).append(").").append(System.lineSeparator());
-//            sb.append("1 : :- .").append(System.lineSeparator());
+            sb.append("bird(").append(bird).append(") :- migratoryBird("+bird+").").append(System.lineSeparator());
+            sb.append(" :- migratoryBird("+bird+").").append(System.lineSeparator());
+            sb.append("1 : migratoryBird("+bird+").").append(System.lineSeparator());
+            sb.append("bird("+bird+").").append(System.lineSeparator());
         }
 
         return sb.toString();
@@ -61,7 +61,7 @@ public class BirdsTestCaseGen {
         int len=status.length;
         boolean isstop=true;
         for(int i=0;i<len;i++){
-            if(status[i] != 3){
+            if(status[i] != 1){
                 isstop=false;
                 break;
             }
@@ -73,7 +73,7 @@ public class BirdsTestCaseGen {
         int len=status.length-1;
         for(int i=len;i>=0;i--){
             status[i]+=1;
-            if(status[i] == 4){
+            if(status[i] == 2){
                 status[i] = 0;
                 continue;
             }else {
@@ -148,13 +148,13 @@ public class BirdsTestCaseGen {
 
     public void generateTranslationCmd(int birdNum){
         int botBirdNum=birdNum/3;
-        int penum= (int) Math.pow(4,botBirdNum);
+        int penum= (int) Math.pow(2,botBirdNum);
 
         StringBuilder sb=new StringBuilder();
 
-        sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s strong -i bot.txt -o bot-trans.txt\n");
+        sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s weak -i bot.txt -o bot-trans.txt\n");
         for(int i=0;i<penum;i++){
-            sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s strong -i pe-"+i+".txt -o pe-trans-"+i+".txt\n");
+            sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s weak -i pe-"+i+".txt -o pe-trans-"+i+".txt\n");
         }
         writeFile(basedir+"\\translate-bird-"+birdNum+".sh",sb.toString());
 
