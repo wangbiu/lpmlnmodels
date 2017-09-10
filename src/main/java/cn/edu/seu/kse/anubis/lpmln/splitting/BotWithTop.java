@@ -28,6 +28,8 @@ public class BotWithTop {
         double[] topTime = new double[expCount];
 
         new BotWithTopExperiment().getRealAnswerset(10);//预热class
+        new BotWithTopExperiment().getRealAnswerset(10);//预热class
+
 
         for(int i=0;i<expCount;i++){
             BotWithTopExperiment bwt = new BotWithTopExperiment();
@@ -57,13 +59,37 @@ public class BotWithTop {
         }
     }
 
-    public void executeTopExperiment(List<File> topFile){
+    public void executeTopExperiment(int splitCount,int splitMaxCount){
+        new BotWithTopExperiment().getRealAnswerset(10);//预热class
+        new BotWithTopExperiment().getRealAnswerset(10);//预热class
+
+        int expCount = splitMaxCount-splitCount+1;
+        double[] topTime = new double[expCount];
+        List<File> topFile = new ArrayList<>();
+        for(int i=1;i<splitCount;i++){
+            topFile.add(new File(baseDir+"/independent/bird-trans-"+i+".txt"));
+        }
+        for(int i=splitCount;i<=splitMaxCount;i++){
+            topFile.add(new File(baseDir+"/independent/bird-trans-"+i+".txt"));
+            BotWithTopExperiment bwt = new BotWithTopExperiment();
+            bwt.getRealAnswerset(topFile);
+            topTime[i-splitCount] = bwt.topTime;
+        }
+
         File outFile = new File("timeCostTop.txt");
-        BotWithTopExperiment bwt = new BotWithTopExperiment();
-        bwt.getRealAnswerset(topFile);
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
-            bw.write("Top Time:"+bwt.topTime);
+            StringBuilder toWrite = new StringBuilder("taskName\ttopTime\n");
+            bw.write(toWrite.toString());
+            for(int i=0;i<expCount;i++){
+                toWrite = new StringBuilder("bird");
+                toWrite.append(i+splitCount);
+                toWrite.append("\t");
+                toWrite.append(topTime[i]/1000);
+                toWrite.append("\n");
+                bw.write(toWrite.toString());
+            }
+
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,6 +140,7 @@ class BotWithTopExperiment{
         return realAnswerset;
     }
 
+    //辅助函数，不直接用
     public Set<String> getRealAnswerset(int birdSeq){
         String path = BotWithTop.baseDir+"/bird"+birdSeq+"/";
         File botFile = new File(path+"bot-trans.txt");
@@ -131,10 +158,24 @@ class BotWithTopExperiment{
         lastPoint = new Date().getTime();
         ExecutorService solverService = Executors.newFixedThreadPool(16);
         Set<String> realAnswerset = new ConcurrentSkipListSet<>();
+        List<SolveTop> solverList = new ArrayList<>();
+        List<WeightedAnswerSet> totalWas = new ArrayList<>();
+
         for (File top : topFile) {
-            solverService.execute(new SolveTop(realAnswerset,top,null));
+            SolveTop solver = new SolveTop(realAnswerset,top,null);
+            solverService.execute(solver);
+            solverList.add(solver);
         }
-        while(((ThreadPoolExecutor)solverService).getActiveCount()!=0){ }
+        try {
+            solverService.shutdown();
+            solverService.awaitTermination(Long.MAX_VALUE, TimeUnit.HOURS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (SolveTop st : solverList) {
+            totalWas.addAll(st.topWasList);
+        }
+
         topTime = new Date().getTime()-lastPoint;
         return realAnswerset;
     }
@@ -144,6 +185,7 @@ class SolveTop extends Thread{
     protected File topFile;
     protected Set<String> res;
     protected WeightedAnswerSet botWas;
+    protected List<WeightedAnswerSet> topWasList;
     public SolveTop(Set<String> resSet,File file,WeightedAnswerSet bot){
         res = resSet;
         topFile = file;
@@ -154,10 +196,10 @@ class SolveTop extends Thread{
     public void run(){
         AugmentedSubsetSolver solver = new AugmentedSubsetSolver();
         System.out.println("topFile :"+topFile.getAbsolutePath());
-        List<WeightedAnswerSet> wasList = solver.call(topFile.getAbsolutePath());
+        topWasList = solver.call(topFile.getAbsolutePath());
         if(botWas!=null){
-            for (WeightedAnswerSet topWas: wasList) {
-                topWas.getAnswerSet().getLiterals().addAll(botWas.getAnswerSet().getLiterals());
+            for (WeightedAnswerSet was: topWasList) {
+                was.getAnswerSet().getLiterals().addAll(botWas.getAnswerSet().getLiterals());
             }
         }
         System.out.println(topFile+"done");
