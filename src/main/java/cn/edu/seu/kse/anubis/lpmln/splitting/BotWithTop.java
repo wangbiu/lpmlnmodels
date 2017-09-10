@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,12 +20,14 @@ import java.util.logging.Logger;
  * Created by 许鸿翔 on 2017/9/10.
  */
 public class BotWithTop {
-    public static String baseDir = "/home/wangbin/experiments/splitting-bird";
+    public static String baseDir = "/home/xhx/experiments";
     public static void executeExperiment(int splitCount,int splitMaxCount){
-        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, "Spe start range"+splitCount+" to "+splitMaxCount);
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, "Spe start range "+splitCount+" to "+splitMaxCount);
         int expCount = splitMaxCount-splitCount+1;
         double[] botTime = new double[expCount];
         double[] topTime = new double[expCount];
+
+        new BotWithTopExperiment().getRealAnswerset(10);//预热class
 
         for(int i=0;i<expCount;i++){
             BotWithTopExperiment bwt = new BotWithTopExperiment();
@@ -94,8 +93,9 @@ class BotWithTopExperiment{
         if(wasList.size()==topFile.size()){
             //correct count
             Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, botFile.toString()+" count matches.");
+            String botString = wasList.get(i).toString();
             for(int i=0;i<wasList.size();i++){
-                solverService.execute(new SolveTop(realAnswerset,topFile.get(i),wasList.get(i).toString()));
+                solverService.execute(new SolveTop(realAnswerset,topFile.get(i),botString));
             }
         }
         else{
@@ -103,7 +103,12 @@ class BotWithTopExperiment{
                 solverService.execute(new SolveTop(realAnswerset,top,""));
             }
         }
-        while(((ThreadPoolExecutor)solverService).getActiveCount()!=0){ }
+        try {
+            solverService.shutdown();
+            solverService.awaitTermination(Long.MAX_VALUE, TimeUnit.HOURS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         topTime = new Date().getTime()-lastPoint;
         Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, botFile.toString()+" top done.");
         solverService.shutdown();
@@ -152,7 +157,8 @@ class SolveTop extends Thread{
         System.out.println("topFile :"+topFile.getAbsolutePath());
         List<WeightedAnswerSet> wasList = solver.call(topFile.getAbsolutePath());
         for (WeightedAnswerSet topWas: wasList) {
-            res.add(botWas+topWas.toString());//结果字符串拼接
+            //res.add(botWas+topWas.toString());//结果字符串拼接#7
         }
+        System.out.println(topFile+"done");
     }
 }
