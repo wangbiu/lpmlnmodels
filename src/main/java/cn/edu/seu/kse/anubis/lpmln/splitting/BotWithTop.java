@@ -57,6 +57,19 @@ public class BotWithTop {
         }
     }
 
+    public void executeTopExperiment(List<File> topFile){
+        File outFile = new File(baseDir+"/timeCostTop.txt");
+        outFile.getParentFile().mkdir();
+        BotWithTopExperiment bwt = new BotWithTopExperiment();
+        bwt.getRealAnswerset(topFile);
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
+            bw.write("Top Time:"+bwt.topTime);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 class BotWithTopExperiment{
