@@ -5,26 +5,28 @@ import cn.edu.seu.kse.anubis.lpmln.solver.AugmentedSubsetSolver;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by 许鸿翔 on 2017/9/10.
  */
 public class BotWithTop {
-    public Set<String> getRealAnswerset(File botFile, Map<String,File> botToTop) {
+    public static Set<String> getRealAnswerset(File botFile, List<File> topFile) {
         Set<String> realAnswerset = new ConcurrentSkipListSet<>();
         AugmentedSubsetSolver solver = new AugmentedSubsetSolver();
+
         List<WeightedAnswerSet> wasList = solver.call(botFile.getAbsolutePath());
         ExecutorService solverService = Executors.newFixedThreadPool(16);
-        assert wasList.size()==botToTop.size();
-        for (WeightedAnswerSet was : wasList) {
-            File topFile = botToTop.get(was.toString());//先按照was本身的tostring来拼接
-            solverService.execute(new SolveTop(realAnswerset,topFile,was.toString()));
+        assert wasList.size()==topFile.size();
+        for(int i=0;i<wasList.size();i++){
+            solverService.execute(new SolveTop(realAnswerset,topFile.get(i),wasList.get(i).toString()));
         }
+        while(((ThreadPoolExecutor)solverService).getActiveCount()!=0){ }
+        solverService.shutdown();
         return realAnswerset;
     }
 }
