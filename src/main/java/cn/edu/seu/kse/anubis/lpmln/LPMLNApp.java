@@ -63,8 +63,12 @@ public class LPMLNApp {
                 ScheduleExperiment se=new ScheduleExperiment();
                 se.startTest();
             }else if(cmd.hasOption("spe")){
-                int splitCount = Integer.valueOf(cmd.getOptionValue("split-problem-n"));
-                int splitMaxCount = Integer.valueOf(cmd.getOptionValue("split-max-problem-n"));
+                String pn = cmd.getOptionValue("split-problem-n");
+                pn = pn==null?"10":pn;
+                String pmn = cmd.getOptionValue("split-max-problem-n");
+                pmn = pmn==null?"14":pmn;
+                int splitCount = Integer.valueOf(pn);
+                int splitMaxCount = Integer.valueOf(pmn);
                 for(int i=splitCount;i<=splitMaxCount;i++){
                     BotWithTop.getRealAnswerset(i);
                 }
