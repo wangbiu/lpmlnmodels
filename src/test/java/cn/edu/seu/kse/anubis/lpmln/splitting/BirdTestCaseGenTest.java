@@ -38,4 +38,11 @@ public class BirdTestCaseGenTest {
     public void testGenerateAll(){
         btc.generateAll();
     }
+
+    @Test
+    public void testgenerateTranslationCmd(){
+        for(int b=10;b<=14;b++){
+            btc.generateTranslationCmd(b);
+        }
+    }
 }
