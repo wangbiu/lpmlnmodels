@@ -59,7 +59,7 @@ public class BotWithTop {
         }
     }
 
-    public void executeTopExperiment(int splitCount,int splitMaxCount){
+    public static void executeTopExperiment(int splitCount,int splitMaxCount){
         new BotWithTopExperiment().getRealAnswerset(10);//预热class
         new BotWithTopExperiment().getRealAnswerset(10);//预热class
 
