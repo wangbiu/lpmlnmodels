@@ -106,7 +106,7 @@ public class BirdsTestCaseGen {
                 sb.append("bird("+j+") :- migratoryBird("+j+").").append(System.lineSeparator());
                 sb.append(":- migratoryBird("+j+"), residentBird("+j+").").append(System.lineSeparator());
             }
-            sb.append("#show migratoryBird/1.  #show residentBird/1.   #show bird/1.").append(System.lineSeparator());
+            sb.append("#show bird/1.").append(System.lineSeparator());
 
             writeFile(basedir+"\\bird"+birdNum+"\\pe-"+cnt+".txt",sb.toString());
             cnt++;
