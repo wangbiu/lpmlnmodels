@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class BotWithTop {
     public static String baseDir = "/home/wangbin/experiments/splitting-bird";
     public static void executeExperiment(int splitCount,int splitMaxCount){
-        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, null, "Spe start range"+splitCount+" to "+splitMaxCount);
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, "Spe start range"+splitCount+" to "+splitMaxCount);
         int expCount = splitMaxCount-splitCount+1;
         double[] botTime = new double[expCount];
         double[] topTime = new double[expCount];
@@ -63,7 +63,7 @@ class BotWithTopExperiment{
     public long topTime;
     public long botTime;
     public Set<String> getRealAnswerset(File botFile, List<File> topFile) {
-        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, null, botFile.toString()+" start.");
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, botFile.toString()+" start.");
         Set<String> realAnswerset = new ConcurrentSkipListSet<>();
         AugmentedSubsetSolver solver = new AugmentedSubsetSolver();
 
@@ -71,17 +71,25 @@ class BotWithTopExperiment{
         List<WeightedAnswerSet> wasList = solver.call(botFile.getAbsolutePath());
         botTime = new Date().getTime()-lastPoint;
 
-        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, null, botFile.toString()+" done.");
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, botFile.toString()+" done.");
         ExecutorService solverService = Executors.newFixedThreadPool(16);
-        assert wasList.size()==topFile.size();
 
         lastPoint = new Date().getTime();
-        for(int i=0;i<wasList.size();i++){
-            solverService.execute(new SolveTop(realAnswerset,topFile.get(i),wasList.get(i).toString()));
+        if(wasList.size()==topFile.size()){
+            //correct count
+            Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, botFile.toString()+" count matches.");
+            for(int i=0;i<wasList.size();i++){
+                solverService.execute(new SolveTop(realAnswerset,topFile.get(i),wasList.get(i).toString()));
+            }
+        }
+        else{
+            for (File top : topFile) {
+                solverService.execute(new SolveTop(realAnswerset,top,""));
+            }
         }
         while(((ThreadPoolExecutor)solverService).getActiveCount()!=0){ }
         topTime = new Date().getTime()-lastPoint;
-        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, null, botFile.toString()+" top done.");
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, botFile.toString()+" top done.");
         solverService.shutdown();
         return realAnswerset;
     }
@@ -97,6 +105,18 @@ class BotWithTopExperiment{
             topFile.add(new File(path+"pe-trans-"+i+".txt"));
         }
         return getRealAnswerset(botFile,topFile);
+    }
+
+    public Set<String> getRealAnswerset(List<File> topFile){
+        lastPoint = new Date().getTime();
+        ExecutorService solverService = Executors.newFixedThreadPool(16);
+        Set<String> realAnswerset = new ConcurrentSkipListSet<>();
+        for (File top : topFile) {
+            solverService.execute(new SolveTop(realAnswerset,top,""));
+        }
+        while(((ThreadPoolExecutor)solverService).getActiveCount()!=0){ }
+        topTime = new Date().getTime()-lastPoint;
+        return realAnswerset;
     }
 }
 
