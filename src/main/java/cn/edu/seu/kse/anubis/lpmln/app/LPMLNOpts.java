@@ -133,13 +133,13 @@ public class LPMLNOpts {
         Option split=new Option("spe","split",false,"split experiment");
         split.setRequired(false);
 
-        Option split_min=new Option("spn","split-problem-n",false,"split experiment problem count");
+        Option split_min=new Option("spn","split-problem-n",true,"split experiment problem count");
         split_min.setRequired(false);
         split_min.setArgName("split-problem-n");
         split_min.setValueSeparator(' ');
         split_min.setOptionalArg(false);
 
-        Option split_max=new Option("smpn","split-max-problem-n",false,"split experiment max problem count");
+        Option split_max=new Option("smpn","split-max-problem-n",true,"split experiment max problem count");
         split_max.setRequired(false);
         split_max.setArgName("split-max-problem-n");
         split_max.setValueSeparator(' ');
