@@ -160,5 +160,20 @@ public class BirdsTestCaseGen {
 
     }
 
+    public void generateIndependentlyDivisibleProgram(){
+        StringBuilder sb=null;
+        for(int j=1;j<15;j++){
+            sb=new StringBuilder();
+            sb.append("2 : residentBird(").append(j).append(").").append(System.lineSeparator());
+            sb.append("1 : migratoryBird(").append(j).append(").").append(System.lineSeparator());
+            sb.append("bird("+j+") :- residentBird("+j+").").append(System.lineSeparator());
+            sb.append("bird("+j+") :- migratoryBird("+j+").").append(System.lineSeparator());
+            sb.append(":- migratoryBird("+j+"), residentBird("+j+").").append(System.lineSeparator());
+            sb.append("#show bird/1.  #show migratoryBird/1.  #show residentBird/1.").append(System.lineSeparator());
+
+            writeFile(basedir+"\\independent\\bird-"+j+".txt",sb.toString());
+        }
+    }
+
 
 }

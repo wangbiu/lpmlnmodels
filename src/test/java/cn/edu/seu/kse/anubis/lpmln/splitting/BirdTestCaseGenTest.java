@@ -45,4 +45,18 @@ public class BirdTestCaseGenTest {
             btc.generateTranslationCmd(b);
         }
     }
+
+    @Test
+    public void testGenerateIndependentlyDivisibleProgram(){
+        btc.generateIndependentlyDivisibleProgram();
+    }
+
+    @Test
+    public void  testTranslationCmd(){
+        StringBuilder sb=new StringBuilder();
+        for(int i=1;i<15;i++){
+            sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s weak -i bird-"+i+".txt -o bird-trans-"+i+".txt\n");
+        }
+        System.out.println(sb.toString());
+    }
 }
