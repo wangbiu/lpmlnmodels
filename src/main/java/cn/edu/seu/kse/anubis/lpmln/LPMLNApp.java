@@ -76,7 +76,13 @@ public class LPMLNApp {
                 String pmn = cmd.getOptionValue("split-max-problem-n");
                 pmn = pmn==null?"14":pmn;
                 BotWithTop.executeExperiment(Integer.valueOf(pn),Integer.valueOf(pmn));
-            }else {
+            } else if(cmd.hasOption("spei")){
+                String pn = cmd.getOptionValue("split-problem-n");
+                pn = pn==null?"10":pn;
+                String pmn = cmd.getOptionValue("split-max-problem-n");
+                pmn = pmn==null?"14":pmn;
+                BotWithTop.executeTopExperiment(Integer.valueOf(pn),Integer.valueOf(pmn));
+            } else {
                 if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
                     throw new RuntimeException("i and I are used once at a time");
                 }
