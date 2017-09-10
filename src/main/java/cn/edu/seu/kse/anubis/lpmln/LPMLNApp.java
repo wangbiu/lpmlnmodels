@@ -61,6 +61,14 @@ public class LPMLNApp {
             }else if(cmd.hasOption("schedule")){
                 ScheduleExperiment se=new ScheduleExperiment();
                 se.startTest();
+            }else if(cmd.hasOption("translate")){
+                initLpmlnmodels(cmd);
+
+                File translationoutfile=new File(translationfile);
+                File lpmlnrulefile=new File(lpmlnfile);
+                //翻译
+                translation(lpmlnrulefile,translationoutfile,semantics,aspsolver);
+
             }
             else {
                 if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){

@@ -40,6 +40,10 @@ public class LPMLNOpts {
         inputfile.setOptionalArg(false);
         inputfile.setArgName("inputfile");
 
+        //指定输入的LPMLN文件
+        Option translate=new Option("t", "translate",false, "optional, translate input program to ASP program only");
+        inputfile.setRequired(false);
+
         //指定转化输出的文件
         Option transoutfile=new Option("o", "translation-output-file", true,"optional, specify output file of translation");
         transoutfile.setRequired(false);
@@ -138,6 +142,7 @@ public class LPMLNOpts {
         opts.addOption(semantics);
         opts.addOption(transoutfile);
         opts.addOption(transinfile);
+        opts.addOption(translate);
 
         opts.addOption(experiment);
         opts.addOption(exp_cores);
