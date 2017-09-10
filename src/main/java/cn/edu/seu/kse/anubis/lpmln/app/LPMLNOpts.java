@@ -146,7 +146,7 @@ public class LPMLNOpts {
         split_max.setOptionalArg(false);
 
         Option split_independent=new Option("spei","split-independent",false,"split experiment independently");
-        split.setRequired(false);
+        split_independent.setRequired(false);
 
         Options opts=new Options();
         opts.addOption(help);
