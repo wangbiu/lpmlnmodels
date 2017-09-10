@@ -93,15 +93,13 @@ class BotWithTopExperiment{
         if(wasList.size()==topFile.size()){
             //correct count
             Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, botFile.toString()+" count matches.");
-            //wasList.get(i).toString();
-            String botString = "";
             for(int i=0;i<wasList.size();i++){
-                solverService.execute(new SolveTop(realAnswerset,topFile.get(i),botString));
+                solverService.execute(new SolveTop(realAnswerset,topFile.get(i),wasList.get(i)));
             }
         }
         else{
             for (File top : topFile) {
-                solverService.execute(new SolveTop(realAnswerset,top,""));
+                solverService.execute(new SolveTop(realAnswerset,top,null));
             }
         }
         try {
@@ -134,7 +132,7 @@ class BotWithTopExperiment{
         ExecutorService solverService = Executors.newFixedThreadPool(16);
         Set<String> realAnswerset = new ConcurrentSkipListSet<>();
         for (File top : topFile) {
-            solverService.execute(new SolveTop(realAnswerset,top,""));
+            solverService.execute(new SolveTop(realAnswerset,top,null));
         }
         while(((ThreadPoolExecutor)solverService).getActiveCount()!=0){ }
         topTime = new Date().getTime()-lastPoint;
@@ -145,8 +143,8 @@ class BotWithTopExperiment{
 class SolveTop extends Thread{
     protected File topFile;
     protected Set<String> res;
-    protected String botWas;
-    public SolveTop(Set<String> resSet,File file,String bot){
+    protected WeightedAnswerSet botWas;
+    public SolveTop(Set<String> resSet,File file,WeightedAnswerSet bot){
         res = resSet;
         topFile = file;
         botWas = bot;
@@ -157,8 +155,10 @@ class SolveTop extends Thread{
         AugmentedSubsetSolver solver = new AugmentedSubsetSolver();
         System.out.println("topFile :"+topFile.getAbsolutePath());
         List<WeightedAnswerSet> wasList = solver.call(topFile.getAbsolutePath());
-        for (WeightedAnswerSet topWas: wasList) {
-            //res.add(botWas+topWas.toString());//结果字符串拼接#7
+        if(botWas!=null){
+            for (WeightedAnswerSet topWas: wasList) {
+                topWas.getAnswerSet().getLiterals().addAll(botWas.getAnswerSet().getLiterals());
+            }
         }
         System.out.println(topFile+"done");
     }
