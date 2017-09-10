@@ -29,13 +29,15 @@ public class BotWithTop {
         int expCount = splitMaxCount-splitCount+1;
         double[] botTime = new double[expCount];
         double[] topTime = new double[expCount];
+
         for(int i=0;i<expCount;i++){
             BotWithTopExperiment bwt = new BotWithTopExperiment();
+            System.out.println("exp"+(splitCount+i));
             bwt.getRealAnswerset(i+splitCount);
             botTime[i] = bwt.botTime;
             topTime[i] = bwt.topTime;
         }
-        File outFile = new File(baseDir+"/timeCost.txt");
+        File outFile = new File("timeCost.txt");
         outFile.getParentFile().mkdir();
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
@@ -49,8 +51,8 @@ public class BotWithTop {
                 toWrite.append("\t");
                 toWrite.append(topTime[i]/1000);
                 toWrite.append("\n");
+                bw.write(toWrite.toString());
             }
-            bw.write(toWrite.toString());
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +60,7 @@ public class BotWithTop {
     }
 
     public void executeTopExperiment(List<File> topFile){
-        File outFile = new File(baseDir+"/timeCostTop.txt");
+        File outFile = new File("timeCostTop.txt");
         outFile.getParentFile().mkdir();
         BotWithTopExperiment bwt = new BotWithTopExperiment();
         bwt.getRealAnswerset(topFile);
