@@ -152,9 +152,9 @@ public class BirdsTestCaseGen {
 
         StringBuilder sb=new StringBuilder();
 
-        sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s strong -i bot.txt -o bot-trans.txt").append(System.lineSeparator());
+        sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s strong -i bot.txt -o bot-trans.txt\n");
         for(int i=0;i<penum;i++){
-            sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s strong -i pe-"+i+".txt -o pe-trans-"+i+".txt").append(System.lineSeparator());
+            sb.append("java -jar ../lpmlnmodels-1.1.jar -t  -r clingo -s strong -i pe-"+i+".txt -o pe-trans-"+i+".txt\n");
         }
         writeFile(basedir+"\\translate-bird-"+birdNum+".sh",sb.toString());
 
