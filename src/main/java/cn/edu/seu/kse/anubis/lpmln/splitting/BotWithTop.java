@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,7 +92,6 @@ public class BotWithTop {
                 toWrite.append("\n");
                 bw.write(toWrite.toString());
             }
-
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -172,12 +174,25 @@ class BotWithTopExperiment{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (SolveTop st : solverList) {
-            totalWas.addAll(st.topWasList);
+
+        for(int i=1;i<solverList.size();i++){
+            wasUnion(solverList.get(0).topWasList,solverList.get(i).topWasList);
+        }
+        for (WeightedAnswerSet was : solverList.get(0).topWasList) {
+            realAnswerset.add(was.toString());
         }
 
         topTime = new Date().getTime()-lastPoint;
         return realAnswerset;
+    }
+
+    public void wasUnion(List<WeightedAnswerSet> wasList1,List<WeightedAnswerSet> wasList2){
+        for (WeightedAnswerSet was1 : wasList1) {
+            Set<String> litList = was1.getAnswerSet().getLiterals();
+            for (WeightedAnswerSet was2 : wasList2) {
+                litList.addAll(was2.getAnswerSet().getLiterals());
+            }
+        }
     }
 }
 
