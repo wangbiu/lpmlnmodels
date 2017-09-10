@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * Created by 许鸿翔 on 2017/9/10.
  */
 public class BotWithTop {
-    public static String baseDir = "/home/wangbin/experiments/splitting-bird";
+    public static String baseDir = "/home/xhx/experiments";
     public static void executeExperiment(int splitCount,int splitMaxCount){
         Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, "Spe start range"+splitCount+" to "+splitMaxCount);
         int expCount = splitMaxCount-splitCount+1;
@@ -38,7 +38,6 @@ public class BotWithTop {
             topTime[i] = bwt.topTime;
         }
         File outFile = new File("timeCost.txt");
-        outFile.getParentFile().mkdir();
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
             StringBuilder toWrite = new StringBuilder("taskName\tbotTime\ttopTime\n");
@@ -61,7 +60,6 @@ public class BotWithTop {
 
     public void executeTopExperiment(List<File> topFile){
         File outFile = new File("timeCostTop.txt");
-        outFile.getParentFile().mkdir();
         BotWithTopExperiment bwt = new BotWithTopExperiment();
         bwt.getRealAnswerset(topFile);
         try {
@@ -91,6 +89,8 @@ class BotWithTopExperiment{
         ExecutorService solverService = Executors.newFixedThreadPool(16);
 
         lastPoint = new Date().getTime();
+        System.out.println("wasList.size()"+wasList.size());
+        System.out.println("topFile.size()"+topFile.size());
         if(wasList.size()==topFile.size()){
             //correct count
             Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, botFile.toString()+" count matches.");
@@ -111,7 +111,7 @@ class BotWithTopExperiment{
     }
 
     public Set<String> getRealAnswerset(int birdSeq){
-        String path = "baseDir/bird"+birdSeq+"/";
+        String path = BotWithTop.baseDir+"/bird"+birdSeq+"/";
         File botFile = new File(path+"bot-trans.txt");
         List<File> topFile = new ArrayList<>();
         int botBird = birdSeq/3;
@@ -149,6 +149,7 @@ class SolveTop extends Thread{
     @Override
     public void run(){
         AugmentedSubsetSolver solver = new AugmentedSubsetSolver();
+        System.out.println("topFile :"+topFile.getAbsolutePath());
         List<WeightedAnswerSet> wasList = solver.call(topFile.getAbsolutePath());
         for (WeightedAnswerSet topWas: wasList) {
             res.add(botWas+topWas.toString());//结果字符串拼接
