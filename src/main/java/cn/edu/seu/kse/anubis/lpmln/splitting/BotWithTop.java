@@ -4,6 +4,7 @@ import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.anubis.lpmln.solver.AugmentedSubsetSolver;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -28,6 +29,19 @@ public class BotWithTop {
         while(((ThreadPoolExecutor)solverService).getActiveCount()!=0){ }
         solverService.shutdown();
         return realAnswerset;
+    }
+
+    public static Set<String> getRealAnswerset(int birdSeq){
+        String path = "/home/wangbin/experiments/splitting-bird/bird"+birdSeq+"/";
+        File botFile = new File(path+"bot.txt");
+        List<File> topFile = new ArrayList<>();
+        int botBird = birdSeq/3;
+        int topBird = birdSeq-botBird;
+        int topFileCount = (int)Math.pow(4,botBird);
+        for(int i=0;i<topFileCount;i++){
+            topFile.add(new File(path+"pe-"+i+".txt"));
+        }
+        return getRealAnswerset(botFile,topFile);
     }
 }
 
