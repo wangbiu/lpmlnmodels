@@ -2,6 +2,7 @@ package cn.edu.seu.kse.anubis.lpmln.splitting;
 
 import cn.edu.seu.kse.anubis.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.anubis.lpmln.solver.AugmentedSubsetSolver;
+import cn.edu.seu.kse.anubis.util.CommandLineExecute;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,12 +16,16 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by 许鸿翔 on 2017/9/10.
  */
 public class BotWithTop {
+    public static String baseDir = "/home/wangbin/experiments/splitting-bird";
     public static void executeExperiment(int splitCount,int splitMaxCount){
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, null, "Spe start range"+splitCount+" to "+splitMaxCount);
         int expCount = splitMaxCount-splitCount+1;
         double[] botTime = new double[expCount];
         double[] topTime = new double[expCount];
@@ -30,11 +35,11 @@ public class BotWithTop {
             botTime[i] = bwt.botTime;
             topTime[i] = bwt.topTime;
         }
-        File outFile = new File("/home/wangbin/experiments/splitting-bird/timeCost.txt");
+        File outFile = new File(baseDir+"/timeCost.txt");
         outFile.getParentFile().mkdir();
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
-            StringBuilder toWrite = new StringBuilder("tashName\tbotTime\ttopTime\n");
+            StringBuilder toWrite = new StringBuilder("taskName\tbotTime\ttopTime\n");
             bw.write(toWrite.toString());
             for(int i=0;i<expCount;i++){
                 toWrite = new StringBuilder("bird");
@@ -58,6 +63,7 @@ class BotWithTopExperiment{
     public long topTime;
     public long botTime;
     public Set<String> getRealAnswerset(File botFile, List<File> topFile) {
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, null, botFile.toString()+" start.");
         Set<String> realAnswerset = new ConcurrentSkipListSet<>();
         AugmentedSubsetSolver solver = new AugmentedSubsetSolver();
 
@@ -65,6 +71,7 @@ class BotWithTopExperiment{
         List<WeightedAnswerSet> wasList = solver.call(botFile.getAbsolutePath());
         botTime = new Date().getTime()-lastPoint;
 
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, null, botFile.toString()+" done.");
         ExecutorService solverService = Executors.newFixedThreadPool(16);
         assert wasList.size()==topFile.size();
 
@@ -74,13 +81,13 @@ class BotWithTopExperiment{
         }
         while(((ThreadPoolExecutor)solverService).getActiveCount()!=0){ }
         topTime = new Date().getTime()-lastPoint;
-
+        Logger.getLogger(CommandLineExecute.class.getName()).log(Level.INFO, null, botFile.toString()+" top done.");
         solverService.shutdown();
         return realAnswerset;
     }
 
     public Set<String> getRealAnswerset(int birdSeq){
-        String path = "/home/wangbin/experiments/splitting-bird/bird"+birdSeq+"/";
+        String path = "baseDir/bird"+birdSeq+"/";
         File botFile = new File(path+"bot-trans.txt");
         List<File> topFile = new ArrayList<>();
         int botBird = birdSeq/3;
