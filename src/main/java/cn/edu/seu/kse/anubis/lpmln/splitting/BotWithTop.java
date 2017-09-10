@@ -56,6 +56,7 @@ public class BotWithTop {
             e.printStackTrace();
         }
     }
+
 }
 
 class BotWithTopExperiment{
@@ -100,7 +101,7 @@ class BotWithTopExperiment{
         List<File> topFile = new ArrayList<>();
         int botBird = birdSeq/3;
         int topBird = birdSeq-botBird;
-        int topFileCount = (int)Math.pow(4,botBird);
+        int topFileCount = (int)Math.pow(2,botBird);
         for(int i=0;i<topFileCount;i++){
             topFile.add(new File(path+"pe-trans-"+i+".txt"));
         }
