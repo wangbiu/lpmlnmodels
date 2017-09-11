@@ -1,0 +1,263 @@
+1 : residentBird(1). 
+2 : migratoryBird(1).
+1 : residentBird(2). 
+2 : migratoryBird(2).
+1 : residentBird(3). 
+2 : migratoryBird(3).
+1 : residentBird(4). 
+2 : migratoryBird(4).
+1 : residentBird(5). 
+2 : migratoryBird(5).
+1 : residentBird(6). 
+2 : migratoryBird(6).
+1 : residentBird(7). 
+2 : migratoryBird(7).
+1 : residentBird(8). 
+2 : migratoryBird(8).
+1 : residentBird(9). 
+2 : migratoryBird(9).
+1 : residentBird(10). 
+2 : migratoryBird(10).
+1 : residentBird(11). 
+2 : migratoryBird(11).
+1 : residentBird(12). 
+2 : migratoryBird(12).
+1 : residentBird(13). 
+2 : migratoryBird(13).
+1 : residentBird(14). 
+2 : migratoryBird(14).
+1 : residentBird(15). 
+2 : migratoryBird(15).
+1 : residentBird(16). 
+2 : migratoryBird(16).
+1 : residentBird(17). 
+2 : migratoryBird(17).
+1 : residentBird(18). 
+2 : migratoryBird(18).
+1 : residentBird(19). 
+2 : migratoryBird(19).
+1 : residentBird(20). 
+2 : migratoryBird(20).
+1 : residentBird(21). 
+2 : migratoryBird(21).
+1 : residentBird(22). 
+2 : migratoryBird(22).
+1 : residentBird(23). 
+2 : migratoryBird(23).
+1 : residentBird(24). 
+2 : migratoryBird(24).
+1 : residentBird(25). 
+2 : migratoryBird(25).
+1 : residentBird(26). 
+2 : migratoryBird(26).
+1 : residentBird(27). 
+2 : migratoryBird(27).
+1 : residentBird(28). 
+2 : migratoryBird(28).
+1 : residentBird(29). 
+2 : migratoryBird(29).
+1 : residentBird(30). 
+2 : migratoryBird(30).
+1 : residentBird(31). 
+2 : migratoryBird(31).
+1 : residentBird(32). 
+2 : migratoryBird(32).
+1 : residentBird(33). 
+2 : migratoryBird(33).
+1 : residentBird(34). 
+2 : migratoryBird(34).
+1 : residentBird(35). 
+2 : migratoryBird(35).
+1 : residentBird(36). 
+2 : migratoryBird(36).
+1 : residentBird(37). 
+2 : migratoryBird(37).
+1 : residentBird(38). 
+2 : migratoryBird(38).
+1 : residentBird(39). 
+2 : migratoryBird(39).
+1 : residentBird(40). 
+2 : migratoryBird(40).
+1 : residentBird(41). 
+2 : migratoryBird(41).
+1 : residentBird(42). 
+2 : migratoryBird(42).
+1 : residentBird(43). 
+2 : migratoryBird(43).
+1 : residentBird(44). 
+2 : migratoryBird(44).
+1 : residentBird(45). 
+2 : migratoryBird(45).
+1 : residentBird(46). 
+2 : migratoryBird(46).
+1 : residentBird(47). 
+2 : migratoryBird(47).
+1 : residentBird(48). 
+2 : migratoryBird(48).
+1 : residentBird(49). 
+2 : migratoryBird(49).
+1 : residentBird(50). 
+2 : migratoryBird(50).
+1 : residentBird(51). 
+2 : migratoryBird(51).
+1 : residentBird(52). 
+2 : migratoryBird(52).
+
+bird(1) :- residentBird(1).
+bird(2) :- residentBird(2).
+bird(3) :- residentBird(3).
+bird(4) :- residentBird(4).
+bird(5) :- residentBird(5).
+bird(6) :- residentBird(6).
+bird(7) :- residentBird(7).
+bird(8) :- residentBird(8).
+bird(9) :- residentBird(9).
+bird(10) :- residentBird(10).
+bird(11) :- residentBird(11).
+bird(12) :- residentBird(12).
+bird(13) :- residentBird(13).
+bird(14) :- residentBird(14).
+bird(15) :- residentBird(15).
+bird(16) :- residentBird(16).
+bird(17) :- residentBird(17).
+bird(18) :- residentBird(18).
+bird(19) :- residentBird(19).
+bird(20) :- residentBird(20).
+bird(21) :- residentBird(21).
+bird(22) :- residentBird(22).
+bird(23) :- residentBird(23).
+bird(24) :- residentBird(24).
+bird(25) :- residentBird(25).
+bird(26) :- residentBird(26).
+bird(27) :- residentBird(27).
+bird(28) :- residentBird(28).
+bird(29) :- residentBird(29).
+bird(30) :- residentBird(30).
+bird(31) :- residentBird(31).
+bird(32) :- residentBird(32).
+bird(33) :- residentBird(33).
+bird(34) :- residentBird(34).
+bird(35) :- residentBird(35).
+bird(36) :- residentBird(36).
+bird(37) :- residentBird(37).
+bird(38) :- residentBird(38).
+bird(39) :- residentBird(39).
+bird(40) :- residentBird(40).
+bird(41) :- residentBird(41).
+bird(42) :- residentBird(42).
+bird(43) :- residentBird(43).
+bird(44) :- residentBird(44).
+bird(45) :- residentBird(45).
+bird(46) :- residentBird(46).
+bird(47) :- residentBird(47).
+bird(48) :- residentBird(48).
+bird(49) :- residentBird(49).
+bird(50) :- residentBird(50).
+bird(51) :- residentBird(51).
+bird(52) :- residentBird(52).
+bird(1) :- migratoryBird(1).
+bird(2) :- migratoryBird(2).
+bird(3) :- migratoryBird(3).
+bird(4) :- migratoryBird(4).
+bird(5) :- migratoryBird(5).
+bird(6) :- migratoryBird(6).
+bird(7) :- migratoryBird(7).
+bird(8) :- migratoryBird(8).
+bird(9) :- migratoryBird(9).
+bird(10) :- migratoryBird(10).
+bird(11) :- migratoryBird(11).
+bird(12) :- migratoryBird(12).
+bird(13) :- migratoryBird(13).
+bird(14) :- migratoryBird(14).
+bird(15) :- migratoryBird(15).
+bird(16) :- migratoryBird(16).
+bird(17) :- migratoryBird(17).
+bird(18) :- migratoryBird(18).
+bird(19) :- migratoryBird(19).
+bird(20) :- migratoryBird(20).
+bird(21) :- migratoryBird(21).
+bird(22) :- migratoryBird(22).
+bird(23) :- migratoryBird(23).
+bird(24) :- migratoryBird(24).
+bird(25) :- migratoryBird(25).
+bird(26) :- migratoryBird(26).
+bird(27) :- migratoryBird(27).
+bird(28) :- migratoryBird(28).
+bird(29) :- migratoryBird(29).
+bird(30) :- migratoryBird(30).
+bird(31) :- migratoryBird(31).
+bird(32) :- migratoryBird(32).
+bird(33) :- migratoryBird(33).
+bird(34) :- migratoryBird(34).
+bird(35) :- migratoryBird(35).
+bird(36) :- migratoryBird(36).
+bird(37) :- migratoryBird(37).
+bird(38) :- migratoryBird(38).
+bird(39) :- migratoryBird(39).
+bird(40) :- migratoryBird(40).
+bird(41) :- migratoryBird(41).
+bird(42) :- migratoryBird(42).
+bird(43) :- migratoryBird(43).
+bird(44) :- migratoryBird(44).
+bird(45) :- migratoryBird(45).
+bird(46) :- migratoryBird(46).
+bird(47) :- migratoryBird(47).
+bird(48) :- migratoryBird(48).
+bird(49) :- migratoryBird(49).
+bird(50) :- migratoryBird(50).
+bird(51) :- migratoryBird(51).
+bird(52) :- migratoryBird(52).
+ :- migratoryBird(1), residentBird(1).
+ :- migratoryBird(2), residentBird(2).
+ :- migratoryBird(3), residentBird(3).
+ :- migratoryBird(4), residentBird(4).
+ :- migratoryBird(5), residentBird(5).
+ :- migratoryBird(6), residentBird(6).
+ :- migratoryBird(7), residentBird(7).
+ :- migratoryBird(8), residentBird(8).
+ :- migratoryBird(9), residentBird(9).
+ :- migratoryBird(10), residentBird(10).
+ :- migratoryBird(11), residentBird(11).
+ :- migratoryBird(12), residentBird(12).
+ :- migratoryBird(13), residentBird(13).
+ :- migratoryBird(14), residentBird(14).
+ :- migratoryBird(15), residentBird(15).
+ :- migratoryBird(16), residentBird(16).
+ :- migratoryBird(17), residentBird(17).
+ :- migratoryBird(18), residentBird(18).
+ :- migratoryBird(19), residentBird(19).
+ :- migratoryBird(20), residentBird(20).
+ :- migratoryBird(21), residentBird(21).
+ :- migratoryBird(22), residentBird(22).
+ :- migratoryBird(23), residentBird(23).
+ :- migratoryBird(24), residentBird(24).
+ :- migratoryBird(25), residentBird(25).
+ :- migratoryBird(26), residentBird(26).
+ :- migratoryBird(27), residentBird(27).
+ :- migratoryBird(28), residentBird(28).
+ :- migratoryBird(29), residentBird(29).
+ :- migratoryBird(30), residentBird(30).
+ :- migratoryBird(31), residentBird(31).
+ :- migratoryBird(32), residentBird(32).
+ :- migratoryBird(33), residentBird(33).
+ :- migratoryBird(34), residentBird(34).
+ :- migratoryBird(35), residentBird(35).
+ :- migratoryBird(36), residentBird(36).
+ :- migratoryBird(37), residentBird(37).
+ :- migratoryBird(38), residentBird(38).
+ :- migratoryBird(39), residentBird(39).
+ :- migratoryBird(40), residentBird(40).
+ :- migratoryBird(41), residentBird(41).
+ :- migratoryBird(42), residentBird(42).
+ :- migratoryBird(43), residentBird(43).
+ :- migratoryBird(44), residentBird(44).
+ :- migratoryBird(45), residentBird(45).
+ :- migratoryBird(46), residentBird(46).
+ :- migratoryBird(47), residentBird(47).
+ :- migratoryBird(48), residentBird(48).
+ :- migratoryBird(49), residentBird(49).
+ :- migratoryBird(50), residentBird(50).
+ :- migratoryBird(51), residentBird(51).
+ :- migratoryBird(52), residentBird(52).
+
+#show bird/1.

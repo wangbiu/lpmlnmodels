@@ -1,0 +1,6 @@
+bird(jo) :- residentBird(jo).
+bird(jo) :- migratoryBird(jo).
+:- residentBird(jo), migratoryBird(jo).
+2:residentBird(jo).
+1:migratoryBird(jo).
+

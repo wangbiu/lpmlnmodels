@@ -1,0 +1,72 @@
+Answer: 1
+has_key(2) select(3) open(1) switch(2) win_switch
+Optimization: 1 12
+Answer: 2
+has_key(2) select(3) open(1)
+Optimization: 1 11
+Answer: 3
+has_key(1) select(3) open(2) switch(1) win_switch
+Optimization: 1 12
+Answer: 4
+has_key(1) select(3) open(2)
+Optimization: 1 11
+Answer: 5
+has_key(3) select(3) open(2) switch(1) win_stay
+Optimization: 1 11
+Answer: 6
+has_key(3) select(3) open(1) switch(2) win_stay
+Optimization: 1 11
+Answer: 7
+has_key(3) select(3) open(2) win_stay
+Optimization: 1 10
+Answer: 8
+has_key(3) select(3) open(1) win_stay
+Optimization: 1 10
+Answer: 9
+has_key(2) select(2) open(1) switch(3) win_stay
+Optimization: 1 11
+Answer: 10
+has_key(2) select(2) open(3) switch(1) win_stay
+Optimization: 1 11
+Answer: 11
+has_key(2) select(2) open(3) win_stay
+Optimization: 1 10
+Answer: 12
+has_key(2) select(2) open(1) win_stay
+Optimization: 1 10
+Answer: 13
+has_key(1) select(2) open(3) switch(1) win_switch
+Optimization: 1 12
+Answer: 14
+has_key(1) select(2) open(3)
+Optimization: 1 11
+Answer: 15
+has_key(3) select(2) open(1) switch(3) win_switch
+Optimization: 1 12
+Answer: 16
+has_key(3) select(2) open(1)
+Optimization: 1 11
+Answer: 17
+has_key(2) select(1) open(3) switch(2) win_switch
+Optimization: 1 12
+Answer: 18
+has_key(2) select(1) open(3)
+Optimization: 1 11
+Answer: 19
+has_key(1) select(1) open(3) switch(2) win_stay
+Optimization: 1 11
+Answer: 20
+has_key(1) select(1) open(2) switch(3) win_stay
+Optimization: 1 11
+Answer: 21
+has_key(1) select(1) open(3) win_stay
+Optimization: 1 10
+Answer: 22
+has_key(1) select(1) open(2) win_stay
+Optimization: 1 10
+Answer: 23
+has_key(3) select(1) open(2) switch(3) win_switch
+Optimization: 1 12
+Answer: 24
+has_key(3) select(1) open(2)
+Optimization: 1 11

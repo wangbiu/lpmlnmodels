@@ -1,0 +1,4 @@
+friend(a,b).
+friend(b,c).
+influence(X,Y) :- influence(X,Z), influence(Z,Y).
+1:influence(X,Y) :- friend(X,Y).
