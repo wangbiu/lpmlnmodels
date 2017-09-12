@@ -14,15 +14,17 @@ public class Rule {
     private boolean isSoft;
     private double weight;
     private int innerweight;
-    private String body;
     private List<String> head;
+    private List<String> positiveBody;
+    private List<String> negativeBody;
     private String ruleLabel=null;
     private String originalrule;
 
     public Rule(){
         vars=new HashSet<>();
         head=new ArrayList<>();
-        body="";
+        positiveBody = new ArrayList<>();
+        negativeBody = new ArrayList<>();
     }
 
     @Override
@@ -34,7 +36,7 @@ public class Rule {
         sb.append("varialbes ").append(vars).append(ls);
         sb.append("is soft rule ").append(isSoft).append(ls);
         sb.append("weight ").append(weight).append(ls);
-        sb.append("rule body ").append(body).append(ls);
+        sb.append("rule body ").append(getBody()).append(ls);
         sb.append("rule head ").append(head).append(ls);
         sb.append("");
         return sb.toString();
@@ -89,11 +91,10 @@ public class Rule {
     }
 
     public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
+        return new StringBuilder().append(String.join(",",positiveBody))
+                .append(positiveBody.size()==0?"":",")
+                .append(String.join(",",negativeBody))
+                .toString();
     }
 
     public List<String> getHead() {
