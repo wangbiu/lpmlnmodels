@@ -23,6 +23,8 @@ public class Rule {
     public Rule(){
         vars=new HashSet<>();
         head=new ArrayList<>();
+        positiveBody = new ArrayList<>();
+        negativeBody = new ArrayList<>();
     }
 
     @Override
