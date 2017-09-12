@@ -23,8 +23,6 @@ public class Rule {
     public Rule(){
         vars=new HashSet<>();
         head=new ArrayList<>();
-        positiveBody = new ArrayList<>();
-        negativeBody = new ArrayList<>();
     }
 
     @Override
@@ -91,11 +89,26 @@ public class Rule {
     }
 
     public String getBody() {
-        return new StringBuilder().append(String.join(",",positiveBody))
-                .append(positiveBody.size()==0?"":",")
-                .append(String.join(",",negativeBody))
+        return new StringBuilder().append(String.join(",", getPositiveBody()))
+                .append(getPositiveBody().size()==0|| getNegativeBody().size()==0?"":",")
+                .append(String.join(",", getNegativeBody()))
                 .toString();
     }
+
+    public void setBody(String body){
+        setPositiveBody(new ArrayList<>());
+        setNegativeBody(new ArrayList<>());
+        String[] literals = body.split(",");
+        for (String str : literals) {
+            if(str.startsWith("not")){
+                getNegativeBody().add(str);
+            }else{
+                getPositiveBody().add(str);
+            }
+        }
+    }
+
+
 
     public List<String> getHead() {
         return head;
@@ -132,5 +145,21 @@ public class Rule {
 
     public void setOriginalrule(String originalrule) {
         this.originalrule = originalrule;
+    }
+
+    public List<String> getPositiveBody() {
+        return positiveBody;
+    }
+
+    public void setPositiveBody(List<String> positiveBody) {
+        this.positiveBody = positiveBody;
+    }
+
+    public List<String> getNegativeBody() {
+        return negativeBody;
+    }
+
+    public void setNegativeBody(List<String> negativeBody) {
+        this.negativeBody = negativeBody;
     }
 }
