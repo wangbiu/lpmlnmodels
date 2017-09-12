@@ -1,7 +1,6 @@
 package cn.edu.seu.kse.lpmln.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -107,24 +106,23 @@ public class Rule {
 
     public String getRuleLabel() {
         if(ruleLabel == null){
-            StringBuilder sb=new StringBuilder();
-            sb.append("rb").append("(").append(id);
-            int cnt=0;
-            int size=vars.size()-1;
-            for(String v:vars){
-                sb.append(", ").append(v);
-            }
-            if(isSoft){
-                sb.append(", 1, ").append((int)weight);
-            }else {
-                sb.append(", 2, 1");
-            }
-
-
-            sb.append(")");
-            ruleLabel=sb.toString();
+            ruleLabel = new StringBuilder().append("rb").append("(").append(getRuleLabelPara()).append(")").toString();
         }
         return ruleLabel;
+    }
+
+    public String getRuleLabelPara(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(id);
+        for(String v:vars){
+            sb.append(", ").append(v);
+        }
+        if(isSoft){
+            sb.append(", 1, ").append((int)weight);
+        }else {
+            sb.append(", 2, 1");
+        }
+        return sb.toString();
     }
 
     public String getOriginalrule() {
