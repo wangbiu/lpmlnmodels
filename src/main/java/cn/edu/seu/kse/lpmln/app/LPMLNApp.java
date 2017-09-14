@@ -6,6 +6,7 @@ import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
+import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +35,8 @@ public class LPMLNApp {
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
+    public enum TRANSLATION_TYPE{V1,V2};
+    public static TRANSLATION_TYPE translation_type = TRANSLATION_TYPE.V2;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 
@@ -194,10 +197,14 @@ public class LPMLNApp {
 
         ASPTranslator translator=null;
 
+        if(LPMLNApp.translation_type==TRANSLATION_TYPE.V1){
+            translator=new ASPTranslator(semantics);
+            solver=new Clingo4();
+        }else if(LPMLNApp.translation_type==TRANSLATION_TYPE.V2){
+            translator=new ASPTranslatorV2(semantics);
+            solver=new Clingo4();
+        }
 
-
-        translator=new ASPTranslator(semantics);
-        solver=new Clingo4();
 //        translator=new DLVTranslator(semantics);
 //        solver=new DLV();
 
