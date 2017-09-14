@@ -125,40 +125,94 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         Rule rule=new Rule();
         rule.setBody(ctx.getText());
+        List<String> positivebody = rule.getPositiveBody();
+        List<String> negativebody = rule.getNegativeBody();
         HashSet<String> vars=rule.getVars();
-        for(LPMLNParser.Extended_literalContext elctx : ctx.extended_literal()){
-            vars.addAll(visitExtended_literal(elctx));
-        }
-
-        for(LPMLNParser.Relation_exprContext rctx : ctx.relation_expr()){
-            vars.addAll(visitRelation_expr(rctx));
+        for(LPMLNParser.Body_literalContext bctx : ctx.body_literal()){
+            if(bctx.getText().startsWith("not")){
+                negativebody.add(bctx.getText());
+            }else{
+                positivebody.add(bctx.getText());
+            }
+            vars.addAll(visitBody_literal(bctx));
         }
 
         return rule;
     }
 
     @Override
-    public HashSet<String> visitExtended_literal(LPMLNParser.Extended_literalContext ctx) {
-        HashSet<String> vars=null;
-        LPMLNParser.LiteralContext lctx=ctx.literal();
-        if(lctx == null){
-            lctx=ctx.default_literal().literal();
+    public HashSet<String> visitBody_literal(LPMLNParser.Body_literalContext ctx){
+        HashSet<String> vars=new HashSet<>();
+        vars.addAll(visitLiteral(ctx.literal()));
+        vars.addAll(visitRelation_expr(ctx.relation_expr()));
+        vars.addAll(visitBody_aggregate(ctx.body_aggregate()));
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitBody_aggregate(LPMLNParser.Body_aggregateContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        if(ctx==null) return vars;
+        String var;
+        for (LPMLNParser.TermContext tctx : ctx.term()) {
+            var = visitTerm(tctx);
+            if(var!=null){
+                vars.add(var);
+            }
         }
-        vars=visitLiteral(lctx);
+        vars.addAll(visitAggregate_elements(ctx.aggregate_elements()));
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitAggregate_elements(LPMLNParser.Aggregate_elementsContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        for (LPMLNParser.Term_tupleContext tctx: ctx.term_tuple()) {
+            vars.addAll(visitTerm_tuple(tctx));
+        }
+        for (LPMLNParser.Literal_tupleContext lctx: ctx.literal_tuple()) {
+            vars.addAll(visitLiteral_tuple(lctx));
+        }
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitTerm_tuple(LPMLNParser.Term_tupleContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        String var;
+        for (LPMLNParser.TermContext tctx: ctx.term()) {
+            var = visitTerm(tctx);
+            if(var!=null){
+                vars.add(var);
+            }
+        }
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitLiteral_tuple(LPMLNParser.Literal_tupleContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        for (LPMLNParser.LiteralContext lctx : ctx.literal()) {
+            vars.addAll(visitLiteral(lctx));
+        }
         return vars;
     }
 
     @Override
     public HashSet<String> visitLiteral(LPMLNParser.LiteralContext ctx) {
         HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
         LPMLNParser.AtomContext actx=ctx.atom();
 
-        String var=null;
+        vars.addAll(visitLiteral(ctx.literal()));
 
-        for(LPMLNParser.TermContext tctx:actx.term()){
-            var=visitTerm(tctx);
-            if(var!=null){
-                vars.add(var);
+        String var=null;
+        if(actx!=null) {
+            for (LPMLNParser.TermContext tctx : actx.term()) {
+                var = visitTerm(tctx);
+                if (var != null) {
+                    vars.add(var);
+                }
             }
         }
 
@@ -168,6 +222,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     @Override
     public HashSet<String> visitRelation_expr(LPMLNParser.Relation_exprContext ctx) {
         HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
         for(TerminalNode vtn : ctx.VAR()){
             vars.add(vtn.getText());
         }
@@ -221,14 +276,13 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         Rule rule=new Rule();
 
         List<String> heads=rule.getHead();
-        for(LPMLNParser.LiteralContext lctx : ctx.literal()){
-            heads.add(lctx.getText());
-            visitLiteral(lctx);
+        for(LPMLNParser.Head_literalContext hctx : ctx.head_literal()){
+            heads.add(hctx.getText());
+            visitHead_literal(hctx);
         }
 
         return rule;
     }
-
 
 
     public int getFactor(){
