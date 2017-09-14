@@ -55,28 +55,28 @@ public class ASPTranslatorTest {
         System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
     }
 
-    @Test
-    public void testPlogTranslator() {
-        PlogTranslator translator=new PlogTranslator();
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        String asprules=translator.translate(rules);
-        System.out.println(asprules);
-    }
+//    @Test
+//    public void testPlogTranslator() {
+//        PlogTranslator translator=new PlogTranslator();
+//        translator.setFactor(factor);
+//        translator.setHerbrandUniverse(herbrandUniverse);
+//        String asprules=translator.translate(rules);
+//        System.out.println(asprules);
+//    }
 
-    @Test
-    public void testPlogCRRuleTranslator(){
-        PlogCRRuleTranslator translator=new PlogCRRuleTranslator();
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        String asprules=translator.translate(rules);
-        System.out.println(asprules);
-    }
+//    @Test
+//    public void testPlogCRRuleTranslator(){
+//        PlogCRRuleTranslator translator=new PlogCRRuleTranslator();
+//        translator.setFactor(factor);
+//        translator.setHerbrandUniverse(herbrandUniverse);
+//        String asprules=translator.translate(rules);
+//        System.out.println(asprules);
+//    }
 
     @Test
     public void testWeakASPTranslator(){
         Date start =new Date();
-        WeakASPTranslator translator=new WeakASPTranslator();
+        ASPTranslator translator=new ASPTranslator("weak");
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         String asprules=translator.translate_parts(rules);
@@ -88,7 +88,7 @@ public class ASPTranslatorTest {
     @Test
     public void testWeakDLVTranslator(){
         Date start =new Date();
-        WeakDLVTranslator translator=new WeakDLVTranslator();
+        DLVTranslator translator=new DLVTranslator("weak");
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         String asprules=translator.translate(rules);
@@ -97,12 +97,12 @@ public class ASPTranslatorTest {
         System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
     }
 
-    @Test
-    public void testASPGroundTranslator(){
-        ASPGroundTranslator translator=new ASPGroundTranslator();
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        String asprules=translator.translate(rules);
-        System.out.println(asprules);
-    }
+//    @Test
+//    public void testASPGroundTranslator(){
+//        ASPGroundTranslator translator=new ASPGroundTranslator();
+//        translator.setFactor(factor);
+//        translator.setHerbrandUniverse(herbrandUniverse);
+//        String asprules=translator.translate(rules);
+//        System.out.println(asprules);
+//    }
 }

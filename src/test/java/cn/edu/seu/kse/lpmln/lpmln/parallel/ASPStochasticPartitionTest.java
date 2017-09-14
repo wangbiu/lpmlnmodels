@@ -1,8 +1,8 @@
 package cn.edu.seu.kse.lpmln.lpmln.parallel;
 
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
-import cn.edu.seu.kse.lpmln.translator.ASPGround4ParallelTranslator;
 import cn.edu.seu.kse.lpmln.model.Rule;
+import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import cn.edu.seu.kse.lpmln.solver.parallel.ASPStochasticPartition;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class ASPStochasticPartitionTest {
         factor=sm.getFactor();
         herbrandUniverse=sm.getHerbrandUniverse();
         System.out.println("factor "+factor);
-        ASPGround4ParallelTranslator translator=new ASPGround4ParallelTranslator();
+        ASPTranslator translator=new ASPTranslator();
         translator.setWeakTranslate(true);
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
