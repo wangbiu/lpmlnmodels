@@ -131,10 +131,10 @@ range_atom : CONSTANT LPAREN integer RANGE integer RPAREN;
 literal : atom | MINUS atom;
 
 //缺省文字
-default_literal : NAF_NOT literal;
+//default_literal : NAF_NOT literal;
 
 //扩展文字，包含查询原子
-extended_literal : literal | default_literal;
+//extended_literal : literal | default_literal;
 
 //项元组
 term_tuple : term (COMMA term)*;
@@ -166,11 +166,18 @@ relation_expr :
     VAR relation_op STRING |
     ((MINUS)? VAR  | arithmethic_expr) relation_op ((MINUS)? VAR | arithmethic_expr);
 
+
 //规则头部
-head : literal (DISJUNCTION literal)* | head_aggregate;
+head : head_literal (DISJUNCTION head_literal)*;
+
+//头部文字
+head_literal : literal | head_aggregate;
 
 //规则体部
-body : (extended_literal | relation_expr | body_aggregate) (COMMA (extended_literal | relation_expr | body_aggregate))*;
+body : body_literal (COMMA body_literal)*;
+
+//体部文字
+body_literal : literal | relation_expr | body_aggregate | NAF_NOT body_literal;
 
 //事实
 fact : (head | range_atom) FULLSTOP;
