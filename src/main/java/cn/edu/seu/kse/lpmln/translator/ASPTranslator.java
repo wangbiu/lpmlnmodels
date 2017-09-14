@@ -163,7 +163,7 @@ public class ASPTranslator extends BaseTranslator {
         sb.append(":~ sat(").append(rule.getRuleLabel()).append("). ");
         sb.append("[");
         if(isSoft){
-            int weight= (int) (rule.getWeight()*factor);
+            long weight= (long) (rule.getWeight()*factor);
             sb.append(weight).append("@1, ");
         }else {
             sb.append("1@2, ");
