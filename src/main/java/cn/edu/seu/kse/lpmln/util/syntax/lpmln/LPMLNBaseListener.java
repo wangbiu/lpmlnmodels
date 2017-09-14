@@ -172,30 +172,6 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDefault_literal(LPMLNParser.Default_literalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDefault_literal(LPMLNParser.Default_literalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExtended_literal(LPMLNParser.Extended_literalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExtended_literal(LPMLNParser.Extended_literalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterTerm_tuple(LPMLNParser.Term_tupleContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -292,6 +268,18 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterHead_literal(LPMLNParser.Head_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHead_literal(LPMLNParser.Head_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBody(LPMLNParser.BodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -299,6 +287,18 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBody(LPMLNParser.BodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBody_literal(LPMLNParser.Body_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBody_literal(LPMLNParser.Body_literalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

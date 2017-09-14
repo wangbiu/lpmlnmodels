@@ -89,18 +89,6 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLiteral(LPMLNParser.LiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#default_literal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDefault_literal(LPMLNParser.Default_literalContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#extended_literal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExtended_literal(LPMLNParser.Extended_literalContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#term_tuple}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -149,11 +137,23 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHead(LPMLNParser.HeadContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#head_literal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHead_literal(LPMLNParser.Head_literalContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#body}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBody(LPMLNParser.BodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#body_literal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBody_literal(LPMLNParser.Body_literalContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#fact}.
 	 * @param ctx the parse tree

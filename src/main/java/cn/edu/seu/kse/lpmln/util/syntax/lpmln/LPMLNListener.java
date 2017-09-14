@@ -138,26 +138,6 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitLiteral(LPMLNParser.LiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#default_literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterDefault_literal(LPMLNParser.Default_literalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#default_literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitDefault_literal(LPMLNParser.Default_literalContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#extended_literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterExtended_literal(LPMLNParser.Extended_literalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#extended_literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitExtended_literal(LPMLNParser.Extended_literalContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#term_tuple}.
 	 * @param ctx the parse tree
 	 */
@@ -238,6 +218,16 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitHead(LPMLNParser.HeadContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#head_literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterHead_literal(LPMLNParser.Head_literalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#head_literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitHead_literal(LPMLNParser.Head_literalContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#body}.
 	 * @param ctx the parse tree
 	 */
@@ -247,6 +237,16 @@ public interface LPMLNListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBody(LPMLNParser.BodyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#body_literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterBody_literal(LPMLNParser.Body_literalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#body_literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitBody_literal(LPMLNParser.Body_literalContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#fact}.
 	 * @param ctx the parse tree
