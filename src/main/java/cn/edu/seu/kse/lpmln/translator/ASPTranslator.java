@@ -9,7 +9,11 @@ import java.util.List;
  * Created by 王彬 on 2016/8/30.
  */
 public class ASPTranslator extends BaseTranslator {
-    protected boolean isWeakTranslate=false;
+
+    public ASPTranslator(){};
+    public ASPTranslator(String semantics) {
+        super(semantics);
+    }
 
     public String translate_parts(List<Rule> rules){
         StringBuilder sb=new StringBuilder();
@@ -65,6 +69,9 @@ public class ASPTranslator extends BaseTranslator {
 
     @Override
     public String translateHardRule(Rule rule) {
+        if(isWeakTranslate){
+            return rule.getOriginalrule();
+        }
         StringBuilder sb=basicTranslate(rule);
         sb.append(translateCountingPart(rule,false));
         return sb.toString();

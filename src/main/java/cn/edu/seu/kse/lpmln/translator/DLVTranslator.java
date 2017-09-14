@@ -5,7 +5,13 @@ import cn.edu.seu.kse.lpmln.model.Rule;
 /**
  * Created by 王彬 on 2016/8/30.
  */
+@Deprecated
 public class DLVTranslator extends ASPTranslator {
+    public DLVTranslator(){};
+    public DLVTranslator(String semantics) {
+        super(semantics);
+    }
+
     @Override
     protected String translateCountingPart(Rule rule, boolean isSoft) {
         StringBuilder sb=new StringBuilder();

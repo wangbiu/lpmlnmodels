@@ -19,6 +19,12 @@ public class BaseTranslator {
     protected HashSet<String> herbrandUniverse;
     protected String path="";
     protected String metarule=null;
+    protected boolean isWeakTranslate = false;
+
+    public BaseTranslator() {};
+    public BaseTranslator(String semantics){
+        isWeakTranslate = semantics.equals("weak");
+    }
 
     public String translate(List<Rule> rules){
         StringBuilder sb=new StringBuilder();

@@ -1,15 +1,12 @@
 package cn.edu.seu.kse.lpmln.app;
 
+import cn.edu.seu.kse.lpmln.model.Rule;
+import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
-import cn.edu.seu.kse.lpmln.model.Rule;
-import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
-import cn.edu.seu.kse.lpmln.translator.DLVTranslator;
-import cn.edu.seu.kse.lpmln.translator.WeakASPTranslator;
-import cn.edu.seu.kse.lpmln.translator.WeakDLVTranslator;
+import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -199,23 +196,10 @@ public class LPMLNApp {
 
 
 
-        if(semantics.equals("weak")){
-            if(aspsolver.equals("clingo")){
-                translator=new WeakASPTranslator();
-                solver=new Clingo4();
-            }else {
-                translator=new WeakDLVTranslator();
-                solver=new DLV();
-            }
-        }else {
-            if(aspsolver.equals("clingo")){
-                translator=new ASPTranslator();
-                solver=new Clingo4();
-            }else {
-                translator=new DLVTranslator();
-                solver=new DLV();
-            }
-        }
+        translator=new ASPTranslator(semantics);
+        solver=new Clingo4();
+//        translator=new DLVTranslator(semantics);
+//        solver=new DLV();
 
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
