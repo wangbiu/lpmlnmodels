@@ -165,10 +165,11 @@ public class LPMLNApp {
         }
 
         if(cmd.hasOption("asp-solver")){
-            aspsolver=cmd.getOptionValue("asp-solver");
-            if(!aspsolver.equals("clingo") && !aspsolver.equals("dlv")){
-                throw new RuntimeException("unsupported ASP solver "+aspsolver);
-            }
+            throw new RuntimeException("Parameter asp solver is no longer supported. The default solver is clingo.");
+//            aspsolver=cmd.getOptionValue("asp-solver");
+//            if(!aspsolver.equals("clingo") && !aspsolver.equals("dlv")){
+//                throw new RuntimeException("unsupported ASP solver "+aspsolver);
+//            }
         }
 
         if(cmd.hasOption("marginal-probability-reasoning")){
