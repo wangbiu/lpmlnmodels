@@ -128,7 +128,7 @@ range_atom : CONSTANT LPAREN integer RANGE integer RPAREN;
 
 
 //文字
-literal : atom | MINUS atom;
+literal : atom | MINUS atom | NAF_NOT literal;
 
 //缺省文字
 //default_literal : NAF_NOT literal;
@@ -177,7 +177,7 @@ head_literal : literal | head_aggregate;
 body : body_literal (COMMA body_literal)*;
 
 //体部文字
-body_literal : literal | relation_expr | body_aggregate | NAF_NOT body_literal;
+body_literal : literal | relation_expr | body_aggregate;
 
 //事实
 fact : (head | range_atom) FULLSTOP;
