@@ -8,10 +8,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -74,6 +71,7 @@ public class BotWithTop {
         }
         for(int i=splitCount;i<=splitMaxCount;i++){
             topFile.add(new File(baseDir+"/independent/bird-trans-"+i+".txt"));
+            System.out.println("top File to : "+i);
             BotWithTopExperiment bwt = new BotWithTopExperiment();
             bwt.getRealAnswerset(topFile);
             topTime[i-splitCount] = bwt.topTime;
@@ -175,24 +173,29 @@ class BotWithTopExperiment{
             e.printStackTrace();
         }
 
-        for(int i=1;i<solverList.size();i++){
-            wasUnion(solverList.get(0).topWasList,solverList.get(i).topWasList);
+        List<List<String>> unioned = new LinkedList<>();
+        unioned.add(new ArrayList<>());
+        for(int i=0;i<solverList.size();i++){
+            unioned = wasUnion(unioned,solverList.get(i).topWasList);
         }
-        for (WeightedAnswerSet was : solverList.get(0).topWasList) {
-            realAnswerset.add(was.toString());
-        }
-
+//        for (WeightedAnswerSet was : solverList.get(0).topWasList) {
+//            realAnswerset.add(was.toString());
+//        }
         topTime = new Date().getTime()-lastPoint;
+        System.out.println(unioned.size());
         return realAnswerset;
     }
 
-    public void wasUnion(List<WeightedAnswerSet> wasList1,List<WeightedAnswerSet> wasList2){
-        for (WeightedAnswerSet was1 : wasList1) {
-            Set<String> litList = was1.getAnswerSet().getLiterals();
-            for (WeightedAnswerSet was2 : wasList2) {
-                litList.addAll(was2.getAnswerSet().getLiterals());
+    public List<List<String>> wasUnion(List<List<String>> res,List<WeightedAnswerSet> wasList2){
+        List<List<String>> ans = new LinkedList<>();
+        for (List<String> list: res) {
+            for (WeightedAnswerSet was : wasList2) {
+                List<String> toadd = new LinkedList<>(list);
+                toadd.addAll(was.getAnswerSet().getLiterals());
+                ans.add(toadd);
             }
         }
+        return ans;
     }
 }
 
@@ -212,11 +215,11 @@ class SolveTop extends Thread{
         AugmentedSubsetSolver solver = new AugmentedSubsetSolver();
         System.out.println("topFile :"+topFile.getAbsolutePath());
         topWasList = solver.call(topFile.getAbsolutePath());
+        System.out.println(topFile+"done, size:"+topWasList.size());
         if(botWas!=null){
             for (WeightedAnswerSet was: topWasList) {
                 was.getAnswerSet().getLiterals().addAll(botWas.getAnswerSet().getLiterals());
             }
         }
-        System.out.println(topFile+"done");
     }
 }
