@@ -177,7 +177,7 @@ head_literal : literal | head_aggregate;
 body : body_literal (COMMA body_literal)*;
 
 //体部文字
-body_literal : literal | relation_expr | body_aggregate;
+body_literal : literal | relation_expr | body_aggregate | NAF_NOT body_literal;
 
 //事实
 fact : (head | range_atom) FULLSTOP;
