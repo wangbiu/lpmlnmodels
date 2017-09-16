@@ -13,7 +13,7 @@ import java.util.List;
 public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     private List<Rule> rules=null;
     private int cnt=0;
-    private Double minremains=null;
+    private static int factor=0;
     private HashSet<String> herbrandUniverse=new HashSet<>();
     private StringBuilder metarule=new StringBuilder();
 
@@ -68,15 +68,10 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             weightnode=ctx.integer().getText();
         }
         double weight=Double.valueOf(weightnode);
-        double remains=weight-Math.floor(weight);
-
-        if(minremains == null){
-            minremains=remains;
-        }else if(minremains > remains){
-            if (Math.abs(remains) > 0.00001){
-                minremains=remains;
-            }
-
+        String[] numbers = weightnode.split("\\.");
+        if(numbers.length>1){
+            int newLength = numbers[1].length();
+            factor = Math.max(factor,newLength);
         }
         rule.setWeight(weight);
         return rule;
@@ -285,30 +280,9 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     }
 
 
-    public int getFactor(){
-        int factor=100;
-        double tmpremains=0;
-        minremains=Math.abs(minremains);
-//        System.out.println(minremains);
-        if(minremains < 0.00000001 ){
-            return 1;
-        }
-
-
-        while (true){
-            tmpremains=minremains*factor;
-            if(tmpremains > 10){
-                factor/=10;
-            }else {
-                break;
-            }
-
-            if(factor == 1){
-                break;
-            }
-        }
-
-        return factor;
+    public static int getFactor(){
+        factor = factor>9?9:factor;
+        return (int)Math.pow(10,factor);
     }
 
     public List<Rule> getRules() {
