@@ -13,12 +13,13 @@ import java.util.List;
 public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     private List<Rule> rules=null;
     private int cnt=0;
-    private static int factor=0;
+    private static int factor;
     private HashSet<String> herbrandUniverse=new HashSet<>();
     private StringBuilder metarule=new StringBuilder();
 
     public LPMLNTranslationVisitor(){
         rules=new ArrayList<>();
+        factor=0;
     }
 
     @Override
