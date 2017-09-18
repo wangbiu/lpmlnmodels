@@ -298,6 +298,16 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitHead_literal(LPMLNParser.Head_literalContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#condition_literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondition_literal(LPMLNParser.Condition_literalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#condition_literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondition_literal(LPMLNParser.Condition_literalContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#body}.
 	 * @param ctx the parse tree
 	 */

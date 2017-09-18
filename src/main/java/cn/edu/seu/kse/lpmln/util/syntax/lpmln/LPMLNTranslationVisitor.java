@@ -122,6 +122,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         Rule rule=new Rule();
         List<String> positivebody = rule.getPositiveBody();
         List<String> negativebody = rule.getNegativeBody();
+        List<String> conditionbody = rule.getContionbody();
         HashSet<String> vars=rule.getVars();
         for(LPMLNParser.Body_literalContext bctx : ctx.body_literal()){
             if(bctx.getText().startsWith("not")){
@@ -130,6 +131,10 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
                 positivebody.add(bctx.getText());
             }
             vars.addAll(visitBody_literal(bctx));
+        }
+        for(LPMLNParser.Condition_literalContext cctx : ctx.condition_literal()){
+            conditionbody.add(cctx.getText());
+            vars.addAll(visitCondition_literal(cctx));
         }
 
         return rule;
@@ -200,6 +205,16 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             }
         }
 
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitCondition_literal(LPMLNParser.Condition_literalContext ctx) {
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        for (LPMLNParser.LiteralContext lctx : ctx.literal()) {
+            vars.addAll(visitLiteral(lctx));
+        }
         return vars;
     }
 

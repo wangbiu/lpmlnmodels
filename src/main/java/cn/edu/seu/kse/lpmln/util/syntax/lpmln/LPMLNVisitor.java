@@ -185,6 +185,12 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHead_literal(LPMLNParser.Head_literalContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#condition_literal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCondition_literal(LPMLNParser.Condition_literalContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#body}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

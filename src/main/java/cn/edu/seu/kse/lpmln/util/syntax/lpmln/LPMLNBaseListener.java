@@ -364,6 +364,18 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCondition_literal(LPMLNParser.Condition_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCondition_literal(LPMLNParser.Condition_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBody(LPMLNParser.BodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
