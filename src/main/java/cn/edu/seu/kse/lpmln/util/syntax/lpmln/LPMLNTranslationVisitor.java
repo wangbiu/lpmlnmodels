@@ -226,10 +226,37 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
 
         for(LPMLNParser.Arithmethic_exprContext actx : ctx.arithmethic_expr()){
-            herbrandUniverse.add(actx.getText());
+            vars.addAll(visitArithmethic_expr(actx));
         }
 
         return vars;
+    }
+
+    @Override
+    public HashSet<String> visitArithmethic_expr(LPMLNParser.Arithmethic_exprContext ctx){
+        return visitSimple_arithmetic_expr2(ctx.simple_arithmetic_expr2());
+    }
+
+    @Override
+    public HashSet<String> visitSimple_arithmetic_expr2(LPMLNParser.Simple_arithmetic_expr2Context ctx){
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        for (LPMLNParser.Simple_arithmetic_expr2Context sctx : ctx.simple_arithmetic_expr2()) {
+            vars.addAll(visitSimple_arithmetic_expr2(sctx));
+        }
+        vars.addAll(visitSimple_arithmetic_expr(ctx.simple_arithmetic_expr()));
+
+        return  vars;
+    }
+
+    @Override
+    public HashSet<String> visitSimple_arithmetic_expr(LPMLNParser.Simple_arithmetic_exprContext ctx){
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        for (TerminalNode vtn : ctx.VAR()) {
+            vars.add(vtn.getText());
+        }
+        return  vars;
     }
 
     @Override
