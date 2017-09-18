@@ -139,6 +139,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     @Override
     public HashSet<String> visitBody_literal(LPMLNParser.Body_literalContext ctx){
         HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
         vars.addAll(visitLiteral(ctx.literal()));
         vars.addAll(visitRelation_expr(ctx.relation_expr()));
         vars.addAll(visitBody_aggregate(ctx.body_aggregate()));
