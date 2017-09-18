@@ -48,6 +48,46 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitArithmetic_op(LPMLNParser.Arithmetic_opContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#bitwise_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterBitwise_op(LPMLNParser.Bitwise_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#bitwise_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitBitwise_op(LPMLNParser.Bitwise_opContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#binary_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinary_op(LPMLNParser.Binary_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#binary_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinary_op(LPMLNParser.Binary_opContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#unary_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnary_op(LPMLNParser.Unary_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#unary_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnary_op(LPMLNParser.Unary_opContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#bit_number}.
+	 * @param ctx the parse tree
+	 */
+	void enterBit_number(LPMLNParser.Bit_numberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#bit_number}.
+	 * @param ctx the parse tree
+	 */
+	void exitBit_number(LPMLNParser.Bit_numberContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#relation_op}.
 	 * @param ctx the parse tree
 	 */

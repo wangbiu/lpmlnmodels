@@ -35,6 +35,30 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArithmetic_op(LPMLNParser.Arithmetic_opContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#bitwise_op}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBitwise_op(LPMLNParser.Bitwise_opContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#binary_op}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinary_op(LPMLNParser.Binary_opContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#unary_op}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnary_op(LPMLNParser.Unary_opContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#bit_number}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBit_number(LPMLNParser.Bit_numberContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#relation_op}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
