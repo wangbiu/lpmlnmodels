@@ -171,7 +171,7 @@ relation_expr :
 head : head_literal (DISJUNCTION head_literal)*;
 
 //头部文字
-head_literal : literal | head_aggregate;
+head_literal : literal | head_aggregate | NAF_NOT head_literal;
 
 //规则体部
 body : body_literal (COMMA body_literal)*;
