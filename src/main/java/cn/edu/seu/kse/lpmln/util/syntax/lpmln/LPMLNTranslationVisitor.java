@@ -251,8 +251,20 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         vars.addAll(visitFunction(ctx.function()));
         vars.addAll(visitTuple(ctx.tuple()));
         vars.addAll(visitArithmethic_expr(ctx.arithmethic_expr()));
+        vars.addAll(visitInterval(ctx.interval()));
         return vars;
     }
+
+    @Override
+    public HashSet<String> visitInterval(LPMLNParser.IntervalContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        if(ctx==null) return vars;
+        for (TerminalNode tn : ctx.VAR()) {
+            vars.add(tn.getText());
+        }
+        return vars;
+    }
+
     @Override
     public String visitSimpleterm(LPMLNParser.SimpletermContext ctx){
         String var = null;

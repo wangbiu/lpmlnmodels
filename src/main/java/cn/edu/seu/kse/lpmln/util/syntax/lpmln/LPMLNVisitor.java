@@ -101,6 +101,12 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTuple(LPMLNParser.TupleContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#interval}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInterval(LPMLNParser.IntervalContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#term}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -112,12 +118,6 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAtom(LPMLNParser.AtomContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#range_atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRange_atom(LPMLNParser.Range_atomContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#literal}.
 	 * @param ctx the parse tree

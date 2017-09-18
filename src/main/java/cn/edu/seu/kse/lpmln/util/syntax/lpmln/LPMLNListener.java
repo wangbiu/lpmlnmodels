@@ -158,6 +158,16 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitTuple(LPMLNParser.TupleContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#interval}.
+	 * @param ctx the parse tree
+	 */
+	void enterInterval(LPMLNParser.IntervalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#interval}.
+	 * @param ctx the parse tree
+	 */
+	void exitInterval(LPMLNParser.IntervalContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#term}.
 	 * @param ctx the parse tree
 	 */
@@ -177,16 +187,6 @@ public interface LPMLNListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAtom(LPMLNParser.AtomContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#range_atom}.
-	 * @param ctx the parse tree
-	 */
-	void enterRange_atom(LPMLNParser.Range_atomContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#range_atom}.
-	 * @param ctx the parse tree
-	 */
-	void exitRange_atom(LPMLNParser.Range_atomContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#literal}.
 	 * @param ctx the parse tree

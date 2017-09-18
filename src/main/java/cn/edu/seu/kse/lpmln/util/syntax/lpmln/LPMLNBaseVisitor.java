@@ -122,6 +122,13 @@ public class LPMLNBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitInterval(LPMLNParser.IntervalContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitTerm(LPMLNParser.TermContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -130,13 +137,6 @@ public class LPMLNBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitAtom(LPMLNParser.AtomContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitRange_atom(LPMLNParser.Range_atomContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
