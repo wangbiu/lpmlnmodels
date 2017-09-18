@@ -138,18 +138,17 @@ simpleterm : integer | CONSTANT | STRING | VAR;
 //元组
 tuple : LPAREN ( | term ( | COMMA | (COMMA term)* )) RPAREN;
 
+//范围枚举
+interval : (integer | VAR) RANGE (integer | VAR);
+
 //项
 //term : VAR | CONSTANT | integer | arithmethic_expr | function | STRING;
-term : simpleterm | function | tuple | arithmethic_expr;
+term : simpleterm | function | tuple | arithmethic_expr | interval;
 
 //原子
 atom :
     CONSTANT |
     CONSTANT LPAREN term (COMMA term)* RPAREN;
-
-//范围整数枚举原子
-range_atom : CONSTANT LPAREN integer RANGE integer RPAREN;
-
 
 //文字
 literal : atom | MINUS atom | NAF_NOT literal;
@@ -201,7 +200,7 @@ body : body_literal (COMMA body_literal)*;
 body_literal : literal | relation_expr | body_aggregate | NAF_NOT body_literal;
 
 //事实
-fact : (head | range_atom) FULLSTOP;
+fact : head FULLSTOP;
 
 //约束
 constraint : ASSIGN body FULLSTOP;
