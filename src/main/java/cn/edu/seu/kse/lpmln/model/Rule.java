@@ -26,6 +26,7 @@ public class Rule {
         head=new ArrayList<>();
         positiveBody = new ArrayList<>();
         negativeBody = new ArrayList<>();
+        contionbody = new ArrayList<>();
     }
 
     @Override
@@ -95,17 +96,17 @@ public class Rule {
         StringBuilder sb = new StringBuilder();
         for (String positive : positiveBody) {
             sb.append(positive);
-            sb.append(',');
+            sb.append(", ");
         }
         for (String negative : negativeBody) {
             sb.append(negative);
-            sb.append(',');
+            sb.append(", ");
         }
         for (String cond : contionbody) {
             sb.append(cond);
-            sb.append(';');
+            sb.append("; ");
         }
-        return sb.length()>0?sb.substring(0,sb.length()-1):"";
+        return sb.toString();
     }
 
     public List<String> getHead() {

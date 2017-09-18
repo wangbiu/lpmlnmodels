@@ -42,7 +42,6 @@ public class ASPTranslatorV2 extends  ASPTranslator{
 
         sb.append(satLabel).append(" :- ").append(rule.getBody());
         if(rule.getHead().size()>0){
-            if(rule.getBody().length()>0) sb.append(",");
             sb.append("not ").append(String.join(",not ",rule.getHead()));
         }
         sb.append(".").append(System.lineSeparator());

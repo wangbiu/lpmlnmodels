@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.util.syntax.lpmln;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
@@ -108,7 +109,16 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         Rule rb=visitBody(ctx.body());
         Rule rh=visitHead(ctx.head());
-        rb.setText(ctx.head().getText() + " :- "+ctx.body().getText()+", ");
+        boolean isConditional = false;
+        for (ParseTree pt : ctx.body().children) {
+            if(pt instanceof LPMLNParser.Condition_literalContext){
+                isConditional = true;
+            }
+            if(pt instanceof LPMLNParser.Body_literalContext){
+                isConditional = false;
+            }
+        }
+        rb.setText(ctx.head().getText() + " :- "+ctx.body().getText()+(isConditional?"; ":", "));
         rb.setHead(rh.getHead());
         rb.setOriginalrule(ctx.getText());
         return rb;
