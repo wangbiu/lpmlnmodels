@@ -140,7 +140,7 @@ tuple : LPAREN ( | term ( | COMMA | (COMMA term)* )) RPAREN;
 
 //项
 //term : VAR | CONSTANT | integer | arithmethic_expr | function | STRING;
-term : simpleterm | function | tuple;
+term : simpleterm | function | tuple | arithmethic_expr;
 
 //原子
 atom :
@@ -185,10 +185,7 @@ head_aggregate : (term relation_op?)? AGGREGATE_OP? LCBRACK aggregate_elements_c
 //                VAR EQUAL aggregate_atom;
 
 //关系运算表达式
-relation_expr :
-    (MINUS)? VAR relation_op (MINUS)?  VAR |
-    VAR relation_op STRING |
-    ((MINUS)? VAR  | arithmethic_expr) relation_op ((MINUS)? VAR | arithmethic_expr);
+relation_expr : ((MINUS)? term) relation_op ((MINUS)? term);
 
 
 //规则头部
