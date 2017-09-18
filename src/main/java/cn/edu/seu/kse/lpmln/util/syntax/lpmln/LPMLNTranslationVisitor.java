@@ -142,6 +142,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         vars.addAll(visitLiteral(ctx.literal()));
         vars.addAll(visitRelation_expr(ctx.relation_expr()));
         vars.addAll(visitBody_aggregate(ctx.body_aggregate()));
+        vars.addAll(visitBody_literal(ctx.body_literal()));
         return vars;
     }
 
