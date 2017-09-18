@@ -19,7 +19,7 @@ public class ClingoResultParser extends Parser {
 	public static final int
 		STRING=1, FULLSTOP=2, POSITIVE_INT=3, ZERO=4, CONSTANT=5, LPAREN=6, RPAREN=7, 
 		LSBRACK=8, RSBRACK=9, LCBRACK=10, RCBRACK=11, LESS_THAN=12, MINUS=13, 
-		GREATER_THAN=14, VAR=15, COMMA=16, ANSWER=17, OPT=18, WS=19;
+		GREATER_THAN=14, COMMA=15, ANSWER=16, OPT=17, WS=18;
 	public static final int
 		RULE_negative_int = 0, RULE_integer = 1, RULE_natural_number = 2, RULE_function = 3, 
 		RULE_simpleterm = 4, RULE_tuple = 5, RULE_term = 6, RULE_atom = 7, RULE_literal = 8, 
@@ -33,12 +33,12 @@ public class ClingoResultParser extends Parser {
 
 	private static final String[] _LITERAL_NAMES = {
 		null, null, "'.'", null, "'0'", null, "'('", "')'", "'['", "']'", "'{'", 
-		"'}'", "'<'", "'-'", "'>'", null, "','", "'Answer:'", "'Optimization:'"
+		"'}'", "'<'", "'-'", "'>'", "','", "'Answer:'", "'Optimization:'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, "STRING", "FULLSTOP", "POSITIVE_INT", "ZERO", "CONSTANT", "LPAREN", 
 		"RPAREN", "LSBRACK", "RSBRACK", "LCBRACK", "RCBRACK", "LESS_THAN", "MINUS", 
-		"GREATER_THAN", "VAR", "COMMA", "ANSWER", "OPT", "WS"
+		"GREATER_THAN", "COMMA", "ANSWER", "OPT", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -333,7 +333,6 @@ public class ClingoResultParser extends Parser {
 		}
 		public TerminalNode CONSTANT() { return getToken(ClingoResultParser.CONSTANT, 0); }
 		public TerminalNode STRING() { return getToken(ClingoResultParser.STRING, 0); }
-		public TerminalNode VAR() { return getToken(ClingoResultParser.VAR, 0); }
 		public SimpletermContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -357,7 +356,7 @@ public class ClingoResultParser extends Parser {
 		SimpletermContext _localctx = new SimpletermContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_simpleterm);
 		try {
-			setState(54);
+			setState(53);
 			switch (_input.LA(1)) {
 			case POSITIVE_INT:
 			case ZERO:
@@ -380,13 +379,6 @@ public class ClingoResultParser extends Parser {
 				{
 				setState(52);
 				match(STRING);
-				}
-				break;
-			case VAR:
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(53);
-				match(VAR);
 				}
 				break;
 			default:
@@ -443,9 +435,9 @@ public class ClingoResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56);
+			setState(55);
 			match(LPAREN);
-			setState(70);
+			setState(69);
 			switch (_input.LA(1)) {
 			case RPAREN:
 				{
@@ -457,11 +449,10 @@ public class ClingoResultParser extends Parser {
 			case CONSTANT:
 			case LPAREN:
 			case MINUS:
-			case VAR:
 				{
-				setState(58);
+				setState(57);
 				term();
-				setState(68);
+				setState(67);
 				switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 				case 1:
 					{
@@ -469,25 +460,25 @@ public class ClingoResultParser extends Parser {
 					break;
 				case 2:
 					{
-					setState(60);
+					setState(59);
 					match(COMMA);
 					}
 					break;
 				case 3:
 					{
-					setState(65);
+					setState(64);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 					while (_la==COMMA) {
 						{
 						{
-						setState(61);
+						setState(60);
 						match(COMMA);
-						setState(62);
+						setState(61);
 						term();
 						}
 						}
-						setState(67);
+						setState(66);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
@@ -499,7 +490,7 @@ public class ClingoResultParser extends Parser {
 			default:
 				throw new NoViableAltException(this);
 			}
-			setState(72);
+			setState(71);
 			match(RPAREN);
 			}
 		}
@@ -547,26 +538,26 @@ public class ClingoResultParser extends Parser {
 		TermContext _localctx = new TermContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_term);
 		try {
-			setState(77);
+			setState(76);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(74);
+				setState(73);
 				simpleterm();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(75);
+				setState(74);
 				function();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(76);
+				setState(75);
 				tuple();
 				}
 				break;
@@ -621,41 +612,41 @@ public class ClingoResultParser extends Parser {
 		enterRule(_localctx, 14, RULE_atom);
 		int _la;
 		try {
-			setState(92);
+			setState(91);
 			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(79);
+				setState(78);
 				match(CONSTANT);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(80);
+				setState(79);
 				match(CONSTANT);
-				setState(81);
+				setState(80);
 				match(LPAREN);
-				setState(82);
+				setState(81);
 				term();
-				setState(87);
+				setState(86);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(83);
+					setState(82);
 					match(COMMA);
-					setState(84);
+					setState(83);
 					term();
 					}
 					}
-					setState(89);
+					setState(88);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(90);
+				setState(89);
 				match(RPAREN);
 				}
 				break;
@@ -700,21 +691,21 @@ public class ClingoResultParser extends Parser {
 		LiteralContext _localctx = new LiteralContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_literal);
 		try {
-			setState(97);
+			setState(96);
 			switch (_input.LA(1)) {
 			case CONSTANT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(94);
+				setState(93);
 				atom();
 				}
 				break;
 			case MINUS:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(95);
+				setState(94);
 				match(MINUS);
-				setState(96);
+				setState(95);
 				atom();
 				}
 				break;
@@ -761,9 +752,9 @@ public class ClingoResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(99);
+			setState(98);
 			match(ANSWER);
-			setState(100);
+			setState(99);
 			match(POSITIVE_INT);
 			}
 		}
@@ -811,17 +802,17 @@ public class ClingoResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(105);
+			setState(104);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==CONSTANT || _la==MINUS) {
 				{
 				{
-				setState(102);
+				setState(101);
 				literal();
 				}
 				}
-				setState(107);
+				setState(106);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -869,11 +860,11 @@ public class ClingoResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(108);
+			setState(107);
 			match(OPT);
-			setState(109);
+			setState(108);
 			match(POSITIVE_INT);
-			setState(110);
+			setState(109);
 			match(POSITIVE_INT);
 			}
 		}
@@ -923,11 +914,11 @@ public class ClingoResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(112);
+			setState(111);
 			answer_set_flag();
-			setState(113);
+			setState(112);
 			answer_set();
-			setState(114);
+			setState(113);
 			weight();
 			}
 		}
@@ -975,17 +966,17 @@ public class ClingoResultParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(119);
+			setState(118);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==ANSWER) {
 				{
 				{
-				setState(116);
+				setState(115);
 				weighted_answer_set();
 				}
 				}
-				setState(121);
+				setState(120);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1003,36 +994,35 @@ public class ClingoResultParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\25}\4\2\t\2\4\3\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\24|\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
 		"\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\3\2\3\2\3\3\3\3\3\3\5\3%\n\3\3"+
 		"\4\3\4\3\5\3\5\3\5\3\5\3\5\7\5.\n\5\f\5\16\5\61\13\5\3\5\3\5\3\6\3\6\3"+
-		"\6\3\6\5\69\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7B\n\7\f\7\16\7E\13\7\5"+
-		"\7G\n\7\5\7I\n\7\3\7\3\7\3\b\3\b\3\b\5\bP\n\b\3\t\3\t\3\t\3\t\3\t\3\t"+
-		"\7\tX\n\t\f\t\16\t[\13\t\3\t\3\t\5\t_\n\t\3\n\3\n\3\n\5\nd\n\n\3\13\3"+
-		"\13\3\13\3\f\7\fj\n\f\f\f\16\fm\13\f\3\r\3\r\3\r\3\r\3\16\3\16\3\16\3"+
-		"\16\3\17\7\17x\n\17\f\17\16\17{\13\17\3\17\2\2\20\2\4\6\b\n\f\16\20\22"+
-		"\24\26\30\32\34\2\3\3\2\5\6\177\2\36\3\2\2\2\4$\3\2\2\2\6&\3\2\2\2\b("+
-		"\3\2\2\2\n8\3\2\2\2\f:\3\2\2\2\16O\3\2\2\2\20^\3\2\2\2\22c\3\2\2\2\24"+
-		"e\3\2\2\2\26k\3\2\2\2\30n\3\2\2\2\32r\3\2\2\2\34y\3\2\2\2\36\37\7\17\2"+
-		"\2\37 \7\5\2\2 \3\3\2\2\2!%\7\5\2\2\"%\5\2\2\2#%\7\6\2\2$!\3\2\2\2$\""+
-		"\3\2\2\2$#\3\2\2\2%\5\3\2\2\2&\'\t\2\2\2\'\7\3\2\2\2()\7\7\2\2)*\7\b\2"+
-		"\2*/\5\16\b\2+,\7\22\2\2,.\5\16\b\2-+\3\2\2\2.\61\3\2\2\2/-\3\2\2\2/\60"+
-		"\3\2\2\2\60\62\3\2\2\2\61/\3\2\2\2\62\63\7\t\2\2\63\t\3\2\2\2\649\5\4"+
-		"\3\2\659\7\7\2\2\669\7\3\2\2\679\7\21\2\28\64\3\2\2\28\65\3\2\2\28\66"+
-		"\3\2\2\28\67\3\2\2\29\13\3\2\2\2:H\7\b\2\2;I\3\2\2\2<F\5\16\b\2=G\3\2"+
-		"\2\2>G\7\22\2\2?@\7\22\2\2@B\5\16\b\2A?\3\2\2\2BE\3\2\2\2CA\3\2\2\2CD"+
-		"\3\2\2\2DG\3\2\2\2EC\3\2\2\2F=\3\2\2\2F>\3\2\2\2FC\3\2\2\2GI\3\2\2\2H"+
-		";\3\2\2\2H<\3\2\2\2IJ\3\2\2\2JK\7\t\2\2K\r\3\2\2\2LP\5\n\6\2MP\5\b\5\2"+
-		"NP\5\f\7\2OL\3\2\2\2OM\3\2\2\2ON\3\2\2\2P\17\3\2\2\2Q_\7\7\2\2RS\7\7\2"+
-		"\2ST\7\b\2\2TY\5\16\b\2UV\7\22\2\2VX\5\16\b\2WU\3\2\2\2X[\3\2\2\2YW\3"+
-		"\2\2\2YZ\3\2\2\2Z\\\3\2\2\2[Y\3\2\2\2\\]\7\t\2\2]_\3\2\2\2^Q\3\2\2\2^"+
-		"R\3\2\2\2_\21\3\2\2\2`d\5\20\t\2ab\7\17\2\2bd\5\20\t\2c`\3\2\2\2ca\3\2"+
-		"\2\2d\23\3\2\2\2ef\7\23\2\2fg\7\5\2\2g\25\3\2\2\2hj\5\22\n\2ih\3\2\2\2"+
-		"jm\3\2\2\2ki\3\2\2\2kl\3\2\2\2l\27\3\2\2\2mk\3\2\2\2no\7\24\2\2op\7\5"+
-		"\2\2pq\7\5\2\2q\31\3\2\2\2rs\5\24\13\2st\5\26\f\2tu\5\30\r\2u\33\3\2\2"+
-		"\2vx\5\32\16\2wv\3\2\2\2x{\3\2\2\2yw\3\2\2\2yz\3\2\2\2z\35\3\2\2\2{y\3"+
-		"\2\2\2\16$/8CFHOY^cky";
+		"\6\5\68\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7A\n\7\f\7\16\7D\13\7\5\7F\n"+
+		"\7\5\7H\n\7\3\7\3\7\3\b\3\b\3\b\5\bO\n\b\3\t\3\t\3\t\3\t\3\t\3\t\7\tW"+
+		"\n\t\f\t\16\tZ\13\t\3\t\3\t\5\t^\n\t\3\n\3\n\3\n\5\nc\n\n\3\13\3\13\3"+
+		"\13\3\f\7\fi\n\f\f\f\16\fl\13\f\3\r\3\r\3\r\3\r\3\16\3\16\3\16\3\16\3"+
+		"\17\7\17w\n\17\f\17\16\17z\13\17\3\17\2\2\20\2\4\6\b\n\f\16\20\22\24\26"+
+		"\30\32\34\2\3\3\2\5\6}\2\36\3\2\2\2\4$\3\2\2\2\6&\3\2\2\2\b(\3\2\2\2\n"+
+		"\67\3\2\2\2\f9\3\2\2\2\16N\3\2\2\2\20]\3\2\2\2\22b\3\2\2\2\24d\3\2\2\2"+
+		"\26j\3\2\2\2\30m\3\2\2\2\32q\3\2\2\2\34x\3\2\2\2\36\37\7\17\2\2\37 \7"+
+		"\5\2\2 \3\3\2\2\2!%\7\5\2\2\"%\5\2\2\2#%\7\6\2\2$!\3\2\2\2$\"\3\2\2\2"+
+		"$#\3\2\2\2%\5\3\2\2\2&\'\t\2\2\2\'\7\3\2\2\2()\7\7\2\2)*\7\b\2\2*/\5\16"+
+		"\b\2+,\7\21\2\2,.\5\16\b\2-+\3\2\2\2.\61\3\2\2\2/-\3\2\2\2/\60\3\2\2\2"+
+		"\60\62\3\2\2\2\61/\3\2\2\2\62\63\7\t\2\2\63\t\3\2\2\2\648\5\4\3\2\658"+
+		"\7\7\2\2\668\7\3\2\2\67\64\3\2\2\2\67\65\3\2\2\2\67\66\3\2\2\28\13\3\2"+
+		"\2\29G\7\b\2\2:H\3\2\2\2;E\5\16\b\2<F\3\2\2\2=F\7\21\2\2>?\7\21\2\2?A"+
+		"\5\16\b\2@>\3\2\2\2AD\3\2\2\2B@\3\2\2\2BC\3\2\2\2CF\3\2\2\2DB\3\2\2\2"+
+		"E<\3\2\2\2E=\3\2\2\2EB\3\2\2\2FH\3\2\2\2G:\3\2\2\2G;\3\2\2\2HI\3\2\2\2"+
+		"IJ\7\t\2\2J\r\3\2\2\2KO\5\n\6\2LO\5\b\5\2MO\5\f\7\2NK\3\2\2\2NL\3\2\2"+
+		"\2NM\3\2\2\2O\17\3\2\2\2P^\7\7\2\2QR\7\7\2\2RS\7\b\2\2SX\5\16\b\2TU\7"+
+		"\21\2\2UW\5\16\b\2VT\3\2\2\2WZ\3\2\2\2XV\3\2\2\2XY\3\2\2\2Y[\3\2\2\2Z"+
+		"X\3\2\2\2[\\\7\t\2\2\\^\3\2\2\2]P\3\2\2\2]Q\3\2\2\2^\21\3\2\2\2_c\5\20"+
+		"\t\2`a\7\17\2\2ac\5\20\t\2b_\3\2\2\2b`\3\2\2\2c\23\3\2\2\2de\7\22\2\2"+
+		"ef\7\5\2\2f\25\3\2\2\2gi\5\22\n\2hg\3\2\2\2il\3\2\2\2jh\3\2\2\2jk\3\2"+
+		"\2\2k\27\3\2\2\2lj\3\2\2\2mn\7\23\2\2no\7\5\2\2op\7\5\2\2p\31\3\2\2\2"+
+		"qr\5\24\13\2rs\5\26\f\2st\5\30\r\2t\33\3\2\2\2uw\5\32\16\2vu\3\2\2\2w"+
+		"z\3\2\2\2xv\3\2\2\2xy\3\2\2\2y\35\3\2\2\2zx\3\2\2\2\16$/\67BEGNX]bjx";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
