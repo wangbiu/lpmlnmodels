@@ -252,6 +252,17 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         vars.addAll(visitTuple(ctx.tuple()));
         vars.addAll(visitArithmethic_expr(ctx.arithmethic_expr()));
         vars.addAll(visitInterval(ctx.interval()));
+        vars.addAll(visitPooling(ctx.pooling()));
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitPooling(LPMLNParser.PoolingContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        if(ctx==null) return vars;
+        for (TerminalNode tn : ctx.VAR()) {
+            vars.add(tn.getText());
+        }
         return vars;
     }
 
