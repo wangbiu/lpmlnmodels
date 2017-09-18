@@ -19,7 +19,7 @@ POSITIVE_INT : [1-9][0-9]*;
 //0
 ZERO : '0';
 //常量
-CONSTANT : [a-z][a-zA-Z0-9_]*;
+CONSTANT : [_]*[a-z][a-zA-Z0-9_']*;
 
 
 //左圆括号
@@ -40,9 +40,6 @@ LESS_THAN : '<';
 MINUS : '-';
 
 GREATER_THAN : '>';
-
-//变量
-VAR : [A-Z][a-zA-Z0-9_']*;
 
 //逗号
 COMMA : ',';
@@ -68,7 +65,7 @@ natural_number : POSITIVE_INT | ZERO;
 //函数
 function : CONSTANT LPAREN term (COMMA term)* RPAREN;
 //简单项，缺_,#sup,#inf
-simpleterm : integer | CONSTANT | STRING | VAR;
+simpleterm : integer | CONSTANT | STRING;
 //元组
 tuple : LPAREN ( | term ( | COMMA | (COMMA term)* )) RPAREN;
 
