@@ -80,6 +80,10 @@ META_OP : '#show ';
 LINE_COMMENT : ('%' ~('\r' | '\n')* '\r'? '\n') -> skip;
 //空白字符或换行符
 WS : ( ' ' | '\t' | '\n' | '\r')+ -> skip  ;
+
+//布尔常量
+BOOL_CONSTANTS : '#true' | '#false';
+
 /**
 * 语法规则定义
 **/
