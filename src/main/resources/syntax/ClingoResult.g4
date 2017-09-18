@@ -41,6 +41,9 @@ MINUS : '-';
 
 GREATER_THAN : '>';
 
+//变量
+VAR : [A-Z][a-zA-Z0-9_']*;
+
 //逗号
 COMMA : ',';
 
@@ -64,9 +67,14 @@ natural_number : POSITIVE_INT | ZERO;
 
 //函数
 function : CONSTANT LPAREN term (COMMA term)* RPAREN;
+//简单项，缺_,#sup,#inf
+simpleterm : integer | CONSTANT | STRING | VAR;
+//元组
+tuple : LPAREN ( | term ( | COMMA | (COMMA term)* )) RPAREN;
 
 //项
-term : CONSTANT | function | STRING | integer;
+//term : VAR | CONSTANT | integer | arithmethic_expr | function | STRING;
+term : simpleterm | function | tuple;
 
 //原子
 atom :

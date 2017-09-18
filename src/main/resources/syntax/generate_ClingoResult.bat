@@ -1,1 +1,1 @@
-java org.antlr.v4.Tool -visitor -o ../../java/cn/edu/seu/kse/anubis/lpmln/solver/syntax -package cn.edu.seu.kse.anubis.lpmln.solver.syntax  ClingoResult.g4
+java org.antlr.v4.Tool -visitor -o ../../java/cn/edu/seu/kse/lpmln/util/syntax/clingoResult -package cn.edu.seu.kse.lpmln.util.syntax.clingoResult  ClingoResult.g4
