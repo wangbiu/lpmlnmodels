@@ -27,6 +27,13 @@ CONSTANT : [a-z][a-zA-Z0-9_]*;
 //变量
 VAR : [A-Z][a-zA-Z0-9_]*;
 
+//指数运算
+EXPONENITIATION : '**';
+//位运算
+BITWISE_AND : '&';
+BITWISE_OR : '?';
+BITWISE_EXCLUSIVE_OR : '^';
+BITWISE_COMPLEMENT : '~';
 //加号
 PLUS : '+';
 //减号、经典否定关键字
@@ -95,6 +102,14 @@ integer : POSITIVE_INT | negative_int | ZERO;
 natural_number : POSITIVE_INT | ZERO;
 //四则运算符
 arithmetic_op : PLUS | MINUS | STAR | SLASH;
+//二元位运算
+bitwise_op : BITWISE_AND | BITWISE_OR | BITWISE_EXCLUSIVE_OR;
+//二元运算符
+binary_op : arithmetic_op | bitwise_op | EXPONENITIATION;
+//一元运算符
+unary_op : BITWISE_COMPLEMENT;
+//数字
+bit_number : unary_op? natural_number;
 //关系运算符(comparison predicates)
 relation_op : LESS_THAN | LEQ | GREATER_THAN | GEQ | EQUAL | DOUBLE_EQUAL | NEQ;
 
@@ -102,7 +117,7 @@ relation_op : LESS_THAN | LEQ | GREATER_THAN | GEQ | EQUAL | DOUBLE_EQUAL | NEQ;
 simple_arithmetic_expr :
     integer |
     (MINUS)? VAR |
-    (integer | (MINUS)? VAR) (arithmetic_op (natural_number | VAR))* ;
+    (integer | (MINUS)? VAR) (binary_op (bit_number | VAR))* ;
 
 //四则运算算术表达式，加括号
 simple_arithmetic_expr2 :
