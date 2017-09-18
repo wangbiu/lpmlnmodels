@@ -23,7 +23,7 @@ DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP [0-9] ZERO* [1-9]*;
 //0
 ZERO : '0';
 //常量
-CONSTANT : [_]*[a-z][a-zA-Z0-9_']*;
+CONSTANT : [_]*[a-z][a-zA-Z0-9_']* | BOOL_CONSTANTS;
 //变量
 VAR : [_]*[A-Z][a-zA-Z0-9_']*;
 
@@ -190,13 +190,17 @@ relation_expr : ((MINUS)? term) relation_op ((MINUS)? term);
 
 
 //规则头部
-head : head_literal (DISJUNCTION head_literal)*;
+head : (head_literal DISJUNCTION)* head_literal;
 
 //头部文字
-head_literal : literal | head_aggregate | NAF_NOT head_literal;
+head_literal : literal | head_aggregate | NAF_NOT head_literal | condition_literal;
+
+//条件文字
+condition_literal : literal CONDITION literal (COMMA literal)*;
+
 
 //规则体部
-body : body_literal (COMMA body_literal)*;
+body : (body_literal COMMA | condition_literal SEMICOLON)* (body_literal | condition_literal) ;
 
 //体部文字
 body_literal : literal | relation_expr | body_aggregate | NAF_NOT body_literal;
