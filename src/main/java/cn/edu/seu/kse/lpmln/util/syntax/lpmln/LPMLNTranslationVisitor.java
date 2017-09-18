@@ -151,12 +151,8 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     public HashSet<String> visitBody_aggregate(LPMLNParser.Body_aggregateContext ctx){
         HashSet<String> vars = new HashSet<>();
         if(ctx==null) return vars;
-        String var;
         for (LPMLNParser.TermContext tctx : ctx.term()) {
-            var = visitTerm(tctx);
-            if(var!=null){
-                vars.add(var);
-            }
+            vars.addAll(visitTerm(tctx));
         }
         vars.addAll(visitAggregate_elements(ctx.aggregate_elements()));
         return vars;
@@ -177,12 +173,8 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     @Override
     public HashSet<String> visitTerm_tuple(LPMLNParser.Term_tupleContext ctx){
         HashSet<String> vars = new HashSet<>();
-        String var;
         for (LPMLNParser.TermContext tctx: ctx.term()) {
-            var = visitTerm(tctx);
-            if(var!=null){
-                vars.add(var);
-            }
+            vars.addAll(visitTerm(tctx));
         }
         return vars;
     }
@@ -203,14 +195,9 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         LPMLNParser.AtomContext actx=ctx.atom();
 
         vars.addAll(visitLiteral(ctx.literal()));
-
-        String var=null;
         if(actx!=null) {
             for (LPMLNParser.TermContext tctx : actx.term()) {
-                var = visitTerm(tctx);
-                if (var != null) {
-                    vars.add(var);
-                }
+                vars.addAll(visitTerm(tctx));
             }
         }
 
@@ -260,29 +247,40 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     }
 
     @Override
-    public String visitTerm(LPMLNParser.TermContext ctx) {
-        String var=null;
-        TerminalNode vtn=ctx.VAR();
-        if(vtn!=null){
-            var=vtn.getText();
-        }
-
-        TerminalNode ctn=ctx.CONSTANT();
-        if(ctn != null){
-            herbrandUniverse.add(ctn.getText());
-        }
-
-        ctn=ctx.STRING();
-        if(ctn!=null){
-            herbrandUniverse.add(ctn.getText());
-        }
-
-        LPMLNParser.IntegerContext ictx=ctx.integer();
-        if(ictx != null){
-            herbrandUniverse.add(ictx.getText());
-        }
-
+    public HashSet<String> visitTerm(LPMLNParser.TermContext ctx) {
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        String var = visitSimpleterm(ctx.simpleterm());
+        if(var!=null) vars.add(var);
+        vars.addAll(visitFunction(ctx.function()));
+        vars.addAll(visitTuple(ctx.tuple()));
+        return vars;
+    }
+    @Override
+    public String visitSimpleterm(LPMLNParser.SimpletermContext ctx){
+        String var = null;
+        if(ctx!=null&&ctx.VAR()!=null) var = ctx.VAR().getText();
         return var;
+    }
+
+    @Override
+    public HashSet<String> visitFunction(LPMLNParser.FunctionContext ctx) {
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        for (LPMLNParser.TermContext tctx : ctx.term()) {
+            vars.addAll(visitTerm(tctx));
+        }
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitTuple(LPMLNParser.TupleContext ctx) {
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        for (LPMLNParser.TermContext tctx : ctx.term()) {
+            vars.addAll(visitTerm(tctx));
+        }
+        return vars;
     }
 
     @Override

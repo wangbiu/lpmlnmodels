@@ -89,6 +89,18 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunction(LPMLNParser.FunctionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#simpleterm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSimpleterm(LPMLNParser.SimpletermContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#tuple}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTuple(LPMLNParser.TupleContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#term}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
