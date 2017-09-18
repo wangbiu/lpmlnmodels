@@ -17,6 +17,7 @@ public class Rule {
     private List<String> head;
     private List<String> positiveBody;
     private List<String> negativeBody;
+    private List<String> contionbody;
     private String ruleLabel=null;
     private String originalrule;
 
@@ -91,26 +92,21 @@ public class Rule {
     }
 
     public String getBody() {
-        return new StringBuilder().append(String.join(",", getPositiveBody()))
-                .append(getPositiveBody().size()==0|| getNegativeBody().size()==0?"":",")
-                .append(String.join(",", getNegativeBody()))
-                .toString();
-    }
-
-    public void setBody(String body){
-        setPositiveBody(new ArrayList<>());
-        setNegativeBody(new ArrayList<>());
-        String[] literals = body.split(",");
-        for (String str : literals) {
-            if(str.startsWith("not")){
-                getNegativeBody().add(str);
-            }else{
-                getPositiveBody().add(str);
-            }
+        StringBuilder sb = new StringBuilder();
+        for (String positive : positiveBody) {
+            sb.append(positive);
+            sb.append(',');
         }
+        for (String negative : negativeBody) {
+            sb.append(negative);
+            sb.append(',');
+        }
+        for (String cond : contionbody) {
+            sb.append(cond);
+            sb.append(';');
+        }
+        return sb.length()>0?sb.substring(0,sb.length()-1):"";
     }
-
-
 
     public List<String> getHead() {
         return head;
@@ -163,5 +159,13 @@ public class Rule {
 
     public void setNegativeBody(List<String> negativeBody) {
         this.negativeBody = negativeBody;
+    }
+
+    public List<String> getContionbody() {
+        return contionbody;
+    }
+
+    public void setContionbody(List<String> contionbody) {
+        this.contionbody = contionbody;
     }
 }

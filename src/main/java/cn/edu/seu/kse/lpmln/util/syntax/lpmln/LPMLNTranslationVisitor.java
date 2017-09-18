@@ -120,7 +120,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             return null;
         }
         Rule rule=new Rule();
-        rule.setBody(ctx.getText());
         List<String> positivebody = rule.getPositiveBody();
         List<String> negativebody = rule.getNegativeBody();
         HashSet<String> vars=rule.getVars();
