@@ -140,10 +140,12 @@ tuple : LPAREN ( | term ( | COMMA | (COMMA term)* )) RPAREN;
 
 //范围枚举
 interval : (integer | VAR) RANGE (integer | VAR);
+//逐个枚举
+pooling : LPAREN ((integer | VAR) (SEMICOLON (integer | VAR))* ) RPAREN;
 
 //项
 //term : VAR | CONSTANT | integer | arithmethic_expr | function | STRING;
-term : simpleterm | function | tuple | arithmethic_expr | interval;
+term : simpleterm | function | tuple | arithmethic_expr | interval | pooling;
 
 //原子
 atom :
