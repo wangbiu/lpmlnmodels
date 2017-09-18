@@ -23,9 +23,9 @@ DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP [0-9] ZERO* [1-9]*;
 //0
 ZERO : '0';
 //常量
-CONSTANT : [a-z][a-zA-Z0-9_]*;
+CONSTANT : [a-z][a-zA-Z0-9_']*;
 //变量
-VAR : [A-Z][a-zA-Z0-9_]*;
+VAR : [A-Z][a-zA-Z0-9_']*;
 
 //指数运算
 EXPONENITIATION : '**';
