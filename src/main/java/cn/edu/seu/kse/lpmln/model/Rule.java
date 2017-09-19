@@ -28,7 +28,7 @@ public class Rule {
         positiveBody = new ArrayList<>();
         negativeBody = new ArrayList<>();
         bodyContion = new ArrayList<>();
-        setHeadCondition(new ArrayList<>());
+        headCondition = new ArrayList<>();
     }
 
     @Override

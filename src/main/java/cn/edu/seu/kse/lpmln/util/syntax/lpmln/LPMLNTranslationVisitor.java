@@ -44,9 +44,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         List<String> heads=rule.getHead();
         rule.setId(cnt++);
-        if(heads.size() == 0){
-            heads.add("impossible("+rule.getId()+")");
-        }
 
 
         rule.setSoft(false);
@@ -120,6 +117,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         rb.setText(ctx.head().getText() + " :- "+ctx.body().getText()+(isConditional?"; ":", "));
         rb.setHead(rh.getHead());
+        rb.setHeadCondition(rh.getHeadCondition());
         rb.setOriginalrule(ctx.getText());
         return rb;
     }
@@ -347,9 +345,14 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
 
         Rule rule=new Rule();
 
-        List<String> heads=rule.getHead();
+        List<String> heads = rule.getHead();
+        List<String> headCond = rule.getHeadCondition();
         for(LPMLNParser.Head_literalContext hctx : ctx.head_literal()){
-            heads.add(hctx.getText());
+            if(hctx.condition_literal()!=null){
+                headCond.add(hctx.getText());
+            }else{
+                heads.add(hctx.getText());
+            }
             visitHead_literal(hctx);
         }
 
