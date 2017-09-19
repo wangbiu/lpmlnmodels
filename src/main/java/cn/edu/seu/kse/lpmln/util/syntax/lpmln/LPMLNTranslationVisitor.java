@@ -153,7 +153,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         HashSet<String> vars=new HashSet<>();
         if(ctx==null) return vars;
         vars.addAll(visitLiteral(ctx.literal()));
-        vars.addAll(visitRelation_expr(ctx.relation_expr()));
         vars.addAll(visitBody_aggregate(ctx.body_aggregate()));
         vars.addAll(visitBody_literal(ctx.body_literal()));
         return vars;
@@ -207,6 +206,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         LPMLNParser.AtomContext actx=ctx.atom();
 
         vars.addAll(visitLiteral(ctx.literal()));
+        vars.addAll(visitComparison_literal(ctx.comparison_literal()));
         if(actx!=null) {
             for (LPMLNParser.TermContext tctx : actx.term()) {
                 vars.addAll(visitTerm(tctx));
@@ -217,7 +217,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     }
 
     @Override
-    public HashSet<String> visitRelation_expr(LPMLNParser.Relation_exprContext ctx) {
+    public HashSet<String> visitComparison_literal(LPMLNParser.Comparison_literalContext ctx) {
         HashSet<String> vars=new HashSet<>();
         if(ctx==null) return vars;
         for (LPMLNParser.TermContext tctx : ctx.term()) {

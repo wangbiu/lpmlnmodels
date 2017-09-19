@@ -167,11 +167,11 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHead_aggregate(LPMLNParser.Head_aggregateContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#relation_expr}.
+	 * Visit a parse tree produced by {@link LPMLNParser#comparison_literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRelation_expr(LPMLNParser.Relation_exprContext ctx);
+	T visitComparison_literal(LPMLNParser.Comparison_literalContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#head}.
 	 * @param ctx the parse tree

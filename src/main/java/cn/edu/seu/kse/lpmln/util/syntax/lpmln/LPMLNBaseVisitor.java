@@ -199,7 +199,7 @@ public class LPMLNBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRelation_expr(LPMLNParser.Relation_exprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitComparison_literal(LPMLNParser.Comparison_literalContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -268,15 +268,15 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitHead_aggregate(LPMLNParser.Head_aggregateContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#relation_expr}.
+	 * Enter a parse tree produced by {@link LPMLNParser#comparison_literal}.
 	 * @param ctx the parse tree
 	 */
-	void enterRelation_expr(LPMLNParser.Relation_exprContext ctx);
+	void enterComparison_literal(LPMLNParser.Comparison_literalContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#relation_expr}.
+	 * Exit a parse tree produced by {@link LPMLNParser#comparison_literal}.
 	 * @param ctx the parse tree
 	 */
-	void exitRelation_expr(LPMLNParser.Relation_exprContext ctx);
+	void exitComparison_literal(LPMLNParser.Comparison_literalContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#head}.
 	 * @param ctx the parse tree

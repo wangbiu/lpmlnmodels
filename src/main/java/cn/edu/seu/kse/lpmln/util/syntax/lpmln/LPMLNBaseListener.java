@@ -328,13 +328,13 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRelation_expr(LPMLNParser.Relation_exprContext ctx) { }
+	@Override public void enterComparison_literal(LPMLNParser.Comparison_literalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRelation_expr(LPMLNParser.Relation_exprContext ctx) { }
+	@Override public void exitComparison_literal(LPMLNParser.Comparison_literalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
