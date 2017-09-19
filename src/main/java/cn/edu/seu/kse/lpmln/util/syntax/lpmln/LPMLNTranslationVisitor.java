@@ -119,6 +119,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         rb.setHead(rh.getHead());
         rb.setHeadCondition(rh.getHeadCondition());
         rb.setOriginalrule(ctx.getText());
+        rb.getVars().addAll(rh.getVars());//这里可能产生不安全变量
         return rb;
     }
 
@@ -353,10 +354,20 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             }else{
                 heads.add(hctx.getText());
             }
-            visitHead_literal(hctx);
+            rule.getVars().addAll(visitHead_literal(hctx));
         }
 
         return rule;
+    }
+
+    @Override
+    public HashSet<String> visitHead_literal(LPMLNParser.Head_literalContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        if(ctx==null) return vars;
+        vars.addAll(visitLiteral(ctx.literal()));
+        vars.addAll(visitCondition_literal(ctx.condition_literal()));
+        //head_aggregate
+        return vars;
     }
 
 
