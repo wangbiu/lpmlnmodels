@@ -132,7 +132,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         Rule rule=new Rule();
         List<String> positivebody = rule.getPositiveBody();
         List<String> negativebody = rule.getNegativeBody();
-        List<String> conditionbody = rule.getContionbody();
+        List<String> conditionbody = rule.getBodyContion();
         HashSet<String> vars=rule.getVars();
         for(LPMLNParser.Body_literalContext bctx : ctx.body_literal()){
             if(bctx.getText().startsWith("not")){

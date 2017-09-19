@@ -15,9 +15,10 @@ public class Rule {
     private double weight;
     private int innerweight;
     private List<String> head;
+    private List<String> headCondition;
     private List<String> positiveBody;
     private List<String> negativeBody;
-    private List<String> contionbody;
+    private List<String> bodyContion;
     private String ruleLabel=null;
     private String originalrule;
 
@@ -26,7 +27,8 @@ public class Rule {
         head=new ArrayList<>();
         positiveBody = new ArrayList<>();
         negativeBody = new ArrayList<>();
-        contionbody = new ArrayList<>();
+        bodyContion = new ArrayList<>();
+        setHeadCondition(new ArrayList<>());
     }
 
     @Override
@@ -102,7 +104,7 @@ public class Rule {
             sb.append(negative);
             sb.append(", ");
         }
-        for (String cond : contionbody) {
+        for (String cond : bodyContion) {
             sb.append(cond);
             sb.append("; ");
         }
@@ -162,11 +164,19 @@ public class Rule {
         this.negativeBody = negativeBody;
     }
 
-    public List<String> getContionbody() {
-        return contionbody;
+    public List<String> getBodyContion() {
+        return bodyContion;
     }
 
-    public void setContionbody(List<String> contionbody) {
-        this.contionbody = contionbody;
+    public void setBodyContion(List<String> bodyContion) {
+        this.bodyContion = bodyContion;
+    }
+
+    public List<String> getHeadCondition() {
+        return headCondition;
+    }
+
+    public void setHeadCondition(List<String> headCondition) {
+        this.headCondition = headCondition;
     }
 }
