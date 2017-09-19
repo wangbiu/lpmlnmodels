@@ -111,7 +111,7 @@ unary_op : BITWISE_COMPLEMENT;
 //数字
 bit_number : unary_op? natural_number;
 //关系运算符(comparison predicates)
-relation_op : LESS_THAN | LEQ | GREATER_THAN | GEQ | EQUAL | DOUBLE_EQUAL | NEQ;
+relation_op : LESS_THAN | LEQ | GREATER_THAN | GEQ | EQUAL | NEQ;
 
 //简单四则运算算术表达式，不加括号
 simple_arithmetic_expr :
@@ -153,7 +153,7 @@ atom :
     CONSTANT LPAREN term (COMMA term)* RPAREN;
 
 //文字
-literal : atom | MINUS atom | NAF_NOT literal;
+literal : atom | MINUS atom | NAF_NOT literal | comparison_literal;
 
 //缺省文字
 //default_literal : NAF_NOT literal;
@@ -186,7 +186,8 @@ head_aggregate : (term relation_op?)? AGGREGATE_OP? LCBRACK aggregate_elements_c
 //                VAR EQUAL aggregate_atom;
 
 //关系运算表达式
-relation_expr : ((MINUS)? term) relation_op ((MINUS)? term);
+//relation_expr : ((MINUS)? term) relation_op ((MINUS)? term);
+comparison_literal : ((MINUS)? term) relation_op ((MINUS)? term);
 
 
 //规则头部
@@ -203,7 +204,7 @@ condition_literal : literal CONDITION literal (COMMA literal)*;
 body : (body_literal COMMA | condition_literal SEMICOLON)* (body_literal | condition_literal) ;
 
 //体部文字
-body_literal : literal | relation_expr | body_aggregate | NAF_NOT body_literal;
+body_literal : literal | body_aggregate | NAF_NOT body_literal;
 
 //事实
 fact : head FULLSTOP;
