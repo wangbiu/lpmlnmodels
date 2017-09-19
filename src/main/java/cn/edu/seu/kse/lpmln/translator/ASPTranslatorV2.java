@@ -33,8 +33,7 @@ public class ASPTranslatorV2 extends  ASPTranslator{
     protected String translateGenerationPart(Rule rule){
         StringBuilder sb = new StringBuilder();
         sb.append(rule.getText())
-                .append("not ").append(satLabel).append(",")
-                .append(hubPart(rule));
+                .append("not ").append(satLabel).append(",");
         if(sb.charAt(sb.length()-1)==';'||sb.charAt(sb.length()-1)==','){
             sb.deleteCharAt(sb.length()-1);
         }
@@ -53,7 +52,6 @@ public class ASPTranslatorV2 extends  ASPTranslator{
         for (String str : rule.getHeadCondition()) {
             sb.append("not ").append(str).append(";");
         }
-        sb.append(hubPart(rule));
         if(sb.charAt(sb.length()-1)==';'||sb.charAt(sb.length()-1)==','){
             sb.deleteCharAt(sb.length()-1);
         }
@@ -73,12 +71,11 @@ public class ASPTranslatorV2 extends  ASPTranslator{
 
     public String hubPart(Rule rule){
         StringBuilder sb = new StringBuilder();
-        if(rule.getHeadCondition().size()+rule.getBodyContion().size()>0){
-            sb.append(" ").append(generateHerbrandBody(rule.getVars())).append(",");
-        }
-        return sb.toString();
+        sb.append(" ").append(generateHerbrandBody(rule.getVars())).append(",");
+        return sb.substring(0,sb.length()-1);
     }
     protected void setSatLabel(Rule rule){
-        satLabel = new StringBuilder().append("unsat(").append(rule.getRuleLabelPara()).append(")").toString();
+        StringBuilder sb = new StringBuilder().append("unsat(").append(rule.getRuleLabelPara()).append(")");
+        satLabel = sb.toString();
     }
 }

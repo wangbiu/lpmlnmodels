@@ -119,7 +119,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         rb.setHead(rh.getHead());
         rb.setHeadCondition(rh.getHeadCondition());
         rb.setOriginalrule(ctx.getText());
-        rb.getVars().addAll(rh.getVars());//这里可能产生不安全变量
         return rb;
     }
 
@@ -143,7 +142,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         for(LPMLNParser.Condition_literalContext cctx : ctx.condition_literal()){
             conditionbody.add(cctx.getText());
-            vars.addAll(visitCondition_literal(cctx));
+            visitCondition_literal(cctx);
         }
 
         return rule;
@@ -214,16 +213,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             }
         }
 
-        return vars;
-    }
-
-    @Override
-    public HashSet<String> visitCondition_literal(LPMLNParser.Condition_literalContext ctx) {
-        HashSet<String> vars=new HashSet<>();
-        if(ctx==null) return vars;
-        for (LPMLNParser.LiteralContext lctx : ctx.literal()) {
-            vars.addAll(visitLiteral(lctx));
-        }
         return vars;
     }
 
@@ -365,7 +354,9 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         HashSet<String> vars = new HashSet<>();
         if(ctx==null) return vars;
         vars.addAll(visitLiteral(ctx.literal()));
-        vars.addAll(visitCondition_literal(ctx.condition_literal()));
+        if(ctx.condition_literal()!=null){
+            visitCondition_literal(ctx.condition_literal());
+        }
         //head_aggregate
         return vars;
     }
