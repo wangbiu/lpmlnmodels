@@ -15,16 +15,7 @@ public class LPMLNBaseSolver extends AdvancedBaseSolver {
         HashMap<String,Double> result=new HashMap<>();
         double wsum=0;
         double expw=0;
-        for(WeightedAnswerSet as:weightedAs){
-            expw= Math.exp(as.getWeights().get(0)*1.0/factor);
-            wsum+=expw;
-            as.setProbability(expw);
-        }
 
-        for(WeightedAnswerSet as:weightedAs){
-            expw=as.getProbability();
-            as.setProbability(expw/wsum);
-        }
 
         HashSet<String> literals=null;
         for(WeightedAnswerSet as : weightedAs){

@@ -25,7 +25,7 @@ public class AdvancedBaseSolver extends BaseSolver {
 //        System.out.println("result "+cmdres[0]);
 //        System.out.println("error: "+cmdres[1]);
         List<WeightedAnswerSet> originnalWas=acmd.getWas();
-        weightedAs=filtWas(originnalWas);
+        weightedAs=calculateProbability(filtWas(originnalWas));
 
         totalSolverTime=acmd.getCputime();
         stats=genSolverStatisticsInfo();
@@ -70,5 +70,27 @@ public class AdvancedBaseSolver extends BaseSolver {
             }
         }
         return  ans;
+    }
+
+    public List<WeightedAnswerSet> calculateProbability(List<WeightedAnswerSet> origin){
+        int factor = 1;
+        if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V1){
+            factor = 1;
+        }else if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V2){
+            factor = -1;
+        }
+        double wsum=0;
+        double expw=0;
+        for(WeightedAnswerSet as:origin){
+            expw= Math.exp(factor*as.getWeights().get(0)*1.0);
+            wsum+=expw;
+            as.setProbability(expw);
+        }
+
+        for(WeightedAnswerSet as:origin){
+            expw=as.getProbability();
+            as.setProbability(expw/wsum);
+        }
+        return origin;
     }
 }
