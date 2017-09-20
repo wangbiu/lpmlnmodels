@@ -95,6 +95,9 @@ WS : ( ' ' | '\t' | '\n' | '\r')+ -> skip  ;
 //布尔常量
 BOOL_CONSTANTS : '#true' | '#false';
 
+//外部函数
+AT : '@';
+
 /**
 * 语法规则定义
 **/
@@ -138,7 +141,7 @@ arithmethic_expr:
 
 
 //函数
-function : IDENTIFIER LPAREN term RPAREN;
+function : AT? IDENTIFIER LPAREN term RPAREN;
 //简单项，缺_,#sup,#inf
 simpleterm : integer | constant | STRING | VAR;
 //元组
@@ -171,7 +174,7 @@ literal : atom | MINUS atom | comparison_literal;
 term_tuple : term (COMMA term)*;
 
 //文字元组
-literal_tuple : literal (COMMA literal)*;
+literal_tuple : NAF_NOT? literal (NAF_NOT? COMMA literal)*;
 
 //聚合元素
 aggregate_elements : (term_tuple CONDITION)? literal_tuple (SEMICOLON (term_tuple CONDITION)? literal_tuple)*;
