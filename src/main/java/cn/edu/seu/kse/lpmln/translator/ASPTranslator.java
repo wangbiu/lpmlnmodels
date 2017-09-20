@@ -133,7 +133,7 @@ public class ASPTranslator extends BaseTranslator {
             sb.append(body).append(".");
         }else {
             String rulebody = rule.getBody();
-            sb.append(body).append(" :- ").append(rulebody.substring(0,rulebody.length()-1)).append(".");
+            sb.append(body).append(" :- ").append(rulebody.substring(0,rulebody.length()-2)).append(".");
         }
 
         sb.append(System.lineSeparator());
