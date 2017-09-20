@@ -44,6 +44,8 @@ MINUS : '-';
 STAR : '*';
 //除号、斜线
 SLASH : '/';
+//取摸
+BACKSLASH : '\\';
 
 //左圆括号
 LPAREN : '(';
@@ -103,7 +105,7 @@ integer : POSITIVE_INT | negative_int | ZERO;
 //自然数
 natural_number : POSITIVE_INT | ZERO;
 //四则运算符
-arithmetic_op : PLUS | MINUS | STAR | SLASH;
+arithmetic_op : PLUS | MINUS | STAR | SLASH | BACKSLASH;
 //二元位运算
 bitwise_op : BITWISE_AND | BITWISE_OR | BITWISE_EXCLUSIVE_OR;
 //二元运算符
@@ -111,7 +113,7 @@ binary_op : arithmetic_op | bitwise_op | EXPONENITIATION | RANGE;
 //一元运算符
 unary_op : BITWISE_COMPLEMENT;
 //数字
-bit_number : unary_op? natural_number;
+bit_number : unary_op? integer;
 //关系运算符(comparison predicates)
 relation_op : LESS_THAN | LEQ | GREATER_THAN | GEQ | EQUAL | NEQ;
 
@@ -119,7 +121,9 @@ relation_op : LESS_THAN | LEQ | GREATER_THAN | GEQ | EQUAL | NEQ;
 simple_arithmetic_expr :
     integer |
     (MINUS)? VAR |
-    (integer | (MINUS)? VAR) (binary_op (bit_number | VAR))* ;
+    (integer | (MINUS)? VAR) (binary_op (integer | VAR))* |
+    unary_op simple_arithmetic_expr |
+    DISJUNCTION simple_arithmetic_expr DISJUNCTION;
 
 //四则运算算术表达式，加括号
 simple_arithmetic_expr2 :
