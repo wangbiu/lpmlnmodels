@@ -22,8 +22,10 @@ DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP [0-9] ZERO* [1-9]*;
 
 //0
 ZERO : '0';
+//identifier
+IDENTIFIER : [_]*[a-z][a-zA-Z0-9_']*;
 //常量
-CONSTANT : [_]*[a-z][a-zA-Z0-9_']* | BOOL_CONSTANTS;
+CONSTANT : IDENTIFIER | BOOL_CONSTANTS;
 //变量
 VAR : [_]*[A-Z][a-zA-Z0-9_']*;
 
@@ -105,7 +107,7 @@ arithmetic_op : PLUS | MINUS | STAR | SLASH;
 //二元位运算
 bitwise_op : BITWISE_AND | BITWISE_OR | BITWISE_EXCLUSIVE_OR;
 //二元运算符
-binary_op : arithmetic_op | bitwise_op | EXPONENITIATION;
+binary_op : arithmetic_op | bitwise_op | EXPONENITIATION | RANGE;
 //一元运算符
 unary_op : BITWISE_COMPLEMENT;
 //数字
@@ -132,25 +134,25 @@ arithmethic_expr:
 
 
 //函数
-function : CONSTANT LPAREN term (COMMA term)* RPAREN;
+function : IDENTIFIER term;
 //简单项，缺_,#sup,#inf
 simpleterm : integer | CONSTANT | STRING | VAR;
 //元组
-tuple : LPAREN ( | term ( | COMMA | (COMMA term)* )) RPAREN;
+tuple : | COMMA | ( COMMA term )+ ;
 
 //范围枚举
-interval : (integer | VAR) RANGE (integer | VAR);
+//interval : (integer | VAR) RANGE (integer | VAR);
 //逐个枚举
-pooling : LPAREN ((integer | VAR) (SEMICOLON (integer | VAR))* ) RPAREN;
+pooling :  (SEMICOLON term)+;
 
 //项
 //term : VAR | CONSTANT | integer | arithmethic_expr | function | STRING;
-term : simpleterm | function | tuple | arithmethic_expr | interval | pooling;
+term : (simpleterm | function | arithmethic_expr | LPAREN term RPAREN) (tuple | pooling);
 
 //原子
 atom :
     CONSTANT |
-    CONSTANT LPAREN term (COMMA term)* RPAREN;
+    IDENTIFIER LPAREN term (COMMA term)* RPAREN;
 
 //文字
 literal : atom | MINUS atom | NAF_NOT literal | comparison_literal;
@@ -222,7 +224,7 @@ hard_rule :  fact | constraint | full_rule;
 soft_rule : (DECIMAL | integer ) CONDITION hard_rule;
 
 //
-meta_rule : META_OP (MINUS)? CONSTANT SLASH natural_number FULLSTOP;
+meta_rule : META_OP (MINUS)? IDENTIFIER SLASH natural_number FULLSTOP;
 
 //ASP4QA程序
 lpmln_rule : (hard_rule | soft_rule | meta_rule)*;
