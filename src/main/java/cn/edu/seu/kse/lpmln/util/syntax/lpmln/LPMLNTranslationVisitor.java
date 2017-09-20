@@ -284,7 +284,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         if(ctx!=null&&ctx.VAR()!=null) var = ctx.VAR().getText();
         if(ctx!=null){
             if(ctx.integer()!=null) herbrandUniverse.add(ctx.integer().getText());
-            if(ctx.CONSTANT()!=null) herbrandUniverse.add(ctx.CONSTANT().getText());
+            if(ctx.constant()!=null) herbrandUniverse.add(ctx.constant().getText());
             if(ctx.STRING()!=null) herbrandUniverse.add(ctx.STRING().getText());
         }
         return var;

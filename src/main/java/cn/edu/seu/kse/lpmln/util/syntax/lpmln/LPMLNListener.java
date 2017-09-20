@@ -8,6 +8,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface LPMLNListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#constant}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstant(LPMLNParser.ConstantContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#constant}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstant(LPMLNParser.ConstantContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#negative_int}.
 	 * @param ctx the parse tree
 	 */

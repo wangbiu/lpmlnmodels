@@ -25,7 +25,7 @@ ZERO : '0';
 //identifier
 IDENTIFIER : [_]*[a-z][a-zA-Z0-9_']*;
 //常量
-CONSTANT : IDENTIFIER | BOOL_CONSTANTS;
+constant : IDENTIFIER | BOOL_CONSTANTS;
 //变量
 VAR : [_]*[A-Z][a-zA-Z0-9_']*;
 
@@ -134,9 +134,9 @@ arithmethic_expr:
 
 
 //函数
-function : IDENTIFIER term;
+function : IDENTIFIER LPAREN term RPAREN;
 //简单项，缺_,#sup,#inf
-simpleterm : integer | CONSTANT | STRING | VAR;
+simpleterm : integer | constant | STRING | VAR;
 //元组
 tuple : | COMMA | ( COMMA term )+ ;
 
@@ -151,7 +151,7 @@ term : (simpleterm | function | arithmethic_expr | LPAREN term RPAREN) (tuple | 
 
 //原子
 atom :
-    CONSTANT |
+    constant |
     IDENTIFIER LPAREN term (COMMA term)* RPAREN;
 
 //文字

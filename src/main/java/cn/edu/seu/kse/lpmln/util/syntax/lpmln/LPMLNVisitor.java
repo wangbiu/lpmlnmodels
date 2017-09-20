@@ -11,6 +11,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#constant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstant(LPMLNParser.ConstantContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#negative_int}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
