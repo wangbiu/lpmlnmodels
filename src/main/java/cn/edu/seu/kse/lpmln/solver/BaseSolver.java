@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.util.commandLine.CommandLineExecute;
@@ -56,17 +57,22 @@ public class BaseSolver {
     public List<WeightedAnswerSet> findMaxWeightedAs(){
         Date enter=new Date();
         int level2=0;
-        int maxlevel1=0;
+        int aimlevel=0;
+        int maxlevel1=Integer.MIN_VALUE;
+        int minlevel1=Integer.MAX_VALUE;
         maxWeightAs=new ArrayList<>();
         for(WeightedAnswerSet as:weightedAs){
             level2=as.getWeights().get(1);
-            if(maxlevel1<as.getWeights().get(0)){
-                maxlevel1=as.getWeights().get(0);
-            }
+            maxlevel1 = Math.max(maxlevel1,as.getWeights().get(0));
+            minlevel1 = Math.min(minlevel1,as.getWeights().get(0));
         }
-
+        if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V1){
+            aimlevel = maxlevel1;
+        }else if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V2){
+            aimlevel = minlevel1;
+        }
         for(WeightedAnswerSet as :weightedAs){
-            if(as.getWeights().get(0) == maxlevel1){
+            if(as.getWeights().get(0) == aimlevel){
                 maxWeightAs.add(as);
             }
         }
