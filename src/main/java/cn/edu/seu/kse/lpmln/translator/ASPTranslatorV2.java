@@ -33,9 +33,9 @@ public class ASPTranslatorV2 extends  ASPTranslator{
     protected String translateGenerationPart(Rule rule){
         StringBuilder sb = new StringBuilder();
         sb.append(rule.getText())
-                .append("not ").append(satLabel).append(",");
-        if(sb.charAt(sb.length()-1)==';'||sb.charAt(sb.length()-1)==','){
-            sb.deleteCharAt(sb.length()-1);
+                .append("not ").append(satLabel).append(", ");
+        if(sb.charAt(sb.length()-2)==';'||sb.charAt(sb.length()-2)==','){
+            sb.delete(sb.length()-2,sb.length());
         }
         sb.append(".").append(System.lineSeparator());
         return sb.toString();
@@ -47,14 +47,15 @@ public class ASPTranslatorV2 extends  ASPTranslator{
 
         sb.append(satLabel).append(" :- ").append(rule.getBody());
         for (String str : rule.getHead()) {
-            sb.append("not ").append(str).append(",");
+            sb.append("not ").append(str).append(", ");
         }
         for (String str : rule.getHeadCondition()) {
-            sb.append("not ").append(str).append(";");
+            sb.append("not ").append(str).append("; ");
         }
-        if(sb.charAt(sb.length()-1)==';'||sb.charAt(sb.length()-1)==','){
-            sb.deleteCharAt(sb.length()-1);
+        if(sb.charAt(sb.length()-2)==';'||sb.charAt(sb.length()-2)==','){
+            sb.delete(sb.length()-2,sb.length());
         }
+
         sb.append(".").append(System.lineSeparator());
         return sb.toString();
     }
