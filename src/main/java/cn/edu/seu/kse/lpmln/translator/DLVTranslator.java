@@ -5,14 +5,20 @@ import cn.edu.seu.kse.lpmln.model.Rule;
 /**
  * Created by 王彬 on 2016/8/30.
  */
+@Deprecated
 public class DLVTranslator extends ASPTranslator {
+    public DLVTranslator(){};
+    public DLVTranslator(String semantics) {
+        super(semantics);
+    }
+
     @Override
     protected String translateCountingPart(Rule rule, boolean isSoft) {
         StringBuilder sb=new StringBuilder();
         sb.append(":~ sat(").append(rule.getRuleLabel()).append("). ");
         sb.append("[");
         if(isSoft){
-            int weight= (int) (rule.getWeight()*factor);
+            long weight= (long) (rule.getWeight()*factor);
             sb.append(weight).append(":1]");
         }else {
             sb.append("1:2] ");

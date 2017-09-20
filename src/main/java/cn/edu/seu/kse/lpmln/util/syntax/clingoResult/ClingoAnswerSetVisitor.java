@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.util.syntax.clingoResult;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 
 import java.util.ArrayList;
@@ -10,8 +11,12 @@ import java.util.List;
  * Created by 王彬 on 2017/3/22.
  */
 public class ClingoAnswerSetVisitor extends ClingoResultBaseVisitor {
-    public int maxLevel2=0;
-    public int maxLevel1=0;
+    public int minLevel1=Integer.MAX_VALUE;
+    public int maxLevel1=Integer.MIN_VALUE;
+    public int minLevel2=Integer.MAX_VALUE;
+    public int maxLevel2=Integer.MIN_VALUE;
+
+
     private List<WeightedAnswerSet> was=new ArrayList<>();
 
     @Override
@@ -34,13 +39,11 @@ public class ClingoAnswerSetVisitor extends ClingoResultBaseVisitor {
             weight= Integer.valueOf(wctx.POSITIVE_INT(i).getText()) -1 ;
             weights.add(weight);
             if(i == 0){
-                if(maxLevel2 < weight){
-                    maxLevel2=weight;
-                }
+                maxLevel2 = Math.max(maxLevel2,weight);
+                minLevel2 = Math.min(minLevel2,weight);
             }else if(i == 1){
-                if(maxLevel1 < weight){
-                    maxLevel1=weight;
-                }
+                maxLevel1 = Math.max(maxLevel1,weight);
+                minLevel1 = Math.min(minLevel1,weight);
             }
         }
 
@@ -56,8 +59,14 @@ public class ClingoAnswerSetVisitor extends ClingoResultBaseVisitor {
             visitWeighted_answer_set(wctx);
         }
 
+        int aimLevel=0;
+        if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V1){
+            aimLevel = maxLevel2;
+        }else if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V2){
+            aimLevel = minLevel2;
+        }
         for(WeightedAnswerSet as : was){
-            if(as.getWeights().get(1) == maxLevel2){
+            if(as.getWeights().get(1) == aimLevel){
                 result.add(as);
             }
         }

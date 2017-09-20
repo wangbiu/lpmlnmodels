@@ -16,6 +16,18 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterConstant(LPMLNParser.ConstantContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConstant(LPMLNParser.ConstantContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNegative_int(LPMLNParser.Negative_intContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -59,6 +71,54 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArithmetic_op(LPMLNParser.Arithmetic_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBitwise_op(LPMLNParser.Bitwise_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBitwise_op(LPMLNParser.Bitwise_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinary_op(LPMLNParser.Binary_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinary_op(LPMLNParser.Binary_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnary_op(LPMLNParser.Unary_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnary_op(LPMLNParser.Unary_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBit_number(LPMLNParser.Bit_numberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBit_number(LPMLNParser.Bit_numberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -124,6 +184,42 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSimpleterm(LPMLNParser.SimpletermContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSimpleterm(LPMLNParser.SimpletermContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTuple(LPMLNParser.TupleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTuple(LPMLNParser.TupleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPooling(LPMLNParser.PoolingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPooling(LPMLNParser.PoolingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTerm(LPMLNParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -148,18 +244,6 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRange_atom(LPMLNParser.Range_atomContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRange_atom(LPMLNParser.Range_atomContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterLiteral(LPMLNParser.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -167,30 +251,6 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLiteral(LPMLNParser.LiteralContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDefault_literal(LPMLNParser.Default_literalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDefault_literal(LPMLNParser.Default_literalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExtended_literal(LPMLNParser.Extended_literalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExtended_literal(LPMLNParser.Extended_literalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -268,13 +328,13 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRelation_expr(LPMLNParser.Relation_exprContext ctx) { }
+	@Override public void enterComparison_literal(LPMLNParser.Comparison_literalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRelation_expr(LPMLNParser.Relation_exprContext ctx) { }
+	@Override public void exitComparison_literal(LPMLNParser.Comparison_literalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -292,6 +352,30 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterHead_literal(LPMLNParser.Head_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHead_literal(LPMLNParser.Head_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCondition_literal(LPMLNParser.Condition_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCondition_literal(LPMLNParser.Condition_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBody(LPMLNParser.BodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -299,6 +383,18 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBody(LPMLNParser.BodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBody_literal(LPMLNParser.Body_literalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBody_literal(LPMLNParser.Body_literalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

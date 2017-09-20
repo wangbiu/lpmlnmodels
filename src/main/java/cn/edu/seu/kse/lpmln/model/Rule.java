@@ -1,7 +1,6 @@
 package cn.edu.seu.kse.lpmln.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -15,15 +14,21 @@ public class Rule {
     private boolean isSoft;
     private double weight;
     private int innerweight;
-    private String body;
     private List<String> head;
+    private List<String> headCondition;
+    private List<String> positiveBody;
+    private List<String> negativeBody;
+    private List<String> bodyContion;
     private String ruleLabel=null;
     private String originalrule;
 
     public Rule(){
         vars=new HashSet<>();
         head=new ArrayList<>();
-        body="";
+        positiveBody = new ArrayList<>();
+        negativeBody = new ArrayList<>();
+        bodyContion = new ArrayList<>();
+        headCondition = new ArrayList<>();
     }
 
     @Override
@@ -35,7 +40,7 @@ public class Rule {
         sb.append("varialbes ").append(vars).append(ls);
         sb.append("is soft rule ").append(isSoft).append(ls);
         sb.append("weight ").append(weight).append(ls);
-        sb.append("rule body ").append(body).append(ls);
+        sb.append("rule body ").append(getBody()).append(ls);
         sb.append("rule head ").append(head).append(ls);
         sb.append("");
         return sb.toString();
@@ -90,11 +95,20 @@ public class Rule {
     }
 
     public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
+        StringBuilder sb = new StringBuilder();
+        for (String positive : positiveBody) {
+            sb.append(positive);
+            sb.append(", ");
+        }
+        for (String negative : negativeBody) {
+            sb.append(negative);
+            sb.append(", ");
+        }
+        for (String cond : bodyContion) {
+            sb.append(cond);
+            sb.append("; ");
+        }
+        return sb.toString();
     }
 
     public List<String> getHead() {
@@ -107,24 +121,23 @@ public class Rule {
 
     public String getRuleLabel() {
         if(ruleLabel == null){
-            StringBuilder sb=new StringBuilder();
-            sb.append("rb").append("(").append(id);
-            int cnt=0;
-            int size=vars.size()-1;
-            for(String v:vars){
-                sb.append(", ").append(v);
-            }
-            if(isSoft){
-                sb.append(", 1, ").append((int)weight);
-            }else {
-                sb.append(", 2, 1");
-            }
-
-
-            sb.append(")");
-            ruleLabel=sb.toString();
+            ruleLabel = new StringBuilder().append("rb").append("(").append(getRuleLabelPara()).append(")").toString();
         }
         return ruleLabel;
+    }
+
+    public String getRuleLabelPara(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(id);
+        for(String v:vars){
+            sb.append(", ").append(v);
+        }
+        if(isSoft){
+            sb.append(", 1, ").append((int)weight);
+        }else {
+            sb.append(", 2, 1");
+        }
+        return sb.toString();
     }
 
     public String getOriginalrule() {
@@ -133,5 +146,37 @@ public class Rule {
 
     public void setOriginalrule(String originalrule) {
         this.originalrule = originalrule;
+    }
+
+    public List<String> getPositiveBody() {
+        return positiveBody;
+    }
+
+    public void setPositiveBody(List<String> positiveBody) {
+        this.positiveBody = positiveBody;
+    }
+
+    public List<String> getNegativeBody() {
+        return negativeBody;
+    }
+
+    public void setNegativeBody(List<String> negativeBody) {
+        this.negativeBody = negativeBody;
+    }
+
+    public List<String> getBodyContion() {
+        return bodyContion;
+    }
+
+    public void setBodyContion(List<String> bodyContion) {
+        this.bodyContion = bodyContion;
+    }
+
+    public List<String> getHeadCondition() {
+        return headCondition;
+    }
+
+    public void setHeadCondition(List<String> headCondition) {
+        this.headCondition = headCondition;
     }
 }

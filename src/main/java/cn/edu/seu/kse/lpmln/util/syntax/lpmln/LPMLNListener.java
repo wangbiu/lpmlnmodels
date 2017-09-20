@@ -8,6 +8,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface LPMLNListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#constant}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstant(LPMLNParser.ConstantContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#constant}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstant(LPMLNParser.ConstantContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#negative_int}.
 	 * @param ctx the parse tree
 	 */
@@ -47,6 +57,46 @@ public interface LPMLNListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArithmetic_op(LPMLNParser.Arithmetic_opContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#bitwise_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterBitwise_op(LPMLNParser.Bitwise_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#bitwise_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitBitwise_op(LPMLNParser.Bitwise_opContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#binary_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinary_op(LPMLNParser.Binary_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#binary_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinary_op(LPMLNParser.Binary_opContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#unary_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnary_op(LPMLNParser.Unary_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#unary_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnary_op(LPMLNParser.Unary_opContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#bit_number}.
+	 * @param ctx the parse tree
+	 */
+	void enterBit_number(LPMLNParser.Bit_numberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#bit_number}.
+	 * @param ctx the parse tree
+	 */
+	void exitBit_number(LPMLNParser.Bit_numberContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#relation_op}.
 	 * @param ctx the parse tree
@@ -98,6 +148,36 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitFunction(LPMLNParser.FunctionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#simpleterm}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimpleterm(LPMLNParser.SimpletermContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#simpleterm}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimpleterm(LPMLNParser.SimpletermContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#tuple}.
+	 * @param ctx the parse tree
+	 */
+	void enterTuple(LPMLNParser.TupleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#tuple}.
+	 * @param ctx the parse tree
+	 */
+	void exitTuple(LPMLNParser.TupleContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#pooling}.
+	 * @param ctx the parse tree
+	 */
+	void enterPooling(LPMLNParser.PoolingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#pooling}.
+	 * @param ctx the parse tree
+	 */
+	void exitPooling(LPMLNParser.PoolingContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#term}.
 	 * @param ctx the parse tree
 	 */
@@ -118,16 +198,6 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitAtom(LPMLNParser.AtomContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#range_atom}.
-	 * @param ctx the parse tree
-	 */
-	void enterRange_atom(LPMLNParser.Range_atomContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#range_atom}.
-	 * @param ctx the parse tree
-	 */
-	void exitRange_atom(LPMLNParser.Range_atomContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#literal}.
 	 * @param ctx the parse tree
 	 */
@@ -137,26 +207,6 @@ public interface LPMLNListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLiteral(LPMLNParser.LiteralContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#default_literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterDefault_literal(LPMLNParser.Default_literalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#default_literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitDefault_literal(LPMLNParser.Default_literalContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#extended_literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterExtended_literal(LPMLNParser.Extended_literalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#extended_literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitExtended_literal(LPMLNParser.Extended_literalContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#term_tuple}.
 	 * @param ctx the parse tree
@@ -218,15 +268,15 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitHead_aggregate(LPMLNParser.Head_aggregateContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#relation_expr}.
+	 * Enter a parse tree produced by {@link LPMLNParser#comparison_literal}.
 	 * @param ctx the parse tree
 	 */
-	void enterRelation_expr(LPMLNParser.Relation_exprContext ctx);
+	void enterComparison_literal(LPMLNParser.Comparison_literalContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#relation_expr}.
+	 * Exit a parse tree produced by {@link LPMLNParser#comparison_literal}.
 	 * @param ctx the parse tree
 	 */
-	void exitRelation_expr(LPMLNParser.Relation_exprContext ctx);
+	void exitComparison_literal(LPMLNParser.Comparison_literalContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#head}.
 	 * @param ctx the parse tree
@@ -238,6 +288,26 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitHead(LPMLNParser.HeadContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#head_literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterHead_literal(LPMLNParser.Head_literalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#head_literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitHead_literal(LPMLNParser.Head_literalContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#condition_literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondition_literal(LPMLNParser.Condition_literalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#condition_literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondition_literal(LPMLNParser.Condition_literalContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#body}.
 	 * @param ctx the parse tree
 	 */
@@ -247,6 +317,16 @@ public interface LPMLNListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBody(LPMLNParser.BodyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMLNParser#body_literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterBody_literal(LPMLNParser.Body_literalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMLNParser#body_literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitBody_literal(LPMLNParser.Body_literalContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#fact}.
 	 * @param ctx the parse tree

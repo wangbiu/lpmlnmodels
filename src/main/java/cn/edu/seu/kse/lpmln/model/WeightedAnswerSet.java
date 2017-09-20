@@ -11,6 +11,7 @@ public class WeightedAnswerSet {
     private List<Integer> weights;
     private double probability;
     private AnswerSet answerSet;
+    private int factor;
 
     public WeightedAnswerSet(){
         weights=new ArrayList<>();
@@ -44,10 +45,24 @@ public class WeightedAnswerSet {
     @Override
     public String toString() {
         StringBuilder sb=new StringBuilder();
-        sb.append("weights : ").append(weights).append(System.lineSeparator());
+        int decPart = weights.get(0)%factor;
+        while(decPart%10==0&&decPart!=0){
+            decPart /= 10;
+        }
+        sb.append("weights : [").append(weights.get(0)/factor).append(decPart==0?"":"."+decPart)
+                .append(", ").append(weights.get(1)).append("]")
+                .append(System.lineSeparator());
         sb.append("answer set : ").append(answerSet);
-        sb.append("probability : ").append(probability).append(System.lineSeparator());
-        sb.append(System.lineSeparator());
+        sb.append("probability : ").append(probability).append(System.lineSeparator())
+                .append(System.lineSeparator());
         return sb.toString();
+    }
+
+    public int getFactor() {
+        return factor;
+    }
+
+    public void setFactor(int factor) {
+        this.factor = factor;
     }
 }

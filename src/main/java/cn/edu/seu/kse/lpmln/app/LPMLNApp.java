@@ -1,15 +1,13 @@
 package cn.edu.seu.kse.lpmln.app;
 
+import cn.edu.seu.kse.lpmln.model.Rule;
+import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
-import cn.edu.seu.kse.lpmln.model.Rule;
-import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
-import cn.edu.seu.kse.lpmln.translator.DLVTranslator;
-import cn.edu.seu.kse.lpmln.translator.WeakASPTranslator;
-import cn.edu.seu.kse.lpmln.translator.WeakDLVTranslator;
+import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
+import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,6 +35,8 @@ public class LPMLNApp {
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
+    public enum TRANSLATION_TYPE{V1,V2};
+    public static TRANSLATION_TYPE translation_type = TRANSLATION_TYPE.V2;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 
@@ -165,10 +165,11 @@ public class LPMLNApp {
         }
 
         if(cmd.hasOption("asp-solver")){
-            aspsolver=cmd.getOptionValue("asp-solver");
-            if(!aspsolver.equals("clingo") && !aspsolver.equals("dlv")){
-                throw new RuntimeException("unsupported ASP solver "+aspsolver);
-            }
+            throw new RuntimeException("Parameter asp solver is no longer supported. The default solver is clingo.");
+//            aspsolver=cmd.getOptionValue("asp-solver");
+//            if(!aspsolver.equals("clingo") && !aspsolver.equals("dlv")){
+//                throw new RuntimeException("unsupported ASP solver "+aspsolver);
+//            }
         }
 
         if(cmd.hasOption("marginal-probability-reasoning")){
@@ -196,25 +197,16 @@ public class LPMLNApp {
 
         ASPTranslator translator=null;
 
-
-
-        if(semantics.equals("weak")){
-            if(aspsolver.equals("clingo")){
-                translator=new WeakASPTranslator();
-                solver=new Clingo4();
-            }else {
-                translator=new WeakDLVTranslator();
-                solver=new DLV();
-            }
-        }else {
-            if(aspsolver.equals("clingo")){
-                translator=new ASPTranslator();
-                solver=new Clingo4();
-            }else {
-                translator=new DLVTranslator();
-                solver=new DLV();
-            }
+        if(LPMLNApp.translation_type==TRANSLATION_TYPE.V1){
+            translator=new ASPTranslator(semantics);
+            solver=new Clingo4();
+        }else if(LPMLNApp.translation_type==TRANSLATION_TYPE.V2){
+            translator=new ASPTranslatorV2(semantics);
+            solver=new Clingo4();
         }
+
+//        translator=new DLVTranslator(semantics);
+//        solver=new DLV();
 
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);

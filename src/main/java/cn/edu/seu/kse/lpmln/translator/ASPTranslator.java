@@ -9,7 +9,11 @@ import java.util.List;
  * Created by 王彬 on 2016/8/30.
  */
 public class ASPTranslator extends BaseTranslator {
-    protected boolean isWeakTranslate=false;
+
+    public ASPTranslator(){};
+    public ASPTranslator(String semantics) {
+        super(semantics);
+    }
 
     public String translate_parts(List<Rule> rules){
         StringBuilder sb=new StringBuilder();
@@ -65,6 +69,9 @@ public class ASPTranslator extends BaseTranslator {
 
     @Override
     public String translateHardRule(Rule rule) {
+        if(isWeakTranslate){
+            return rule.getOriginalrule();
+        }
         StringBuilder sb=basicTranslate(rule);
         sb.append(translateCountingPart(rule,false));
         return sb.toString();
@@ -125,7 +132,8 @@ public class ASPTranslator extends BaseTranslator {
         if(rule.getBody().equals("")){
             sb.append(body).append(".");
         }else {
-            sb.append(body).append(" :- ").append(rule.getBody()).append(".");
+            String rulebody = rule.getBody();
+            sb.append(body).append(" :- ").append(rulebody.substring(0,rulebody.length()-2)).append(".");
         }
 
         sb.append(System.lineSeparator());
@@ -156,7 +164,7 @@ public class ASPTranslator extends BaseTranslator {
         sb.append(":~ sat(").append(rule.getRuleLabel()).append("). ");
         sb.append("[");
         if(isSoft){
-            int weight= (int) (rule.getWeight()*factor);
+            long weight= (long) (rule.getWeight()*factor);
             sb.append(weight).append("@1, ");
         }else {
             sb.append("1@2, ");

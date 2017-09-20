@@ -11,6 +11,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#constant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstant(LPMLNParser.ConstantContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#negative_int}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -34,6 +40,30 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArithmetic_op(LPMLNParser.Arithmetic_opContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#bitwise_op}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBitwise_op(LPMLNParser.Bitwise_opContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#binary_op}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinary_op(LPMLNParser.Binary_opContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#unary_op}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnary_op(LPMLNParser.Unary_opContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#bit_number}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBit_number(LPMLNParser.Bit_numberContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#relation_op}.
 	 * @param ctx the parse tree
@@ -65,6 +95,24 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunction(LPMLNParser.FunctionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#simpleterm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSimpleterm(LPMLNParser.SimpletermContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#tuple}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTuple(LPMLNParser.TupleContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#pooling}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPooling(LPMLNParser.PoolingContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#term}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -77,29 +125,11 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAtom(LPMLNParser.AtomContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#range_atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRange_atom(LPMLNParser.Range_atomContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitLiteral(LPMLNParser.LiteralContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#default_literal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDefault_literal(LPMLNParser.Default_literalContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#extended_literal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExtended_literal(LPMLNParser.Extended_literalContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#term_tuple}.
 	 * @param ctx the parse tree
@@ -137,11 +167,11 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHead_aggregate(LPMLNParser.Head_aggregateContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#relation_expr}.
+	 * Visit a parse tree produced by {@link LPMLNParser#comparison_literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRelation_expr(LPMLNParser.Relation_exprContext ctx);
+	T visitComparison_literal(LPMLNParser.Comparison_literalContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#head}.
 	 * @param ctx the parse tree
@@ -149,11 +179,29 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHead(LPMLNParser.HeadContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#head_literal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHead_literal(LPMLNParser.Head_literalContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#condition_literal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCondition_literal(LPMLNParser.Condition_literalContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#body}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBody(LPMLNParser.BodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMLNParser#body_literal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBody_literal(LPMLNParser.Body_literalContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#fact}.
 	 * @param ctx the parse tree

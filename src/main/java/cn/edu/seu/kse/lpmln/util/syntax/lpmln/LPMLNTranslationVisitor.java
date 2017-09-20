@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.util.syntax.lpmln;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
@@ -13,12 +14,13 @@ import java.util.List;
 public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     private List<Rule> rules=null;
     private int cnt=0;
-    private Double minremains=null;
+    private static int factor;
     private HashSet<String> herbrandUniverse=new HashSet<>();
     private StringBuilder metarule=new StringBuilder();
 
     public LPMLNTranslationVisitor(){
         rules=new ArrayList<>();
+        factor=0;
     }
 
     @Override
@@ -42,9 +44,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         List<String> heads=rule.getHead();
         rule.setId(cnt++);
-        if(heads.size() == 0){
-            heads.add("impossible("+rule.getId()+")");
-        }
 
 
         rule.setSoft(false);
@@ -68,15 +67,10 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             weightnode=ctx.integer().getText();
         }
         double weight=Double.valueOf(weightnode);
-        double remains=weight-Math.floor(weight);
-
-        if(minremains == null){
-            minremains=remains;
-        }else if(minremains > remains){
-            if (Math.abs(remains) > 0.00001){
-                minremains=remains;
-            }
-
+        String[] numbers = weightnode.split("\\.");
+        if(numbers.length>1){
+            int newLength = numbers[1].length();
+            factor = Math.max(factor,newLength);
         }
         rule.setWeight(weight);
         return rule;
@@ -112,8 +106,18 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         }
         Rule rb=visitBody(ctx.body());
         Rule rh=visitHead(ctx.head());
-        rb.setText(ctx.head().getText() + " :- "+ctx.body().getText()+", ");
+        boolean isConditional = false;
+        for (ParseTree pt : ctx.body().children) {
+            if(pt instanceof LPMLNParser.Condition_literalContext){
+                isConditional = true;
+            }
+            if(pt instanceof LPMLNParser.Body_literalContext){
+                isConditional = false;
+            }
+        }
+        rb.setText(ctx.head().getText() + " :- "+ctx.body().getText()+(isConditional?"; ":", "));
         rb.setHead(rh.getHead());
+        rb.setHeadCondition(rh.getHeadCondition());
         rb.setOriginalrule(ctx.getText());
         return rb;
     }
@@ -124,41 +128,86 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
             return null;
         }
         Rule rule=new Rule();
-        rule.setBody(ctx.getText());
+        List<String> positivebody = rule.getPositiveBody();
+        List<String> negativebody = rule.getNegativeBody();
+        List<String> conditionbody = rule.getBodyContion();
         HashSet<String> vars=rule.getVars();
-        for(LPMLNParser.Extended_literalContext elctx : ctx.extended_literal()){
-            vars.addAll(visitExtended_literal(elctx));
+        for(LPMLNParser.Body_literalContext bctx : ctx.body_literal()){
+            if(bctx.getText().startsWith("not")){
+                negativebody.add(bctx.getText());
+            }else{
+                positivebody.add(bctx.getText());
+            }
+            vars.addAll(visitBody_literal(bctx));
         }
-
-        for(LPMLNParser.Relation_exprContext rctx : ctx.relation_expr()){
-            vars.addAll(visitRelation_expr(rctx));
+        for(LPMLNParser.Condition_literalContext cctx : ctx.condition_literal()){
+            conditionbody.add(cctx.getText());
+            visitCondition_literal(cctx);
         }
 
         return rule;
     }
 
     @Override
-    public HashSet<String> visitExtended_literal(LPMLNParser.Extended_literalContext ctx) {
-        HashSet<String> vars=null;
-        LPMLNParser.LiteralContext lctx=ctx.literal();
-        if(lctx == null){
-            lctx=ctx.default_literal().literal();
+    public HashSet<String> visitBody_literal(LPMLNParser.Body_literalContext ctx){
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        vars.addAll(visitLiteral(ctx.literal()));
+        vars.addAll(visitBody_aggregate(ctx.body_aggregate()));
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitBody_aggregate(LPMLNParser.Body_aggregateContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        if(ctx==null) return vars;
+        for (LPMLNParser.TermContext tctx : ctx.term()) {
+            vars.addAll(visitTerm(tctx));
         }
-        vars=visitLiteral(lctx);
+        visitAggregate_elements(ctx.aggregate_elements());
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitAggregate_elements(LPMLNParser.Aggregate_elementsContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        for (LPMLNParser.Term_tupleContext tctx: ctx.term_tuple()) {
+            vars.addAll(visitTerm_tuple(tctx));
+        }
+        for (LPMLNParser.Literal_tupleContext lctx: ctx.literal_tuple()) {
+            vars.addAll(visitLiteral_tuple(lctx));
+        }
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitTerm_tuple(LPMLNParser.Term_tupleContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        for (LPMLNParser.TermContext tctx: ctx.term()) {
+            vars.addAll(visitTerm(tctx));
+        }
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitLiteral_tuple(LPMLNParser.Literal_tupleContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        for (LPMLNParser.LiteralContext lctx : ctx.literal()) {
+            vars.addAll(visitLiteral(lctx));
+        }
         return vars;
     }
 
     @Override
     public HashSet<String> visitLiteral(LPMLNParser.LiteralContext ctx) {
         HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
         LPMLNParser.AtomContext actx=ctx.atom();
 
-        String var=null;
-
-        for(LPMLNParser.TermContext tctx:actx.term()){
-            var=visitTerm(tctx);
-            if(var!=null){
-                vars.add(var);
+        vars.addAll(visitComparison_literal(ctx.comparison_literal()));
+        if(actx!=null) {
+            for (LPMLNParser.TermContext tctx : actx.term()) {
+                vars.addAll(visitTerm(tctx));
             }
         }
 
@@ -166,43 +215,95 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     }
 
     @Override
-    public HashSet<String> visitRelation_expr(LPMLNParser.Relation_exprContext ctx) {
+    public HashSet<String> visitComparison_literal(LPMLNParser.Comparison_literalContext ctx) {
         HashSet<String> vars=new HashSet<>();
-        for(TerminalNode vtn : ctx.VAR()){
-            vars.add(vtn.getText());
+        if(ctx==null) return vars;
+        for (LPMLNParser.TermContext tctx : ctx.term()) {
+            vars.addAll(visitTerm(tctx));
         }
-
-        for(LPMLNParser.Arithmethic_exprContext actx : ctx.arithmethic_expr()){
-            herbrandUniverse.add(actx.getText());
-        }
-
         return vars;
     }
 
     @Override
-    public String visitTerm(LPMLNParser.TermContext ctx) {
-        String var=null;
-        TerminalNode vtn=ctx.VAR();
-        if(vtn!=null){
-            var=vtn.getText();
-        }
+    public HashSet<String> visitArithmethic_expr(LPMLNParser.Arithmethic_exprContext ctx){
+        if(ctx==null) return new HashSet<>();
+        return visitSimple_arithmetic_expr2(ctx.simple_arithmetic_expr2());
+    }
 
-        TerminalNode ctn=ctx.CONSTANT();
-        if(ctn != null){
-            herbrandUniverse.add(ctn.getText());
+    @Override
+    public HashSet<String> visitSimple_arithmetic_expr2(LPMLNParser.Simple_arithmetic_expr2Context ctx){
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        for (LPMLNParser.Simple_arithmetic_expr2Context sctx : ctx.simple_arithmetic_expr2()) {
+            vars.addAll(visitSimple_arithmetic_expr2(sctx));
         }
+        vars.addAll(visitSimple_arithmetic_expr(ctx.simple_arithmetic_expr()));
 
-        ctn=ctx.STRING();
-        if(ctn!=null){
-            herbrandUniverse.add(ctn.getText());
+        return  vars;
+    }
+
+    @Override
+    public HashSet<String> visitSimple_arithmetic_expr(LPMLNParser.Simple_arithmetic_exprContext ctx){
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        for (TerminalNode vtn : ctx.VAR()) {
+            vars.add(vtn.getText());
         }
+        return  vars;
+    }
 
-        LPMLNParser.IntegerContext ictx=ctx.integer();
-        if(ictx != null){
-            herbrandUniverse.add(ictx.getText());
+    @Override
+    public HashSet<String> visitTerm(LPMLNParser.TermContext ctx) {
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        String var = visitSimpleterm(ctx.simpleterm());
+        if(var!=null) vars.add(var);
+        vars.addAll(visitFunction(ctx.function()));
+        vars.addAll(visitTuple(ctx.tuple()));
+        vars.addAll(visitArithmethic_expr(ctx.arithmethic_expr()));
+        vars.addAll(visitPooling(ctx.pooling()));
+        vars.addAll(visitTerm(ctx.term()));
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitPooling(LPMLNParser.PoolingContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        if(ctx==null) return vars;
+        for (LPMLNParser.TermContext tctx : ctx.term()) {
+            vars.add(tctx.getText());
         }
+        return vars;
+    }
 
+    @Override
+    public String visitSimpleterm(LPMLNParser.SimpletermContext ctx){
+        String var = null;
+        if(ctx!=null&&ctx.VAR()!=null) var = ctx.VAR().getText();
+        if(ctx!=null){
+            if(ctx.integer()!=null) herbrandUniverse.add(ctx.integer().getText());
+            if(ctx.constant()!=null) herbrandUniverse.add(ctx.constant().getText());
+            if(ctx.STRING()!=null) herbrandUniverse.add(ctx.STRING().getText());
+        }
         return var;
+    }
+
+    @Override
+    public HashSet<String> visitFunction(LPMLNParser.FunctionContext ctx) {
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        vars.addAll(visitTerm(ctx.term()));
+        return vars;
+    }
+
+    @Override
+    public HashSet<String> visitTuple(LPMLNParser.TupleContext ctx) {
+        HashSet<String> vars=new HashSet<>();
+        if(ctx==null) return vars;
+        for (LPMLNParser.TermContext tctx : ctx.term()) {
+            vars.addAll(visitTerm(tctx));
+        }
+        return vars;
     }
 
     @Override
@@ -220,41 +321,36 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
 
         Rule rule=new Rule();
 
-        List<String> heads=rule.getHead();
-        for(LPMLNParser.LiteralContext lctx : ctx.literal()){
-            heads.add(lctx.getText());
-            visitLiteral(lctx);
+        List<String> heads = rule.getHead();
+        List<String> headCond = rule.getHeadCondition();
+        for(LPMLNParser.Head_literalContext hctx : ctx.head_literal()){
+            if(hctx.condition_literal()!=null){
+                headCond.add(hctx.getText());
+            }else{
+                heads.add(hctx.getText());
+            }
+            rule.getVars().addAll(visitHead_literal(hctx));
         }
 
         return rule;
     }
 
-
-
-    public int getFactor(){
-        int factor=100;
-        double tmpremains=0;
-        minremains=Math.abs(minremains);
-//        System.out.println(minremains);
-        if(minremains < 0.00000001 ){
-            return 1;
+    @Override
+    public HashSet<String> visitHead_literal(LPMLNParser.Head_literalContext ctx){
+        HashSet<String> vars = new HashSet<>();
+        if(ctx==null) return vars;
+        vars.addAll(visitLiteral(ctx.literal()));
+        if(ctx.condition_literal()!=null){
+            visitCondition_literal(ctx.condition_literal());
         }
+        //head_aggregate
+        return vars;
+    }
 
 
-        while (true){
-            tmpremains=minremains*factor;
-            if(tmpremains > 10){
-                factor/=10;
-            }else {
-                break;
-            }
-
-            if(factor == 1){
-                break;
-            }
-        }
-
-        return factor;
+    public static int getFactor(){
+        factor = factor>9?9:factor;
+        return (int)Math.pow(10,factor);
     }
 
     public List<Rule> getRules() {
