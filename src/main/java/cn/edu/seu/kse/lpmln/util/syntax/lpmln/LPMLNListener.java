@@ -158,16 +158,6 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitTuple(LPMLNParser.TupleContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#interval}.
-	 * @param ctx the parse tree
-	 */
-	void enterInterval(LPMLNParser.IntervalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#interval}.
-	 * @param ctx the parse tree
-	 */
-	void exitInterval(LPMLNParser.IntervalContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#pooling}.
 	 * @param ctx the parse tree
 	 */

@@ -196,18 +196,6 @@ public class LPMLNBaseListener implements LPMLNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInterval(LPMLNParser.IntervalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInterval(LPMLNParser.IntervalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterPooling(LPMLNParser.PoolingContext ctx) { }
 	/**
 	 * {@inheritDoc}

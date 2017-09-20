@@ -101,12 +101,6 @@ public interface LPMLNVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTuple(LPMLNParser.TupleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LPMLNParser#interval}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitInterval(LPMLNParser.IntervalContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LPMLNParser#pooling}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
