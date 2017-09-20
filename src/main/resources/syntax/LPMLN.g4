@@ -159,7 +159,7 @@ atom :
     IDENTIFIER LPAREN term (COMMA term)* RPAREN;
 
 //文字
-literal : atom | MINUS atom | NAF_NOT literal | comparison_literal;
+literal : atom | MINUS atom | comparison_literal;
 
 //缺省文字
 //default_literal : NAF_NOT literal;
@@ -200,7 +200,7 @@ comparison_literal : ((MINUS)? term) relation_op ((MINUS)? term);
 head : (head_literal DISJUNCTION)* head_literal;
 
 //头部文字
-head_literal : literal | head_aggregate | NAF_NOT head_literal | condition_literal;
+head_literal : NAF_NOT? (literal | head_aggregate | condition_literal);
 
 //条件文字
 condition_literal : literal CONDITION literal (COMMA literal)*;
@@ -210,7 +210,7 @@ condition_literal : literal CONDITION literal (COMMA literal)*;
 body : (body_literal COMMA | condition_literal SEMICOLON)* (body_literal | condition_literal) ;
 
 //体部文字
-body_literal : literal | body_aggregate | NAF_NOT body_literal;
+body_literal : NAF_NOT? NAF_NOT? (literal | body_aggregate);
 
 //事实
 fact : head FULLSTOP;

@@ -154,7 +154,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         if(ctx==null) return vars;
         vars.addAll(visitLiteral(ctx.literal()));
         visitBody_aggregate(ctx.body_aggregate());
-        vars.addAll(visitBody_literal(ctx.body_literal()));
         return vars;
     }
 
@@ -205,7 +204,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         if(ctx==null) return vars;
         LPMLNParser.AtomContext actx=ctx.atom();
 
-        vars.addAll(visitLiteral(ctx.literal()));
         vars.addAll(visitComparison_literal(ctx.comparison_literal()));
         if(actx!=null) {
             for (LPMLNParser.TermContext tctx : actx.term()) {
