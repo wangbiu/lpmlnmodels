@@ -153,7 +153,7 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         HashSet<String> vars=new HashSet<>();
         if(ctx==null) return vars;
         vars.addAll(visitLiteral(ctx.literal()));
-        vars.addAll(visitBody_aggregate(ctx.body_aggregate()));
+        visitBody_aggregate(ctx.body_aggregate());
         vars.addAll(visitBody_literal(ctx.body_literal()));
         return vars;
     }
