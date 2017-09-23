@@ -32,7 +32,7 @@ public class LPMLNBaseSolver extends AdvancedBaseSolver {
             }
         }
 
-        String res= formateMarginalResult(result);
+        String res= formatMarginalResult(result);
         Date exit=new Date();
         StringBuilder sb=new StringBuilder();
         sb.append("求边缘分布用时：").append(exit.getTime()-enter.getTime()).append(" ms");
@@ -41,7 +41,7 @@ public class LPMLNBaseSolver extends AdvancedBaseSolver {
         return res;
     }
 
-    public String formateMarginalResult(HashMap<String, Double> result){
+    public String formatMarginalResult(HashMap<String, Double> result){
         StringBuilder fres=new StringBuilder();
         for(HashMap.Entry<String,Double> entry:result.entrySet()){
             fres.append(entry.getKey()).append("  ").append(entry.getValue()).append(System.lineSeparator());
