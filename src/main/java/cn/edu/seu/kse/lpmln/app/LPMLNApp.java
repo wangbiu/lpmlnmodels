@@ -6,6 +6,7 @@ import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSubsetPartitioner;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
@@ -210,9 +211,25 @@ public class LPMLNApp {
         }else if(LPMLNApp.translation_type==TRANSLATION_TYPE.V2){
             translator=new ASPTranslatorV2(semantics);
         }
+        translator.setFactor(factor);
+        translator.setHerbrandUniverse(herbrandUniverse);
+        translator.setMetarule(sm.getMetarule());
         switch (aspsolver){
             case SOLVER_AUG:
                 solver = new AugmentedSolver();
+                List<File> lpmlnFileList = ((AugmentedSolver)solver).getTranslatedFiles();
+                AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner((AugmentedSolver) solver);
+                List<List<Rule>> subsets = partitioner.partition(rules);
+                for (int i=0;i<subsets.size();i++) {
+                    List<Rule> subset = subsets.get(i);
+                    String asprules=translator.translate(subset);
+                    String outFile = translationfile.substring(0,translationfile.lastIndexOf('.'))+"-"+i+".lp";
+                    File subsetFile = new File(outFile);
+                    lpmlnFileList.add(subsetFile);
+                    BufferedWriter bw=new BufferedWriter(new FileWriter(outFile));
+                    bw.write(asprules);
+                    bw.close();
+                }
                 break;
             case SOLVER_SPLIT:
                 solver = new AugmentedSolver();
@@ -220,11 +237,7 @@ public class LPMLNApp {
             case LPMLNApp.SOLVER_DEFAULT:
             default:
                 solver = new Clingo4();
-                translator.setFactor(factor);
-                translator.setHerbrandUniverse(herbrandUniverse);
-                translator.setMetarule(sm.getMetarule());
                 String asprules=translator.translate(rules);
-
                 BufferedWriter bw=new BufferedWriter(new FileWriter(translationOutputFile));
                 bw.write(asprules);
                 bw.close();
