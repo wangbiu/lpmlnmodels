@@ -5,6 +5,7 @@ import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
@@ -30,11 +31,14 @@ public class LPMLNApp {
     private static  String semantics="strong";
     private static  String translationfile=null;
     private static  boolean iskeeptranslation=false;
-    private static  String aspsolver="clingo";
+    private static  String aspsolver=LPMLNApp.SOLVER_DEFAULT;
     private static int factor=1;
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
+    private static final String SOLVER_DEFAULT = "clingo";
+    private static final String SOLVER_AUG = "clingo-augmentedSubsetWay";
+    private static final String SOLVER_SPLIT = "clingo-augmentedSplitSetWay";
     public enum TRANSLATION_TYPE{V1,V2};
     public static TRANSLATION_TYPE translation_type = TRANSLATION_TYPE.V2;
 
@@ -81,7 +85,7 @@ public class LPMLNApp {
 
                     File translationfile=new File(cmd.getOptionValue("translation-input-file"));
 
-                    if(aspsolver.equals("clingo")){
+                    if(aspsolver.equals(LPMLNApp.SOLVER_DEFAULT)){
                         solver=new Clingo4();
                     }else if(aspsolver.equals("dlv")){
                         solver=new DLV();
@@ -171,6 +175,10 @@ public class LPMLNApp {
 //                throw new RuntimeException("unsupported ASP solver "+aspsolver);
 //            }
         }
+        if(cmd.hasOption("parallel")){
+            aspsolver = LPMLNApp.SOLVER_AUG;
+            //选择并行推理方式
+        }
 
         if(cmd.hasOption("marginal-probability-reasoning")){
             isMarginal=true;
@@ -199,10 +207,22 @@ public class LPMLNApp {
 
         if(LPMLNApp.translation_type==TRANSLATION_TYPE.V1){
             translator=new ASPTranslator(semantics);
-            solver=new Clingo4();
         }else if(LPMLNApp.translation_type==TRANSLATION_TYPE.V2){
             translator=new ASPTranslatorV2(semantics);
-            solver=new Clingo4();
+        }
+        switch (aspsolver){
+            case LPMLNApp.SOLVER_DEFAULT:
+                solver = new Clingo4();
+                break;
+            case SOLVER_AUG:
+                solver = new AugmentedSolver();
+                break;
+            case SOLVER_SPLIT:
+                solver = new AugmentedSolver();
+                break;
+            default:
+                solver = new Clingo4();
+                break;
         }
 
 //        translator=new DLVTranslator(semantics);
