@@ -61,6 +61,10 @@ public class LPMLNOpts {
         transinfile.setValueSeparator(' ');
         transinfile.setOptionalArg(false);
 
+        //启用并行
+        Option parallel=new Option("l", "parallel", true, "optional, enable parallel reasoning");
+        parallel.setRequired(false);
+
         Options opts=new Options();
         opts.addOption(help);
         opts.addOption(margianl);
@@ -71,6 +75,7 @@ public class LPMLNOpts {
         opts.addOption(semantics);
         opts.addOption(transoutfile);
         opts.addOption(transinfile);
+        opts.addOption(parallel);
 
         return opts;
     }
