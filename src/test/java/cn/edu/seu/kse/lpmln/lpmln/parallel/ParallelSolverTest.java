@@ -3,9 +3,7 @@ package cn.edu.seu.kse.lpmln.lpmln.parallel;
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
-import cn.edu.seu.kse.lpmln.solver.parallel.ParallelSolver;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,16 +38,16 @@ public class ParallelSolverTest {
         asptext=translator.translate(rules);
     }
 
-    @Test
-    public void test() throws IOException, InterruptedException {
-//        System.out.println(asptext);
-        ParallelSolver solver=new ParallelSolver(rules,asptext,6,factor,2);
-        solver.call();
-        Thread.sleep(6000);
-        System.out.println("most probable answer set");
-        System.out.println(solver.findMaxWeightedAs());
-        System.out.println("marginal probability");
-        System.out.println(solver.marginalDistribution(factor));
-
-    }
+//    @Test
+//    public void test() throws IOException, InterruptedException {
+////        System.out.println(asptext);
+//        ParallelSolver solver=new ParallelSolver(rules,asptext,6,factor,2);
+//        solver.call();
+//        Thread.sleep(6000);
+//        System.out.println("most probable answer set");
+//        System.out.println(solver.findMaxWeightedAs());
+//        System.out.println("marginal probability");
+//        System.out.println(solver.marginalDistribution(factor));
+//
+//    }
 }
