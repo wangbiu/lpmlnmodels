@@ -1,12 +1,9 @@
 package cn.edu.seu.kse.lpmln.lpmln.parallel;
 
-import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
-import cn.edu.seu.kse.lpmln.solver.parallel.ASPStochasticPartition;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,17 +36,17 @@ public class ASPStochasticPartitionTest {
     }
 
 
-    @Test
-    public void test() throws IOException {
-        System.out.println(rules.size());
-        ASPStochasticPartition partition=new ASPStochasticPartition(rules,asptext,factor);
-        partition.partition(5);
-//        System.out.println(asptext);
-        List<AugmentedSubset> split=partition.getSplit();
-        List<File> splits=partition.genSplitFiles();
-        System.out.println(splits);
-
-        System.out.println(split);
-    }
+//    @Test
+//    public void test() throws IOException {
+//        System.out.println(rules.size());
+//        ASPStochasticPartition partition=new ASPStochasticPartition(rules,asptext,factor);
+//        partition.partition(5);
+////        System.out.println(asptext);
+//        List<AugmentedSubset> split=partition.getSplit();
+//        List<File> splits=partition.genSplitFiles();
+//        System.out.println(splits);
+//
+//        System.out.println(split);
+//    }
 
 }

@@ -1,13 +1,9 @@
 package cn.edu.seu.kse.lpmln.lpmln.parallel;
 
-import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
-import cn.edu.seu.kse.lpmln.solver.parallel.BirdPartition;
-import cn.edu.seu.kse.lpmln.solver.parallel.MontyHallPartition;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,31 +37,31 @@ public class MontyHallPartitionTest {
     }
 
 
-    @Test
-    public void test() throws IOException {
-        System.out.println(rules.size());
-        MontyHallPartition partition=new MontyHallPartition(rules,asptext,factor);
-        partition.setProblemN(3);
-        partition.partition(6);
-//        System.out.println(asptext);
-        List<AugmentedSubset> split=partition.getSplit();
-        List<File> splits=partition.genSplitFiles();
-//        System.out.println(splits);
-
-        System.out.println(split);
-    }
-
-    @Test
-    public void testBirdPartition() throws IOException {
-        System.out.println(rules.size());
-        BirdPartition partition=new BirdPartition(rules,asptext,factor);
-        partition.setWeakPartition(true);
-        partition.partition(9);
-//        System.out.println(asptext);
-        List<AugmentedSubset> split=partition.getSplit();
+//    @Test
+//    public void test() throws IOException {
+//        System.out.println(rules.size());
+//        MontyHallPartition partition=new MontyHallPartition(rules,asptext,factor);
+//        partition.setProblemN(3);
+//        partition.partition(6);
+////        System.out.println(asptext);
+//        List<AugmentedSubset> split=partition.getSplit();
 //        List<File> splits=partition.genSplitFiles();
-//        System.out.println(splits);
+////        System.out.println(splits);
+//
+//        System.out.println(split);
+//    }
 
-        System.out.println(split);
-    }
+//    @Test
+//    public void testBirdPartition() throws IOException {
+//        System.out.println(rules.size());
+//        BirdPartition partition=new BirdPartition(rules,asptext,factor);
+//        partition.setWeakPartition(true);
+//        partition.partition(9);
+////        System.out.println(asptext);
+//        List<AugmentedSubset> split=partition.getSplit();
+////        List<File> splits=partition.genSplitFiles();
+////        System.out.println(splits);
+//
+//        System.out.println(split);
+//    }
 }
