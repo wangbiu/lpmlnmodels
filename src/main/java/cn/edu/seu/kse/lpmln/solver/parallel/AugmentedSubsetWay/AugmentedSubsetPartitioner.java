@@ -18,11 +18,14 @@ public class AugmentedSubsetPartitioner {
     }
 
     public List<List<Rule>> partition(List<Rule> originSet){
+        List<List<Rule>> subsets;
         switch (policy){
             case SPLIT_RANDOM:
             default:
-                return randomPartition(originSet);
+                subsets = randomPartition(originSet);
         }
+        solver.setThreadNums(Math.min(solver.getThreadNums(),subsets.size()));
+        return subsets;
     }
 
     public List<List<Rule>> randomPartition(List<Rule> originSet){

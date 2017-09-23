@@ -217,15 +217,14 @@ public class LPMLNApp {
         switch (aspsolver){
             case SOLVER_AUG:
                 solver = new AugmentedSolver();
-                List<File> lpmlnFileList = ((AugmentedSolver)solver).getTranslatedFiles();
+                List<String> lpmlnFileList = ((AugmentedSolver)solver).getTranslatedFiles();
                 AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner((AugmentedSolver) solver);
                 List<List<Rule>> subsets = partitioner.partition(rules);
                 for (int i=0;i<subsets.size();i++) {
                     List<Rule> subset = subsets.get(i);
                     String asprules=translator.translate(subset);
                     String outFile = translationfile.substring(0,translationfile.lastIndexOf('.'))+"-"+i+".lp";
-                    File subsetFile = new File(outFile);
-                    lpmlnFileList.add(subsetFile);
+                    lpmlnFileList.add(outFile);
                     BufferedWriter bw=new BufferedWriter(new FileWriter(outFile));
                     bw.write(asprules);
                     bw.close();
