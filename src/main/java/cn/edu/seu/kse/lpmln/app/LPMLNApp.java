@@ -5,7 +5,7 @@ import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
-import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
@@ -211,32 +211,28 @@ public class LPMLNApp {
             translator=new ASPTranslatorV2(semantics);
         }
         switch (aspsolver){
-            case LPMLNApp.SOLVER_DEFAULT:
-                solver = new Clingo4();
-                break;
             case SOLVER_AUG:
                 solver = new AugmentedSolver();
                 break;
             case SOLVER_SPLIT:
                 solver = new AugmentedSolver();
                 break;
+            case LPMLNApp.SOLVER_DEFAULT:
             default:
                 solver = new Clingo4();
+                translator.setFactor(factor);
+                translator.setHerbrandUniverse(herbrandUniverse);
+                translator.setMetarule(sm.getMetarule());
+                String asprules=translator.translate(rules);
+
+                BufferedWriter bw=new BufferedWriter(new FileWriter(translationOutputFile));
+                bw.write(asprules);
+                bw.close();
                 break;
         }
 
 //        translator=new DLVTranslator(semantics);
 //        solver=new DLV();
-
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        translator.setMetarule(sm.getMetarule());
-        String asprules=translator.translate(rules);
-
-        BufferedWriter bw=new BufferedWriter(new FileWriter(translationOutputFile));
-        bw.write(asprules);
-        bw.close();
-
         Date end=new Date();
         System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
 
