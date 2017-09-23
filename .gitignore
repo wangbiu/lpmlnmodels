@@ -75,6 +75,7 @@ local.properties
 ### Intellij ###
 
 *.iml
+testFile.txt
 
 ## Directory-based project format:
 .idea/
@@ -90,6 +91,8 @@ local.properties
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+
+# testFIle
 
 
 
