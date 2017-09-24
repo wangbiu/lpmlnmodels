@@ -38,12 +38,18 @@ public class AugmentedSubsetPartitioner {
                 double softWeight=0;
                 double hardWeight=0;
                 //子集求解过程中乘上factor，这里也要乘
-                for (Integer positive : as.positive) {
-
+                for (Integer idx : as.positive) {
+                    subset.append("-"+originRule.get(idx).getRuleLabel());
                 }
 
-                for (Integer negative : as.negative){
-
+                for (Integer idx : as.negative){
+                    Rule toAdd = originRule.get(idx);
+                    subset.append(toAdd.getRuleLabel());
+                    if(toAdd.isSoft()){
+                        softWeight += toAdd.getWeight();
+                    }else{
+                        hardWeight += 1;
+                    }
                 }
 
                 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -51,12 +57,13 @@ public class AugmentedSubsetPartitioner {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
                 bw.write(subset.toString());
                 bw.close();
+
+                solver.getExtraWeights().add(new ExtraWeight(softWeight,hardWeight));
+                solver.getTranslatedFiles().add(outFile);
             }
         }catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
         solver.setThreadNums(Math.min(solver.getThreadNums(),subsets.size()));
         return;
