@@ -15,25 +15,41 @@ import java.util.concurrent.TimeUnit;
 public class AugmentedSolver extends Clingo4 {
     private int threadNums;
     private List<String> translatedFiles;
+    private List<AugmentedSubsetSolver> solvers;
     public AugmentedSolver(){
         setTranslatedFiles(new ArrayList<>());
         setThreadNums(Runtime.getRuntime().availableProcessors());
+        solvers = new ArrayList<>();
     }
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
         //不依赖于rulefile，从translatedFiles获取
-        List<WeightedAnswerSet> finalWas = new ArrayList<>();
+        List<WeightedAnswerSet> finalWas;
+        solve();
+        finalWas = collectWas();
+        return finalWas;
+    }
+
+    protected void solve(){
         try {
             ExecutorService executorService = Executors.newFixedThreadPool(threadNums);
             for (String translatedFile : translatedFiles) {
                 AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver();
+                solvers.add(subsetSolver);
+                subsetSolver.setRuleFile(translatedFile);
+                executorService.submit(subsetSolver);
             }
             executorService.shutdown();
             executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.HOURS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return finalWas;
+    }
+
+    protected List<WeightedAnswerSet> collectWas(){
+        //收集过滤回答集
+        List<WeightedAnswerSet> collectedWas = new ArrayList<>();
+        return collectedWas;
     }
 
     public List<String> getTranslatedFiles() {
