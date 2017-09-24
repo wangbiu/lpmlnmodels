@@ -79,7 +79,7 @@ public class LPMLNApp {
                     solve(translationoutfile,solver);
 
                     if(!iskeeptranslation){
-                        translationoutfile.delete();
+                        //translationoutfile.delete();
                     }
 
                 }else if(cmd.hasOption("translation-input-file")){
@@ -223,17 +223,10 @@ public class LPMLNApp {
             case SOLVER_AUG:
                 solver = new AugmentedSolver();
                 List<String> lpmlnFileList = ((AugmentedSolver)solver).getTranslatedFiles();
+                List extraweights = ((AugmentedSolver)solver).getExtraWeights();
                 AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner((AugmentedSolver) solver);
-                List<List<Rule>> subsets = partitioner.partition(rules);
-                for (int i=0;i<subsets.size();i++) {
-                    List<Rule> subset = subsets.get(i);
-                    String asprules=translator.translate(subset);
-                    String outFile = translationfile.substring(0,translationfile.lastIndexOf('.'))+"-"+i+".lp";
-                    lpmlnFileList.add(outFile);
-                    BufferedWriter bw=new BufferedWriter(new FileWriter(outFile));
-                    bw.write(asprules);
-                    bw.close();
-                }
+                String translatedText=translator.translate(rules);
+                partitioner.partition(rules, translatedText);
                 break;
             case SOLVER_SPLIT:
                 solver = new AugmentedSolver();

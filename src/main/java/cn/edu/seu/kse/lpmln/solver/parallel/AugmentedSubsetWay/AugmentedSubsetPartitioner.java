@@ -2,8 +2,11 @@ package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by 许鸿翔 on 2017/9/23.
@@ -17,19 +20,59 @@ public class AugmentedSubsetPartitioner {
         this.solver = solver;
     }
 
-    public List<List<Rule>> partition(List<Rule> originSet){
-        List<List<Rule>> subsets;
+    //输入：原规则，翻译后的规则文本
+    //输出：增强子集文件列表，子集对应的额外权重
+    public void partition(List<Rule> originRule, String translatedText){
+        List<String> translatedFiles = solver.getTranslatedFiles();
+        List<ExtraWeight> extraweight = solver.getExtraWeights();
+        List<AugmentedSubset> subsets;
         switch (policy){
             case SPLIT_RANDOM:
             default:
-                subsets = randomPartition(originSet);
+                subsets = randomPartition(originRule);
         }
+
+        try {
+            for (AugmentedSubset as : subsets) {
+                StringBuilder subset = new StringBuilder(translatedText);
+                double softWeight=0;
+                double hardWeight=0;
+                //子集求解过程中乘上factor，这里也要乘
+                for (Integer positive : as.positive) {
+
+                }
+
+                for (Integer negative : as.negative){
+
+                }
+
+                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+                String outFile = UUID.randomUUID().toString()+sdf.format(new Date())+"_"+translatedFiles.size()+".lp";
+                BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
+                bw.write(subset.toString());
+                bw.close();
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
         solver.setThreadNums(Math.min(solver.getThreadNums(),subsets.size()));
-        return subsets;
+        return;
     }
 
-    public List<List<Rule>> randomPartition(List<Rule> originSet){
-        List<List<Rule>> subsets = new ArrayList<>();
+    public List<AugmentedSubset> randomPartition(List<Rule> originSet){
+        List<AugmentedSubset> subsets = new ArrayList<>();
         return subsets;
+    }
+}
+
+class AugmentedSubset{
+    protected HashSet<Integer> positive;
+    protected HashSet<Integer> negative;
+    public AugmentedSubset(){
+        positive = new HashSet<>();
+        negative = new HashSet<>();
     }
 }
