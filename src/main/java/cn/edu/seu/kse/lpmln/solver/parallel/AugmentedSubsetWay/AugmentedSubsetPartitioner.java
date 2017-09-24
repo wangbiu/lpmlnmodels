@@ -63,8 +63,8 @@ public class AugmentedSubsetPartitioner {
                 bw.write(subset.toString());
                 bw.close();
 
-                solver.getExtraWeights().add(new ExtraWeight(softWeight,hardWeight));
-                solver.getTranslatedFiles().add(outFile);
+                extraweight.add(new ExtraWeight(softWeight,hardWeight));
+                translatedFiles.add(outFile);
             }
         }catch (IOException e) {
             e.printStackTrace();
