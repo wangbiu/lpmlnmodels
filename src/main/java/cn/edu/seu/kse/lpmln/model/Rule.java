@@ -1,5 +1,7 @@
 package cn.edu.seu.kse.lpmln.model;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -121,7 +123,16 @@ public class Rule {
 
     public String getRuleLabel() {
         if(ruleLabel == null){
-            ruleLabel = new StringBuilder().append("rb").append("(").append(getRuleLabelPara()).append(")").toString();
+            switch (LPMLNApp.translation_type){
+                case V2:
+                    ruleLabel = new StringBuilder().append("unsat(").append(getRuleLabelPara()).append(")").toString();
+                    break;
+                case V1:
+                default:
+                    ruleLabel = new StringBuilder().append("rb").append("(").append(getRuleLabelPara()).append(")").toString();
+                    break;
+            }
+
         }
         return ruleLabel;
     }
@@ -178,5 +189,9 @@ public class Rule {
 
     public void setHeadCondition(List<String> headCondition) {
         this.headCondition = headCondition;
+    }
+
+    public void setRuleLabel(String ruleLabel) {
+        this.ruleLabel = ruleLabel;
     }
 }

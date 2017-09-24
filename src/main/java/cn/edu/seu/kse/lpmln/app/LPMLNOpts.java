@@ -62,7 +62,7 @@ public class LPMLNOpts {
         transinfile.setOptionalArg(false);
 
         //启用并行
-        Option parallel=new Option("l", "parallel", true, "optional, enable parallel reasoning");
+        Option parallel=new Option("l", "parallel", false, "optional, enable parallel reasoning");
         parallel.setRequired(false);
 
         Options opts=new Options();

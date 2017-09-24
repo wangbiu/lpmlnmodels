@@ -5,6 +5,8 @@ import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSubsetPartitioner;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
@@ -30,11 +32,12 @@ public class LPMLNApp {
     private static  String semantics="strong";
     private static  String translationfile=null;
     private static  boolean iskeeptranslation=false;
-    private static  String aspsolver="clingo";
+    private static  SOLVER_TYPE aspsolver=SOLVER_TYPE.SOLVER_CLINGO;
     private static int factor=1;
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
+    public enum SOLVER_TYPE{SOLVER_CLINGO, SOLVER_DLV, SOLVER_AUG, SOLVER_SPLIT};
     public enum TRANSLATION_TYPE{V1,V2};
     public static TRANSLATION_TYPE translation_type = TRANSLATION_TYPE.V2;
 
@@ -74,17 +77,36 @@ public class LPMLNApp {
                     solve(translationoutfile,solver);
 
                     if(!iskeeptranslation){
-                        translationoutfile.delete();
+                        //translationoutfile.delete();
                     }
 
                 }else if(cmd.hasOption("translation-input-file")){
 
                     File translationfile=new File(cmd.getOptionValue("translation-input-file"));
 
-                    if(aspsolver.equals("clingo")){
+                    switch (aspsolver){
+                        case SOLVER_CLINGO:
+                            solver = new Clingo4();
+                            break;
+                        case SOLVER_DLV:
+                            solver = new DLV();
+                            break;
+                        case SOLVER_AUG:
+                            //solver = new AugmentedSolver();
+                            break;
+                        case SOLVER_SPLIT:
+                            //solver = new SplitSetSolver();
+                            break;
+                        default:
+                            solver = new Clingo4();
+                            break;
+                    }
+                    if(aspsolver==SOLVER_TYPE.SOLVER_CLINGO){
                         solver=new Clingo4();
-                    }else if(aspsolver.equals("dlv")){
+                    }else if(aspsolver==SOLVER_TYPE.SOLVER_DLV){
                         solver=new DLV();
+                    }else{
+
                     }
                     
                     solve(translationfile,solver);
@@ -171,6 +193,10 @@ public class LPMLNApp {
 //                throw new RuntimeException("unsupported ASP solver "+aspsolver);
 //            }
         }
+        if(cmd.hasOption("parallel")){
+            aspsolver = SOLVER_TYPE.SOLVER_AUG;
+            //选择并行推理方式
+        }
 
         if(cmd.hasOption("marginal-probability-reasoning")){
             isMarginal=true;
@@ -186,7 +212,7 @@ public class LPMLNApp {
 
     }
 
-    private static LPMLNBaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, String aspsolver) throws IOException {
+    private static LPMLNBaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, SOLVER_TYPE aspsolver) throws IOException {
         Date start =new Date();
         LPMLNBaseSolver solver=null;
         SyntaxModule sm=new SyntaxModule();
@@ -197,26 +223,41 @@ public class LPMLNApp {
 
         ASPTranslator translator=null;
 
-        if(LPMLNApp.translation_type==TRANSLATION_TYPE.V1){
-            translator=new ASPTranslator(semantics);
-            solver=new Clingo4();
-        }else if(LPMLNApp.translation_type==TRANSLATION_TYPE.V2){
-            translator=new ASPTranslatorV2(semantics);
-            solver=new Clingo4();
+        switch (translation_type){
+            case V1:
+                translator=new ASPTranslator(semantics);
+                break;
+            case V2:
+            default:
+                translator=new ASPTranslatorV2(semantics);
+                break;
+
+        }
+        translator.setFactor(factor);
+        translator.setHerbrandUniverse(herbrandUniverse);
+        translator.setMetarule(sm.getMetarule());
+        switch (aspsolver){
+            case SOLVER_AUG:
+                solver = new AugmentedSolver();
+                AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner((AugmentedSolver) solver);
+                String translatedText=translator.translate(rules);
+                partitioner.partition(rules, translatedText);
+                break;
+            case SOLVER_SPLIT:
+                solver = new AugmentedSolver();
+                break;
+            case SOLVER_CLINGO:
+            default:
+                solver = new Clingo4();
+                String asprules=translator.translate(rules);
+                BufferedWriter bw=new BufferedWriter(new FileWriter(translationOutputFile));
+                bw.write(asprules);
+                bw.close();
+                break;
         }
 
 //        translator=new DLVTranslator(semantics);
 //        solver=new DLV();
-
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        translator.setMetarule(sm.getMetarule());
-        String asprules=translator.translate(rules);
-
-        BufferedWriter bw=new BufferedWriter(new FileWriter(translationOutputFile));
-        bw.write(asprules);
-        bw.close();
-
         Date end=new Date();
         System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
 
