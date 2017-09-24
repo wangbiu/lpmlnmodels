@@ -15,11 +15,13 @@ import java.util.concurrent.TimeUnit;
 public class AugmentedSolver extends Clingo4 {
     private int threadNums;
     private List<String> translatedFiles;
+    private List<ExtraWeight> extraWeights;
     private List<AugmentedSubsetSolver> solvers;
     public AugmentedSolver(){
         setTranslatedFiles(new ArrayList<>());
         setThreadNums(Runtime.getRuntime().availableProcessors());
         solvers = new ArrayList<>();
+        setExtraWeights(new ArrayList<>());
     }
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
@@ -33,9 +35,13 @@ public class AugmentedSolver extends Clingo4 {
     protected void solve(){
         try {
             ExecutorService executorService = Executors.newFixedThreadPool(threadNums);
-            for (String translatedFile : translatedFiles) {
+            assert getExtraWeights().size()==translatedFiles.size();
+            for (int i = 0; i< getExtraWeights().size(); i++) {
+                String translatedFile = translatedFiles.get(i);
+                ExtraWeight extraWeight = getExtraWeights().get(i);
                 AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver();
                 solvers.add(subsetSolver);
+                subsetSolver.setExtraWeight(extraWeight);
                 subsetSolver.setRuleFile(translatedFile);
                 executorService.submit(subsetSolver);
             }
@@ -66,5 +72,22 @@ public class AugmentedSolver extends Clingo4 {
 
     public void setThreadNums(int threadNums) {
         this.threadNums = threadNums;
+    }
+
+    public List<ExtraWeight> getExtraWeights() {
+        return extraWeights;
+    }
+
+    public void setExtraWeights(List<ExtraWeight> extraWeights) {
+        this.extraWeights = extraWeights;
+    }
+}
+
+class ExtraWeight{
+    protected double softWeight;
+    protected double hardWeight;
+    public ExtraWeight(double softWeight,double hardWeight){
+        this.softWeight = softWeight;
+        this.hardWeight = hardWeight;
     }
 }
