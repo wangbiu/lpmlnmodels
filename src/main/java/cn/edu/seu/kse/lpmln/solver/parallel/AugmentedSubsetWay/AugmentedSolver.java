@@ -20,7 +20,7 @@ public class AugmentedSolver extends Clingo4 {
     private List<String> translatedFiles;
     private List<ExtraWeight> extraWeights;
     private List<AugmentedSubsetSolver> solvers;
-    private boolean deleteTranslatedFiles = false;
+    private boolean deleteTranslatedFiles = true;
     public AugmentedSolver(){
         setTranslatedFiles(new ArrayList<>());
         setThreadNums(Runtime.getRuntime().availableProcessors());
