@@ -239,8 +239,6 @@ public class LPMLNApp {
         switch (aspsolver){
             case SOLVER_AUG:
                 solver = new AugmentedSolver();
-                List<String> lpmlnFileList = ((AugmentedSolver)solver).getTranslatedFiles();
-                List extraweights = ((AugmentedSolver)solver).getExtraWeights();
                 AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner((AugmentedSolver) solver);
                 String translatedText=translator.translate(rules);
                 partitioner.partition(rules, translatedText);

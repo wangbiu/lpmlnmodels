@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSolver extends Clingo4 {
+    //通过增强子集 并行推理
+    //Wang B, Zhang Z. A Parallel LP^{MLN Solver: Primary Report[C]// Aspocp. 2017.
     private int threadNums;
     private List<String> translatedFiles;
     private List<ExtraWeight> extraWeights;
