@@ -127,6 +127,7 @@ public class Rule {
                 case V2:
                     ruleLabel = new StringBuilder().append("unsat(").append(getRuleLabelPara()).append(")").toString();
                     break;
+                case V1:
                 default:
                     ruleLabel = new StringBuilder().append("rb").append("(").append(getRuleLabelPara()).append(")").toString();
                     break;
