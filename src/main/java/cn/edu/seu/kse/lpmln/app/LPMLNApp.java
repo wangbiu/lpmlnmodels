@@ -206,10 +206,15 @@ public class LPMLNApp {
 
         ASPTranslator translator=null;
 
-        if(LPMLNApp.translation_type==TRANSLATION_TYPE.V1){
-            translator=new ASPTranslator(semantics);
-        }else if(LPMLNApp.translation_type==TRANSLATION_TYPE.V2){
-            translator=new ASPTranslatorV2(semantics);
+        switch (translation_type){
+            case V1:
+                translator=new ASPTranslator(semantics);
+                break;
+            case V2:
+            default:
+                translator=new ASPTranslatorV2(semantics);
+                break;
+
         }
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
