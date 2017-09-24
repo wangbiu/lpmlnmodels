@@ -32,14 +32,12 @@ public class LPMLNApp {
     private static  String semantics="strong";
     private static  String translationfile=null;
     private static  boolean iskeeptranslation=false;
-    private static  String aspsolver=LPMLNApp.SOLVER_DEFAULT;
+    private static  SOLVER_TYPE aspsolver=SOLVER_TYPE.SOLVER_CLINGO;
     private static int factor=1;
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
-    private static final String SOLVER_DEFAULT = "clingo";
-    private static final String SOLVER_AUG = "clingo-augmentedSubsetWay";
-    private static final String SOLVER_SPLIT = "clingo-augmentedSplitSetWay";
+    public enum SOLVER_TYPE{SOLVER_CLINGO, SOLVER_DLV, SOLVER_AUG, SOLVER_SPLIT};
     public enum TRANSLATION_TYPE{V1,V2};
     public static TRANSLATION_TYPE translation_type = TRANSLATION_TYPE.V2;
 
@@ -86,10 +84,29 @@ public class LPMLNApp {
 
                     File translationfile=new File(cmd.getOptionValue("translation-input-file"));
 
-                    if(aspsolver.equals(LPMLNApp.SOLVER_DEFAULT)){
+                    switch (aspsolver){
+                        case SOLVER_CLINGO:
+                            solver = new Clingo4();
+                            break;
+                        case SOLVER_DLV:
+                            solver = new DLV();
+                            break;
+                        case SOLVER_AUG:
+                            //solver = new AugmentedSolver();
+                            break;
+                        case SOLVER_SPLIT:
+                            //solver = new SplitSetSolver();
+                            break;
+                        default:
+                            solver = new Clingo4();
+                            break;
+                    }
+                    if(aspsolver==SOLVER_TYPE.SOLVER_CLINGO){
                         solver=new Clingo4();
-                    }else if(aspsolver.equals("dlv")){
+                    }else if(aspsolver==SOLVER_TYPE.SOLVER_DLV){
                         solver=new DLV();
+                    }else{
+
                     }
                     
                     solve(translationfile,solver);
@@ -177,7 +194,7 @@ public class LPMLNApp {
 //            }
         }
         if(cmd.hasOption("parallel")){
-            aspsolver = LPMLNApp.SOLVER_AUG;
+            aspsolver = SOLVER_TYPE.SOLVER_AUG;
             //选择并行推理方式
         }
 
@@ -195,7 +212,7 @@ public class LPMLNApp {
 
     }
 
-    private static LPMLNBaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, String aspsolver) throws IOException {
+    private static LPMLNBaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, SOLVER_TYPE aspsolver) throws IOException {
         Date start =new Date();
         LPMLNBaseSolver solver=null;
         SyntaxModule sm=new SyntaxModule();
@@ -231,7 +248,7 @@ public class LPMLNApp {
             case SOLVER_SPLIT:
                 solver = new AugmentedSolver();
                 break;
-            case LPMLNApp.SOLVER_DEFAULT:
+            case SOLVER_CLINGO:
             default:
                 solver = new Clingo4();
                 String asprules=translator.translate(rules);
