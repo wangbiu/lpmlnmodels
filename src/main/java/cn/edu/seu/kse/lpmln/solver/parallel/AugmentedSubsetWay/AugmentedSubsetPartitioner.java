@@ -45,12 +45,14 @@ public class AugmentedSubsetPartitioner {
                 int hardWeight=0;
                 //子集求解过程中乘上factor，这里也要乘
                 for (Integer idx : as.positive) {
-                    subset.append("-"+originRule.get(idx).getRuleLabel());
+                    subset.append("-"+originRule.get(idx).getRuleLabel())
+                            .append(".").append(System.lineSeparator());
                 }
 
                 for (Integer idx : as.negative){
                     Rule toAdd = originRule.get(idx);
-                    subset.append(toAdd.getRuleLabel());
+                    subset.append(toAdd.getRuleLabel())
+                            .append(".").append(System.lineSeparator());;
                     if(toAdd.isSoft()){
                         softWeight += toAdd.getWeight();
                     }else{

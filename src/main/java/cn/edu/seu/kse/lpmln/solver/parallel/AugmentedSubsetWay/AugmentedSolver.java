@@ -32,7 +32,8 @@ public class AugmentedSolver extends Clingo4 {
         //不依赖于rulefile，从translatedFiles获取
         List<WeightedAnswerSet> finalWas;
         solve();
-        finalWas = collectWas();
+        finalWas = calculateProbability(filtWas(collectWas()));
+        weightedAs = finalWas;
         return finalWas;
     }
 
@@ -68,8 +69,8 @@ public class AugmentedSolver extends Clingo4 {
             ExtraWeight ew = ass.getExtraWeight();
             for (WeightedAnswerSet was : ass.getWeightedAnswerSets()) {
                 List<Integer> weight = was.getWeights();
-                weight.set(0,weight.get(0)+ew.softWeight);
-                weight.set(1,weight.get(1)+ew.hardWeight);
+                //weight.set(0,weight.get(0)+ew.softWeight);
+                //weight.set(1,weight.get(1)+ew.hardWeight);
                 collectedWas.add(was);
             }
         }
