@@ -12,8 +12,8 @@ import java.util.*;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected String policy = SPLIT_RANDOM;
-    public static final String SPLIT_RANDOM="RANDOM";
+    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_RANDOM;
+    public enum TRANSLATION_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, TEST};
     protected AugmentedSolver solver;
 
     public AugmentedSubsetPartitioner(AugmentedSolver solver){
@@ -27,6 +27,9 @@ public class AugmentedSubsetPartitioner {
         List<ExtraWeight> extraweight = solver.getExtraWeights();
         List<AugmentedSubset> subsets;
         switch (policy){
+            case SPLIT_SIMPLE:
+                subsets = simplePartition(originRule);
+                break;
             case SPLIT_RANDOM:
             default:
                 subsets = randomPartition(originRule);
@@ -70,6 +73,11 @@ public class AugmentedSubsetPartitioner {
     }
 
     public List<AugmentedSubset> randomPartition(List<Rule> originSet){
+        List<AugmentedSubset> subsets = new ArrayList<>();
+        return subsets;
+    }
+
+    public List<AugmentedSubset> simplePartition(List<Rule> originSet){
         List<AugmentedSubset> subsets = new ArrayList<>();
         return subsets;
     }
