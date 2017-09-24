@@ -86,9 +86,9 @@ public class AugmentedSolver extends Clingo4 {
 }
 
 class ExtraWeight{
-    protected double softWeight;
-    protected double hardWeight;
-    public ExtraWeight(double softWeight,double hardWeight){
+    protected int softWeight;
+    protected int hardWeight;
+    public ExtraWeight(int softWeight,int hardWeight){
         this.softWeight = softWeight;
         this.hardWeight = hardWeight;
     }

@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
+import cn.edu.seu.kse.lpmln.util.syntax.lpmln.LPMLNTranslationVisitor;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -40,8 +41,8 @@ public class AugmentedSubsetPartitioner {
         try {
             for (AugmentedSubset as : subsets) {
                 StringBuilder subset = new StringBuilder(translatedText);
-                double softWeight=0;
-                double hardWeight=0;
+                int softWeight=0;
+                int hardWeight=0;
                 //子集求解过程中乘上factor，这里也要乘
                 for (Integer idx : as.positive) {
                     subset.append("-"+originRule.get(idx).getRuleLabel());
@@ -63,7 +64,7 @@ public class AugmentedSubsetPartitioner {
                 bw.write(subset.toString());
                 bw.close();
 
-                extraweight.add(new ExtraWeight(softWeight,hardWeight));
+                extraweight.add(new ExtraWeight(softWeight* LPMLNTranslationVisitor.getFactor(),hardWeight));
                 translatedFiles.add(outFile);
             }
         }catch (IOException e) {
