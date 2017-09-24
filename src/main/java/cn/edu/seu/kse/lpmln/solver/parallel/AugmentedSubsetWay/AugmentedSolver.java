@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.Clingo4;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -19,6 +20,7 @@ public class AugmentedSolver extends Clingo4 {
     private List<String> translatedFiles;
     private List<ExtraWeight> extraWeights;
     private List<AugmentedSubsetSolver> solvers;
+    private boolean deleteTranslatedFiles = false;
     public AugmentedSolver(){
         setTranslatedFiles(new ArrayList<>());
         setThreadNums(Runtime.getRuntime().availableProcessors());
@@ -52,11 +54,25 @@ public class AugmentedSolver extends Clingo4 {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if(deleteTranslatedFiles){
+            translatedFiles.forEach(file->{
+                new File(file).delete();
+            });
+        }
     }
 
     protected List<WeightedAnswerSet> collectWas(){
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
+        for (AugmentedSubsetSolver ass : solvers) {
+            ExtraWeight ew = ass.getExtraWeight();
+            for (WeightedAnswerSet was : ass.getWeightedAnswerSets()) {
+                List<Integer> weight = was.getWeights();
+                weight.set(0,weight.get(0)+ew.softWeight);
+                weight.set(1,weight.get(1)+ew.hardWeight);
+                collectedWas.add(was);
+            }
+        }
         return collectedWas;
     }
 
