@@ -12,7 +12,7 @@ import java.util.*;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_RANDOM;
+    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_SIMPLE;
     public enum TRANSLATION_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, TEST};
     protected AugmentedSolver solver;
 
@@ -31,8 +31,10 @@ public class AugmentedSubsetPartitioner {
                 subsets = simplePartition(originRule);
                 break;
             case SPLIT_RANDOM:
-            default:
                 subsets = randomPartition(originRule);
+                break;
+            default:
+                subsets = simplePartition(originRule);
         }
 
         try {
@@ -79,6 +81,21 @@ public class AugmentedSubsetPartitioner {
 
     public List<AugmentedSubset> simplePartition(List<Rule> originSet){
         List<AugmentedSubset> subsets = new ArrayList<>();
+        int corepow2 = (int)(Math.log(solver.getThreadNums())/Math.log(2));
+        corepow2 = Math.min(corepow2,originSet.size());
+        for(int i=0;i<Math.pow(2,corepow2);i++){
+            AugmentedSubset as = new AugmentedSubset();
+            int toConstruct = i;
+            for(int j=0;j<corepow2;j++){
+                if(toConstruct%2==0){
+                    as.positive.add(j);
+                }else{
+                    as.negative.add(j);
+                }
+                toConstruct>>=1;
+            }
+            subsets.add(as);
+        }
         return subsets;
     }
 }
