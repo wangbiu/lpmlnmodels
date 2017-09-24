@@ -78,5 +78,6 @@ public class ASPTranslatorV2 extends  ASPTranslator{
     protected void setSatLabel(Rule rule){
         StringBuilder sb = new StringBuilder().append("unsat(").append(rule.getRuleLabelPara()).append(")");
         satLabel = sb.toString();
+        rule.setRuleLabel(satLabel);
     }
 }
