@@ -14,19 +14,23 @@ public class ASPTranslatorV2 extends  ASPTranslator{
     }
 
     @Override
-    public String translateHardRule(Rule rule) {
+    public String translateRule(Rule rule) {
         setSatLabel(rule);
-        if(isWeakTranslate){
-            return rule.getOriginalrule();
-        }else{
-            return super.translateHardRule(rule);
-        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(translateGenerationPart(rule));
+        sb.append(translateTestPart(rule));
+        sb.append(translateCountingPart(rule,true));
+        return sb.toString();
     }
 
     @Override
-    public String translateSoftRule(Rule rule){
+    public String translateRuleUnsat(Rule rule){
         setSatLabel(rule);
-        return super.translateSoftRule(rule);
+        StringBuilder sb = new StringBuilder();
+        sb.append(translateGenerationPartUnsat(rule));
+        sb.append(translateTestPart(rule));
+        sb.append(translateCountingPart(rule,true));
+        return sb.toString();
     }
 
     @Override
@@ -34,6 +38,16 @@ public class ASPTranslatorV2 extends  ASPTranslator{
         StringBuilder sb = new StringBuilder();
         sb.append(rule.getText())
                 .append("not ").append(satLabel).append(", ");
+        if(sb.charAt(sb.length()-2)==';'||sb.charAt(sb.length()-2)==','){
+            sb.delete(sb.length()-2,sb.length());
+        }
+        sb.append(".").append(System.lineSeparator());
+        return sb.toString();
+    }
+
+    protected String translateGenerationPartUnsat(Rule rule){
+        StringBuilder sb = new StringBuilder();
+        sb.append(":- ").append("not ").append(satLabel).append(", ");
         if(sb.charAt(sb.length()-2)==';'||sb.charAt(sb.length()-2)==','){
             sb.delete(sb.length()-2,sb.length());
         }

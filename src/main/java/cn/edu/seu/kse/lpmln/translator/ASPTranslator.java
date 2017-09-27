@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by 王彬 on 2016/8/30.
  */
+//废弃的翻译方式，可以重构
 @Deprecated
 public class ASPTranslator extends BaseTranslator {
 
@@ -62,19 +63,9 @@ public class ASPTranslator extends BaseTranslator {
     }
 
     @Override
-    public String translateSoftRule(Rule rule) {
+    public String translateRule(Rule rule) {
         StringBuilder sb=basicTranslate(rule);
         sb.append(translateCountingPart(rule,true));
-        return sb.toString();
-    }
-
-    @Override
-    public String translateHardRule(Rule rule) {
-        if(isWeakTranslate){
-            return rule.getOriginalrule();
-        }
-        StringBuilder sb=basicTranslate(rule);
-        sb.append(translateCountingPart(rule,false));
         return sb.toString();
     }
 
