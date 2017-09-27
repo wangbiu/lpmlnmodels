@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by 王彬 on 2016/8/30.
  */
+@Deprecated
 public class ASPTranslator extends BaseTranslator {
 
     public ASPTranslator(){};
