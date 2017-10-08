@@ -24,6 +24,7 @@ public class BaseTranslator {
     protected List<String> unknownRules;
     protected List<String> satRules;
     protected List<String> unsatRules;
+    protected String staticPart = "";
 
     public BaseTranslator() {
         unknownRules = new ArrayList<>();
@@ -56,6 +57,16 @@ public class BaseTranslator {
 
         sb.append(trickPart()).append(System.lineSeparator());
         sb.append(metarule);
+        staticPart = sb.toString();
+        return getText();
+    }
+
+    public String getText(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(staticPart);
+        unknownRules.forEach(rule->{
+            sb.append(rule).append(System.lineSeparator());
+        });
         return sb.toString();
     }
 

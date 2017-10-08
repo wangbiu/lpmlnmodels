@@ -78,7 +78,7 @@ public class ASPTranslatorV2 extends  ASPTranslator{
     protected String translateCountingPart(Rule rule, boolean isSoft){
         StringBuilder sb = new StringBuilder();
         sb.append(":~").append(satLabel).append(".")
-                .append(" [").append(isSoft?((long)(rule.getWeight()*factor)+"@1, "):"1@2, ")
+                .append(" [").append(rule.isSoft()?((long)(rule.getWeight()*factor)+"@1, "):"1@2, ")
                 .append(rule.getId()).append(rule.getVars().size()>0?", ":"").append(String.join(",",rule.getVars())).append("]")
                 .append(System.lineSeparator());
         return sb.toString();
