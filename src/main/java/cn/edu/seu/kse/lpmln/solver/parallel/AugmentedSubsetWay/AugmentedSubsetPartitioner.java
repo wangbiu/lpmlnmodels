@@ -2,7 +2,6 @@ package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.translator.BaseTranslator;
-import cn.edu.seu.kse.lpmln.util.syntax.lpmln.LPMLNTranslationVisitor;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -26,7 +25,6 @@ public class AugmentedSubsetPartitioner {
     //输出：增强子集文件列表，子集对应的额外权重
     public void partition(List<Rule> originRule, BaseTranslator translator){
         List<String> translatedFiles = solver.getTranslatedFiles();
-        List<ExtraWeight> extraweight = solver.getExtraWeights();
         List<AugmentedSubset> subsets;
         switch (policy){
             case SPLIT_SIMPLE:
@@ -43,8 +41,6 @@ public class AugmentedSubsetPartitioner {
             for (AugmentedSubset as : subsets) {
                 boolean[] added = new boolean[translator.getUnknownRules().size()];
                 StringBuilder subset = new StringBuilder(translator.getStaticPart()+System.lineSeparator());
-                int softWeight=0;
-                int hardWeight=0;
                 //子集求解过程中乘上factor，这里也要乘
                 for (Integer idx : as.positive) {
                     added[idx] = true;
@@ -54,14 +50,8 @@ public class AugmentedSubsetPartitioner {
 
                 for (Integer idx : as.negative){
                     added[idx] = true;
-                    Rule toAdd = originRule.get(idx);
                     subset.append(translator.getUnsatRules().get(idx))
                             .append(System.lineSeparator());;
-                    if(toAdd.isSoft()){
-                        softWeight += toAdd.getWeight();
-                    }else{
-                        hardWeight += 1;
-                    }
                 }
 
                 for(int i=0;i<added.length;i++){
@@ -77,7 +67,6 @@ public class AugmentedSubsetPartitioner {
                 bw.write(subset.toString());
                 bw.close();
 
-                extraweight.add(new ExtraWeight(softWeight* LPMLNTranslationVisitor.getFactor(),hardWeight));
                 translatedFiles.add(outFile);
             }
         }catch (IOException e) {

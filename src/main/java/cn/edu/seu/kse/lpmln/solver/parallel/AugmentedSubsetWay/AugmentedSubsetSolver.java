@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class AugmentedSubsetSolver extends Clingo4 implements Runnable {
     protected List<WeightedAnswerSet> weightedAnswerSets;
-    private ExtraWeight extraWeight;
     protected String ruleFile = null;
     @Override
     public void run() {
@@ -31,13 +30,5 @@ public class AugmentedSubsetSolver extends Clingo4 implements Runnable {
 
     public void setRuleFile(String ruleFile) {
         this.ruleFile = ruleFile;
-    }
-
-    public ExtraWeight getExtraWeight() {
-        return extraWeight;
-    }
-
-    public void setExtraWeight(ExtraWeight extraWeight) {
-        this.extraWeight = extraWeight;
     }
 }
