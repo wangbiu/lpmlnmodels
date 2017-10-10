@@ -30,18 +30,18 @@ public class AugmentedSubsetPartitioner {
         List<AugmentedSubset> subsets;
         switch (policy){
             case SPLIT_SIMPLE:
-                subsets = simplePartition(originRule);
+                subsets = simplePartition(translator);
                 break;
             case SPLIT_RANDOM:
-                subsets = randomPartition(originRule);
+                subsets = randomPartition(translator);
                 break;
             default:
-                subsets = simplePartition(originRule);
+                subsets = simplePartition(translator);
         }
 
         try {
             for (AugmentedSubset as : subsets) {
-                boolean[] added = new boolean[originRule.size()];
+                boolean[] added = new boolean[translator.getUnknownRules().size()];
                 StringBuilder subset = new StringBuilder(translator.getStaticPart()+System.lineSeparator());
                 int softWeight=0;
                 int hardWeight=0;
@@ -88,15 +88,15 @@ public class AugmentedSubsetPartitioner {
         return;
     }
 
-    public List<AugmentedSubset> randomPartition(List<Rule> originSet){
+    public List<AugmentedSubset> randomPartition(BaseTranslator translator){
         List<AugmentedSubset> subsets = new ArrayList<>();
         return subsets;
     }
 
-    public List<AugmentedSubset> simplePartition(List<Rule> originSet){
+    public List<AugmentedSubset> simplePartition(BaseTranslator translator){
         List<AugmentedSubset> subsets = new ArrayList<>();
         int corepow2 = (int)(Math.log(solver.getThreadNums())/Math.log(2));
-        corepow2 = Math.min(corepow2,originSet.size());
+        corepow2 = Math.min(corepow2,translator.getUnknownRules().size());
         for(int i=0;i<Math.pow(2,corepow2);i++){
             AugmentedSubset as = new AugmentedSubset();
             int toConstruct = i;

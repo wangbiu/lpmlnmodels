@@ -45,7 +45,7 @@ public class BaseTranslator {
         sb.append(translateDeclarationPart(herbrandUniverse));
         for(Rule r:rules){
             if(isWeakTranslate&&!r.isSoft()){
-                sb.append(r.getText()).append(System.lineSeparator());
+                sb.append(r.getOriginalrule()).append(System.lineSeparator());
             }else{
                 rulestr = translateRule(r);
                 unsatRulestr = translateRuleUnsat(r);
