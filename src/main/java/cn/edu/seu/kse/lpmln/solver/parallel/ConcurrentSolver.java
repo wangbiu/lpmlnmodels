@@ -1,4 +1,4 @@
-package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
+package cn.edu.seu.kse.lpmln.solver.parallel;
 
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.Clingo4;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by 许鸿翔 on 2017/9/23.
  */
-public class AugmentedSubsetSolver extends Clingo4 implements Runnable {
+public class ConcurrentSolver extends Clingo4 implements Runnable {
     protected List<WeightedAnswerSet> weightedAnswerSets;
     protected String ruleFile = null;
     @Override

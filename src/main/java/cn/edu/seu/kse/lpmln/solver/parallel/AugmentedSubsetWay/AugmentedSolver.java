@@ -2,6 +2,7 @@ package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
+import cn.edu.seu.kse.lpmln.solver.parallel.ConcurrentSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.BaseParallelSolver;
 import cn.edu.seu.kse.lpmln.translator.BaseTranslator;
 
@@ -20,8 +21,8 @@ public class AugmentedSolver extends BaseParallelSolver {
     //Wang B, Zhang Z. A Parallel LP^{MLN Solver: Primary Report[C]// Aspocp. 2017.
     private int threadNums;
     private List<String> translatedFiles;
-    private List<AugmentedSubsetSolver> solvers;
-    private boolean deleteTranslatedFiles = false;
+    private List<ConcurrentSolver> solvers;
+    private boolean deleteTranslatedFiles = true;
     public AugmentedSolver(){
 
     }
@@ -59,7 +60,7 @@ public class AugmentedSolver extends BaseParallelSolver {
             ExecutorService executorService = Executors.newFixedThreadPool(threadNums);
             for (int i = 0; i< translatedFiles.size(); i++) {
                 String translatedFile = translatedFiles.get(i);
-                AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver();
+                ConcurrentSolver subsetSolver = new ConcurrentSolver();
                 solvers.add(subsetSolver);
                 subsetSolver.setRuleFile(translatedFile);
                 executorService.submit(subsetSolver);
@@ -79,7 +80,7 @@ public class AugmentedSolver extends BaseParallelSolver {
     protected List<WeightedAnswerSet> collectWas(){
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
-        for (AugmentedSubsetSolver ass : solvers) {
+        for (ConcurrentSolver ass : solvers) {
             for (WeightedAnswerSet was : ass.getWeightedAnswerSets()) {
                 collectedWas.add(was);
             }
@@ -101,14 +102,5 @@ public class AugmentedSolver extends BaseParallelSolver {
 
     public void setThreadNums(int threadNums) {
         this.threadNums = threadNums;
-    }
-}
-
-class ExtraWeight{
-    protected int softWeight;
-    protected int hardWeight;
-    public ExtraWeight(int softWeight,int hardWeight){
-        this.softWeight = softWeight;
-        this.hardWeight = hardWeight;
     }
 }
