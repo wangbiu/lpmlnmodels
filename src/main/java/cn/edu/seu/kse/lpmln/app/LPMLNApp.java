@@ -6,7 +6,6 @@ import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
-import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSubsetPartitioner;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
@@ -238,10 +237,7 @@ public class LPMLNApp {
         translator.setMetarule(sm.getMetarule());
         switch (aspsolver){
             case SOLVER_AUG:
-                solver = new AugmentedSolver();
-                AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner((AugmentedSolver) solver);
-                translator.translate(rules);
-                partitioner.partition(rules, translator);
+                solver = new AugmentedSolver(translator,rules);
                 break;
             case SOLVER_SPLIT:
                 solver = new AugmentedSolver();
