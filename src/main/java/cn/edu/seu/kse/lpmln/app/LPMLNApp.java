@@ -216,7 +216,7 @@ public class LPMLNApp {
         Date start =new Date();
         LPMLNBaseSolver solver=null;
         SyntaxModule sm=new SyntaxModule();
-        List<Rule> rules=rules= sm.parseLPMLN(lpmlnRuleFile);
+        List<Rule> rules = sm.parseLPMLN(lpmlnRuleFile);
         factor=sm.getFactor();
         HashSet<String> herbrandUniverse=sm.getHerbrandUniverse();
 //        System.out.println("factor "+factor);
@@ -240,8 +240,8 @@ public class LPMLNApp {
             case SOLVER_AUG:
                 solver = new AugmentedSolver();
                 AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner((AugmentedSolver) solver);
-                String translatedText=translator.translate(rules);
-                partitioner.partition(rules, translatedText);
+                translator.translate(rules);
+                partitioner.partition(rules, translator);
                 break;
             case SOLVER_SPLIT:
                 solver = new AugmentedSolver();

@@ -21,21 +21,21 @@ public class BaseTranslator {
     protected String path="";
     protected String metarule=null;
     protected boolean isWeakTranslate = false;
-    protected List<String> unknownRules;
-    protected List<String> satRules;
-    protected List<String> unsatRules;
-    protected String staticPart = "";
+    private List<String> unknownRules;
+    private List<String> satRules;
+    private List<String> unsatRules;
+    private String staticPart = "";
 
     public BaseTranslator() {
-        unknownRules = new ArrayList<>();
-        satRules = new ArrayList<>();
-        unsatRules = new ArrayList<>();
+        setUnknownRules(new ArrayList<>());
+        setSatRules(new ArrayList<>());
+        setUnsatRules(new ArrayList<>());
     };
     public BaseTranslator(String semantics){
         isWeakTranslate = semantics.equals("weak");
-        unknownRules = new ArrayList<>();
-        satRules = new ArrayList<>();
-        unsatRules = new ArrayList<>();
+        setUnknownRules(new ArrayList<>());
+        setSatRules(new ArrayList<>());
+        setUnsatRules(new ArrayList<>());
     }
 
     public String translate(List<Rule> rules){
@@ -49,22 +49,22 @@ public class BaseTranslator {
             }else{
                 rulestr = translateRule(r);
                 unsatRulestr = translateRuleUnsat(r);
-                satRules.add(r.getText());
-                unknownRules.add(rulestr);
-                unsatRules.add(unsatRulestr);
+                getSatRules().add(r.getOriginalrule()+System.lineSeparator());
+                getUnknownRules().add(rulestr);
+                getUnsatRules().add(unsatRulestr);
             }
         }
 
         sb.append(trickPart()).append(System.lineSeparator());
         sb.append(metarule);
-        staticPart = sb.toString();
+        setStaticPart(sb.toString());
         return getText();
     }
 
     public String getText(){
         StringBuilder sb = new StringBuilder();
-        sb.append(staticPart);
-        unknownRules.forEach(rule->{
+        sb.append(getStaticPart());
+        getUnknownRules().forEach(rule->{
             sb.append(rule).append(System.lineSeparator());
         });
         return sb.toString();
@@ -101,5 +101,37 @@ public class BaseTranslator {
         StringBuilder sb=new StringBuilder();
 
         return sb.toString();
+    }
+
+    public String getStaticPart() {
+        return staticPart;
+    }
+
+    public void setStaticPart(String staticPart) {
+        this.staticPart = staticPart;
+    }
+
+    public List<String> getUnknownRules() {
+        return unknownRules;
+    }
+
+    public void setUnknownRules(List<String> unknownRules) {
+        this.unknownRules = unknownRules;
+    }
+
+    public List<String> getSatRules() {
+        return satRules;
+    }
+
+    public void setSatRules(List<String> satRules) {
+        this.satRules = satRules;
+    }
+
+    public List<String> getUnsatRules() {
+        return unsatRules;
+    }
+
+    public void setUnsatRules(List<String> unsatRules) {
+        this.unsatRules = unsatRules;
     }
 }
