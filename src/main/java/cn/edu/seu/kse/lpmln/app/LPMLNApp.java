@@ -193,6 +193,8 @@ public class LPMLNApp {
 //            }
         }
         if(cmd.hasOption("parallel")){
+            //cmd.getOptionValue();
+            //int num = Integer.valueOf(cmd.getOptionValue("parallel"));
             aspsolver = SOLVER_TYPE.SOLVER_AUG;
             //选择并行推理方式
         }
