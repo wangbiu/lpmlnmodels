@@ -55,21 +55,15 @@ public class LPMLNOpts {
         semantics.setOptionalArg(false);
 
         //使用转换的文件直接推理
-        Option transinfile=new Option("I", "translation-input-file", true, "optional, use a translated rulefile to reason");
+        Option transinfile=new Option("I", "translation-input-file", true, "optinal, use a translated rulefile to reason");
         transinfile.setRequired(false);
         transinfile.setArgName("translation-input-file");
         transinfile.setValueSeparator(' ');
         transinfile.setOptionalArg(false);
 
         //启用并行
-        Option parallel=new Option("l", "parallel", true, "optional, enable parallel reasoning");
+        Option parallel=new Option("l", "parallel", false, "optional, enable parallel reasoning");
         parallel.setRequired(false);
-        parallel.setArgName("parallel");
-        parallel.setValueSeparator(' ');
-        parallel.setOptionalArg(true);
-
-        Option parallelApproach=new Option("la", "parallel-approach", false, "optional, parallel approach selection");
-        parallelApproach.setRequired(false);
 
         Options opts=new Options();
         opts.addOption(help);
@@ -82,7 +76,6 @@ public class LPMLNOpts {
         opts.addOption(transoutfile);
         opts.addOption(transinfile);
         opts.addOption(parallel);
-        opts.addOption(parallelApproach);
 
         return opts;
     }
