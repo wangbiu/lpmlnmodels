@@ -6,7 +6,6 @@ import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
-import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSubsetPartitioner;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
@@ -216,7 +215,7 @@ public class LPMLNApp {
         Date start =new Date();
         LPMLNBaseSolver solver=null;
         SyntaxModule sm=new SyntaxModule();
-        List<Rule> rules=rules= sm.parseLPMLN(lpmlnRuleFile);
+        List<Rule> rules = sm.parseLPMLN(lpmlnRuleFile);
         factor=sm.getFactor();
         HashSet<String> herbrandUniverse=sm.getHerbrandUniverse();
 //        System.out.println("factor "+factor);
@@ -238,10 +237,7 @@ public class LPMLNApp {
         translator.setMetarule(sm.getMetarule());
         switch (aspsolver){
             case SOLVER_AUG:
-                solver = new AugmentedSolver();
-                AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner((AugmentedSolver) solver);
-                String translatedText=translator.translate(rules);
-                partitioner.partition(rules, translatedText);
+                solver = new AugmentedSolver(translator,rules);
                 break;
             case SOLVER_SPLIT:
                 solver = new AugmentedSolver();

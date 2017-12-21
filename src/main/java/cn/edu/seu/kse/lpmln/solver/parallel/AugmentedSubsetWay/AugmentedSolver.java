@@ -1,7 +1,10 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 
+import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.lpmln.solver.Clingo4;
+import cn.edu.seu.kse.lpmln.solver.parallel.ConcurrentSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.BaseParallelSolver;
+import cn.edu.seu.kse.lpmln.translator.BaseTranslator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,20 +16,35 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by 许鸿翔 on 2017/9/23.
  */
-public class AugmentedSolver extends Clingo4 {
+public class AugmentedSolver extends BaseParallelSolver {
     //通过增强子集 并行推理
     //Wang B, Zhang Z. A Parallel LP^{MLN Solver: Primary Report[C]// Aspocp. 2017.
     private int threadNums;
     private List<String> translatedFiles;
-    private List<ExtraWeight> extraWeights;
-    private List<AugmentedSubsetSolver> solvers;
-    private boolean deleteTranslatedFiles = false;
+    private List<ConcurrentSolver> solvers;
+    private boolean deleteTranslatedFiles = true;
     public AugmentedSolver(){
+
+    }
+
+    public AugmentedSolver(BaseTranslator translator, List<Rule> rules){
+        super(translator,rules);
+    }
+
+    public void init(){
         setTranslatedFiles(new ArrayList<>());
         setThreadNums(Runtime.getRuntime().availableProcessors());
         solvers = new ArrayList<>();
-        setExtraWeights(new ArrayList<>());
     }
+
+    @Override
+    public void prepare(){
+        super.prepare();
+        translator.translate(rules);
+        AugmentedSubsetPartitioner partitioner = new AugmentedSubsetPartitioner(this);
+        partitioner.partition(rules,translator);
+    }
+
     @Override
     public List<WeightedAnswerSet> call(String rulefile) {
         //不依赖于rulefile，从translatedFiles获取
@@ -40,13 +58,10 @@ public class AugmentedSolver extends Clingo4 {
     protected void solve(){
         try {
             ExecutorService executorService = Executors.newFixedThreadPool(threadNums);
-            assert getExtraWeights().size()==translatedFiles.size();
-            for (int i = 0; i< getExtraWeights().size(); i++) {
+            for (int i = 0; i< translatedFiles.size(); i++) {
                 String translatedFile = translatedFiles.get(i);
-                ExtraWeight extraWeight = getExtraWeights().get(i);
-                AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver();
+                ConcurrentSolver subsetSolver = new ConcurrentSolver();
                 solvers.add(subsetSolver);
-                subsetSolver.setExtraWeight(extraWeight);
                 subsetSolver.setRuleFile(translatedFile);
                 executorService.submit(subsetSolver);
             }
@@ -65,12 +80,8 @@ public class AugmentedSolver extends Clingo4 {
     protected List<WeightedAnswerSet> collectWas(){
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
-        for (AugmentedSubsetSolver ass : solvers) {
-            ExtraWeight ew = ass.getExtraWeight();
+        for (ConcurrentSolver ass : solvers) {
             for (WeightedAnswerSet was : ass.getWeightedAnswerSets()) {
-                List<Integer> weight = was.getWeights();
-                //weight.set(0,weight.get(0)+ew.softWeight);
-                //weight.set(1,weight.get(1)+ew.hardWeight);
                 collectedWas.add(was);
             }
         }
@@ -91,22 +102,5 @@ public class AugmentedSolver extends Clingo4 {
 
     public void setThreadNums(int threadNums) {
         this.threadNums = threadNums;
-    }
-
-    public List<ExtraWeight> getExtraWeights() {
-        return extraWeights;
-    }
-
-    public void setExtraWeights(List<ExtraWeight> extraWeights) {
-        this.extraWeights = extraWeights;
-    }
-}
-
-class ExtraWeight{
-    protected int softWeight;
-    protected int hardWeight;
-    public ExtraWeight(int softWeight,int hardWeight){
-        this.softWeight = softWeight;
-        this.hardWeight = hardWeight;
     }
 }

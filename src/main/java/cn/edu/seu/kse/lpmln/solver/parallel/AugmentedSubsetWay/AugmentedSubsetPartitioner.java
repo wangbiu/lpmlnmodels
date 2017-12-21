@@ -1,7 +1,7 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
-import cn.edu.seu.kse.lpmln.util.syntax.lpmln.LPMLNTranslationVisitor;
+import cn.edu.seu.kse.lpmln.translator.BaseTranslator;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -23,40 +23,41 @@ public class AugmentedSubsetPartitioner {
 
     //输入：原规则，翻译后的规则文本
     //输出：增强子集文件列表，子集对应的额外权重
-    public void partition(List<Rule> originRule, String translatedText){
+    public void partition(List<Rule> originRule, BaseTranslator translator){
         List<String> translatedFiles = solver.getTranslatedFiles();
-        List<ExtraWeight> extraweight = solver.getExtraWeights();
         List<AugmentedSubset> subsets;
         switch (policy){
             case SPLIT_SIMPLE:
-                subsets = simplePartition(originRule);
+                subsets = simplePartition(translator);
                 break;
             case SPLIT_RANDOM:
-                subsets = randomPartition(originRule);
+                subsets = randomPartition(translator);
                 break;
             default:
-                subsets = simplePartition(originRule);
+                subsets = simplePartition(translator);
         }
 
         try {
             for (AugmentedSubset as : subsets) {
-                StringBuilder subset = new StringBuilder(translatedText);
-                int softWeight=0;
-                int hardWeight=0;
+                boolean[] added = new boolean[translator.getUnknownRules().size()];
+                StringBuilder subset = new StringBuilder(translator.getStaticPart()+System.lineSeparator());
                 //子集求解过程中乘上factor，这里也要乘
                 for (Integer idx : as.positive) {
-                    subset.append("-"+originRule.get(idx).getRuleLabel())
-                            .append(".").append(System.lineSeparator());
+                    added[idx] = true;
+                    subset.append(translator.getSatRules().get(idx))
+                            .append(System.lineSeparator());
                 }
 
                 for (Integer idx : as.negative){
-                    Rule toAdd = originRule.get(idx);
-                    subset.append(toAdd.getRuleLabel())
-                            .append(".").append(System.lineSeparator());;
-                    if(toAdd.isSoft()){
-                        softWeight += toAdd.getWeight();
-                    }else{
-                        hardWeight += 1;
+                    added[idx] = true;
+                    subset.append(translator.getUnsatRules().get(idx))
+                            .append(System.lineSeparator());;
+                }
+
+                for(int i=0;i<added.length;i++){
+                    if(!added[i]){
+                        subset.append(translator.getUnknownRules().get(i))
+                                .append(System.lineSeparator());
                     }
                 }
 
@@ -66,7 +67,6 @@ public class AugmentedSubsetPartitioner {
                 bw.write(subset.toString());
                 bw.close();
 
-                extraweight.add(new ExtraWeight(softWeight* LPMLNTranslationVisitor.getFactor(),hardWeight));
                 translatedFiles.add(outFile);
             }
         }catch (IOException e) {
@@ -77,15 +77,15 @@ public class AugmentedSubsetPartitioner {
         return;
     }
 
-    public List<AugmentedSubset> randomPartition(List<Rule> originSet){
+    public List<AugmentedSubset> randomPartition(BaseTranslator translator){
         List<AugmentedSubset> subsets = new ArrayList<>();
         return subsets;
     }
 
-    public List<AugmentedSubset> simplePartition(List<Rule> originSet){
+    public List<AugmentedSubset> simplePartition(BaseTranslator translator){
         List<AugmentedSubset> subsets = new ArrayList<>();
         int corepow2 = (int)(Math.log(solver.getThreadNums())/Math.log(2));
-        corepow2 = Math.min(corepow2,originSet.size());
+        corepow2 = Math.min(corepow2,translator.getUnknownRules().size());
         for(int i=0;i<Math.pow(2,corepow2);i++){
             AugmentedSubset as = new AugmentedSubset();
             int toConstruct = i;

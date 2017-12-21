@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -20,27 +21,52 @@ public class BaseTranslator {
     protected String path="";
     protected String metarule=null;
     protected boolean isWeakTranslate = false;
+    private List<String> unknownRules;
+    private List<String> satRules;
+    private List<String> unsatRules;
+    private String staticPart = "";
 
-    public BaseTranslator() {};
+    public BaseTranslator() {
+        setUnknownRules(new ArrayList<>());
+        setSatRules(new ArrayList<>());
+        setUnsatRules(new ArrayList<>());
+    };
     public BaseTranslator(String semantics){
         isWeakTranslate = semantics.equals("weak");
+        setUnknownRules(new ArrayList<>());
+        setSatRules(new ArrayList<>());
+        setUnsatRules(new ArrayList<>());
     }
 
     public String translate(List<Rule> rules){
         StringBuilder sb=new StringBuilder();
-        String rulestr=null;
+        String rulestr = null;
+        String unsatRulestr = null;
         sb.append(translateDeclarationPart(herbrandUniverse));
         for(Rule r:rules){
-            if(r.isSoft()){
-                rulestr=translateSoftRule(r);
-            }else {
-                rulestr=translateHardRule(r);
+            if(isWeakTranslate&&!r.isSoft()){
+                sb.append(r.getOriginalrule()).append(System.lineSeparator());
+            }else{
+                rulestr = translateRule(r);
+                unsatRulestr = translateRuleUnsat(r);
+                getSatRules().add(r.getOriginalrule()+System.lineSeparator());
+                getUnknownRules().add(rulestr);
+                getUnsatRules().add(unsatRulestr);
             }
-            sb.append(rulestr).append(System.lineSeparator());
         }
 
         sb.append(trickPart()).append(System.lineSeparator());
         sb.append(metarule);
+        setStaticPart(sb.toString());
+        return getText();
+    }
+
+    public String getText(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(getStaticPart());
+        getUnknownRules().forEach(rule->{
+            sb.append(rule).append(System.lineSeparator());
+        });
         return sb.toString();
     }
 
@@ -59,13 +85,13 @@ public class BaseTranslator {
         return outf;
     }
 
-    public String translateSoftRule(Rule rule){
+    public String translateRule(Rule rule){
         StringBuilder sb=new StringBuilder();
 
         return sb.toString();
     }
 
-    public String translateHardRule(Rule rule){
+    public String translateRuleUnsat(Rule rule){
         StringBuilder sb=new StringBuilder();
 
         return sb.toString();
@@ -75,5 +101,37 @@ public class BaseTranslator {
         StringBuilder sb=new StringBuilder();
 
         return sb.toString();
+    }
+
+    public String getStaticPart() {
+        return staticPart;
+    }
+
+    public void setStaticPart(String staticPart) {
+        this.staticPart = staticPart;
+    }
+
+    public List<String> getUnknownRules() {
+        return unknownRules;
+    }
+
+    public void setUnknownRules(List<String> unknownRules) {
+        this.unknownRules = unknownRules;
+    }
+
+    public List<String> getSatRules() {
+        return satRules;
+    }
+
+    public void setSatRules(List<String> satRules) {
+        this.satRules = satRules;
+    }
+
+    public List<String> getUnsatRules() {
+        return unsatRules;
+    }
+
+    public void setUnsatRules(List<String> unsatRules) {
+        this.unsatRules = unsatRules;
     }
 }
