@@ -3,52 +3,85 @@ package cn.edu.seu.kse.lpmln.translator;
 import cn.edu.seu.kse.lpmln.model.Rule;
 
 import java.util.HashSet;
-import java.util.List;
 
 /**
- * Created by 王彬 on 2016/8/30.
+ * Created by 许鸿翔 on 2017/9/14.
  */
-//废弃的翻译方式，可以重构
-@Deprecated
-public class ASPTranslator extends BaseTranslator {
+public class ASPTranslator extends BaseTranslator{
+    //将LPMLN规则翻译为ASP规则
+    //Lee J, Talsania S, Wang Y. Computing LP MLN using ASP and MLN solvers[J]. Theory and Practice of Logic Programming, 2017, 17(5-6): 942-960.
+    protected String satLabel;
+    public ASPTranslator(){ }
 
-    public ASPTranslator(){};
-    public ASPTranslator(String semantics) {
-        super(semantics);
+    public ASPTranslator(String semantic){
+        super(semantic);
     }
 
-    public String translate_parts(List<Rule> rules){
-        StringBuilder sb=new StringBuilder();
-        sb.append("%%---- declaration part ----%%").append(System.lineSeparator());
-        sb.append(translateDeclarationPart(herbrandUniverse));
-        sb.append(System.lineSeparator());
-        sb.append("%%---- generation part ----%%").append(System.lineSeparator());
-        for(Rule r:rules){
-            sb.append(translateGenerationPart(r));
-//            sb.append(System.lineSeparator());
+    @Override
+    public String translateRule(Rule rule) {
+        setSatLabel(rule);
+        StringBuilder sb = new StringBuilder();
+        sb.append(translateGenerationPart(rule));
+        sb.append(translateTestPart(rule));
+        sb.append(translateCountingPart(rule,true));
+        return sb.toString();
+    }
+
+    @Override
+    public String translateRuleUnsat(Rule rule){
+        setSatLabel(rule);
+        StringBuilder sb = new StringBuilder();
+        sb.append(translateGenerationPartUnsat(rule));
+        sb.append(translateTestPart(rule));
+        sb.append(translateCountingPart(rule,true));
+        return sb.toString();
+    }
+
+    protected String translateGenerationPart(Rule rule){
+        StringBuilder sb = new StringBuilder();
+        sb.append(rule.getText())
+                .append("not ").append(satLabel).append(", ");
+        if(sb.charAt(sb.length()-2)==';'||sb.charAt(sb.length()-2)==','){
+            sb.delete(sb.length()-2,sb.length());
         }
-        sb.append(System.lineSeparator());
+        sb.append(".").append(System.lineSeparator());
+        return sb.toString();
+    }
 
-        sb.append("%%---- test part ----%%").append(System.lineSeparator());
-        for(Rule r:rules){
-            sb.append(translateTestPart(r));
-//            sb.append(System.lineSeparator());
+    protected String translateGenerationPartUnsat(Rule rule){
+        StringBuilder sb = new StringBuilder();
+        sb.append(":- ").append("not ").append(satLabel).append(", ");
+        if(sb.charAt(sb.length()-2)==';'||sb.charAt(sb.length()-2)==','){
+            sb.delete(sb.length()-2,sb.length());
         }
-        sb.append(System.lineSeparator());
+        sb.append(".").append(System.lineSeparator());
+        return sb.toString();
+    }
 
-        sb.append("%%---- evaluation part ----%%").append(System.lineSeparator());
-        for(Rule r:rules){
-            if(r.isSoft()){
-                sb.append(translateCountingPart(r,true));
-            }else {
-                sb.append(translateCountingPart(r,false));
-            }
-//            sb.append(System.lineSeparator());
+    protected String translateTestPart(Rule rule){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(satLabel).append(" :- ").append(rule.getBody());
+        for (String str : rule.getHead()) {
+            sb.append("not ").append(str).append(", ");
+        }
+        for (String str : rule.getHeadCondition()) {
+            sb.append("not ").append(str).append("; ");
+        }
+        if(sb.charAt(sb.length()-2)==';'||sb.charAt(sb.length()-2)==','){
+            sb.delete(sb.length()-2,sb.length());
         }
 
-        sb.append(trickPart()).append(System.lineSeparator());
-        sb.append(metarule);
+        sb.append(".").append(System.lineSeparator());
+        return sb.toString();
+    }
 
+    protected String translateCountingPart(Rule rule, boolean isSoft){
+        StringBuilder sb = new StringBuilder();
+        sb.append(":~").append(satLabel).append(".")
+                .append(" [").append(rule.isSoft()?((long)(rule.getWeight()*factor)+"@1, "):"1@2, ")
+                .append(rule.getId()).append(rule.getVars().size()>0?", ":"").append(String.join(",",rule.getVars())).append("]")
+                .append(System.lineSeparator());
         return sb.toString();
     }
 
@@ -62,20 +95,8 @@ public class ASPTranslator extends BaseTranslator {
         return sb.toString();
     }
 
+    //TODO:验证一下是不是可以去掉
     @Override
-    public String translateRule(Rule rule) {
-        StringBuilder sb=basicTranslate(rule);
-        sb.append(translateCountingPart(rule,true));
-        return sb.toString();
-    }
-
-    protected StringBuilder basicTranslate(Rule rule){
-        StringBuilder sb=new StringBuilder();
-        sb.append(translateGenerationPart(rule));
-        sb.append(translateTestPart(rule));
-        return sb;
-    }
-
     protected String translateDeclarationPart(HashSet<String> hbu){
         StringBuilder sb=new StringBuilder();
         for(String hb : hbu){
@@ -84,132 +105,9 @@ public class ASPTranslator extends BaseTranslator {
         return sb.toString();
     }
 
-    protected String translateGenerationPart(Rule rule){
-        StringBuilder sb=new StringBuilder();
-
-        sb.append("apply(").append(rule.getRuleLabel()).append(")");
-        sb.append(" | -apply(").append(rule.getRuleLabel()).append(") ");
-
-        HashSet<String> vars=rule.getVars();
-        int size=vars.size();
-
-        if(size>0){
-            sb.append(":- ");
-        }
-
-        sb.append(generateHerbrandBody(vars));
-
-        sb.append(". ").append(System.lineSeparator());
-
-        sb.append(rule.getText()).append(" apply(").append(rule.getRuleLabel()).append(").");
-        sb.append(System.lineSeparator());
-
-        return sb.toString();
+    protected void setSatLabel(Rule rule){
+        StringBuilder sb = new StringBuilder().append("unsat(").append(rule.getRuleLabelPara()).append(")");
+        satLabel = sb.toString();
+        rule.setRuleLabel(satLabel);
     }
-
-    protected String translateTestPart(Rule rule){
-        StringBuilder sb=new StringBuilder();
-        String sat="sat("+rule.getRuleLabel()+")";
-        String head="h("+rule.getRuleLabel()+")";
-        String body="b("+rule.getRuleLabel()+")";
-        String hold="hold("+rule.getRuleLabel()+")";
-        String apply="apply("+rule.getRuleLabel()+")";
-
-        sb.append(":- ").append(sat).append(", -").append(apply).append(".");
-        sb.append(System.lineSeparator());
-        sb.append(sat).append(" :- ").append(head).append(", ").append(body).append(".");
-        sb.append(System.lineSeparator());
-        sb.append(sat).append(" :- not ").append(body).append(", ").append(hold).append(".");
-        sb.append(System.lineSeparator());
-        if(rule.getBody().equals("")){
-            sb.append(body).append(".");
-        }else {
-            String rulebody = rule.getBody();
-            sb.append(body).append(" :- ").append(rulebody.substring(0,rulebody.length()-2)).append(".");
-        }
-
-        sb.append(System.lineSeparator());
-
-        List<String> heads= rule.getHead();
-        for(String h:heads){
-            sb.append(head).append(" :- ").append(h).append(", ").append(hold).append(".");
-            sb.append(System.lineSeparator());
-        }
-
-        sb.append(hold);
-
-        HashSet<String> vars=rule.getVars();
-        int size=vars.size();
-
-        if(size>0){
-            sb.append(":- ");
-        }
-
-        sb.append(generateHerbrandBody(vars));
-        sb.append(".").append(System.lineSeparator());
-
-        return sb.toString();
-    }
-
-    protected String translateCountingPart(Rule rule, boolean isSoft){
-        StringBuilder sb=new StringBuilder();
-        sb.append(":~ sat(").append(rule.getRuleLabel()).append("). ");
-        sb.append("[");
-        if(isSoft){
-            long weight= (long) (rule.getWeight()*factor);
-            sb.append(weight).append("@1, ");
-        }else {
-            sb.append("1@2, ");
-        }
-        sb.append(rule.getId());
-        generateVarString(rule.getVars(),sb);
-        sb.append("]").append(System.lineSeparator());
-        return sb.toString();
-    }
-
-    protected void generateVarString(HashSet<String> vars, StringBuilder sb){
-        for(String v:vars){
-            sb.append(", ").append(v);
-        }
-    }
-
-    protected String generateHerbrandBody(HashSet<String> vars){
-        StringBuilder sb=new StringBuilder();
-        int cnt=0;
-        int size=vars.size()-1;
-
-        for(String v:vars){
-            sb.append("hbu(").append(v).append(")");
-            if(cnt!=size){
-                sb.append(", ");
-            }
-            cnt++;
-        }
-        return sb.toString();
-    }
-
-    public int getFactor() {
-        return factor;
-    }
-
-    public void setFactor(int factor) {
-        this.factor = factor;
-    }
-
-    public void setHerbrandUniverse(HashSet<String> herbrandUniverse){
-        this.herbrandUniverse=herbrandUniverse;
-    }
-
-    public void setMetarule(String metarule){
-        this.metarule=metarule;
-    }
-
-    public boolean isWeakTranslate() {
-        return isWeakTranslate;
-    }
-
-    public void setWeakTranslate(boolean weakTranslate) {
-        isWeakTranslate = weakTranslate;
-    }
-
 }

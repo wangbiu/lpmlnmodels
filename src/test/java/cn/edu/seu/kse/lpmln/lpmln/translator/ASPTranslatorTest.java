@@ -1,14 +1,11 @@
 package cn.edu.seu.kse.lpmln.lpmln.translator;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
-import cn.edu.seu.kse.lpmln.translator.*;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -31,29 +28,29 @@ public class ASPTranslatorTest {
         System.out.println("factor "+factor);
     }
 
-    @Test
-    public void testTranslate() {
-        Date start =new Date();
-        ASPTranslator translator=new ASPTranslator();
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        String asprules=translator.translate_parts(rules);
-        System.out.println(asprules);
-        Date end=new Date();
-        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
-    }
-
-    @Test
-    public void testDLVTranslate() {
-        Date start =new Date();
-        DLVTranslator translator=new DLVTranslator();
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        String asprules=translator.translate(rules);
-        System.out.println(asprules);
-        Date end=new Date();
-        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
-    }
+//    @Test
+//    public void testTranslate() {
+//        Date start =new Date();
+//        ASPTranslator translator=new ASPTranslator();
+//        translator.setFactor(factor);
+//        translator.setHerbrandUniverse(herbrandUniverse);
+//        String asprules=translator.translate_parts(rules);
+//        System.out.println(asprules);
+//        Date end=new Date();
+//        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
+//    }
+//
+//    @Test
+//    public void testDLVTranslate() {
+//        Date start =new Date();
+//        DLVTranslator translator=new DLVTranslator();
+//        translator.setFactor(factor);
+//        translator.setHerbrandUniverse(herbrandUniverse);
+//        String asprules=translator.translate(rules);
+//        System.out.println(asprules);
+//        Date end=new Date();
+//        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
+//    }
 
 //    @Test
 //    public void testPlogTranslator() {
@@ -73,29 +70,29 @@ public class ASPTranslatorTest {
 //        System.out.println(asprules);
 //    }
 
-    @Test
-    public void testWeakASPTranslator(){
-        Date start =new Date();
-        ASPTranslator translator=new ASPTranslator("weak");
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        String asprules=translator.translate_parts(rules);
-        System.out.println(asprules);
-        Date end=new Date();
-        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
-    }
-
-    @Test
-    public void testWeakDLVTranslator(){
-        Date start =new Date();
-        DLVTranslator translator=new DLVTranslator("weak");
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        String asprules=translator.translate(rules);
-        System.out.println(asprules);
-        Date end=new Date();
-        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
-    }
+//    @Test
+//    public void testWeakASPTranslator(){
+//        Date start =new Date();
+//        ASPTranslator translator=new ASPTranslator("weak");
+//        translator.setFactor(factor);
+//        translator.setHerbrandUniverse(herbrandUniverse);
+//        String asprules=translator.translate_parts(rules);
+//        System.out.println(asprules);
+//        Date end=new Date();
+//        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
+//    }
+//
+//    @Test
+//    public void testWeakDLVTranslator(){
+//        Date start =new Date();
+//        DLVTranslator translator=new DLVTranslator("weak");
+//        translator.setFactor(factor);
+//        translator.setHerbrandUniverse(herbrandUniverse);
+//        String asprules=translator.translate(rules);
+//        System.out.println(asprules);
+//        Date end=new Date();
+//        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
+//    }
 
 //    @Test
 //    public void testASPGroundTranslator(){

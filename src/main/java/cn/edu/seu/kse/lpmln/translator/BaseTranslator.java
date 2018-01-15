@@ -134,4 +134,36 @@ public class BaseTranslator {
     public void setUnsatRules(List<String> unsatRules) {
         this.unsatRules = unsatRules;
     }
+
+    public int getFactor() {
+        return factor;
+    }
+
+    public void setFactor(int factor) {
+        this.factor = factor;
+    }
+
+    public HashSet<String> getHerbrandUniverse() {
+        return herbrandUniverse;
+    }
+
+    public void setHerbrandUniverse(HashSet<String> herbrandUniverse) {
+        this.herbrandUniverse = herbrandUniverse;
+    }
+
+    public String getMetarule() {
+        return metarule;
+    }
+
+    public void setMetarule(String metarule) {
+        this.metarule = metarule;
+    }
+
+    public boolean isWeakTranslate() {
+        return isWeakTranslate;
+    }
+
+    public void setWeakTranslate(boolean weakTranslate) {
+        isWeakTranslate = weakTranslate;
+    }
 }
