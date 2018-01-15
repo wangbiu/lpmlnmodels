@@ -1,6 +1,5 @@
 package cn.edu.seu.kse.lpmln.util.syntax.clingoResult;
 
-import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 
 import java.util.ArrayList;
@@ -60,11 +59,7 @@ public class ClingoAnswerSetVisitor extends ClingoResultBaseVisitor {
         }
 
         int aimLevel=0;
-        if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V1){
-            aimLevel = maxLevel2;
-        }else if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V2){
-            aimLevel = minLevel2;
-        }
+        aimLevel = minLevel2;
         for(WeightedAnswerSet as : was){
             if(as.getWeights().get(1) == aimLevel){
                 result.add(as);

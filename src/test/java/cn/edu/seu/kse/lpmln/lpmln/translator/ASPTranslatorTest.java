@@ -28,6 +28,7 @@ public class ASPTranslatorTest {
         System.out.println("factor "+factor);
     }
 
+    //TODO:重写下test
 //    @Test
 //    public void testTranslate() {
 //        Date start =new Date();

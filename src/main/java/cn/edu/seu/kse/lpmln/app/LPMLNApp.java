@@ -7,7 +7,6 @@ import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
-import cn.edu.seu.kse.lpmln.translator.ASPTranslatorV2;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -37,8 +36,6 @@ public class LPMLNApp {
     private static boolean isMax=false;
     private static boolean isMarginal=false;
     public enum SOLVER_TYPE{SOLVER_CLINGO, SOLVER_DLV, SOLVER_AUG, SOLVER_SPLIT};
-    public enum TRANSLATION_TYPE{V1,V2};
-    public static TRANSLATION_TYPE translation_type = TRANSLATION_TYPE.V2;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 
@@ -222,16 +219,7 @@ public class LPMLNApp {
 
         ASPTranslator translator=null;
 
-        switch (translation_type){
-            case V1:
-                translator=new ASPTranslator(semantics);
-                break;
-            case V2:
-            default:
-                translator=new ASPTranslatorV2(semantics);
-                break;
-
-        }
+        translator=new ASPTranslator(semantics);
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         translator.setMetarule(sm.getMetarule());

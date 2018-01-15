@@ -1,12 +1,13 @@
 package cn.edu.seu.kse.lpmln.solver;
 
-import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.util.commandLine.CommandLineExecute;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by 王彬 on 2017/3/23.
@@ -66,11 +67,7 @@ public class BaseSolver {
             maxlevel1 = Math.max(maxlevel1,as.getWeights().get(0));
             minlevel1 = Math.min(minlevel1,as.getWeights().get(0));
         }
-        if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V1){
-            aimlevel = maxlevel1;
-        }else if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V2){
-            aimlevel = minlevel1;
-        }
+        aimlevel = minlevel1;
         for(WeightedAnswerSet as :weightedAs){
             if(as.getWeights().get(0) == aimlevel){
                 maxWeightAs.add(as);

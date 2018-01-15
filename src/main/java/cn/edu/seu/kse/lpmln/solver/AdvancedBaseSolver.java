@@ -1,6 +1,5 @@
 package cn.edu.seu.kse.lpmln.solver;
 
-import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.util.commandLine.AdvancedCommandLine;
 import cn.edu.seu.kse.lpmln.util.syntax.lpmln.LPMLNTranslationVisitor;
@@ -58,11 +57,7 @@ public class AdvancedBaseSolver extends BaseSolver {
             minLevel2 = Math.min(was.getWeights().get(1),minLevel2);
             maxLevel2 = Math.max(was.getWeights().get(1),maxLevel2);
         }
-        if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V1){
-            aimLevel2 = maxLevel2;
-        }else if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V2){
-            aimLevel2 = minLevel2;
-        }
+        aimLevel2 = minLevel2;
         for (WeightedAnswerSet was : origin) {
             if(was.getWeights().get(1)==aimLevel2){
                 was.setFactor(factor);
@@ -74,11 +69,8 @@ public class AdvancedBaseSolver extends BaseSolver {
 
     public List<WeightedAnswerSet> calculateProbability(List<WeightedAnswerSet> origin){
         int factor = 1;
-        if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V1){
-            factor = 1;
-        }else if(LPMLNApp.translation_type== LPMLNApp.TRANSLATION_TYPE.V2){
-            factor = -1;
-        }
+        //TODO:考虑pow(10,n)
+        factor = -1;
         double wsum=0;
         double expw=0;
         for(WeightedAnswerSet as:origin){
