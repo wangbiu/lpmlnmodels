@@ -1,24 +1,15 @@
 package cn.edu.seu.kse.lpmln.app;
 
-import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.lpmln.solver.Clingo4;
-import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
-import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
-import cn.edu.seu.kse.lpmln.translator.LPMLN2ASPTranslator;
-import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,48 +55,47 @@ public class LPMLNApp {
 
                 if(cmd.hasOption("input-file")){
                     File lpmlnrulefile=new File(lpmlnfile);
-                    File translationoutfile=new File(translationfile);
 
-                    //翻译
-                    solver=translation(lpmlnrulefile,translationoutfile,semantics,aspsolver);
+                    solver = new LPMLNBaseSolver();
 
                     //求解
-                    solve(translationoutfile,solver);
+                    solve(solver,lpmlnrulefile);
 
                     if(!iskeeptranslation){
                         //translationoutfile.delete();
                     }
 
                 }else if(cmd.hasOption("translation-input-file")){
-
-                    File translationfile=new File(cmd.getOptionValue("translation-input-file"));
-
-                    switch (aspsolver){
-                        case SOLVER_CLINGO:
-                            solver = new Clingo4();
-                            break;
-                        case SOLVER_DLV:
-                            solver = new DLV();
-                            break;
-                        case SOLVER_AUG:
-                            //solver = new AugmentedSolver();
-                            break;
-                        case SOLVER_SPLIT:
-                            //solver = new SplitSetSolver();
-                            break;
-                        default:
-                            solver = new Clingo4();
-                            break;
-                    }
-                    if(aspsolver==SOLVER_TYPE.SOLVER_CLINGO){
-                        solver=new Clingo4();
-                    }else if(aspsolver==SOLVER_TYPE.SOLVER_DLV){
-                        solver=new DLV();
-                    }else{
-
-                    }
-                    
-                    solve(translationfile,solver);
+                    //允许输入翻译后的文件
+//
+//                    File translationfile=new File(cmd.getOptionValue("translation-input-file"));
+//
+//                    switch (aspsolver){
+//                        case SOLVER_CLINGO:
+//                            solver = new Clingo4();
+//                            break;
+//                        case SOLVER_DLV:
+//                            solver = new DLV();
+//                            break;
+//                        case SOLVER_AUG:
+//                            //solver = new AugmentedSolver();
+//                            break;
+//                        case SOLVER_SPLIT:
+//                            //solver = new SplitSetSolver();
+//                            break;
+//                        default:
+//                            solver = new Clingo4();
+//                            break;
+//                    }
+//                    if(aspsolver==SOLVER_TYPE.SOLVER_CLINGO){
+//                        solver=new Clingo4();
+//                    }else if(aspsolver==SOLVER_TYPE.SOLVER_DLV){
+//                        solver=new DLV();
+//                    }else{
+//
+//                    }
+//
+//                    solve(translationfile,solver);
                 }
 
 
@@ -123,8 +113,8 @@ public class LPMLNApp {
         }
     }
 
-    private static void solve(File translationFile, LPMLNBaseSolver solver){
-        List<WeightedAnswerSet> was=solver.call(translationFile.getAbsolutePath());
+    private static void solve(LPMLNBaseSolver solver,File ruleFile){
+        List<WeightedAnswerSet> was=solver.solve(ruleFile);
 
         if(isShowAll){
             System.out.println("all non-zero probability possible world ");
@@ -154,8 +144,9 @@ public class LPMLNApp {
     }
 
     private static void printStatsInfo(LPMLNBaseSolver solver){
-        System.out.println(solver.getStats());
-        System.out.println(solver.getExecuteProfile());
+        //TODO:收集推理信息
+//        System.out.println(solver.getStats());
+//        System.out.println(solver.getExecuteProfile());
     }
 
 
@@ -206,45 +197,5 @@ public class LPMLNApp {
             isShowAll=true;
         }
 
-    }
-
-    private static LPMLNBaseSolver translation(File lpmlnRuleFile, File translationOutputFile, String semantics, SOLVER_TYPE aspsolver) throws IOException {
-        Date start =new Date();
-        LPMLNBaseSolver solver=null;
-        SyntaxModule sm=new SyntaxModule();
-        List<Rule> rules = sm.parseLPMLN(lpmlnRuleFile);
-        factor=sm.getFactor();
-        HashSet<String> herbrandUniverse=sm.getHerbrandUniverse();
-//        System.out.println("factor "+factor);
-
-        LPMLN2ASPTranslator translator=null;
-
-        translator=new LPMLN2ASPTranslator(semantics);
-        translator.setFactor(factor);
-        translator.setHerbrandUniverse(herbrandUniverse);
-        translator.setMetarule(sm.getMetarule());
-        switch (aspsolver){
-            case SOLVER_AUG:
-                solver = new AugmentedSolver(translator,rules);
-                break;
-            case SOLVER_SPLIT:
-                solver = new AugmentedSolver();
-                break;
-            case SOLVER_CLINGO:
-            default:
-                solver = new Clingo4();
-                String asprules=translator.translate(rules);
-                BufferedWriter bw=new BufferedWriter(new FileWriter(translationOutputFile));
-                bw.write(asprules);
-                bw.close();
-                break;
-        }
-
-//        translator=new DLVTranslator(semantics);
-//        solver=new DLV();
-        Date end=new Date();
-        System.out.println("翻译用时 "+(end.getTime()-start.getTime())+" ms");
-
-        return solver;
     }
 }

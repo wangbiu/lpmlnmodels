@@ -56,6 +56,7 @@ public class LPMLNBaseSolver {
         aspResult = aspSolver.solve(aspProgram);
 
         result = calculateProbability(filtWas(aspResult));
+        weightedAs = result;
 
         return result;
     }
