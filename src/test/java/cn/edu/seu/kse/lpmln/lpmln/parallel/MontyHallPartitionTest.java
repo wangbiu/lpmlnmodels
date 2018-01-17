@@ -1,7 +1,7 @@
 package cn.edu.seu.kse.lpmln.lpmln.parallel;
 
 import cn.edu.seu.kse.lpmln.model.Rule;
-import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
+import cn.edu.seu.kse.lpmln.translator.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.junit.Before;
 
@@ -28,7 +28,7 @@ public class MontyHallPartitionTest {
         factor=sm.getFactor();
         herbrandUniverse=sm.getHerbrandUniverse();
         System.out.println("factor "+factor);
-        ASPTranslator translator=new ASPTranslator();
+        LPMLN2ASPTranslator translator=new LPMLN2ASPTranslator();
         translator.setWeakTranslate(true);
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);

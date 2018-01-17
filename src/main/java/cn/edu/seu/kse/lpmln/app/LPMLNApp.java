@@ -6,7 +6,7 @@ import cn.edu.seu.kse.lpmln.solver.Clingo4;
 import cn.edu.seu.kse.lpmln.solver.DLV;
 import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
-import cn.edu.seu.kse.lpmln.translator.ASPTranslator;
+import cn.edu.seu.kse.lpmln.translator.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -217,9 +217,9 @@ public class LPMLNApp {
         HashSet<String> herbrandUniverse=sm.getHerbrandUniverse();
 //        System.out.println("factor "+factor);
 
-        ASPTranslator translator=null;
+        LPMLN2ASPTranslator translator=null;
 
-        translator=new ASPTranslator(semantics);
+        translator=new LPMLN2ASPTranslator(semantics);
         translator.setFactor(factor);
         translator.setHerbrandUniverse(herbrandUniverse);
         translator.setMetarule(sm.getMetarule());
