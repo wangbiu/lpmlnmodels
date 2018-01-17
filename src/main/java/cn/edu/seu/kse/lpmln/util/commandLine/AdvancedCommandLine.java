@@ -121,9 +121,7 @@ public class AdvancedCommandLine {
                 progOut.add(killSig);
             }
 
-        } catch (IOException ex) {
-            logger.error(ex.getMessage());
-        } catch (InterruptedException ex) {
+        } catch (IOException|InterruptedException ex) {
             logger.error(ex.getMessage());
         }
         finally {
@@ -142,30 +140,17 @@ public class AdvancedCommandLine {
 
     protected void startAnswerSetProcess(){
         processors=new ArrayList<>();
-        ClingoResultProcessor crp=null;
+        ClingoResultProcessor crp;
         for(int i=0;i<ansProcessorNums;i++){
             crp=new ClingoResultProcessor(progOut,killSig);
             processors.add(crp);
-            crp.start();
+            threadPool.execute(crp);
         }
 
     }
 
     protected void stopAnswerSetProcess(){
-//        for(ClingoResultProcessor crp:processors){
-//            crp.setStop(true);
-//        }
-
-        boolean stop=false;
-        while (!stop){
-            stop=true;
-            for(ClingoResultProcessor crp:processors){
-                if(crp.isAlive()){
-                    stop=false;
-                    break;
-                }
-            }
-        }
+        threadPool.waitDone();
 
         was=new ArrayList<>();
         for(ClingoResultProcessor crp:processors){
