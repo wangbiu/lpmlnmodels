@@ -29,7 +29,7 @@ public class SyntaxModule {
     private HashSet<Function> functions;
     private HashSet<String> relationnames;
 
-    public LpmlnProgram parseLPMLN(File file) throws IOException {
+    public static LpmlnProgram parseLPMLN(File file) throws IOException {
         LPMLNLexer lexer=new LPMLNLexer(new ANTLRFileStream(file.getAbsolutePath()));
         CommonTokenStream tokens=new CommonTokenStream(lexer);
         LPMLNParser parser=new LPMLNParser(tokens);
