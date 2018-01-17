@@ -151,7 +151,7 @@ public class AdvancedCommandLine {
 
     protected void stopAnswerSetProcess(){
         threadPool.waitDone();
-
+        logger.debug("command execution done.");
         was=new ArrayList<>();
         for(ClingoResultProcessor crp:processors){
             if(crp.getWas() != null){

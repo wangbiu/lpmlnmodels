@@ -1,6 +1,5 @@
 package cn.edu.seu.kse.lpmln.util;
 
-import cn.edu.seu.kse.lpmln.util.commandLine.AdvancedCommandLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +13,7 @@ import java.io.InputStreamReader;
  * @date 2018/1/17
  */
 public class ErrorStreamLogger implements Runnable {
-    private static Logger logger= LogManager.getLogger(AdvancedCommandLine.class.getName());
+    private static Logger logger= LogManager.getLogger(ErrorStreamLogger.class.getName());
     private InputStream stderr;
 
     public ErrorStreamLogger(InputStream stderr){
@@ -31,7 +30,7 @@ public class ErrorStreamLogger implements Runnable {
             while((line=br.readLine()) != null){
                 errres.append(line).append(System.lineSeparator());
             }
-            logger.error(errres);
+            logger.info(errres);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
