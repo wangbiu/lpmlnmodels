@@ -13,19 +13,26 @@ public class LpmlnProgram {
     private List<Rule> rules;
     private int factor;
     private Set<String> herbrandUniverse;
-    private Set<String> metarule;
+    private String metarule;
 
     public LpmlnProgram(){
         rules = new ArrayList<>();
         herbrandUniverse = new HashSet<>();
-        metarule = new HashSet<>();
     }
 
-    public LpmlnProgram(List<Rule> rules,int factor,Set<String> herbrandUniverse,Set<String> metarule){
+    public LpmlnProgram(List<Rule> rules,int factor,Set<String> herbrandUniverse,String metarule){
         this.rules = rules;
         this.factor = factor;
         this.herbrandUniverse = herbrandUniverse;
         this.metarule = metarule;
+    }
+
+    @Override
+    public String toString(){
+        return "rules:"+rules+System.lineSeparator()
+                +"factor:"+factor+System.lineSeparator()
+                +"herbrandUniverse:"+herbrandUniverse+System.lineSeparator()
+                +"metarule:"+metarule+System.lineSeparator();
     }
 
 
@@ -53,11 +60,11 @@ public class LpmlnProgram {
         this.herbrandUniverse = herbrandUniverse;
     }
 
-    public Set<String> getMetarule() {
+    public String getMetarule() {
         return metarule;
     }
 
-    public void setMetarule(Set<String> metarule) {
+    public void setMetarule(String metarule) {
         this.metarule = metarule;
     }
 }
