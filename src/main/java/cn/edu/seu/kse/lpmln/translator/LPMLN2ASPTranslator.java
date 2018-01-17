@@ -1,23 +1,56 @@
 package cn.edu.seu.kse.lpmln.translator;
 
+import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by 许鸿翔 on 2017/9/14.
  */
-public class ASPTranslator extends BaseTranslator{
+public class LPMLN2ASPTranslator implements LPMLNTranslator{
     //将LPMLN规则翻译为ASP规则
     //Lee J, Talsania S, Wang Y. Computing LP MLN using ASP and MLN solvers[J]. Theory and Practice of Logic Programming, 2017, 17(5-6): 942-960.
     protected String satLabel;
-    public ASPTranslator(){ }
+    protected boolean isWeakTranslate;
+    private List<String> satRules = new ArrayList<>();
+    private List<String> unsatRules = new ArrayList<>();
+    private List<String> unknownRules = new ArrayList<>();
+    private String staticPart = "";
+    private LpmlnProgram program;
+    public LPMLN2ASPTranslator(){ }
 
-    public ASPTranslator(String semantic){
-        super(semantic);
+    public LPMLN2ASPTranslator(String semantics){
+        //TODO:弱翻译方式赋值方法需要修改
+        isWeakTranslate = semantics.equals("weak");
     }
 
-    @Override
+    public String translate(LpmlnProgram program){
+        this.program = program;
+        StringBuilder sb=new StringBuilder();
+        String rulestr = null;
+        String unsatRulestr = null;
+        sb.append(translateDeclarationPart(program.getHerbrandUniverse()));
+        for(Rule r:program.getRules()){
+            if(isWeakTranslate&&!r.isSoft()){
+                sb.append(r.getOriginalrule()).append(System.lineSeparator());
+            }else{
+                rulestr = translateRule(r);
+                unsatRulestr = translateRuleUnsat(r);
+                getSatRules().add(r.getOriginalrule()+System.lineSeparator());
+                getUnknownRules().add(rulestr);
+                getUnsatRules().add(unsatRulestr);
+            }
+        }
+
+        sb.append(trickPart()).append(System.lineSeparator());
+        sb.append(program.getMetarule());
+        setStaticPart(sb.toString());
+        return getText();
+    }
+
     public String translateRule(Rule rule) {
         setSatLabel(rule);
         StringBuilder sb = new StringBuilder();
@@ -27,7 +60,6 @@ public class ASPTranslator extends BaseTranslator{
         return sb.toString();
     }
 
-    @Override
     public String translateRuleUnsat(Rule rule){
         setSatLabel(rule);
         StringBuilder sb = new StringBuilder();
@@ -79,13 +111,12 @@ public class ASPTranslator extends BaseTranslator{
     protected String translateCountingPart(Rule rule, boolean isSoft){
         StringBuilder sb = new StringBuilder();
         sb.append(":~").append(satLabel).append(".")
-                .append(" [").append(rule.isSoft()?((long)(rule.getWeight()*factor)+"@1, "):"1@2, ")
+                .append(" [").append(rule.isSoft()?((long)(rule.getWeight()*program.getFactor())+"@1, "):"1@2, ")
                 .append(rule.getId()).append(rule.getVars().size()>0?", ":"").append(String.join(",",rule.getVars())).append("]")
                 .append(System.lineSeparator());
         return sb.toString();
     }
 
-    @Override
     public String trickPart(){
         StringBuilder sb=new StringBuilder();
         sb.append("kse_solve_trick.  ").append(System.lineSeparator());
@@ -96,8 +127,7 @@ public class ASPTranslator extends BaseTranslator{
     }
 
     //TODO:验证一下是不是可以去掉
-    @Override
-    protected String translateDeclarationPart(HashSet<String> hbu){
+    protected String translateDeclarationPart(Set<String> hbu){
         StringBuilder sb=new StringBuilder();
         for(String hb : hbu){
             sb.append("hbu(").append(hb).append(").").append(System.lineSeparator());
@@ -109,5 +139,46 @@ public class ASPTranslator extends BaseTranslator{
         StringBuilder sb = new StringBuilder().append("unsat(").append(rule.getRuleLabelPara()).append(")");
         satLabel = sb.toString();
         rule.setRuleLabel(satLabel);
+    }
+
+    public String getText(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(getStaticPart());
+        getUnknownRules().forEach(rule->{
+            sb.append(rule).append(System.lineSeparator());
+        });
+        return sb.toString();
+    }
+
+    public void setStaticPart(String staticPart) {
+        this.staticPart = staticPart;
+    }
+
+    public List<String> getSatRules() {
+        return satRules;
+    }
+
+    public void setSatRules(List<String> satRules) {
+        this.satRules = satRules;
+    }
+
+    public List<String> getUnsatRules() {
+        return unsatRules;
+    }
+
+    public void setUnsatRules(List<String> unsatRules) {
+        this.unsatRules = unsatRules;
+    }
+
+    public List<String> getUnknownRules() {
+        return unknownRules;
+    }
+
+    public void setUnknownRules(List<String> unknownRules) {
+        this.unknownRules = unknownRules;
+    }
+
+    public String getStaticPart() {
+        return staticPart;
     }
 }
