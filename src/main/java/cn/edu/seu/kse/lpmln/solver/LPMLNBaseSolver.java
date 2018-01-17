@@ -156,4 +156,61 @@ public class LPMLNBaseSolver {
         }
         return origin;
     }
+
+    public List<WeightedAnswerSet> findMaxWeightedAs(){
+        Date enter=new Date();
+        int level2=0;
+        int aimlevel=0;
+        int maxlevel1=Integer.MIN_VALUE;
+        int minlevel1=Integer.MAX_VALUE;
+        maxWeightAs=new ArrayList<>();
+        for(WeightedAnswerSet as:weightedAs){
+            level2=as.getWeights().get(1);
+            maxlevel1 = Math.max(maxlevel1,as.getWeights().get(0));
+            minlevel1 = Math.min(minlevel1,as.getWeights().get(0));
+        }
+        aimlevel = minlevel1;
+        for(WeightedAnswerSet as :weightedAs){
+            if(as.getWeights().get(0) == aimlevel){
+                maxWeightAs.add(as);
+            }
+        }
+
+        if(level2!=0){
+            maxWeight=""+level2+"*alpha + "+maxlevel1;
+        }else {
+            maxWeight=String.valueOf(maxlevel1);
+        }
+
+        Date exit=new Date();
+        StringBuilder sb=new StringBuilder();
+        sb.append("求最大权重可能世界用时：").append(exit.getTime()-enter.getTime()).append(" ms");
+        sb.append(System.lineSeparator());
+        maximalTime=sb.toString();
+        return maxWeightAs;
+    }
+
+    public String getMarginalTime() {
+        return marginalTime;
+    }
+
+    public void setMarginalTime(String marginalTime) {
+        this.marginalTime = marginalTime;
+    }
+
+    public String getMaxWeight() {
+        return maxWeight;
+    }
+
+    public void setMaxWeight(String maxWeight) {
+        this.maxWeight = maxWeight;
+    }
+
+    public String getMaximalTime() {
+        return maximalTime;
+    }
+
+    public void setMaximalTime(String maximalTime) {
+        this.maximalTime = maximalTime;
+    }
 }
