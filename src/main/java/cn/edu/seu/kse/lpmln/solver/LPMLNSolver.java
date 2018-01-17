@@ -25,6 +25,13 @@ public interface LPMLNSolver {
     List<WeightedAnswerSet> solve(String program);
 
     /**
+     * 直接求解翻译后的
+     * @param translatedFile 翻译后的文件
+     * @return 返回结果
+     */
+    List<WeightedAnswerSet> solveTranslated(File translatedFile);
+
+    /**
      * 判断文字是否在可能性最大的回答集内
      * @param literal 文字
      * @return 判断结果true=在，false=不在
@@ -55,5 +62,7 @@ public interface LPMLNSolver {
      * @return 边缘分布
      */
     String getMarginalDistribution();
+
+
 
 }

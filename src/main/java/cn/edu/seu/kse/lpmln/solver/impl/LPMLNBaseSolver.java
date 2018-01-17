@@ -64,6 +64,19 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         return result;
     }
 
+    @Override
+    public List<WeightedAnswerSet> solveTranslated(File translatedFile){
+        List<WeightedAnswerSet> result;
+        List<WeightedAnswerSet> aspResult;
+
+        //ASP求解
+        aspResult = aspSolver.solve(translatedFile);
+
+        result = calculateProbability(filtWas(aspResult));
+        weightedAs = result;
+        return result;
+    }
+
     public LpmlnProgram parse(File ruleFile) {
         LpmlnProgram lpmlnProgram = null;
         try {

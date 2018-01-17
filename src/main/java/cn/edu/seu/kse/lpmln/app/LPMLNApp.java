@@ -28,6 +28,7 @@ public class LPMLNApp {
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
+    private static LPMLNBaseSolver solver;
     public enum SOLVER_TYPE{SOLVER_CLINGO, SOLVER_DLV, SOLVER_AUG, SOLVER_SPLIT};
     //TODO:线程管理
     private List<LpmlnThreadPool> threadPools;
@@ -50,51 +51,28 @@ public class LPMLNApp {
 
         //初始化参数
         initLpmlnmodels(cmd);
-        LPMLNBaseSolver solver=null;
 
         if(cmd.hasOption("input-file")){
             File lpmlnrulefile=new File(lpmlnfile);
 
-            solver = new LPMLNBaseSolver();
-
             //求解
-            solve(solver,lpmlnrulefile);
+            solver.solve(lpmlnrulefile);
 
-            if(!iskeeptranslation){
-                //translationoutfile.delete();
-            }
+            printResult(solver);
+
+
 
         }else if(cmd.hasOption("translation-input-file")){
-            //允许输入翻译后的文件
-//
-//                    File translationfile=new File(cmd.getOptionValue("translation-input-file"));
-//
-//                    switch (aspsolver){
-//                        case SOLVER_CLINGO:
-//                            solver = new Clingo4();
-//                            break;
-//                        case SOLVER_DLV:
-//                            solver = new DLV();
-//                            break;
-//                        case SOLVER_AUG:
-//                            //solver = new AugmentedSolver();
-//                            break;
-//                        case SOLVER_SPLIT:
-//                            //solver = new SplitSetSolver();
-//                            break;
-//                        default:
-//                            solver = new Clingo4();
-//                            break;
-//                    }
-//                    if(aspsolver==SOLVER_TYPE.SOLVER_CLINGO){
-//                        solver=new Clingo4();
-//                    }else if(aspsolver==SOLVER_TYPE.SOLVER_DLV){
-//                        solver=new DLV();
-//                    }else{
-//
-//                    }
-//
-//                    solve(translationfile,solver);
+            File lpmlnrulefile = new File(cmd.getOptionValue("translation-input-file"));
+            //求解
+            solver.solveTranslated(lpmlnrulefile);
+
+            printResult(solver);
+        }
+
+        if(!iskeeptranslation){
+            //TODO:临时文件的处理
+            //translationoutfile.delete();
         }
 
 
@@ -102,11 +80,12 @@ public class LPMLNApp {
 
         SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
         System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
-
+        //TODO:删掉这两行
+        System.out.println("current time:1");
     }
 
-    private static void solve(LPMLNBaseSolver solver,File ruleFile){
-        List<WeightedAnswerSet> was=solver.solve(ruleFile);
+    private static void printResult(LPMLNBaseSolver solver){
+        List<WeightedAnswerSet> was = solver.getAllWeightedAs();
 
         if(isShowAll){
             System.out.println("all non-zero probability possible world ");
@@ -175,6 +154,9 @@ public class LPMLNApp {
         if(cmd.hasOption("parallel")){
             aspsolver = SOLVER_TYPE.SOLVER_AUG;
             //选择并行推理方式
+            solver = new LPMLNBaseSolver();
+        }else{
+            solver = new LPMLNBaseSolver();
         }
 
         if(cmd.hasOption("marginal-probability-reasoning")){
