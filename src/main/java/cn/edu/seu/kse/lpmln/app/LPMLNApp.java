@@ -122,7 +122,7 @@ public class LPMLNApp {
         }
 
         if(isMarginal){
-            String marginal=solver.marginalDistribution(factor);
+            String marginal=solver.getMarginalDistribution();
             System.out.println("marginal result ");
             System.out.println(marginal);
             System.out.println(solver.getMarginalTime());

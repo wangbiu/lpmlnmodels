@@ -47,7 +47,7 @@
 ////        System.out.println("most probable answer set");
 ////        System.out.println(solver.findMaxWeightedAs());
 ////        System.out.println("marginal probability");
-////        System.out.println(solver.marginalDistribution(factor));
+////        System.out.println(solver.getMarginalDistribution(factor));
 ////
 ////    }
 //}

@@ -22,7 +22,7 @@
 //        String maxWeight=clingo4.getMaxWeight();
 //
 //        System.out.printf("Weighted Answer Set : %s%n maxWeightAs : %s%n maxWeight : %s%n",was,maxWeightAs,maxWeight);
-//        String marginal=clingo4.marginalDistribution(1);
+//        String marginal=clingo4.getMarginalDistribution(1);
 //        System.out.println("marginal results : "+marginal);
 //        System.out.println("stats "+clingo4.getStats());
 //    }
@@ -36,7 +36,7 @@
 //        List<WeightedAnswerSet> maxWeightAs=dlv.getMaxWeightAs();
 //        String maxWeight=dlv.getMaxWeight();
 //        System.out.printf("Weighted Answer Set : %s%n maxWeightAs : %s%n maxWeight : %s%n",was,maxWeightAs,maxWeight);
-//        String marginal=dlv.marginalDistribution(1);
+//        String marginal=dlv.getMarginalDistribution(1);
 //        System.out.println("marginal results : "+marginal);
 //    }
 //}

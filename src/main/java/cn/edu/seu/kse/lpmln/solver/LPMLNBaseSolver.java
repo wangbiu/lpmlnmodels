@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Created by 王彬 on 2016/8/31.
  */
-public class LPMLNBaseSolver {
+public class LPMLNBaseSolver implements LPMLNSolver{
     protected List<WeightedAnswerSet> weightedAs = null;
     protected List<WeightedAnswerSet> maxWeightAs = null;
     protected String maxWeight;
@@ -42,6 +42,7 @@ public class LPMLNBaseSolver {
         aspSolver = new ClingoSolver();
     }
 
+    @Override
     public List<WeightedAnswerSet> solve(File ruleFile) {
         List<WeightedAnswerSet> result;
         List<WeightedAnswerSet> aspResult;
@@ -71,6 +72,7 @@ public class LPMLNBaseSolver {
         return lpmlnProgram;
     }
 
+    @Override
     public List<WeightedAnswerSet> solve(String program) {
         String filename = UUID.randomUUID().toString() + LPSUFFIX;
         File outf = new File(filename);
@@ -79,7 +81,20 @@ public class LPMLNBaseSolver {
         return solve(outf);
     }
 
-    public String marginalDistribution(int factor) {
+    @Override
+    public boolean containsLiteral(String literal) {
+        //TODO:impl
+        return false;
+    }
+
+    @Override
+    public boolean getLiteralProbability(String literal) {
+        //TODO:impl
+        return false;
+    }
+
+    @Override
+    public String getMarginalDistribution() {
         Date enter = new Date();
         HashMap<String, Double> result = new HashMap<>();
         double wsum = 0;
@@ -158,6 +173,7 @@ public class LPMLNBaseSolver {
         return origin;
     }
 
+    @Override
     public List<WeightedAnswerSet> findMaxWeightedAs(){
         Date enter=new Date();
         int level2=0;
@@ -191,6 +207,11 @@ public class LPMLNBaseSolver {
         return maxWeightAs;
     }
 
+    @Override
+    public List<WeightedAnswerSet> getAllWeightedAs() {
+        return weightedAs;
+    }
+
     public String getMarginalTime() {
         return marginalTime;
     }
@@ -213,5 +234,13 @@ public class LPMLNBaseSolver {
 
     public void setMaximalTime(String maximalTime) {
         this.maximalTime = maximalTime;
+    }
+
+    public List<WeightedAnswerSet> getWeightedAs() {
+        return weightedAs;
+    }
+
+    public void setWeightedAs(List<WeightedAnswerSet> weightedAs) {
+        this.weightedAs = weightedAs;
     }
 }
