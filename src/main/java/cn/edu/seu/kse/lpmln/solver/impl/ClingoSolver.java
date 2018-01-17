@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.solver.impl;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.AspSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
+import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import cn.edu.seu.kse.lpmln.util.commandLine.AdvancedCommandLine;
 
 import java.io.File;
@@ -14,8 +15,15 @@ import java.util.List;
  * @date 2018/1/15
  */
 public class ClingoSolver implements AspSolver {
-    protected AdvancedCommandLine acmd = new AdvancedCommandLine();
+    protected AdvancedCommandLine acmd;
     public static final String CMD_CLINGO ="clingo 0 --opt-mode enum ";
+    public static String THREAD_NAME = "ClingoSolver";
+    public LpmlnThreadPool threadPool;
+
+    public ClingoSolver() {
+        threadPool = new LpmlnThreadPool(THREAD_NAME);
+        acmd = new AdvancedCommandLine(threadPool);
+    }
 
     @Override
     public List<WeightedAnswerSet> solve(File file) {

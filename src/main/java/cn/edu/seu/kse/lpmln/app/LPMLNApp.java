@@ -2,6 +2,7 @@ package cn.edu.seu.kse.lpmln.app;
 
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +28,8 @@ public class LPMLNApp {
     private static boolean isMax=false;
     private static boolean isMarginal=false;
     public enum SOLVER_TYPE{SOLVER_CLINGO, SOLVER_DLV, SOLVER_AUG, SOLVER_SPLIT};
+    //TODO:线程管理
+    private List<LpmlnThreadPool> threadPools;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 

@@ -1,6 +1,8 @@
 package cn.edu.seu.kse.lpmln.util.commandLine;
 
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
+import cn.edu.seu.kse.lpmln.util.ErrorStreamLogger;
+import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,14 +28,16 @@ public class AdvancedCommandLine {
     protected double cputime=0;
     final public String killSig="--END of Process--";
     final private static Logger logger= LogManager.getLogger(AdvancedCommandLine.class.getName());
+    private LpmlnThreadPool threadPool;
 
 
-    public AdvancedCommandLine() {
+    public AdvancedCommandLine(LpmlnThreadPool threadPool) {
+        this.setThreadPool(threadPool);
         progOut = new LinkedBlockingDeque<String>();
     }
 
     protected int getOS(){
-        int os=0;
+        int os;
         if(SystemUtils.IS_OS_WINDOWS){
             os=WINDOWS_NT;
         }else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_UNIX){
@@ -75,31 +79,7 @@ public class AdvancedCommandLine {
             final InputStream stderr=p.getErrorStream();
 
             //单独的读取错误流的进程
-            new Thread(
-                    new Runnable(){
-                        public void run(){
-                            BufferedReader br=null;
-                            try {
-                                //StringBuilder errres=new StringBuilder();
-                                br=new BufferedReader(new InputStreamReader(stderr));
-                                String eline=null;
-                                while((eline=br.readLine()) != null){
-                                    //errres.append(eline).append(System.lineSeparator());
-                                }
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                            }
-                            finally {
-                                if (br!=null)
-                                    try {
-                                        br.close();
-                                    } catch (IOException e) {
-                                        logger.error(e.getMessage());
-                                    }
-                            }
-                        }
-                    }
-            ).start();
+            threadPool.execute(new ErrorStreamLogger(stderr));
 
             String line=null;
             //标准输出
@@ -242,5 +222,13 @@ public class AdvancedCommandLine {
 
     public void setCputime(double cputime) {
         this.cputime = cputime;
+    }
+
+    public LpmlnThreadPool getThreadPool() {
+        return threadPool;
+    }
+
+    public void setThreadPool(LpmlnThreadPool threadPool) {
+        this.threadPool = threadPool;
     }
 }
