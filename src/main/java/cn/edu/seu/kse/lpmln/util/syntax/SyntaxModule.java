@@ -1,6 +1,5 @@
 package cn.edu.seu.kse.lpmln.util.syntax;
 
-import cn.edu.seu.kse.lpmln.model.Function;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.util.syntax.clingoResult.ClingoAnswerSetVisitor;
@@ -26,7 +25,6 @@ import java.util.List;
  * Created by 王彬 on 2016/8/30.
  */
 public class SyntaxModule {
-    private HashSet<Function> functions;
     private HashSet<String> relationnames;
 
     public static LpmlnProgram parseLPMLN(File file) throws IOException {
@@ -62,14 +60,6 @@ public class SyntaxModule {
         as=asvisitor.visitPossible_worlds(parser.possible_worlds());
 
         return as;
-    }
-
-    public HashSet<Function> getFunctions() {
-        return functions;
-    }
-
-    public void setFunctions(HashSet<Function> functions) {
-        this.functions = functions;
     }
 
     public HashSet<String> getRelationnames() {

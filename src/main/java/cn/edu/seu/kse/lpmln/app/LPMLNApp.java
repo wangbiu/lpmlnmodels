@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.app;
 
+import cn.edu.seu.kse.lpmln.exception.cmdLineException.CommandLineException;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
@@ -36,40 +37,35 @@ public class LPMLNApp {
     public static void main(String args[]) throws IOException {
         Date enter=new Date();
 
-        Options opts= LPMLNOpts.getCommandLineOptions();
-        CommandLineParser cmdParser=new DefaultParser();
+        CommandLine cmd = parseCmd(args);
 
-        try {
-            CommandLine cmd=cmdParser.parse(opts,args);
+        if(cmd.hasOption("help") || cmd.getOptions().length == 0){
+            printHelp();
+            return;
+        }
 
-            if(cmd.hasOption("help") || cmd.getOptions().length == 0){
-                HelpFormatter formatter=new HelpFormatter();
-                formatter.setWidth(150);
-                formatter.printHelp("lpmlnmodels <params>",opts);
+        if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
+            throw new CommandLineException("i and I are used once at a time");
+        }
+
+        //初始化参数
+        initLpmlnmodels(cmd);
+        LPMLNBaseSolver solver=null;
+
+        if(cmd.hasOption("input-file")){
+            File lpmlnrulefile=new File(lpmlnfile);
+
+            solver = new LPMLNBaseSolver();
+
+            //求解
+            solve(solver,lpmlnrulefile);
+
+            if(!iskeeptranslation){
+                //translationoutfile.delete();
             }
-            else {
-                if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
-                    throw new RuntimeException("i and I are used once at a time");
-                }
 
-                //初始化参数
-                initLpmlnmodels(cmd);
-                LPMLNBaseSolver solver=null;
-
-                if(cmd.hasOption("input-file")){
-                    File lpmlnrulefile=new File(lpmlnfile);
-
-                    solver = new LPMLNBaseSolver();
-
-                    //求解
-                    solve(solver,lpmlnrulefile);
-
-                    if(!iskeeptranslation){
-                        //translationoutfile.delete();
-                    }
-
-                }else if(cmd.hasOption("translation-input-file")){
-                    //允许输入翻译后的文件
+        }else if(cmd.hasOption("translation-input-file")){
+            //允许输入翻译后的文件
 //
 //                    File translationfile=new File(cmd.getOptionValue("translation-input-file"));
 //
@@ -99,21 +95,14 @@ public class LPMLNApp {
 //                    }
 //
 //                    solve(translationfile,solver);
-                }
-
-
-                Date exit=new Date();
-
-                SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
-                System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
-
-
-
-            }
-
-        } catch (ParseException e) {
-            System.err.println("wrong parameter");
         }
+
+
+        Date exit=new Date();
+
+        SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
+        System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
+
     }
 
     private static void solve(LPMLNBaseSolver solver,File ruleFile){
@@ -199,6 +188,24 @@ public class LPMLNApp {
         if(cmd.hasOption("show-all-stable-models")){
             isShowAll=true;
         }
+    }
 
+    public static CommandLine parseCmd(String args[]){
+        Options opts= LPMLNOpts.getCommandLineOptions();
+        CommandLineParser cmdParser=new DefaultParser();
+        CommandLine cmd = null;
+
+        try {
+            cmd=cmdParser.parse(opts,args);
+        } catch (ParseException e) {
+            throw new RuntimeException("wrong parameter");
+        }
+        return cmd;
+    }
+
+    public static void printHelp(){
+        HelpFormatter formatter=new HelpFormatter();
+        formatter.setWidth(150);
+        formatter.printHelp("lpmlnmodels <params>",LPMLNOpts.getCommandLineOptions());
     }
 }
