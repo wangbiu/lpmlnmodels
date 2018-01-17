@@ -1,7 +1,7 @@
 //package cn.edu.seu.kse.lpmln.lpmln.parallel;
 //
 //import cn.edu.seu.kse.lpmln.model.Rule;
-//import cn.edu.seu.kse.lpmln.translator.LPMLN2ASPTranslator;
+//import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 //import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 //import org.junit.Before;
 //

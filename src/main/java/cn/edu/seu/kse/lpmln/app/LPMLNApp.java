@@ -1,7 +1,7 @@
 package cn.edu.seu.kse.lpmln.app;
 
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

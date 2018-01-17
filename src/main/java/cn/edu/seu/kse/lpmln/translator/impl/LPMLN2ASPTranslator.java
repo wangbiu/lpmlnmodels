@@ -1,7 +1,8 @@
-package cn.edu.seu.kse.lpmln.translator;
+package cn.edu.seu.kse.lpmln.translator.impl;
 
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
+import cn.edu.seu.kse.lpmln.translator.LPMLNTranslator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Set;
 /**
  * Created by 许鸿翔 on 2017/9/14.
  */
-public class LPMLN2ASPTranslator implements LPMLNTranslator{
+public class LPMLN2ASPTranslator implements LPMLNTranslator {
     //将LPMLN规则翻译为ASP规则
     //Lee J, Talsania S, Wang Y. Computing LP MLN using ASP and MLN solvers[J]. Theory and Practice of Logic Programming, 2017, 17(5-6): 942-960.
     protected String satLabel;

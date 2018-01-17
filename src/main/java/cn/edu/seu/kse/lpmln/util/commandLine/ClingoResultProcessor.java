@@ -1,4 +1,4 @@
-package cn.edu.seu.kse.lpmln.solver;
+package cn.edu.seu.kse.lpmln.util.commandLine;
 
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;

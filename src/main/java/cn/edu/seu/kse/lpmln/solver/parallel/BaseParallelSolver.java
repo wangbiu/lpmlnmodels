@@ -2,7 +2,7 @@
 //
 //import cn.edu.seu.kse.lpmln.model.Rule;
 //import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
-//import cn.edu.seu.kse.lpmln.solver.LPMLNBaseSolver;
+//import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 //import cn.edu.seu.kse.lpmln.translator.BaseTranslator;
 //
 //import java.util.List;

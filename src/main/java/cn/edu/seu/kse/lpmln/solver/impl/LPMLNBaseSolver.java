@@ -1,9 +1,11 @@
-package cn.edu.seu.kse.lpmln.solver;
+package cn.edu.seu.kse.lpmln.solver.impl;
 
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
-import cn.edu.seu.kse.lpmln.translator.LPMLN2ASPTranslator;
+import cn.edu.seu.kse.lpmln.solver.AspSolver;
+import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
+import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import cn.edu.seu.kse.lpmln.util.syntax.lpmln.LPMLNTranslationVisitor;
@@ -16,7 +18,7 @@ import java.util.*;
 /**
  * Created by 王彬 on 2016/8/31.
  */
-public class LPMLNBaseSolver implements LPMLNSolver{
+public class LPMLNBaseSolver implements LPMLNSolver {
     protected List<WeightedAnswerSet> weightedAs = null;
     protected List<WeightedAnswerSet> maxWeightAs = null;
     protected String maxWeight;

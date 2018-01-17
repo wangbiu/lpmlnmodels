@@ -1,6 +1,7 @@
-package cn.edu.seu.kse.lpmln.solver;
+package cn.edu.seu.kse.lpmln.solver.impl;
 
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
+import cn.edu.seu.kse.lpmln.solver.AspSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.commandLine.AdvancedCommandLine;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author 许鸿翔
  * @date 2018/1/15
  */
-public class ClingoSolver implements AspSolver{
+public class ClingoSolver implements AspSolver {
     protected AdvancedCommandLine acmd = new AdvancedCommandLine();
     public static final String CMD_CLINGO ="clingo 0 --opt-mode enum ";
 
