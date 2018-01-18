@@ -34,13 +34,11 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     protected double totalSolverTime;
     protected SolverStats sta = new SolverStats();
     public static final String LPSUFFIX = ".lp";
-    protected List<File> tempFiles;
     protected LPMLN2ASPTranslator translator;
     protected AspSolver aspSolver;
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
-        tempFiles = new ArrayList<>();
         aspSolver = new ClingoSolver();
     }
 
@@ -57,7 +55,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         String aspProgram = translator.translate(lpmlnProgram);
 
         //保留翻译后的文件
-        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix+".lp"),aspProgram);
+        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix+LPSUFFIX),aspProgram);
 
         //ASP求解
         aspResult = aspSolver.solve(aspProgram);
@@ -66,6 +64,13 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         weightedAs = result;
 
         return result;
+    }
+
+    @Override
+    public List<WeightedAnswerSet> solve(String program) {
+        File outf = FileHelper.randomFile();
+        FileHelper.writeFile(outf, program);
+        return solve(outf);
     }
 
     @Override
@@ -89,15 +94,6 @@ public class LPMLNBaseSolver implements LPMLNSolver {
             e.printStackTrace();
         }
         return lpmlnProgram;
-    }
-
-    @Override
-    public List<WeightedAnswerSet> solve(String program) {
-        String filename = UUID.randomUUID().toString() + LPSUFFIX;
-        File outf = new File(filename);
-        FileHelper.writeFile(outf, program);
-        tempFiles.add(outf);
-        return solve(outf);
     }
 
     @Override
