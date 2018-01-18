@@ -1,0 +1,8 @@
+package cn.edu.seu.kse.lpmln.exception.solveException;
+
+/**
+ * @author 许鸿翔
+ * @date 2018/1/18
+ */
+public class SolveException {
+}
