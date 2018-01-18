@@ -31,6 +31,11 @@ public class FileHelper {
         return new File(UUID.randomUUID()+".tmp");
     }
 
+    /**
+     * 以.tmp后缀的文件会在cleanFiles被清空，iskeeptranslation可以保留非此后缀的文件
+     * @param file 要写的文件
+     * @param out 要写的内容
+     */
     public static void writeFile(File file, String out){
         try(BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"))){
             tempFiles.add(file);

@@ -73,8 +73,6 @@ public class LPMLNApp {
 
         SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
         System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
-        //TODO:删掉这两行
-        System.out.println("current time:1");
     }
 
     private static void printResult(LPMLNBaseSolver solver){
