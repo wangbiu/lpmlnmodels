@@ -14,7 +14,7 @@ import java.util.List;
 public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     private List<Rule> rules=null;
     private int cnt=0;
-    private static int factor;
+    private int factor;
     private HashSet<String> herbrandUniverse=new HashSet<>();
     private StringBuilder metarule=new StringBuilder();
 
@@ -348,9 +348,8 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
     }
 
 
-    public static int getFactor(){
-        factor = factor>9?9:factor;
-        return (int)Math.pow(10,factor);
+    public int getFactor(){
+        return factor;
     }
 
     public List<Rule> getRules() {
