@@ -102,14 +102,23 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     @Override
     public boolean containsLiteral(String literal) {
-        //TODO:impl
+        for (WeightedAnswerSet was : weightedAs) {
+            if(was.getAnswerSet().getLiterals().contains(literal)){
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean getLiteralProbability(String literal) {
-        //TODO:impl
-        return false;
+    public double getLiteralProbability(String literal) {
+        double prob=0;
+        for (WeightedAnswerSet was : weightedAs) {
+            if(was.getAnswerSet().getLiterals().contains(literal)){
+                prob += was.getProbability();
+            }
+        }
+        return prob;
     }
 
     @Override

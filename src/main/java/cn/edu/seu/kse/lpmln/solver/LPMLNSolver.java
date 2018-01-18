@@ -43,7 +43,7 @@ public interface LPMLNSolver {
      * @param literal 文字
      * @return 文字成立的可能性
      */
-    boolean getLiteralProbability(String literal);
+    double getLiteralProbability(String literal);
 
     /**
      * 获取权重最大的回答集
