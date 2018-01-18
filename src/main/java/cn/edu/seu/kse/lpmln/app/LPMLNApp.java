@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class LPMLNApp {
     private static  String lpmlnfile=null;
-    private static  String semantics="strong";
+    public static  String semantics="strong";
     public static  String translationFilePrefix=null;
     public static  boolean iskeeptranslation=false;
     private static boolean isShowAll=false;

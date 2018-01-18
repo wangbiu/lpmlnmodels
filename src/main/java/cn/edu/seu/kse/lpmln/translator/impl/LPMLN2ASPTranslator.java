@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.translator.impl;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.translator.LPMLNTranslator;
@@ -22,11 +23,10 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
     protected List<String> unknownRules = new ArrayList<>();
     protected String staticPart = "";
     protected LpmlnProgram program;
-    public LPMLN2ASPTranslator(){ }
 
-    public LPMLN2ASPTranslator(String semantics){
+    public LPMLN2ASPTranslator(){
         //TODO:弱翻译方式赋值方法需要修改
-        isWeakTranslate = semantics.equals("weak");
+        isWeakTranslate = "weak".equals(LPMLNApp.semantics);
     }
 
     @Override
