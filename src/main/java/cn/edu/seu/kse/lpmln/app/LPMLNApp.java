@@ -5,7 +5,6 @@ import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
-import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,15 +24,10 @@ public class LPMLNApp {
     private static  String semantics="strong";
     private static  String translationfile=null;
     private static  boolean iskeeptranslation=false;
-    private static  SOLVER_TYPE aspsolver=SOLVER_TYPE.SOLVER_CLINGO;
-    private static int factor=1;
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
     private static LPMLNBaseSolver solver;
-    public enum SOLVER_TYPE{SOLVER_CLINGO, SOLVER_DLV, SOLVER_AUG, SOLVER_SPLIT};
-    //TODO:线程管理
-    private List<LpmlnThreadPool> threadPools;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 
@@ -73,8 +67,7 @@ public class LPMLNApp {
         }
 
         if(!iskeeptranslation){
-            //TODO:临时文件的处理
-            //translationoutfile.delete();
+            FileHelper.cleanFiles();
         }
 
 
@@ -84,8 +77,6 @@ public class LPMLNApp {
         System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
         //TODO:删掉这两行
         System.out.println("current time:1");
-
-        FileHelper.cleanFiles();
     }
 
     private static void printResult(LPMLNBaseSolver solver){
@@ -133,10 +124,10 @@ public class LPMLNApp {
         if(cmd.hasOption("lpmln-semantics")){
             semantics=cmd.getOptionValue("lpmln-semantics");
             if(!semantics.equals("strong") && !semantics.equals("weak")){
-                throw  new RuntimeException("unsupport lpmln semantics "+semantics);
+                throw  new CommandLineException("unsupport lpmln semantics "+semantics);
             }
-
         }
+
         if(cmd.hasOption("translation-output-file")){
             translationfile=cmd.getOptionValue("translation-output-file");
             iskeeptranslation=true;
@@ -156,8 +147,6 @@ public class LPMLNApp {
 //            }
         }
         if(cmd.hasOption("parallel")){
-            aspsolver = SOLVER_TYPE.SOLVER_AUG;
-            //选择并行推理方式
             solver = new AugmentedSolver();
         }else{
             solver = new LPMLNBaseSolver();
