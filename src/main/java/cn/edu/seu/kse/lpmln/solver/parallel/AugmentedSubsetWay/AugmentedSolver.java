@@ -1,7 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
-import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
@@ -38,7 +37,7 @@ public class AugmentedSolver extends LPMLNBaseSolver {
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile){
         //解析LPMLN程序
-        LpmlnProgram lpmlnProgram = parse(ruleFile);
+        lpmlnProgram = parse(ruleFile);
 
         //拆分为多个增强子集
         augmentedSubsets = partitioner.partition(lpmlnProgram,threadNums);

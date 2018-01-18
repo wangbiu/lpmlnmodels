@@ -9,7 +9,6 @@ import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
-import cn.edu.seu.kse.lpmln.util.syntax.lpmln.LPMLNTranslationVisitor;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +35,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     public static final String LPSUFFIX = ".lp";
     protected LPMLN2ASPTranslator translator;
     protected AspSolver aspSolver;
+    protected LpmlnProgram lpmlnProgram;
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
@@ -48,14 +48,14 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         List<WeightedAnswerSet> aspResult;
 
         //解析LPMLN程序
-        LpmlnProgram lpmlnProgram = parse(ruleFile);
+        lpmlnProgram = parse(ruleFile);
 
         //翻译为ASP程序
         translator = new LPMLN2ASPTranslator();
         String aspProgram = translator.translate(lpmlnProgram);
 
         //保留翻译后的文件
-        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix+LPSUFFIX),aspProgram);
+        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix + LPSUFFIX), aspProgram);
 
         //ASP求解
         aspResult = aspSolver.solve(aspProgram);
@@ -74,7 +74,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     }
 
     @Override
-    public List<WeightedAnswerSet> solveTranslated(File translatedFile){
+    public List<WeightedAnswerSet> solveTranslated(File translatedFile) {
         List<WeightedAnswerSet> result;
         List<WeightedAnswerSet> aspResult;
 
@@ -99,7 +99,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     @Override
     public boolean containsLiteral(String literal) {
         for (WeightedAnswerSet was : weightedAs) {
-            if(was.getAnswerSet().getLiterals().contains(literal)){
+            if (was.getAnswerSet().getLiterals().contains(literal)) {
                 return true;
             }
         }
@@ -108,9 +108,9 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     @Override
     public double getLiteralProbability(String literal) {
-        double prob=0;
+        double prob = 0;
         for (WeightedAnswerSet was : weightedAs) {
-            if(was.getAnswerSet().getLiterals().contains(literal)){
+            if (was.getAnswerSet().getLiterals().contains(literal)) {
                 prob += was.getProbability();
             }
         }
@@ -163,7 +163,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         int minLevel2 = Integer.MAX_VALUE;
         int maxLevel2 = Integer.MIN_VALUE;
         int aimLevel2 = 0;
-        int factor = LPMLNTranslationVisitor.getFactor();
+        int factor = lpmlnProgram.getFactor();
         for (WeightedAnswerSet was : origin) {
             minLevel2 = Math.min(was.getWeights().get(1), minLevel2);
             maxLevel2 = Math.max(was.getWeights().get(1), maxLevel2);
@@ -185,7 +185,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         double wsum = 0;
         double expw = 0;
         for (WeightedAnswerSet as : origin) {
-            expw = Math.exp(factor * as.getWeights().get(0) * 1.0);
+            expw = Math.exp(factor * as.getWeights().get(0) / Math.pow(10,as.getFactor()));
             wsum += expw;
             as.setProbability(expw);
         }
@@ -198,36 +198,36 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     }
 
     @Override
-    public List<WeightedAnswerSet> findMaxWeightedAs(){
-        Date enter=new Date();
-        int level2=0;
-        int aimlevel=0;
-        int maxlevel1=Integer.MIN_VALUE;
-        int minlevel1=Integer.MAX_VALUE;
-        maxWeightAs=new ArrayList<>();
-        for(WeightedAnswerSet as:weightedAs){
-            level2=as.getWeights().get(1);
-            maxlevel1 = Math.max(maxlevel1,as.getWeights().get(0));
-            minlevel1 = Math.min(minlevel1,as.getWeights().get(0));
+    public List<WeightedAnswerSet> findMaxWeightedAs() {
+        Date enter = new Date();
+        int level2 = 0;
+        int aimlevel = 0;
+        int maxlevel1 = Integer.MIN_VALUE;
+        int minlevel1 = Integer.MAX_VALUE;
+        maxWeightAs = new ArrayList<>();
+        for (WeightedAnswerSet as : weightedAs) {
+            level2 = as.getWeights().get(1);
+            maxlevel1 = Math.max(maxlevel1, as.getWeights().get(0));
+            minlevel1 = Math.min(minlevel1, as.getWeights().get(0));
         }
         aimlevel = minlevel1;
-        for(WeightedAnswerSet as :weightedAs){
-            if(as.getWeights().get(0) == aimlevel){
+        for (WeightedAnswerSet as : weightedAs) {
+            if (as.getWeights().get(0) == aimlevel) {
                 maxWeightAs.add(as);
             }
         }
 
-        if(level2!=0){
-            maxWeight=""+level2+"*alpha + "+maxlevel1;
-        }else {
-            maxWeight=String.valueOf(maxlevel1);
+        if (level2 != 0) {
+            maxWeight = "" + level2 + "*alpha + " + maxlevel1;
+        } else {
+            maxWeight = String.valueOf(maxlevel1);
         }
 
-        Date exit=new Date();
-        StringBuilder sb=new StringBuilder();
-        sb.append("求最大权重可能世界用时：").append(exit.getTime()-enter.getTime()).append(" ms");
+        Date exit = new Date();
+        StringBuilder sb = new StringBuilder();
+        sb.append("求最大权重可能世界用时：").append(exit.getTime() - enter.getTime()).append(" ms");
         sb.append(System.lineSeparator());
-        maximalTime=sb.toString();
+        maximalTime = sb.toString();
         return maxWeightAs;
     }
 
