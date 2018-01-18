@@ -18,7 +18,7 @@ FULLSTOP : '.';
 //正整数
 POSITIVE_INT : [1-9][0-9]*;
 //小数(点表示法)
-DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP [0-9] ZERO* [1-9]*;
+DECIMAL : MINUS? (POSITIVE_INT* | ZERO ) FULLSTOP [0-9] [0-9]? [0-9]? [0-9]? [0-9]?;
 
 //0
 ZERO : '0';
