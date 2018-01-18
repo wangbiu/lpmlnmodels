@@ -4,6 +4,7 @@ import cn.edu.seu.kse.lpmln.exception.cmdLineException.CommandLineException;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -83,6 +84,8 @@ public class LPMLNApp {
         System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
         //TODO:删掉这两行
         System.out.println("current time:1");
+
+        FileHelper.cleanFiles();
     }
 
     private static void printResult(LPMLNBaseSolver solver){

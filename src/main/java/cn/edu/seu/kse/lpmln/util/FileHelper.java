@@ -1,6 +1,8 @@
 package cn.edu.seu.kse.lpmln.util;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -8,9 +10,17 @@ import java.util.UUID;
  * @date 2018/1/15
  */
 public class FileHelper {
+    public static List<File> tempFiles = new ArrayList<>();
+
+    public static void cleanFiles(){
+        tempFiles.forEach(file -> file.delete());
+    }
+
     public static File randomFile(){
         //TODO:处理一下临时文件
-        return new File(UUID.randomUUID()+".tmp");
+        File tmpFile = new File(UUID.randomUUID()+".tmp");
+        tempFiles.add(tmpFile);
+        return tmpFile;
     }
 
     public static void writeFile(File file, String out){
