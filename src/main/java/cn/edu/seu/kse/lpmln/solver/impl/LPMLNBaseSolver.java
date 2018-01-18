@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver.impl;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
@@ -54,6 +55,9 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         //翻译为ASP程序
         translator = new LPMLN2ASPTranslator();
         String aspProgram = translator.translate(lpmlnProgram);
+
+        //保留翻译后的文件
+        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix+".lp"),aspProgram);
 
         //ASP求解
         aspResult = aspSolver.solve(aspProgram);

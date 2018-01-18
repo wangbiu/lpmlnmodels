@@ -22,8 +22,8 @@ import java.util.UUID;
 public class LPMLNApp {
     private static  String lpmlnfile=null;
     private static  String semantics="strong";
-    private static  String translationfile=null;
-    private static  boolean iskeeptranslation=false;
+    public static  String translationFilePrefix=null;
+    public static  boolean iskeeptranslation=false;
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
@@ -66,9 +66,7 @@ public class LPMLNApp {
             printResult(solver);
         }
 
-        if(!iskeeptranslation){
-            FileHelper.cleanFiles();
-        }
+        FileHelper.cleanFiles();
 
 
         Date exit=new Date();
@@ -129,13 +127,13 @@ public class LPMLNApp {
         }
 
         if(cmd.hasOption("translation-output-file")){
-            translationfile=cmd.getOptionValue("translation-output-file");
+            translationFilePrefix=cmd.getOptionValue("translation-output-file");
             iskeeptranslation=true;
         }
         Date now=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        if(translationfile==null){
-            translationfile= UUID.randomUUID().toString()+sdf.format(now)+".lp";
+        if(translationFilePrefix==null){
+            translationFilePrefix= UUID.randomUUID().toString()+sdf.format(now);
             iskeeptranslation=false;
         }
 

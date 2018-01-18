@@ -1,5 +1,7 @@
 package cn.edu.seu.kse.lpmln.util;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +15,25 @@ public class FileHelper {
     public static List<File> tempFiles = new ArrayList<>();
 
     public static void cleanFiles(){
-        tempFiles.forEach(file -> file.delete());
+        if(LPMLNApp.iskeeptranslation){
+            tempFiles.forEach(file -> {
+                if(file.getName().endsWith(".tmp")){
+                    file.delete();
+                }
+            });
+        }else{
+            tempFiles.forEach(File::delete);
+        }
+
     }
 
     public static File randomFile(){
-        //TODO:处理一下临时文件
-        File tmpFile = new File(UUID.randomUUID()+".tmp");
-        tempFiles.add(tmpFile);
-        return tmpFile;
+        return new File(UUID.randomUUID()+".tmp");
     }
 
     public static void writeFile(File file, String out){
         try(BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"))){
+            tempFiles.add(file);
             bw.write(out);
         } catch (IOException e) {
             e.printStackTrace();

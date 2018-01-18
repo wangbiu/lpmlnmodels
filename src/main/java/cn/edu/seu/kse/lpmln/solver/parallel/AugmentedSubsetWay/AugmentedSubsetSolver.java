@@ -1,10 +1,13 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.translator.impl.AugmentedSubsetTranslator;
+import cn.edu.seu.kse.lpmln.util.FileHelper;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -30,6 +33,9 @@ public class AugmentedSubsetSolver extends LPMLNBaseSolver implements Runnable {
         //翻译为ASP程序
         translator = new AugmentedSubsetTranslator(subset.getSatIdx(),subset.getUnsatIdx());
         String aspProgram = translator.translate(subset.getLpmlnProgram());
+
+        //保留翻译后的文件
+        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix+".lp"),aspProgram);
 
         //ASP求解
         aspResult = aspSolver.solve(aspProgram);
