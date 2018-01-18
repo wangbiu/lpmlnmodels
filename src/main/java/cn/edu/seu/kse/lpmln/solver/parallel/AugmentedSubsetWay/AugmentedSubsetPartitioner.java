@@ -1,113 +1,65 @@
-//package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
-//
-//import cn.edu.seu.kse.lpmln.model.Rule;
-//import cn.edu.seu.kse.lpmln.translator.BaseTranslator;
-//
-//import java.io.BufferedWriter;
-//import java.io.FileWriter;
-//import java.io.IOException;
-//import java.text.SimpleDateFormat;
-//import java.util.*;
-//
-///**
-// * Created by 许鸿翔 on 2017/9/23.
-// */
-//public class AugmentedSubsetPartitioner {
-//    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_SIMPLE;
-//    public enum TRANSLATION_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, TEST};
-//    protected AugmentedSolver solver;
-//
-//    public AugmentedSubsetPartitioner(AugmentedSolver solver){
-//        this.solver = solver;
-//    }
-//
-//    //输入：原规则，翻译后的规则文本
-//    //输出：增强子集文件列表，子集对应的额外权重
-//    public void partition(List<Rule> originRule, BaseTranslator translator){
-//        List<String> translatedFiles = solver.getTranslatedFiles();
-//        List<AugmentedSubset> subsets;
-//        switch (policy){
-//            case SPLIT_SIMPLE:
-//                subsets = simplePartition(translator);
-//                break;
-//            case SPLIT_RANDOM:
-//                subsets = randomPartition(translator);
-//                break;
-//            default:
-//                subsets = simplePartition(translator);
-//        }
-//
-//        try {
-//            for (AugmentedSubset as : subsets) {
-//                boolean[] added = new boolean[translator.getUnknownRules().size()];
-//                StringBuilder subset = new StringBuilder(translator.getStaticPart()+System.lineSeparator());
-//                //子集求解过程中乘上factor，这里也要乘
-//                for (Integer idx : as.positive) {
-//                    added[idx] = true;
-//                    subset.append(translator.getSatRules().get(idx))
-//                            .append(System.lineSeparator());
-//                }
-//
-//                for (Integer idx : as.negative){
-//                    added[idx] = true;
-//                    subset.append(translator.getUnsatRules().get(idx))
-//                            .append(System.lineSeparator());;
-//                }
-//
-//                for(int i=0;i<added.length;i++){
-//                    if(!added[i]){
-//                        subset.append(translator.getUnknownRules().get(i))
-//                                .append(System.lineSeparator());
-//                    }
-//                }
-//
-//                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-//                String outFile = UUID.randomUUID().toString()+sdf.format(new Date())+"_"+translatedFiles.size()+".lp";
-//                BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
-//                bw.write(subset.toString());
-//                bw.close();
-//
-//                translatedFiles.add(outFile);
-//            }
-//        }catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        solver.setThreadNums(Math.min(solver.getThreadNums(),subsets.size()));
-//        return;
-//    }
-//
-//    public List<AugmentedSubset> randomPartition(BaseTranslator translator){
-//        List<AugmentedSubset> subsets = new ArrayList<>();
-//        return subsets;
-//    }
-//
-//    public List<AugmentedSubset> simplePartition(BaseTranslator translator){
-//        List<AugmentedSubset> subsets = new ArrayList<>();
-//        int corepow2 = (int)(Math.log(solver.getThreadNums())/Math.log(2));
-//        corepow2 = Math.min(corepow2,translator.getUnknownRules().size());
-//        for(int i=0;i<Math.pow(2,corepow2);i++){
-//            AugmentedSubset as = new AugmentedSubset();
-//            int toConstruct = i;
-//            for(int j=0;j<corepow2;j++){
-//                if(toConstruct%2==0){
-//                    as.positive.add(j);
-//                }else{
-//                    as.negative.add(j);
-//                }
-//                toConstruct>>=1;
-//            }
-//            subsets.add(as);
-//        }
-//        return subsets;
-//    }
-//}
-//
-//class AugmentedSubset{
-//    protected HashSet<Integer> positive;
-//    protected HashSet<Integer> negative;
-//    public AugmentedSubset(){
-//        positive = new HashSet<>();
-//        negative = new HashSet<>();
-//    }
-//}
+package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
+
+import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
+import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by 许鸿翔 on 2017/9/23.
+ */
+public class AugmentedSubsetPartitioner {
+    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_SIMPLE;
+
+    /**
+     * 增强子集拆分策略 TODO:启发式信息如何实现
+     */
+    public enum TRANSLATION_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, TEST}
+
+    //输入：原规则，翻译后的规则文本
+    //输出：增强子集文件列表，子集对应的额外权重
+    public List<AugmentedSubset> partition(LpmlnProgram lpmlnProgram,int count){
+        List<AugmentedSubset> subsets;
+        switch (policy){
+            /**
+             * 选择增强子集划分方式，后续可以思考怎么结合启发式信息
+             */
+            case SPLIT_SIMPLE:
+                subsets = simplePartition(lpmlnProgram,count);
+                break;
+            case SPLIT_RANDOM:
+                subsets = randomPartition(lpmlnProgram,count);
+                break;
+            default:
+                subsets = simplePartition(lpmlnProgram,count);
+        }
+        return subsets;
+    }
+
+    public List<AugmentedSubset> randomPartition(LpmlnProgram lpmlnProgram,int count){
+        List<AugmentedSubset> subsets = new ArrayList<>();
+        //TODO：随机划分实现
+        return subsets;
+    }
+
+    public List<AugmentedSubset> simplePartition(LpmlnProgram lpmlnProgram,int count){
+        List<AugmentedSubset> subsets = new ArrayList<>();
+        int corepow2 = (int)(Math.log(count)/Math.log(2));
+        corepow2 = Math.min(corepow2,lpmlnProgram.getRules().size());
+        for(int i=0;i<Math.pow(2,corepow2);i++){
+            AugmentedSubset as = new AugmentedSubset(lpmlnProgram);
+            int toConstruct = i;
+            for(int j=0;j<corepow2;j++){
+                if(toConstruct%2==0){
+                    as.getSatIdx().add(j);
+                }else{
+                    as.getUnsatIdx().add(j);
+                }
+                toConstruct>>=1;
+            }
+            subsets.add(as);
+        }
+        return subsets;
+    }
+}

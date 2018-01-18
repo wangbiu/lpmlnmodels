@@ -40,7 +40,6 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     public LPMLNBaseSolver() {
         tempFiles = new ArrayList<>();
-        translator = new LPMLN2ASPTranslator();
         aspSolver = new ClingoSolver();
     }
 
@@ -53,6 +52,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         LpmlnProgram lpmlnProgram = parse(ruleFile);
 
         //翻译为ASP程序
+        translator = new LPMLN2ASPTranslator();
         String aspProgram = translator.translate(lpmlnProgram);
 
         //ASP求解

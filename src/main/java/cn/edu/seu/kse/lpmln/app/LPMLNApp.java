@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.app;
 import cn.edu.seu.kse.lpmln.exception.cmdLineException.CommandLineException;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -154,7 +155,7 @@ public class LPMLNApp {
         if(cmd.hasOption("parallel")){
             aspsolver = SOLVER_TYPE.SOLVER_AUG;
             //选择并行推理方式
-            solver = new LPMLNBaseSolver();
+            solver = new AugmentedSolver();
         }else{
             solver = new LPMLNBaseSolver();
         }

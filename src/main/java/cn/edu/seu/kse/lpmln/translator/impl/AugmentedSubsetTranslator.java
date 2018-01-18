@@ -27,6 +27,7 @@ public class AugmentedSubsetTranslator extends LPMLN2ASPTranslator {
                 aspProgramBuilder.append(unknownRules.get(i));
             }
         }
+        aspProgramBuilder.append(staticPart);
         return aspProgramBuilder.toString();
     }
 
