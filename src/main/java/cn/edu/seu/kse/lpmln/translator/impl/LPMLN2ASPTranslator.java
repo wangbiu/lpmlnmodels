@@ -9,18 +9,19 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by 许鸿翔 on 2017/9/14.
+ * @author 许鸿翔
+ * @date 2018/1/17
  */
 public class LPMLN2ASPTranslator implements LPMLNTranslator {
     //将LPMLN规则翻译为ASP规则
     //Lee J, Talsania S, Wang Y. Computing LP MLN using ASP and MLN solvers[J]. Theory and Practice of Logic Programming, 2017, 17(5-6): 942-960.
     protected String satLabel;
     protected boolean isWeakTranslate;
-    private List<String> satRules = new ArrayList<>();
-    private List<String> unsatRules = new ArrayList<>();
-    private List<String> unknownRules = new ArrayList<>();
-    private String staticPart = "";
-    private LpmlnProgram program;
+    protected List<String> satRules = new ArrayList<>();
+    protected List<String> unsatRules = new ArrayList<>();
+    protected List<String> unknownRules = new ArrayList<>();
+    protected String staticPart = "";
+    protected LpmlnProgram program;
     public LPMLN2ASPTranslator(){ }
 
     public LPMLN2ASPTranslator(String semantics){
@@ -28,11 +29,12 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
         isWeakTranslate = semantics.equals("weak");
     }
 
+    @Override
     public String translate(LpmlnProgram program){
         this.program = program;
         StringBuilder sb=new StringBuilder();
-        String rulestr = null;
-        String unsatRulestr = null;
+        String rulestr;
+        String unsatRulestr;
         sb.append(translateDeclarationPart(program.getHerbrandUniverse()));
         for(Rule r:program.getRules()){
             if(isWeakTranslate&&!r.isSoft()){
@@ -181,5 +183,13 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
 
     public String getStaticPart() {
         return staticPart;
+    }
+
+    public boolean isWeakTranslate() {
+        return isWeakTranslate;
+    }
+
+    public void setWeakTranslate(boolean weakTranslate) {
+        isWeakTranslate = weakTranslate;
     }
 }
