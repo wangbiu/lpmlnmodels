@@ -30,7 +30,7 @@ public class ErrorStreamLogger implements Runnable {
             while((line=br.readLine()) != null){
                 errres.append(line).append(System.lineSeparator());
             }
-            logger.info(errres);
+            logger.trace(errres);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
