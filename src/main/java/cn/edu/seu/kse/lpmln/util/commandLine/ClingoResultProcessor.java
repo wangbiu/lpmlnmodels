@@ -63,13 +63,11 @@ public class ClingoResultProcessor extends Thread {
 
                 try{
                     tmpwas=sm.parseClingoResult(as);
+                    was.addAll(tmpwas);
                 }catch (RuntimeException re){
 //                    logger.debug(as);
                     logger.error(re.getMessage());
                 }
-
-                was.addAll(tmpwas);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
