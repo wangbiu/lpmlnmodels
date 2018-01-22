@@ -36,6 +36,8 @@ public class AugmentedSubsetSolver extends LPMLNBaseSolver implements Runnable {
         translator = new AugmentedSubsetTranslator(subset.getSatIdx(),subset.getUnsatIdx());
         String aspProgram = translator.translate(lpmlnProgram);
 
+        //System.out.println(subset.getSatIdx().toString()+subset.getUnsatIdx()+Thread.currentThread().getId());
+
         //保留翻译后的文件
         FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix+"-"+Thread.currentThread().getId()+LPSUFFIX),aspProgram);
 

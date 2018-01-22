@@ -45,6 +45,11 @@ public class FileHelper {
         }
     }
 
+    /**
+     * 获取文件内容，注意获取后的文件是没有行尾符的
+     * @param file 要获取内容的文件
+     * @return 文件内容
+     */
     public static String getFileContent(File file){
         StringBuilder result = new StringBuilder();
         String line;
