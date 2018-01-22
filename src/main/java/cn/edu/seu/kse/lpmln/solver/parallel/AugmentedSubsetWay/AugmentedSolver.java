@@ -4,6 +4,8 @@ import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class AugmentedSolver extends LPMLNBaseSolver {
     private LpmlnThreadPool threadPool;
     private AugmentedSubsetPartitioner partitioner;
     private List<AugmentedSubset> augmentedSubsets;
+    private Logger logger = LogManager.getLogger(AugmentedSolver.class.getName());
 
     public AugmentedSolver(){
         threadPool = new LpmlnThreadPool("AugmentedSolver");
@@ -61,7 +64,8 @@ public class AugmentedSolver extends LPMLNBaseSolver {
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         subsetSolvers.forEach(solver->{
-                collectedWas.addAll(solver.getAllWeightedAs());
+            collectedWas.addAll(solver.getAllWeightedAs());
+            logger.debug(solver.getAllWeightedAs().size()+" was collected");
         });
         return collectedWas;
     }

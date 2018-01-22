@@ -1,5 +1,7 @@
 package cn.edu.seu.kse.lpmln.model;
 
+import cn.edu.seu.kse.lpmln.exception.solveException.SolveException;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,8 +10,8 @@ import java.util.Set;
  * @date 2018/1/17
  */
 public class AugmentedSubset implements Cloneable{
-    private Set<Integer> satIdx;
-    private Set<Integer> unsatIdx;
+    protected Set<Integer> satIdx;
+    protected Set<Integer> unsatIdx;
     private Set<Integer> unknownIdx;
     private LpmlnProgram lpmlnProgram;
     public AugmentedSubset(LpmlnProgram lpmlnProgram){
@@ -22,11 +24,29 @@ public class AugmentedSubset implements Cloneable{
         this.lpmlnProgram = lpmlnProgram;
     }
 
+    public boolean sat(int idx){
+        if(unknownIdx.contains(idx)){
+            satIdx.add(idx);
+            unknownIdx.remove(idx);
+            return true;
+        }
+        throw new SolveException("partition fail, Idx error");
+    }
+
+    public boolean unsat(int idx){
+        if(unknownIdx.contains(idx)){
+            unsatIdx.add(idx);
+            unknownIdx.remove(idx);
+            return true;
+        }
+        throw new SolveException("partition fail, Idx error");
+    }
+
     @Override
     public AugmentedSubset clone(){
         AugmentedSubset cloned = new AugmentedSubset(lpmlnProgram);
-        cloned.getSatIdx().addAll(satIdx);
-        cloned.getUnsatIdx().addAll(unsatIdx);
+        cloned.satIdx.addAll(satIdx);
+        cloned.unsatIdx.addAll(unsatIdx);
         return cloned;
     }
 

@@ -3,14 +3,13 @@ package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_SIMPLE;
+    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_RANDOM;
 
     /**
      * 增强子集拆分策略 TODO:启发式信息如何实现
@@ -39,7 +38,36 @@ public class AugmentedSubsetPartitioner {
 
     public List<AugmentedSubset> randomPartition(LpmlnProgram lpmlnProgram,int count){
         List<AugmentedSubset> subsets = new ArrayList<>();
-        //TODO：随机划分实现
+        List<AugmentedSubset> selectable = new ArrayList<>();
+        Random rand = new Random();
+        AugmentedSubset subset = new AugmentedSubset(lpmlnProgram);
+        subsets.add(subset);
+        selectable.add(subset);
+
+        while(subsets.size()<count && selectable.size()>0){
+            //选择一个增强子集
+            int randomIdx = Math.abs(rand.nextInt())%selectable.size();
+            AugmentedSubset toSubstitute = selectable.get(randomIdx);
+            subsets.remove(toSubstitute);
+            selectable.remove(toSubstitute);
+            Set<Integer> unknownIdx = toSubstitute.getUnknownIdx();
+
+            //选择一条要确定的规则
+            randomIdx = Math.abs(rand.nextInt())%unknownIdx.size();
+            AugmentedSubset positive = toSubstitute.clone();
+            AugmentedSubset negative = toSubstitute.clone();
+            int idx = new ArrayList<>(unknownIdx).get(randomIdx);
+
+            positive.sat(idx);
+            negative.unsat(idx);
+            subsets.add(positive);
+            subsets.add(negative);
+
+            if(positive.getUnknownIdx().size()>0) {
+                selectable.add(positive);
+                selectable.add(negative);
+            }
+        }
         return subsets;
     }
 
@@ -52,9 +80,9 @@ public class AugmentedSubsetPartitioner {
             int toConstruct = i;
             for(int j=0;j<corepow2;j++){
                 if(toConstruct%2==0){
-                    as.getSatIdx().add(j);
+                    as.sat(j);
                 }else{
-                    as.getUnsatIdx().add(j);
+                    as.unsat(j);
                 }
                 toConstruct>>=1;
             }
