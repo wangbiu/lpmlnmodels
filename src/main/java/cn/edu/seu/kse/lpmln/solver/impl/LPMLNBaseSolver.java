@@ -180,7 +180,6 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     public List<WeightedAnswerSet> calculateProbability(List<WeightedAnswerSet> origin) {
         int factor = 1;
-        //TODO:考虑pow(10,n)
         factor = -1;
         double wsum = 0;
         double expw = 0;

@@ -25,7 +25,6 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
     protected LpmlnProgram program;
 
     public LPMLN2ASPTranslator(){
-        //TODO:弱翻译方式赋值方法需要修改
         isWeakTranslate = "weak".equals(LPMLNApp.semantics);
     }
 
@@ -35,7 +34,7 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
         StringBuilder sb=new StringBuilder();
         String rulestr;
         String unsatRulestr;
-        sb.append(translateDeclarationPart(program.getHerbrandUniverse()));
+        //sb.append(translateDeclarationPart(program.getHerbrandUniverse()));
         for(Rule r:program.getRules()){
             if(isWeakTranslate&&!r.isSoft()){
                 sb.append(r.getOriginalrule()).append(System.lineSeparator());
@@ -129,7 +128,7 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
         return sb.toString();
     }
 
-    //TODO:验证一下是不是可以去掉
+    @Deprecated
     protected String translateDeclarationPart(Set<String> hbu){
         StringBuilder sb=new StringBuilder();
         for(String hb : hbu){

@@ -35,7 +35,6 @@ public class DLVAnswerSetVisitor extends DLVResultBaseVisitor {
             weightstr=wlctx.natural_number(0).getText();
 
             //减去 trick part 增加的权值1
-            //TODO 权重变换以后需要注意
             weight=Integer.valueOf(weightstr)-1;
             weights.add(weight);
 
