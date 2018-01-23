@@ -5,6 +5,7 @@ import cn.edu.seu.kse.lpmln.translator.impl.AugmentedSubsetTranslator;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,5 +53,9 @@ public class LPMLNTranslatorTest {
         assert toComp.equals(result);
     }
 
-
+    @After
+    public void done(){
+        FileHelper.cleanFiles();
+        System.out.println("done.");
+    }
 }

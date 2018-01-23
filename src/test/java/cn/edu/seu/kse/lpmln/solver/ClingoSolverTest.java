@@ -33,6 +33,7 @@ public class ClingoSolverTest {
 
     @After
     public void done(){
+        FileHelper.cleanFiles();
         System.out.println("done.");
     }
 }
