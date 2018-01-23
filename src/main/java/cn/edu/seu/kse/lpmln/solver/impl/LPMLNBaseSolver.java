@@ -78,6 +78,9 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         List<WeightedAnswerSet> result;
         List<WeightedAnswerSet> aspResult;
 
+        lpmlnProgram = new LpmlnProgram();
+        lpmlnProgram.setFactor(0);
+
         //ASP求解
         aspResult = aspSolver.solve(translatedFile);
 

@@ -35,7 +35,7 @@ public class LPMLNTranslatorTest {
         translator = new LPMLN2ASPTranslator();
         String result = translator.translate(program);
         String toComp = FileHelper.getFileContent(new File(out));
-        assert toComp.equals(result.replace("\r\n",""));
+        assert toComp.equals(result);
     }
 
     //增强子集翻译测试
@@ -49,7 +49,7 @@ public class LPMLNTranslatorTest {
         translator = new AugmentedSubsetTranslator(sat,unsat);
         String result = translator.translate(program);
         String toComp = FileHelper.getFileContent(new File(out17));
-        assert toComp.equals(result.replace("\r\n",""));
+        assert toComp.equals(result);
     }
 
 
