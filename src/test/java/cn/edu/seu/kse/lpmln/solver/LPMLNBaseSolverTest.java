@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.solver;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,5 +55,10 @@ public class LPMLNBaseSolverTest {
         assert result[1].startsWith("0.909");
         assert result[3].startsWith("0.909");
         assert result[5].startsWith("0.909");
+    }
+
+    @After
+    public void done(){
+        System.out.println("done.");
     }
 }

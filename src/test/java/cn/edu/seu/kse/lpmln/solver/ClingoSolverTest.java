@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.solver;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.ClingoSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
@@ -28,5 +29,10 @@ public class ClingoSolverTest {
         String content = FileHelper.getFileContent(new File(filePath));
         List<WeightedAnswerSet> result = solver.solve(content);
         assert result.size()==27;
+    }
+
+    @After
+    public void done(){
+        System.out.println("done.");
     }
 }
