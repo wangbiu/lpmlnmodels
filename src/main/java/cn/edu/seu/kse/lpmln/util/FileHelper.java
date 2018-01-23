@@ -46,7 +46,7 @@ public class FileHelper {
     }
 
     /**
-     * 获取文件内容，注意获取后的文件是没有行尾符的
+     * 获取文件内容，注意获取后的文件行尾符固定为\r\n
      * @param file 要获取内容的文件
      * @return 文件内容
      */
@@ -55,7 +55,7 @@ public class FileHelper {
         String line;
         try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"))) {
             while ((line = br.readLine())!=null){
-                result.append(line);
+                result.append(line).append("\r\n");
             }
         }catch (IOException e) {
             e.printStackTrace();
