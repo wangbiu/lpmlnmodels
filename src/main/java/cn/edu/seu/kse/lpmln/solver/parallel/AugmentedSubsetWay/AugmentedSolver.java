@@ -1,4 +1,4 @@
-package cn.edu.seu.kse.lpmln.solver.parallel.AugmentedSubsetWay;
+package cn.edu.seu.kse.lpmln.solver.parallel.augmentedSubsetWay;
 
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
