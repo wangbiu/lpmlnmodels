@@ -1,6 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver;
 
-import cn.edu.seu.kse.lpmln.solver.parallel.augmentedSubsetWay.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import org.junit.Before;
 
 /**

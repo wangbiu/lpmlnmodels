@@ -1,6 +1,6 @@
 package cn.edu.seu.kse.lpmln.model;
 
-import cn.edu.seu.kse.lpmln.exception.solveException.SolveException;
+import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 
 import java.util.HashSet;
 import java.util.Set;

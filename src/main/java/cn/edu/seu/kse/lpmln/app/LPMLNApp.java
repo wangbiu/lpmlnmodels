@@ -1,9 +1,9 @@
 package cn.edu.seu.kse.lpmln.app;
 
-import cn.edu.seu.kse.lpmln.exception.cmdLineException.CommandLineException;
+import cn.edu.seu.kse.lpmln.exception.cmdlineexception.CommandLineException;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
-import cn.edu.seu.kse.lpmln.solver.parallel.augmentedSubsetWay.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
