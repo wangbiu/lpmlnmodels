@@ -42,7 +42,9 @@ public class AugmentedSubsetPartitioner {
         Random rand = new Random();
         AugmentedSubset subset = new AugmentedSubset(lpmlnProgram);
         subsets.add(subset);
-        selectable.add(subset);
+        if(subset.getUnknownIdx().size()>0){
+            selectable.add(subset);
+        }
 
         while(subsets.size()<count && selectable.size()>0){
             //选择一个增强子集

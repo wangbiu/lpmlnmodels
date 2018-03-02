@@ -41,6 +41,8 @@ public class LpmlnExperiment {
         File toTest = new File(PROGRAM_PATH+filename);
         baseSolver.solve(toTest);
         augmentedSolver.solve(toTest);
-        AnswerValidater.isConsistent(baseSolver,augmentedSolver);
+        if(AnswerValidater.isConsistent(baseSolver,augmentedSolver)){
+            System.out.println("Test "+filename+" passed.");
+        }
     }
 }

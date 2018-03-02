@@ -10,11 +10,11 @@ import java.util.Map;
  * @date 2018/2/26
  */
 public class AnswerValidater {
-    public static int CHECKLENGTH = 5;
+    private static int CHECKLENGTH = 5;
 
-    public static boolean isConsistent(LPMLNSolver sover1, LPMLNSolver solver2){
-        String[] answer1 = sover1.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ").split(" ");
-        String[] answer2 = sover1.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ").split(" ");
+    public static boolean isConsistent(LPMLNSolver solver1, LPMLNSolver solver2){
+        String[] answer1 = solver1.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ").split(" ");
+        String[] answer2 = solver2.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ").split(" ");
         int ansLen;
         Map<String,String> answerMap1 = new HashMap<>();
         Map<String,String> answerMap2 = new HashMap<>();
@@ -23,8 +23,20 @@ public class AnswerValidater {
         }
         ansLen = answer1.length;
         for(int i=0;i<ansLen;i+=2){
-            answerMap1.put(answer1[i],answer1[i+1].substring(0,CHECKLENGTH));
-            answerMap2.put(answer2[i],answer2[i+1]).substring(0,CHECKLENGTH);
+            String prob1;
+            String prob2;
+            if(answer1[i+1].length()>CHECKLENGTH){
+                prob1 = answer1[i+1].substring(0,CHECKLENGTH);
+            }else{
+                prob1 = answer1[i+1];
+            }
+            if(answer2[i+1].length()>CHECKLENGTH){
+                prob2 = answer2[i+1].substring(0,CHECKLENGTH);
+            }else{
+                prob2 = answer2[i+1];
+            }
+            answerMap1.put(answer1[i],prob1);
+            answerMap2.put(answer2[i],prob2);
         }
         System.out.println("literal\t\tprobability");
         for (Map.Entry<String,String> ent : answerMap1.entrySet()) {
