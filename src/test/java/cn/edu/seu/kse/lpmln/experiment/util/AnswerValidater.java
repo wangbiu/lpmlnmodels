@@ -12,7 +12,7 @@ import java.util.Map;
 public class AnswerValidater {
     public static int CHECKLENGTH = 5;
 
-    public boolean isConsistent(LPMLNSolver sover1, LPMLNSolver solver2){
+    public static boolean isConsistent(LPMLNSolver sover1, LPMLNSolver solver2){
         String[] answer1 = sover1.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ").split(" ");
         String[] answer2 = sover1.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ").split(" ");
         int ansLen;
@@ -26,7 +26,9 @@ public class AnswerValidater {
             answerMap1.put(answer1[i],answer1[i+1].substring(0,CHECKLENGTH));
             answerMap2.put(answer2[i],answer2[i+1]).substring(0,CHECKLENGTH);
         }
+        System.out.println("literal\t\tprobability");
         for (Map.Entry<String,String> ent : answerMap1.entrySet()) {
+            System.out.println(ent.getKey()+"\t\t"+ent.getValue());
             String prob2 = answerMap2.get(ent.getKey());
             if(prob2==null || !prob2.equals(ent.getValue())){
                 return false;
