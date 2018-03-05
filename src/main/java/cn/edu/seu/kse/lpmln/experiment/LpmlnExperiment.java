@@ -1,11 +1,9 @@
 package cn.edu.seu.kse.lpmln.experiment;
 
-import cn.edu.seu.kse.lpmln.experiment.util.AnswerValidater;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
-import org.junit.Before;
-import org.junit.Test;
+import cn.edu.seu.kse.lpmln.util.AnswerValidater;
 
 import java.io.File;
 
@@ -20,19 +18,15 @@ public class LpmlnExperiment {
 
     public static final String SIMPLE_EXAMPLE = "asu_2asp_SimpleExample.lp";
 
-
-    @Before
-    public void init(){
+    public LpmlnExperiment(){
         baseSolver = new LPMLNBaseSolver();
         augmentedSolver = new AugmentedSolver();
     }
 
-    @Test
     public void testAll(){
         simpletest();
     }
 
-    @Test
     public void simpletest(){
         test(SIMPLE_EXAMPLE);
     }
@@ -43,6 +37,8 @@ public class LpmlnExperiment {
         augmentedSolver.solve(toTest);
         if(AnswerValidater.isConsistent(baseSolver,augmentedSolver)){
             System.out.println("Test "+filename+" passed.");
+        }else{
+            System.out.println("Test "+filename+" failed!!!!!!!!!!!");
         }
     }
 }
