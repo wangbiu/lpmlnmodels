@@ -39,11 +39,16 @@ public class AugmentedSolver extends LPMLNBaseSolver {
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile){
+        //开始计时
+        times.totalTime.start();
+
         //解析LPMLN程序
         lpmlnProgram = parse(ruleFile);
 
+        times.parallelTime.start();
         //拆分为多个增强子集
         augmentedSubsets = partitioner.partition(lpmlnProgram,threadNums);
+        times.parallelTime.pause();
 
         //增强子集求解
         augmentedSubsets.forEach(subset -> {
@@ -55,8 +60,13 @@ public class AugmentedSolver extends LPMLNBaseSolver {
         //等待增强子集求解完成
         threadPool.waitDone();
 
+        times.parallelTime.start();
         weightedAs =calculateProbability(filtWas(collectWas()));
+        times.parallelTime.stop();
 
+        //结束计时
+        times.solveTime.stop();
+        times.totalTime.stop();
         return weightedAs;
     }
 

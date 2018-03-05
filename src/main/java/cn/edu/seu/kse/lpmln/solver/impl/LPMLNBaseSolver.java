@@ -8,6 +8,7 @@ import cn.edu.seu.kse.lpmln.solver.AspSolver;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
+import cn.edu.seu.kse.lpmln.util.TimeStatistics;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 
 import java.io.File;
@@ -32,21 +33,27 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     final protected int UNIX = 0;
     protected double totalSolverTime;
     protected SolverStats sta = new SolverStats();
-    public static final String LPSUFFIX = ".lp";
+    protected static final String LPSUFFIX = ".lp";
     protected LPMLN2ASPTranslator translator;
     protected AspSolver aspSolver;
     protected LpmlnProgram lpmlnProgram;
+    protected TimeStatistics times;
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
+        times = new TimeStatistics();
         aspSolver = new ClingoSolver();
     }
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile) {
+        //开始计时
+        times.totalTime.start();
+
         List<WeightedAnswerSet> result;
         List<WeightedAnswerSet> aspResult;
 
+        times.solveTime.start();
         //解析LPMLN程序
         lpmlnProgram = parse(ruleFile);
 
@@ -63,6 +70,9 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         result = calculateProbability(filtWas(aspResult));
         weightedAs = result;
 
+        //结束计时
+        times.solveTime.stop();
+        times.totalTime.stop();
         return result;
     }
 
