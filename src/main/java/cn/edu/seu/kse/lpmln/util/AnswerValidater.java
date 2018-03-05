@@ -42,7 +42,7 @@ public class AnswerValidater {
         for (Map.Entry<String,String> ent : answerMap1.entrySet()) {
             System.out.println(ent.getKey()+"\t\t"+ent.getValue());
             String prob2 = answerMap2.get(ent.getKey());
-            if(prob2==null || !prob2.equals(ent.getValue())){
+            if(prob2==null || !(Double.parseDouble(prob2)==Double.parseDouble(ent.getValue()))){
                 return false;
             }
         }
