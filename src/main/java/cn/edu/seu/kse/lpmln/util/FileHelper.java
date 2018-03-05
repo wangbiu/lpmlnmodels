@@ -3,16 +3,16 @@ package cn.edu.seu.kse.lpmln.util;
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author 许鸿翔
  * @date 2018/1/15
  */
 public class FileHelper {
-    public static List<File> tempFiles = new ArrayList<>();
+    public static List<File> tempFiles = new CopyOnWriteArrayList<>();
 
     public static void cleanFiles(){
         if(LPMLNApp.iskeeptranslation){
