@@ -3,7 +3,7 @@ package cn.edu.seu.kse.lpmln.experiment;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
-import cn.edu.seu.kse.lpmln.util.AnswerValidater;
+import cn.edu.seu.kse.lpmln.experiment.util.AnswerValidater;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ import java.io.File;
 public class LpmlnExperiment {
     protected LPMLNSolver baseSolver;
     protected LPMLNSolver augmentedSolver;
-    public static final String PROGRAM_PATH = "./src/test/resources/experiment/lpmln/";
+    public static final String PROGRAM_PATH = "/lpmlnmodels/experiment/lpmln/";
 
     public static final String SIMPLE_EXAMPLE = "asu_2asp_SimpleExample.lp";
 

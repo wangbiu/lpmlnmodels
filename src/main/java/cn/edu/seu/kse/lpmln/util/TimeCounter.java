@@ -7,7 +7,7 @@ import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
  * @date 2018/3/2
  */
 public class TimeCounter {
-    protected double time;
+    public double time;
     protected long startTime;
     protected boolean used = false;
 

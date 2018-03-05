@@ -18,9 +18,7 @@ public class LpmlnExperimentTest {
 
     @Test
     public void simpletest() {
-        for(int i=0;i<3;i++) {
-            new LpmlnExperiment().simpletest();
-        }
+        experiment.simpletest();
     }
 
     @After

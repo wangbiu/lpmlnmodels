@@ -8,7 +8,7 @@ import cn.edu.seu.kse.lpmln.solver.AspSolver;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
-import cn.edu.seu.kse.lpmln.util.TimeStatistics;
+import cn.edu.seu.kse.lpmln.experiment.util.TimeStatistics;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 
 import java.io.File;

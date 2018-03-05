@@ -1,4 +1,6 @@
-package cn.edu.seu.kse.lpmln.util;
+package cn.edu.seu.kse.lpmln.experiment.util;
+
+import cn.edu.seu.kse.lpmln.util.TimeCounter;
 
 /**
  * @author 许鸿翔
