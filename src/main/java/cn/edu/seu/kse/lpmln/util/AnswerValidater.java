@@ -1,4 +1,4 @@
-package cn.edu.seu.kse.lpmln.experiment.util;
+package cn.edu.seu.kse.lpmln.util;
 
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 
