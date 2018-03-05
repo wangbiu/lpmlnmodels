@@ -47,6 +47,8 @@ public class AugmentedSubset implements Cloneable{
         AugmentedSubset cloned = new AugmentedSubset(lpmlnProgram);
         cloned.satIdx.addAll(satIdx);
         cloned.unsatIdx.addAll(unsatIdx);
+        cloned.unknownIdx.clear();
+        cloned.unknownIdx.addAll(unknownIdx);
         return cloned;
     }
 
