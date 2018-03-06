@@ -47,12 +47,14 @@ public class AugmentedSolver extends LPMLNBaseSolver {
         times.solveTime.start();
         //解析LPMLN程序
         lpmlnProgram = parse(ruleFile);
+        times.solveTime.pause();
 
         times.parallelTime.start();
         //拆分为多个增强子集
         augmentedSubsets = partitioner.partition(lpmlnProgram,threadNums);
         times.parallelTime.pause();
 
+        times.solveTime.restart();
         //增强子集求解
         augmentedSubsets.forEach(subset -> {
             AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver(subset);
@@ -62,13 +64,12 @@ public class AugmentedSolver extends LPMLNBaseSolver {
 
         //等待增强子集求解完成
         threadPool.waitDone();
+        times.solveTime.stop();
 
         times.parallelTime.restart();
         weightedAs =calculateProbability(filtWas(collectWas()));
         times.parallelTime.stop();
 
-        //结束计时
-        times.solveTime.stop();
         times.totalTime.stop();
         return weightedAs;
     }
