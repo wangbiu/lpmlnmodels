@@ -41,12 +41,12 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
-        times = new TimeStatistics();
         aspSolver = new ClingoSolver();
     }
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile) {
+        times = new TimeStatistics();
         //开始计时
         times.totalTime.start();
 
@@ -278,5 +278,9 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     public void setWeightedAs(List<WeightedAnswerSet> weightedAs) {
         this.weightedAs = weightedAs;
+    }
+
+    public TimeStatistics getTimes() {
+        return times;
     }
 }

@@ -1,44 +1,63 @@
 package cn.edu.seu.kse.lpmln.experiment;
 
+import cn.edu.seu.kse.lpmln.experiment.util.AnswerValidater;
+import cn.edu.seu.kse.lpmln.experiment.util.ExperimentReporter;
+import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
-import cn.edu.seu.kse.lpmln.experiment.util.AnswerValidater;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 许鸿翔
  * @date 2018/2/26
  */
 public class LpmlnExperiment {
-    protected LPMLNSolver baseSolver;
-    protected LPMLNSolver augmentedSolver;
+    protected List<LPMLNBaseSolver> solvers;
     public static final String PROGRAM_PATH = "/lpmlnmodels/experiment/lpmln/";
-
     public static final String SIMPLE_EXAMPLE = "asu_2asp_SimpleExample.lp";
+    private static Logger logger= LogManager.getLogger(LpmlnExperiment.class.getName());
 
     public LpmlnExperiment(){
-        baseSolver = new LPMLNBaseSolver();
-        augmentedSolver = new AugmentedSolver();
+        solvers = new ArrayList<>();
     }
 
     public void testAll(){
         simpletest();
     }
 
+
+
     public void simpletest(){
-        test(SIMPLE_EXAMPLE);
+        solvers.add(new LPMLNBaseSolver());
+        solvers.add(new AugmentedSolver());
+        ExperimentReport report = test(SIMPLE_EXAMPLE);
+        ExperimentReporter.report(report);
     }
 
-    public void test(String filename){
+    public ExperimentReport test(String filename){
+        ExperimentReport report = new ExperimentReport();
         File toTest = new File(PROGRAM_PATH+filename);
-        baseSolver.solve(toTest);
-        augmentedSolver.solve(toTest);
-        if(AnswerValidater.isConsistent(baseSolver,augmentedSolver)){
-            System.out.println("Test "+filename+" passed.");
-        }else{
-            System.out.println("Test "+filename+" failed!!!!!!!!!!!");
+        solvers.forEach(lpmlnSolver -> lpmlnSolver.solve(toTest));
+        LPMLNSolver baseline = solvers.get(0);
+        for(int i=1;i<solvers.size();i++){
+            if(!AnswerValidater.isConsistent(baseline,solvers.get(i))){
+                report.setStatus("inConsistent");
+                System.out.println("Test "+filename+" failed!!!!!!!!!!!");
+            }
         }
+        logger.info("Test "+filename+" passed.");
+
+        report.setExperimentName(filename);
+        report.getSolvers().addAll(solvers);
+        for (LPMLNBaseSolver solver : solvers) {
+            report.getTime().add(solver.getTimes().toString());
+        }
+        return report;
     }
 }

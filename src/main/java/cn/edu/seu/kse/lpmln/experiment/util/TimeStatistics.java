@@ -27,4 +27,17 @@ public class TimeStatistics {
         System.out.println(prefix);
         printTime();
     }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("totalTime:").append(totalTime.time).append("\t");
+        if(solveTime.getStatus()== TimeCounter.Status.STOPPED) {
+            sb.append("solveTime:").append(solveTime.time).append("\t");
+        }
+        if(parallelTime.getStatus()== TimeCounter.Status.STOPPED) {
+            sb.append("parallelTime:").append(parallelTime.time).append("\t");
+        }
+        return sb.toString();
+    }
 }

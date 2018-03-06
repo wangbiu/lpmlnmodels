@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
+import cn.edu.seu.kse.lpmln.experiment.util.TimeStatistics;
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
@@ -39,9 +40,11 @@ public class AugmentedSolver extends LPMLNBaseSolver {
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile){
+        times = new TimeStatistics();
         //开始计时
         times.totalTime.start();
 
+        times.solveTime.start();
         //解析LPMLN程序
         lpmlnProgram = parse(ruleFile);
 
@@ -60,7 +63,7 @@ public class AugmentedSolver extends LPMLNBaseSolver {
         //等待增强子集求解完成
         threadPool.waitDone();
 
-        times.parallelTime.start();
+        times.parallelTime.restart();
         weightedAs =calculateProbability(filtWas(collectWas()));
         times.parallelTime.stop();
 

@@ -9,38 +9,53 @@ import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 public class TimeCounter {
     public double time;
     protected long startTime;
-    protected boolean used = false;
+    protected Status status;
+    public enum Status {READY, RUNNING, PAUSED, STOPPED}
 
     public TimeCounter(){
         time = 0;
         startTime = 0;
+        status = Status.READY;
     }
 
     public void start(){
-        if(startTime!=0){
+        if(status!=Status.READY){
             throw new SolveException("Timer start incorrect");
         }
+        status = Status.RUNNING;
         startTime = System.currentTimeMillis();
     }
 
     public void stop(){
-        if(used){
+        if(status!=Status.RUNNING){
             throw new SolveException("Timer stop incorrect");
         }else{
             time += ((double)(System.currentTimeMillis()-startTime))/1000;
+            status = Status.STOPPED;
         }
     }
 
     public void pause(){
-        if(used){
+        if(status!=Status.RUNNING){
             throw new SolveException("Timer pause incorrect");
         }else{
             time += ((double)(System.currentTimeMillis()-startTime))/1000;
+            status = Status.PAUSED;
+            startTime = 0;
         }
-        startTime = 0;
+
     }
 
-    public double getTime() {
-        return time;
+    public void restart(){
+        if(status!=Status.PAUSED){
+            throw new SolveException("Timer stop incorrect");
+        }else{
+            startTime = System.currentTimeMillis();
+            status = Status.RUNNING;
+        }
+    }
+
+    public Status getStatus() {
+        return status;
     }
 }
