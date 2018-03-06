@@ -20,8 +20,8 @@ public class ExperimentReporter {
     private static Logger logger= LogManager.getLogger(ExperimentReporter.class.getName());
 
     public static void report(ExperimentReport report){
-        String filename = "report_"
-                +new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())
+        String filename = "report("+report.getExperimentName()+")"
+                +new SimpleDateFormat("_yyyy-MM-dd-HH-mm-ss").format(new Date())
                 +".txt";
         File reportFile = new File(REPORT_PATH+filename);
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(reportFile))) {
@@ -41,6 +41,13 @@ public class ExperimentReporter {
             }
             sb.append(System.lineSeparator());
             sb.append(report.getSolvers().get(0).getMarginalDistribution()).append(System.lineSeparator());
+            sb.append(System.lineSeparator());
+
+            for (int i=0;i<report.getSolvers().size();i++){
+                sb.append(report.getSolvers().get(i).getClass().getSimpleName()).append(":").append(System.lineSeparator())
+                        .append(report.getSolvers().get(i).getExperimentInfo()).append(System.lineSeparator()).append(System.lineSeparator());
+            }
+
             bw.write(sb.toString());
         } catch (IOException e) {
             logger.error("Fail to generate experiment report.");

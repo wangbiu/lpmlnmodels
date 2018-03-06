@@ -65,6 +65,13 @@ public class LPMLNOpts {
         Option parallel=new Option("l", "parallel", false, "optional, enable parallel reasoning");
         parallel.setRequired(false);
 
+        //实验
+        Option experiment=new Option("e", "experiment", true, "optional, experiment mode");
+        experiment.setRequired(false);
+        experiment.setArgName("experiment");
+        experiment.setValueSeparator(' ');
+        experiment.setOptionalArg(false);
+
         Options opts=new Options();
         opts.addOption(help);
         opts.addOption(margianl);
@@ -76,6 +83,7 @@ public class LPMLNOpts {
         opts.addOption(transoutfile);
         opts.addOption(transinfile);
         opts.addOption(parallel);
+        opts.addOption(experiment);
 
         return opts;
     }

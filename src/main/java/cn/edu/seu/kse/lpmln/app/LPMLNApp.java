@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.app;
 
 import cn.edu.seu.kse.lpmln.exception.cmdlineexception.CommandLineException;
+import cn.edu.seu.kse.lpmln.experiment.LpmlnExperiment;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
@@ -38,6 +39,13 @@ public class LPMLNApp {
 
         if(cmd.hasOption("help") || cmd.getOptions().length == 0){
             printHelp();
+            return;
+        }
+
+        if(cmd.hasOption("experiment")){
+            String filename = cmd.getOptionValue("experiment");
+            new LpmlnExperiment().testSpecified(filename);
+            FileHelper.cleanFiles();
             return;
         }
 

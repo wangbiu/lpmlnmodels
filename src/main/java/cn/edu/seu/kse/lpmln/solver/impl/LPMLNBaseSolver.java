@@ -38,6 +38,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     protected AspSolver aspSolver;
     protected LpmlnProgram lpmlnProgram;
     protected TimeStatistics times;
+    protected String experimentInfo = "";
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
@@ -241,6 +242,10 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         sb.append(System.lineSeparator());
         maximalTime = sb.toString();
         return maxWeightAs;
+    }
+
+    public String getExperimentInfo(){
+        return experimentInfo;
     }
 
     @Override

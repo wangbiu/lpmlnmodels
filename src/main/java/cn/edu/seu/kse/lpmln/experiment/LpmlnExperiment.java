@@ -24,23 +24,31 @@ public class LpmlnExperiment {
     private static Logger logger= LogManager.getLogger(LpmlnExperiment.class.getName());
 
     public LpmlnExperiment(){
-        solvers = new ArrayList<>();
+
     }
 
     public void testAll(){
         simpletest();
     }
 
-
-
     public void simpletest(){
-        solvers.add(new LPMLNBaseSolver());
-        solvers.add(new AugmentedSolver());
         ExperimentReport report = test(SIMPLE_EXAMPLE);
         ExperimentReporter.report(report);
     }
 
+    public void testSpecified(String filename){
+        ExperimentReport report = test(filename);
+        ExperimentReporter.report(report);
+    }
+
+    public void prepareSolvers(){
+        solvers = new ArrayList<>();
+        solvers.add(new LPMLNBaseSolver());
+        solvers.add(new AugmentedSolver());
+    }
+
     public ExperimentReport test(String filename){
+        prepareSolvers();
         ExperimentReport report = new ExperimentReport();
         File toTest = new File(PROGRAM_PATH+filename);
         solvers.forEach(lpmlnSolver -> lpmlnSolver.solve(toTest));

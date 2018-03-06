@@ -80,6 +80,7 @@ public class AugmentedSolver extends LPMLNBaseSolver {
         subsetSolvers.forEach(solver->{
             collectedWas.addAll(solver.getAllWeightedAs());
             logger.debug(solver.getAllWeightedAs().size()+" was collected");
+            experimentInfo += solver.getAllWeightedAs().size()+" was collected"+System.lineSeparator();
         });
         return collectedWas;
     }
