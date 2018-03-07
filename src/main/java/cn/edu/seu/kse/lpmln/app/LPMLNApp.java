@@ -44,6 +44,8 @@ public class LPMLNApp {
 
         if(cmd.hasOption("experiment")){
             String filename = cmd.getOptionValue("experiment");
+            //加载类，消除类加载影响
+            new LpmlnExperiment().testSpecified("asu_2asp_SimpleExample.lp");
             new LpmlnExperiment().testSpecified(filename);
             FileHelper.cleanFiles();
             return;
