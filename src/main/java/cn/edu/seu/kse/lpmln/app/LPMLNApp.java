@@ -2,6 +2,8 @@ package cn.edu.seu.kse.lpmln.app;
 
 import cn.edu.seu.kse.lpmln.exception.cmdlineexception.CommandLineException;
 import cn.edu.seu.kse.lpmln.experiment.LpmlnExperiment;
+import cn.edu.seu.kse.lpmln.experiment.util.ExperimentReporter;
+import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
@@ -29,6 +31,7 @@ public class LPMLNApp {
     private static boolean isMax=false;
     private static boolean isMarginal=false;
     private static LPMLNBaseSolver solver;
+    private static String reportFileName = null;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 
@@ -46,9 +49,7 @@ public class LPMLNApp {
             String filename = cmd.getOptionValue("experiment");
             //加载类，消除类加载影响
             new LpmlnExperiment().testSpecified("asu_2asp_SimpleExample.lp");
-            new LpmlnExperiment().testSpecified(filename);
-            FileHelper.cleanFiles();
-            return;
+            reportFileName = filename;
         }
 
         if(cmd.hasOption("translation-input-file") && cmd.hasOption("input-file")){
@@ -69,11 +70,18 @@ public class LPMLNApp {
 
 
         }else if(cmd.hasOption("translation-input-file")){
-            File lpmlnrulefile = new File(cmd.getOptionValue("translation-input-file"));
+            lpmlnfile = cmd.getOptionValue("translation-input-file");
+            File lpmlnrulefile = new File(lpmlnfile);
             //求解
             solver.solveTranslated(lpmlnrulefile);
 
             printResult(solver);
+        }
+
+        if(reportFileName!=null){
+            ExperimentReport report = solver.getReport();
+            report.setExperimentName(lpmlnfile);
+            ExperimentReporter.report(report,reportFileName);
         }
 
         FileHelper.cleanFiles();
@@ -152,10 +160,28 @@ public class LPMLNApp {
 //                throw new RuntimeException("unsupported ASP solver "+aspsolver);
 //            }
         }
+
+        //TODO:给推理机使用一个统一框架
         if(cmd.hasOption("parallel")){
             solver = new AugmentedSolver();
         }else{
             solver = new LPMLNBaseSolver();
+        }
+
+        //TODO:推理机使用的定义方式需要修改
+        if(cmd.hasOption("lpmln-solver")){
+            String solverTag = cmd.getOptionValue("lpmln-solver");
+            switch (solverTag){
+                case "a" :
+                    solver = new AugmentedSolver();
+                    break;
+                case "b" :
+                    solver = new LPMLNBaseSolver();
+                    break;
+                default :
+                    solver = new LPMLNBaseSolver();
+                    break;
+            }
         }
 
         if(cmd.hasOption("marginal-probability-reasoning")){

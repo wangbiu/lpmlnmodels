@@ -66,11 +66,18 @@ public class LPMLNOpts {
         parallel.setRequired(false);
 
         //实验
-        Option experiment=new Option("e", "experiment", true, "optional, experiment mode");
+        Option experiment=new Option("j", "report-json", true, "optional, generate json report");
         experiment.setRequired(false);
-        experiment.setArgName("experiment");
+        experiment.setArgName("report-name");
         experiment.setValueSeparator(' ');
-        experiment.setOptionalArg(false);
+        experiment.setOptionalArg(true);
+
+        //LPMLN推理机
+        Option lpmlnReasoner=new Option("r", "lpmln-solver",true,"required, specify used ASP solver, dlv and clingo are available");
+        lpmlnReasoner.setValueSeparator(' ');
+        lpmlnReasoner.setRequired(false);
+        lpmlnReasoner.setOptionalArg(false);
+        lpmlnReasoner.setArgName("lpmln-solver-name");
 
         Options opts=new Options();
         opts.addOption(help);
