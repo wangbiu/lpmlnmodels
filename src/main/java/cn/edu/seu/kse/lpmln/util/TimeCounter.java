@@ -10,7 +10,7 @@ public class TimeCounter {
     public double time;
     protected long startTime;
     protected Status status;
-    public enum Status {READY, RUNNING, PAUSED, STOPPED}
+    public enum Status {READY, RUNNING, STOPPED}
 
     public TimeCounter(){
         time = 0;
@@ -19,7 +19,7 @@ public class TimeCounter {
     }
 
     public void start(){
-        if(status!=Status.READY){
+        if(status==Status.RUNNING){
             throw new SolveException("Timer start incorrect");
         }
         status = Status.RUNNING;
@@ -32,26 +32,6 @@ public class TimeCounter {
         }else{
             time += ((double)(System.currentTimeMillis()-startTime))/1000;
             status = Status.STOPPED;
-        }
-    }
-
-    public void pause(){
-        if(status!=Status.RUNNING){
-            throw new SolveException("Timer pause incorrect");
-        }else{
-            time += ((double)(System.currentTimeMillis()-startTime))/1000;
-            status = Status.PAUSED;
-            startTime = 0;
-        }
-
-    }
-
-    public void restart(){
-        if(status!=Status.PAUSED){
-            throw new SolveException("Timer stop incorrect");
-        }else{
-            startTime = System.currentTimeMillis();
-            status = Status.RUNNING;
         }
     }
 
