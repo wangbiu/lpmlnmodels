@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver;
 
+import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 
 import java.io.File;
@@ -63,6 +64,10 @@ public interface LPMLNSolver {
      */
     String getMarginalDistribution();
 
-
+    /**
+     * 获取实验报告
+     * @return 实验报告
+     */
+    ExperimentReport getReport();
 
 }

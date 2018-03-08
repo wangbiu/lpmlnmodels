@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.solver.impl;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
+import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
@@ -8,7 +9,7 @@ import cn.edu.seu.kse.lpmln.solver.AspSolver;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
-import cn.edu.seu.kse.lpmln.experiment.util.TimeStatistics;
+import cn.edu.seu.kse.lpmln.util.TimeCounter;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 
 import java.io.File;
@@ -31,30 +32,31 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     protected SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSSS");
     final protected int WIN_NT = 1;
     final protected int UNIX = 0;
-    protected double totalSolverTime;
     protected SolverStats sta = new SolverStats();
     protected static final String LPSUFFIX = ".lp";
     protected LPMLN2ASPTranslator translator;
     protected AspSolver aspSolver;
     protected LpmlnProgram lpmlnProgram;
-    protected TimeStatistics times;
-    protected String experimentInfo = "";
+    protected ExperimentReport report = null;
+    protected TimeCounter totalTime;
+    protected TimeCounter solveTime;
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
         aspSolver = new ClingoSolver();
+        totalTime = new TimeCounter();
+        solveTime = new TimeCounter();
     }
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile) {
-        times = new TimeStatistics();
         //开始计时
-        times.totalTime.start();
+        totalTime.start();
 
         List<WeightedAnswerSet> result;
         List<WeightedAnswerSet> aspResult;
 
-        times.solveTime.start();
+        solveTime.start();
         //解析LPMLN程序
         lpmlnProgram = parse(ruleFile);
 
@@ -72,8 +74,8 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         weightedAs = result;
 
         //结束计时
-        times.solveTime.stop();
-        times.totalTime.stop();
+        solveTime.stop();
+        totalTime.stop();
         return result;
     }
 
@@ -244,8 +246,17 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         return maxWeightAs;
     }
 
-    public String getExperimentInfo(){
-        return experimentInfo;
+    @Override
+    public ExperimentReport getReport(){
+        if(report==null){
+            report = new ExperimentReport();
+            report.setSolver(this.getClass().getCanonicalName());
+            report.setTotalTime(String.valueOf(totalTime.time));
+            report.setSolveTime(String.valueOf(solveTime.time));
+            report.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            report.setProcessors("1");
+        }
+        return report;
     }
 
     @Override
@@ -283,9 +294,5 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     public void setWeightedAs(List<WeightedAnswerSet> weightedAs) {
         this.weightedAs = weightedAs;
-    }
-
-    public TimeStatistics getTimes() {
-        return times;
     }
 }
