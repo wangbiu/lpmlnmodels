@@ -1,7 +1,7 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
-import cn.edu.seu.kse.lpmln.experiment.util.TimeStatistics;
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
+import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
@@ -19,6 +19,7 @@ import java.util.List;
 public class AugmentedSolver extends LPMLNBaseSolver {
     //通过增强子集 并行推理
     //Wang B, Zhang Z. A Parallel LP^{MLN Solver: Primary Report[C]// Aspocp. 2017.
+    //允许的子程序数量
     private int threadNums;
     private List<String> translatedFiles;
     private List<AugmentedSubsetSolver> subsetSolvers;
@@ -40,21 +41,18 @@ public class AugmentedSolver extends LPMLNBaseSolver {
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile){
-        times = new TimeStatistics();
         //开始计时
-        times.totalTime.start();
+        totalTime.start();
 
-        times.solveTime.start();
+        solveTime.start();
         //解析LPMLN程序
         lpmlnProgram = parse(ruleFile);
-        times.solveTime.pause();
+        solveTime.stop();
 
-        times.parallelTime.start();
         //拆分为多个增强子集
         augmentedSubsets = partitioner.partition(lpmlnProgram,threadNums);
-        times.parallelTime.pause();
 
-        times.solveTime.restart();
+        solveTime.start();
         //增强子集求解
         augmentedSubsets.forEach(subset -> {
             AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver(subset);
@@ -64,13 +62,11 @@ public class AugmentedSolver extends LPMLNBaseSolver {
 
         //等待增强子集求解完成
         threadPool.waitDone();
-        times.solveTime.stop();
+        solveTime.stop();
 
-        times.parallelTime.restart();
         weightedAs =calculateProbability(filtWas(collectWas()));
-        times.parallelTime.stop();
 
-        times.totalTime.stop();
+        totalTime.stop();
         return weightedAs;
     }
 
@@ -80,9 +76,15 @@ public class AugmentedSolver extends LPMLNBaseSolver {
         subsetSolvers.forEach(solver->{
             collectedWas.addAll(solver.getAllWeightedAs());
             logger.debug(solver.getAllWeightedAs().size()+" was collected");
-            experimentInfo += solver.getAllWeightedAs().size()+" was collected"+System.lineSeparator();
         });
         return collectedWas;
+    }
+
+    @Override
+    public ExperimentReport getReport(){
+        super.getReport();
+        report.setProcessors(String.valueOf(threadNums));
+        return report;
     }
 
     public List<String> getTranslatedFiles() {
