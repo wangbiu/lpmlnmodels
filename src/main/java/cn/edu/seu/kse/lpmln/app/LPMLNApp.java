@@ -1,7 +1,6 @@
 package cn.edu.seu.kse.lpmln.app;
 
 import cn.edu.seu.kse.lpmln.exception.cmdlineexception.CommandLineException;
-import cn.edu.seu.kse.lpmln.experiment.LpmlnExperiment;
 import cn.edu.seu.kse.lpmln.experiment.util.ExperimentReporter;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
@@ -48,7 +47,7 @@ public class LPMLNApp {
         if(cmd.hasOption("experiment")){
             String filename = cmd.getOptionValue("experiment");
             //加载类，消除类加载影响
-            new LpmlnExperiment().testSpecified("asu_2asp_SimpleExample.lp");
+            //new LpmlnExperiment().testSpecified("asu_2asp_SimpleExample.lp");
             reportFileName = filename;
         }
 
