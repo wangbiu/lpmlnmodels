@@ -73,7 +73,7 @@ public class LPMLNOpts {
         experiment.setOptionalArg(true);
 
         //LPMLN推理机
-        Option lpmlnReasoner=new Option("r", "lpmln-solver",true,"required, specify used ASP solver, dlv and clingo are available");
+        Option lpmlnReasoner=new Option("n", "lpmln-solver",true,"optional, specify used LPMLN solver");
         lpmlnReasoner.setValueSeparator(' ');
         lpmlnReasoner.setRequired(false);
         lpmlnReasoner.setOptionalArg(false);
@@ -91,6 +91,7 @@ public class LPMLNOpts {
         opts.addOption(transinfile);
         opts.addOption(parallel);
         opts.addOption(experiment);
+        opts.addOption(lpmlnReasoner);
 
         return opts;
     }

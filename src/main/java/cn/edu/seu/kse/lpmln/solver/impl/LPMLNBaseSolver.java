@@ -250,7 +250,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     public ExperimentReport getReport(){
         if(report==null){
             report = new ExperimentReport();
-            report.setSolver(this.getClass().getCanonicalName());
+            report.setSolver(this.getClass().getSimpleName());
             report.setTotalTime(String.valueOf(totalTime.time));
             report.setSolveTime(String.valueOf(solveTime.time));
             report.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));

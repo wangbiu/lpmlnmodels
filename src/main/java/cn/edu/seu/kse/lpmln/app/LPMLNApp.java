@@ -44,8 +44,8 @@ public class LPMLNApp {
             return;
         }
 
-        if(cmd.hasOption("experiment")){
-            String filename = cmd.getOptionValue("experiment");
+        if(cmd.hasOption("report-json")){
+            String filename = cmd.getOptionValue("report-json");
             //加载类，消除类加载影响
             //new LpmlnExperiment().testSpecified("asu_2asp_SimpleExample.lp");
             reportFileName = filename;

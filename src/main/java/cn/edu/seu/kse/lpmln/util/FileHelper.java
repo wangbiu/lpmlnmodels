@@ -22,7 +22,11 @@ public class FileHelper {
                 }
             });
         }else{
-            tempFiles.forEach(File::delete);
+            tempFiles.forEach(file -> {
+                if(file.getName().endsWith(".tmp")||file.getName().endsWith(".lp")){
+                    file.delete();
+                }
+            });
         }
 
     }
