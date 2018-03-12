@@ -1,4 +1,4 @@
-package cn.edu.seu.kse.lpmln.util.commandLine;
+package cn.edu.seu.kse.lpmln.util.commandline;
 
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
@@ -18,7 +18,7 @@ public class AdvancedCommandLine extends BaseCommandLine {
 
     protected LinkedBlockingDeque<String> progOut;
     protected int ansProcessorNums=2;
-    protected List<ClingoResultProcessor> processors;
+    protected List<cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor> processors;
     protected List<WeightedAnswerSet> was=null;
     final public String killSig="--END of Process--";
     private static Logger logger= LogManager.getLogger(AdvancedCommandLine.class.getName());
@@ -31,9 +31,9 @@ public class AdvancedCommandLine extends BaseCommandLine {
     @Override
     protected void startResultProcess(BufferedReader br) throws IOException, InterruptedException {
         processors=new ArrayList<>();
-        ClingoResultProcessor crp;
+        cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor crp;
         for(int i=0;i<ansProcessorNums;i++){
-            crp=new ClingoResultProcessor(progOut,killSig);
+            crp=new cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor(progOut,killSig);
             processors.add(crp);
             threadPool.execute(crp);
         }
@@ -80,7 +80,7 @@ public class AdvancedCommandLine extends BaseCommandLine {
         threadPool.waitDone();
         logger.debug("command execution done.");
         was=new ArrayList<>();
-        for(ClingoResultProcessor crp:processors){
+        for(cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor crp:processors){
             if(crp.getWas() != null){
                 was.addAll(crp.getWas());
             }
@@ -110,11 +110,11 @@ public class AdvancedCommandLine extends BaseCommandLine {
         this.was = was;
     }
 
-    public List<ClingoResultProcessor> getProcessors() {
+    public List<cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor> getProcessors() {
         return processors;
     }
 
-    public void setProcessors(List<ClingoResultProcessor> processors) {
+    public void setProcessors(List<cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor> processors) {
         this.processors = processors;
     }
 

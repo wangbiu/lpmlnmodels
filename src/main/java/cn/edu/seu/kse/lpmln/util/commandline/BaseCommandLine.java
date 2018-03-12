@@ -1,4 +1,4 @@
-package cn.edu.seu.kse.lpmln.util.commandLine;
+package cn.edu.seu.kse.lpmln.util.commandline;
 
 import cn.edu.seu.kse.lpmln.util.ErrorStreamLogger;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
