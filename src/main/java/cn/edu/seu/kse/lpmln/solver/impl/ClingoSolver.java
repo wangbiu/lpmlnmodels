@@ -4,7 +4,7 @@ import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.AspSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
-import cn.edu.seu.kse.lpmln.util.commandLine.AdvancedCommandLine;
+import cn.edu.seu.kse.lpmln.util.commandline.AdvancedCommandLine;
 
 import java.io.File;
 import java.io.IOException;

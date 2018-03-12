@@ -97,4 +97,15 @@
       </plugin>
     </plugins>
   </build>
+
+  <distributionManagement>
+    <repository>
+      <id>kse-release</id>
+      <url>http://223.3.65.233:8082/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>kse-snapshot</id>
+      <url>http://223.3.65.233:8082/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

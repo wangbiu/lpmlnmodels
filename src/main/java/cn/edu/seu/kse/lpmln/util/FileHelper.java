@@ -43,6 +43,9 @@ public class FileHelper {
     public static void writeFile(File file, String out){
         try(BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"))){
             tempFiles.add(file);
+            if(!file.exists()){
+                file.getParentFile().mkdirs();
+            }
             bw.write(out);
         } catch (IOException e) {
             e.printStackTrace();
