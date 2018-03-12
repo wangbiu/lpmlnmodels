@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>cn.edu.seu.kse.anubis</groupId>
+  <groupId>cn.edu.seu.kse.lpmln</groupId>
   <artifactId>lpmlnmodels</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -68,6 +68,14 @@
       <version>3.5</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>23.6-jre</version>
+    </dependency>
+
+
   </dependencies>
 
 
@@ -78,7 +86,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>cn.edu.seu.kse.anubis.lpmln.LPMLNApp</mainClass>
+              <mainClass>cn.edu.seu.kse.lpmln.app.LPMLNApp</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
@@ -88,4 +96,15 @@
       </plugin>
     </plugins>
   </build>
+
+  <distributionManagement>
+    <repository>
+      <id>kse-release</id>
+      <url>http://223.3.65.233:8082/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>kse-snapshot</id>
+      <url>http://223.3.65.233:8082/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
