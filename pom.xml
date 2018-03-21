@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>cn.edu.seu.kse.lpmln</groupId>
-  <artifactId>lpmlnmodels</artifactId>
+  <artifactId>lpmlnmodels-solver</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
