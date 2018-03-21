@@ -23,6 +23,10 @@ public class BaseCommandLine {
     protected Process cmdProcess;
     private static Logger logger= LogManager.getLogger(BaseCommandLine.class.getName());
 
+    public BaseCommandLine(){
+        this.setThreadPool(new LpmlnThreadPool("tempPool"));
+    }
+
     public BaseCommandLine(LpmlnThreadPool threadPool){
         this.setThreadPool(threadPool);
     }
