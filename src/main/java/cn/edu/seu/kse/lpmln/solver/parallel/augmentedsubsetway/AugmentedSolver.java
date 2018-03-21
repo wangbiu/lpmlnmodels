@@ -1,13 +1,13 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
+import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +38,10 @@ public class AugmentedSolver extends LPMLNBaseSolver {
     }
 
     @Override
-    public List<WeightedAnswerSet> solve(File ruleFile){
-        //解析LPMLN程序
-        lpmlnProgram = parse(ruleFile);
-
+    public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+        lpmlnProgram = program;
         //拆分为多个增强子集
-        augmentedSubsets = partitioner.partition(lpmlnProgram,threadNums);
+        augmentedSubsets = partitioner.partition(program,threadNums);
 
         //增强子集求解
         augmentedSubsets.forEach(subset -> {
