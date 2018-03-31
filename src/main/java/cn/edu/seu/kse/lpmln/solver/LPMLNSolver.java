@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.solver;
 
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
+import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 
 import java.io.File;
@@ -31,6 +32,13 @@ public interface LPMLNSolver {
      * @return 返回结果
      */
     List<WeightedAnswerSet> solveTranslated(File translatedFile);
+
+    /**
+     * 直接求解构建后的程序
+     * @param program
+     * @return
+     */
+    List<WeightedAnswerSet> solveProgram(LpmlnProgram program);
 
     /**
      * 判断文字是否在可能性最大的回答集内

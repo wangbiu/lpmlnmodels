@@ -50,29 +50,10 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile) {
-        //开始计时
         totalTime.start();
-
-        List<WeightedAnswerSet> result;
-        List<WeightedAnswerSet> aspResult;
-
         solveTime.start();
-        //解析LPMLN程序
         lpmlnProgram = parse(ruleFile);
-
-        //翻译为ASP程序
-        translator = new LPMLN2ASPTranslator();
-        String aspProgram = translator.translate(lpmlnProgram);
-
-        //保留翻译后的文件
-        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix + LPSUFFIX), aspProgram);
-
-        //ASP求解
-        aspResult = aspSolver.solve(aspProgram);
-
-        result = calculateProbability(filtWas(aspResult));
-        weightedAs = result;
-
+        List<WeightedAnswerSet> result = solveProgram(lpmlnProgram);
         //结束计时
         solveTime.stop();
         totalTime.stop();
@@ -99,6 +80,28 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
         result = calculateProbability(filtWas(aspResult));
         weightedAs = result;
+        return result;
+    }
+
+    @Override
+    public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+        List<WeightedAnswerSet> result;
+        List<WeightedAnswerSet> aspResult;
+        lpmlnProgram = program;
+
+        //翻译为ASP程序
+        translator = new LPMLN2ASPTranslator();
+        String aspProgram = translator.translate(program);
+
+        //保留翻译后的文件
+        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix + LPSUFFIX), aspProgram);
+
+        //ASP求解
+        aspResult = aspSolver.solve(aspProgram);
+
+        result = calculateProbability(filtWas(aspResult));
+        weightedAs = result;
+
         return result;
     }
 

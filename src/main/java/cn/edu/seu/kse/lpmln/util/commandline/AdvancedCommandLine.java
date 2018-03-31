@@ -18,7 +18,7 @@ public class AdvancedCommandLine extends BaseCommandLine {
 
     protected LinkedBlockingDeque<String> progOut;
     protected int ansProcessorNums=2;
-    protected List<cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor> processors;
+    protected List<ClingoResultProcessor> processors;
     protected List<WeightedAnswerSet> was=null;
     final public String killSig="--END of Process--";
     private static Logger logger= LogManager.getLogger(AdvancedCommandLine.class.getName());
@@ -31,9 +31,9 @@ public class AdvancedCommandLine extends BaseCommandLine {
     @Override
     protected void startResultProcess(BufferedReader br) throws IOException, InterruptedException {
         processors=new ArrayList<>();
-        cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor crp;
+        ClingoResultProcessor crp;
         for(int i=0;i<ansProcessorNums;i++){
-            crp=new cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor(progOut,killSig);
+            crp=new ClingoResultProcessor(progOut,killSig);
             processors.add(crp);
             threadPool.execute(crp);
         }
@@ -80,7 +80,7 @@ public class AdvancedCommandLine extends BaseCommandLine {
         threadPool.waitDone();
         logger.debug("command execution done.");
         was=new ArrayList<>();
-        for(cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor crp:processors){
+        for(ClingoResultProcessor crp:processors){
             if(crp.getWas() != null){
                 was.addAll(crp.getWas());
             }
@@ -110,11 +110,11 @@ public class AdvancedCommandLine extends BaseCommandLine {
         this.was = was;
     }
 
-    public List<cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor> getProcessors() {
+    public List<ClingoResultProcessor> getProcessors() {
         return processors;
     }
 
-    public void setProcessors(List<cn.edu.seu.kse.lpmln.util.commandLine.ClingoResultProcessor> processors) {
+    public void setProcessors(List<ClingoResultProcessor> processors) {
         this.processors = processors;
     }
 

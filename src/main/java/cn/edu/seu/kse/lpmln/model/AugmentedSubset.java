@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.model;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 
 import java.util.HashSet;
@@ -18,7 +19,16 @@ public class AugmentedSubset implements Cloneable{
         satIdx = new HashSet<>();
         unsatIdx = new HashSet<>();
         unknownIdx = new HashSet<>();
-        for (int i=0;i<lpmlnProgram.getRules().size();i++){
+        int unknownMax = lpmlnProgram.getRules().size();
+        if("weak".equals(LPMLNApp.semantics)){
+            for (Rule r : lpmlnProgram.getRules()) {
+                if(!r.isSoft()){
+                    unknownMax--;
+                }
+            }
+        }
+
+        for (int i=0;i<unknownMax;i++){
             unknownIdx.add(i);
         }
         this.lpmlnProgram = lpmlnProgram;
