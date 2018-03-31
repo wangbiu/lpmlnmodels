@@ -86,15 +86,17 @@ public class AugmentedSubsetPartitioner {
     public List<AugmentedSubset> simplePartition(LpmlnProgram lpmlnProgram,int count){
         List<AugmentedSubset> subsets = new ArrayList<>();
         int corepow2 = (int)(Math.log(count)/Math.log(2));
-        corepow2 = Math.min(corepow2,lpmlnProgram.getRules().size());
+        ArrayList<Integer> unknown = new ArrayList<>(new AugmentedSubset(lpmlnProgram).getUnknownIdx());
+        corepow2 = Math.min(corepow2,unknown.size());
         for(int i=0;i<Math.pow(2,corepow2);i++){
             AugmentedSubset as = new AugmentedSubset(lpmlnProgram);
             int toConstruct = i;
             for(int j=0;j<corepow2;j++){
+                int tochange = unknown.get(j);
                 if(toConstruct%2==0){
-                    as.sat(j);
+                    as.sat(tochange);
                 }else{
-                    as.unsat(j);
+                    as.unsat(tochange);
                 }
                 toConstruct>>=1;
             }
