@@ -34,6 +34,12 @@ public class AugmentedSubset implements Cloneable{
         this.lpmlnProgram = lpmlnProgram;
     }
 
+    private AugmentedSubset(){
+        satIdx = new HashSet<>();
+        unsatIdx = new HashSet<>();
+        unknownIdx = new HashSet<>();
+    }
+
     public boolean sat(int idx){
         if(unknownIdx.contains(idx)){
             satIdx.add(idx);
@@ -54,10 +60,10 @@ public class AugmentedSubset implements Cloneable{
 
     @Override
     public AugmentedSubset clone(){
-        AugmentedSubset cloned = new AugmentedSubset(lpmlnProgram);
+        AugmentedSubset cloned = new AugmentedSubset();
+        cloned.setLpmlnProgram(lpmlnProgram);
         cloned.satIdx.addAll(satIdx);
         cloned.unsatIdx.addAll(unsatIdx);
-        cloned.unknownIdx.clear();
         cloned.unknownIdx.addAll(unknownIdx);
         return cloned;
     }
