@@ -12,9 +12,11 @@ public class AugmentedSubsetPartitioner {
     protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_RANDOM;
 
     /**
-     * 增强子集拆分策略 TODO:启发式信息如何实现
+     * SPLIT_SIMPLE：二进制划分
+     * SPLIT_RANDOM：随机划分
+     * HEURISTIC：启发式划分
      */
-    public enum TRANSLATION_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, TEST}
+    public enum TRANSLATION_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, HEURISTIC,TEST}
 
     //输入：原规则，翻译后的规则文本
     //输出：增强子集文件列表，子集对应的额外权重
