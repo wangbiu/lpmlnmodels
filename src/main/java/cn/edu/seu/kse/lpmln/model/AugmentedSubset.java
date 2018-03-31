@@ -31,7 +31,10 @@ public class AugmentedSubset implements Cloneable{
         this.lpmlnProgram = lpmlnProgram;
     }
 
-    protected AugmentedSubset(){
+    /**
+     * 只用于clone
+     */
+    AugmentedSubset(){
         satIdx = new HashSet<>();
         unsatIdx = new HashSet<>();
         unknownIdx = new HashSet<>();
