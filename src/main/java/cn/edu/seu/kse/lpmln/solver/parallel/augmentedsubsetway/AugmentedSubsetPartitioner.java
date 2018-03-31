@@ -1,9 +1,13 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
+import cn.edu.seu.kse.lpmln.model.HeuristicAugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by 许鸿翔 on 2017/9/23.
@@ -32,8 +36,12 @@ public class AugmentedSubsetPartitioner {
             case SPLIT_RANDOM:
                 subsets = randomPartition(lpmlnProgram,count);
                 break;
+            case HEURISTIC:
+                subsets = heuristicPartition(lpmlnProgram,count);
+                break;
             default:
                 subsets = simplePartition(lpmlnProgram,count);
+                break;
         }
         return subsets;
     }
@@ -44,7 +52,9 @@ public class AugmentedSubsetPartitioner {
         Random rand = new Random();
         AugmentedSubset subset = new AugmentedSubset(lpmlnProgram);
         subsets.add(subset);
-        selectable.add(subset);
+        if(subset.getUnknownIdx().size()>0){
+            selectable.add(subset);
+        }
 
         while(subsets.size()<count && selectable.size()>0){
             //选择一个增强子集
@@ -89,6 +99,41 @@ public class AugmentedSubsetPartitioner {
                 toConstruct>>=1;
             }
             subsets.add(as);
+        }
+        return subsets;
+    }
+
+    public List<AugmentedSubset> heuristicPartition(LpmlnProgram lpmlnProgram,int count){
+        List<AugmentedSubset> subsets = new ArrayList<>();
+        List<HeuristicAugmentedSubset> selectable = new ArrayList<>();
+        Random rand = new Random();
+        HeuristicAugmentedSubset subset = new HeuristicAugmentedSubset(lpmlnProgram);
+        subsets.add(subset);
+        selectable.add(subset);
+
+        while(subsets.size()<count && selectable.size()>0){
+            //选择一个增强子集
+            int randomIdx = Math.abs(rand.nextInt())%selectable.size();
+            HeuristicAugmentedSubset toSubstitute = selectable.get(randomIdx);
+            subsets.remove(toSubstitute);
+            selectable.remove(toSubstitute);
+            Set<Integer> unknownIdx = toSubstitute.getUnknownIdx();
+
+            //选择一条要确定的规则
+            randomIdx = Math.abs(rand.nextInt())%unknownIdx.size();
+            HeuristicAugmentedSubset positive = toSubstitute.clone();
+            HeuristicAugmentedSubset negative = toSubstitute.clone();
+            int idx = new ArrayList<>(unknownIdx).get(randomIdx);
+
+            positive.sat(idx);
+            negative.unsat(idx);
+            subsets.add(positive);
+            subsets.add(negative);
+
+            if(positive.getUnknownIdx().size()>0) {
+                selectable.add(positive);
+                selectable.add(negative);
+            }
         }
         return subsets;
     }
