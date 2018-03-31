@@ -13,8 +13,8 @@ import java.util.Set;
 public class AugmentedSubset implements Cloneable{
     protected Set<Integer> satIdx;
     protected Set<Integer> unsatIdx;
-    private Set<Integer> unknownIdx;
-    private LpmlnProgram lpmlnProgram;
+    protected Set<Integer> unknownIdx;
+    protected LpmlnProgram lpmlnProgram;
     public AugmentedSubset(LpmlnProgram lpmlnProgram){
         satIdx = new HashSet<>();
         unsatIdx = new HashSet<>();
@@ -34,7 +34,7 @@ public class AugmentedSubset implements Cloneable{
         this.lpmlnProgram = lpmlnProgram;
     }
 
-    private AugmentedSubset(){
+    protected AugmentedSubset(){
         satIdx = new HashSet<>();
         unsatIdx = new HashSet<>();
         unknownIdx = new HashSet<>();
