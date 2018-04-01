@@ -185,4 +185,11 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         return change;
     }
 
+    public Set<Integer> getEnumrable() {
+        return enumrable;
+    }
+
+    public void setEnumrable(Set<Integer> enumrable) {
+        this.enumrable = enumrable;
+    }
 }

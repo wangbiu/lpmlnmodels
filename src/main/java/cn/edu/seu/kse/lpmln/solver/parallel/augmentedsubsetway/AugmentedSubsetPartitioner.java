@@ -4,16 +4,13 @@ import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.HeuristicAugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_RANDOM;
+    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.HEURISTIC;
 
     /**
      * SPLIT_SIMPLE：二进制划分
@@ -119,16 +116,22 @@ public class AugmentedSubsetPartitioner {
             HeuristicAugmentedSubset toSubstitute = selectable.get(randomIdx);
             subsets.remove(toSubstitute);
             selectable.remove(toSubstitute);
-            Set<Integer> unknownIdx = toSubstitute.getUnknownIdx();
+            Set<Integer> enumrable = toSubstitute.getEnumrable();
 
             //选择一条要确定的规则
-            randomIdx = Math.abs(rand.nextInt())%unknownIdx.size();
+            int toEnum = randomPop(enumrable);
+            while(toEnum>0&&!toSubstitute.enumerable(toEnum)){
+                toEnum = randomPop(enumrable);
+            }
+            if(toEnum==-1){
+                subsets.add(toSubstitute);
+                continue;
+            }
             HeuristicAugmentedSubset positive = toSubstitute.clone();
             HeuristicAugmentedSubset negative = toSubstitute.clone();
-            int idx = new ArrayList<>(unknownIdx).get(randomIdx);
 
-            positive.sat(idx);
-            negative.unsat(idx);
+            positive.sat(toEnum);
+            negative.unsat(toEnum);
             subsets.add(positive);
             subsets.add(negative);
 
@@ -138,5 +141,15 @@ public class AugmentedSubsetPartitioner {
             }
         }
         return subsets;
+    }
+
+    private int randomPop(Set<Integer> set){
+        if(set.size()<=0){
+            return -1;
+        }
+        int randomIdx = Math.abs(new Random().nextInt())%set.size();
+        int idx = new ArrayList<>(set).get(randomIdx);
+        set.remove(idx);
+        return idx;
     }
 }
