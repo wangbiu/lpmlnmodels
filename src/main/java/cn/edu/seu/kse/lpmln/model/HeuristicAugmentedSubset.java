@@ -89,8 +89,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         super();
         headRestrict = new HashMap<>();
         bodyRestrict = new HashMap<>();
-        headRestrictList = new HashMap[lpmlnProgram.getRules().size()];
-        bodyRestrictList = new HashMap[lpmlnProgram.getRules().size()];
     }
 
     @Override
@@ -100,6 +98,10 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.satIdx.addAll(satIdx);
         cloned.unsatIdx.addAll(unsatIdx);
         cloned.unknownIdx.addAll(unknownIdx);
+        cloned.headRestrictList = headRestrictList;
+        cloned.bodyRestrictList = bodyRestrictList;
+        cloned.headRestrict = new HashMap<>(headRestrict);
+        cloned.bodyRestrict = new HashMap<>(bodyRestrict);
         return cloned;
     }
 
