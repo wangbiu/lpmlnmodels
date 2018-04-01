@@ -18,7 +18,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     protected HashMap<String,Integer>[] headRestrictList;
     protected HashMap<String,Integer>[] bodyRestrictList;
     protected HashMap<String,Integer>[] unsatRestrictList;
-    protected Set<Integer> enumrable;
+    protected Set<Integer> enumerable;
     /**
      * lit所有状态都可行
      */
@@ -26,10 +26,11 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
-        enumrable = new HashSet<>(unknownIdx);
+        enumerable = new HashSet<>(unknownIdx);
         atomRestrict = new HashMap<>();
         headRestrictList = new HashMap[lpmlnProgram.getRules().size()];
         bodyRestrictList = new HashMap[lpmlnProgram.getRules().size()];
+        unsatRestrictList = new HashMap[lpmlnProgram.getRules().size()];
         List<Rule> rules = lpmlnProgram.getRules();
         for (int idx : unknownIdx) {
             Rule r = rules.get(idx);
@@ -108,8 +109,9 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.unknownIdx = new HashSet<>(unknownIdx);
         cloned.headRestrictList = headRestrictList;
         cloned.bodyRestrictList = bodyRestrictList;
+        cloned.unsatRestrictList = unsatRestrictList;
         cloned.atomRestrict = new HashMap<>(atomRestrict);
-        cloned.enumrable = new HashSet<>(enumrable);
+        cloned.enumerable = new HashSet<>(enumerable);
         return cloned;
     }
 
@@ -124,14 +126,14 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             if(headRestrictList[idx].size()==1){
                 Map.Entry<String,Integer> ent = headRestrictList[idx].entrySet().iterator().next();
                 if(atomRestrict.containsKey(ent.getKey())){
-                    atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&(TRUE-ent.getValue()));
+                    atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&ent.getValue());
                 }else{
                     atomRestrict.put(ent.getKey(),ent.getValue());
                 }
             }else{
                 Map.Entry<String,Integer> ent = bodyRestrictList[idx].entrySet().iterator().next();
                 if(atomRestrict.containsKey(ent.getKey())){
-                    atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&ent.getValue());
+                    atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&(TRUE-ent.getValue()));
                 }else{
                     atomRestrict.put(ent.getKey(),ent.getValue());
                 }
@@ -172,7 +174,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             if(atomRestrict.containsKey(ent.getKey())){
                 if((atomRestrict.get(ent.getKey())&ent.getValue())==0){
                     return false;
-                }else if((atomRestrict.get(ent.getKey())&ent.getValue())==atomRestrict.get(ent.getKey())){
+                }else if((atomRestrict.get(ent.getKey())&ent.getValue())!=atomRestrict.get(ent.getKey())){
                     change = true;
                 }
             }else{
@@ -185,11 +187,11 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         return change;
     }
 
-    public Set<Integer> getEnumrable() {
-        return enumrable;
+    public Set<Integer> getEnumerable() {
+        return enumerable;
     }
 
-    public void setEnumrable(Set<Integer> enumrable) {
-        this.enumrable = enumrable;
+    public void setEnumerable(Set<Integer> enumerable) {
+        this.enumerable = enumerable;
     }
 }

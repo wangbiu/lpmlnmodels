@@ -116,11 +116,11 @@ public class AugmentedSubsetPartitioner {
             HeuristicAugmentedSubset toSubstitute = selectable.get(randomIdx);
             subsets.remove(toSubstitute);
             selectable.remove(toSubstitute);
-            Set<Integer> enumrable = toSubstitute.getEnumrable();
+            Set<Integer> enumrable = toSubstitute.getEnumerable();
 
             //选择一条要确定的规则
             int toEnum = randomPop(enumrable);
-            while(toEnum>0&&!toSubstitute.enumerable(toEnum)){
+            while(toEnum>=0&&!toSubstitute.enumerable(toEnum)){
                 toEnum = randomPop(enumrable);
             }
             if(toEnum==-1){
@@ -149,7 +149,7 @@ public class AugmentedSubsetPartitioner {
         }
         int randomIdx = Math.abs(new Random().nextInt())%set.size();
         int idx = new ArrayList<>(set).get(randomIdx);
-        set.remove(idx);
+        set.remove((Integer) idx);
         return idx;
     }
 }
