@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.model;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 许鸿翔
@@ -16,10 +17,10 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * 010表示原子a只支持a
      * 101表示原子可以是not a或者-a
      */
-    protected HashMap<String,Integer> headRestrict;
-    protected HashMap<String,Integer> bodyRestrict;
+    protected HashMap<String,Integer> atomRestrict;
     protected HashMap<String,Integer>[] headRestrictList;
     protected HashMap<String,Integer>[] bodyRestrictList;
+    protected HashMap<String,Integer>[] unsatRestrictList;
     /**
      * lit所有状态都可行
      */
@@ -27,8 +28,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
-        headRestrict = new HashMap<>();
-        bodyRestrict = new HashMap<>();
+        atomRestrict = new HashMap<>();
         headRestrictList = new HashMap[lpmlnProgram.getRules().size()];
         bodyRestrictList = new HashMap[lpmlnProgram.getRules().size()];
         List<Rule> rules = lpmlnProgram.getRules();
@@ -41,7 +41,20 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             r.getPositiveBody().forEach(lit->restrict(lit,rbodyRestrict,false));
             headRestrictList[idx] = rheadRestrict;
             bodyRestrictList[idx] = rbodyRestrict;
+            unsatRestrictList[idx] = combineRestrict(rheadRestrict,rbodyRestrict);
         }
+    }
+
+    private HashMap<String,Integer> combineRestrict(HashMap<String,Integer> rheadRestrict,HashMap<String,Integer> rbodyRestrict){
+        HashMap<String,Integer> restrict = new HashMap<>(rbodyRestrict);
+        rheadRestrict.forEach((key,value)->{
+            if(restrict.containsKey(key)){
+                restrict.put(key,(TRUE-value)&restrict.get(key));
+            }else{
+                restrict.put(key,TRUE-value);
+            }
+        });
+        return restrict;
     }
 
     /**
@@ -82,13 +95,11 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         }else{
             restrict.put(realLit,status);
         }
-
     }
 
     HeuristicAugmentedSubset(){
         super();
-        headRestrict = new HashMap<>();
-        bodyRestrict = new HashMap<>();
+        atomRestrict = new HashMap<>();
     }
 
     @Override
@@ -100,9 +111,80 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.unknownIdx.addAll(unknownIdx);
         cloned.headRestrictList = headRestrictList;
         cloned.bodyRestrictList = bodyRestrictList;
-        cloned.headRestrict = new HashMap<>(headRestrict);
-        cloned.bodyRestrict = new HashMap<>(bodyRestrict);
+        cloned.atomRestrict = new HashMap<>(atomRestrict);
         return cloned;
+    }
+
+    /**
+     * 根据单原子事实或者约束对原子进行约束
+     * @param idx   规则下标
+     * @return sat结果
+     */
+    @Override
+    public boolean sat(int idx){
+        if(headRestrictList[idx].size()+bodyRestrictList[idx].size()==1){
+            if(headRestrictList[idx].size()==1){
+                Map.Entry<String,Integer> ent = headRestrictList[idx].entrySet().iterator().next();
+                if(atomRestrict.containsKey(ent.getKey())){
+                    atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&(TRUE-ent.getValue()));
+                }else{
+                    atomRestrict.put(ent.getKey(),ent.getValue());
+                }
+            }else{
+                Map.Entry<String,Integer> ent = bodyRestrictList[idx].entrySet().iterator().next();
+                if(atomRestrict.containsKey(ent.getKey())){
+                    atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&ent.getValue());
+                }else{
+                    atomRestrict.put(ent.getKey(),ent.getValue());
+                }
+            }
+        }
+        return super.sat(idx);
+    }
+
+    /**
+     * 根据规则unsat对原子进行约束，body and ！head
+     * @param idx   规则下标
+     * @return sat结果
+     */
+    @Override
+    public boolean unsat(int idx){
+        HashMap<String,Integer> restrict = unsatRestrictList[idx];
+        for (Map.Entry<String,Integer> ent : restrict.entrySet()) {
+            if(atomRestrict.containsKey(ent.getKey())){
+                atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&ent.getValue());
+            }else{
+                atomRestrict.put(ent.getKey(),ent.getValue());
+            }
+        }
+        return super.unsat(idx);
+    }
+
+    /**
+     * 判断规则是否可以枚举
+     * * @param idx   规则下标
+     * @return  true：可 false：不可
+     */
+    public boolean enumerable(int idx){
+        //是否肯定无法满足:放到unsat之后没影响
+        //是否肯定满足:放到unsat之后有谓词为0
+        boolean change = false;
+        HashMap<String,Integer> restrict = unsatRestrictList[idx];
+        for (Map.Entry<String,Integer> ent : restrict.entrySet()) {
+            if(atomRestrict.containsKey(ent.getKey())){
+                if((atomRestrict.get(ent.getKey())&ent.getValue())==0){
+                    return false;
+                }else if((atomRestrict.get(ent.getKey())&ent.getValue())==atomRestrict.get(ent.getKey())){
+                    change = true;
+                }
+            }else{
+                if(ent.getValue()==0){
+                    return false;
+                }
+                change = true;
+            }
+        }
+        return change;
     }
 
 }
