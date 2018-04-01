@@ -33,9 +33,6 @@ public class AugmentedSubset implements Cloneable{
      * 只用于clone
      */
     AugmentedSubset(){
-        satIdx = new HashSet<>();
-        unsatIdx = new HashSet<>();
-        unknownIdx = new HashSet<>();
     }
 
     public boolean sat(int idx){
@@ -60,9 +57,9 @@ public class AugmentedSubset implements Cloneable{
     public AugmentedSubset clone(){
         AugmentedSubset cloned = new AugmentedSubset();
         cloned.setLpmlnProgram(lpmlnProgram);
-        cloned.satIdx.addAll(satIdx);
-        cloned.unsatIdx.addAll(unsatIdx);
-        cloned.unknownIdx.addAll(unknownIdx);
+        cloned.satIdx = new HashSet<>(satIdx);
+        cloned.unsatIdx = new HashSet<>(unsatIdx);
+        cloned.unknownIdx = new HashSet<>(unknownIdx);
         return cloned;
     }
 

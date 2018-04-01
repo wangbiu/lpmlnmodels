@@ -1,9 +1,6 @@
 package cn.edu.seu.kse.lpmln.model;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 许鸿翔
@@ -21,6 +18,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     protected HashMap<String,Integer>[] headRestrictList;
     protected HashMap<String,Integer>[] bodyRestrictList;
     protected HashMap<String,Integer>[] unsatRestrictList;
+    protected Set<Integer> enumrable;
     /**
      * lit所有状态都可行
      */
@@ -28,6 +26,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
+        enumrable = new HashSet<>(unknownIdx);
         atomRestrict = new HashMap<>();
         headRestrictList = new HashMap[lpmlnProgram.getRules().size()];
         bodyRestrictList = new HashMap[lpmlnProgram.getRules().size()];
@@ -98,20 +97,19 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     }
 
     HeuristicAugmentedSubset(){
-        super();
-        atomRestrict = new HashMap<>();
     }
 
     @Override
     public HeuristicAugmentedSubset clone(){
         HeuristicAugmentedSubset cloned = new HeuristicAugmentedSubset();
         cloned.setLpmlnProgram(lpmlnProgram);
-        cloned.satIdx.addAll(satIdx);
-        cloned.unsatIdx.addAll(unsatIdx);
-        cloned.unknownIdx.addAll(unknownIdx);
+        cloned.satIdx = new HashSet<>(satIdx);
+        cloned.unsatIdx = new HashSet<>(unsatIdx);
+        cloned.unknownIdx = new HashSet<>(unknownIdx);
         cloned.headRestrictList = headRestrictList;
         cloned.bodyRestrictList = bodyRestrictList;
         cloned.atomRestrict = new HashMap<>(atomRestrict);
+        cloned.enumrable = new HashSet<>(enumrable);
         return cloned;
     }
 
