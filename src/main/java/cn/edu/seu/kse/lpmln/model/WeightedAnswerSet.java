@@ -68,4 +68,18 @@ public class WeightedAnswerSet {
     public void setFactor(int factor) {
         this.factor = factor;
     }
+
+    /**
+     * 深复制，合并回答集的时候用
+     * @return 克隆结果
+     */
+    @Override
+    public WeightedAnswerSet clone(){
+        WeightedAnswerSet cloned = new WeightedAnswerSet();
+        cloned.getWeights().addAll(weights);
+        cloned.getAnswerSet().setLiterals(answerSet.getLiterals());
+        cloned.probability = probability;
+        cloned.factor = factor;
+        return cloned;
+    }
 }
