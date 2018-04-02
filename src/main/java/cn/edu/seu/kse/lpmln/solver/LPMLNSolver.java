@@ -10,7 +10,7 @@ import java.util.List;
  * @author 许鸿翔
  * @date 2018/1/17
  */
-public interface LPMLNSolver {
+public interface LPMLNSolver extends Runnable {
     /**
      * 求解程序
      * @param ruleFile 输入LPMLN程序文件
@@ -71,6 +71,10 @@ public interface LPMLNSolver {
      */
     String getMarginalDistribution();
 
-
+    /**
+     * for thread pool
+     * @param lpmlnProgram to solve
+     */
+    void setLpmlnProgram(LpmlnProgram lpmlnProgram);
 
 }

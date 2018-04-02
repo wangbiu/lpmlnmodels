@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * Created by 王彬 on 2016/8/31.
  */
-public class LPMLNBaseSolver implements LPMLNSolver,Runnable {
+public class LPMLNBaseSolver implements LPMLNSolver {
     protected List<WeightedAnswerSet> weightedAs = null;
     protected List<WeightedAnswerSet> maxWeightAs = null;
     protected String maxWeight;
@@ -282,5 +282,14 @@ public class LPMLNBaseSolver implements LPMLNSolver,Runnable {
 
     public void setWeightedAs(List<WeightedAnswerSet> weightedAs) {
         this.weightedAs = weightedAs;
+    }
+
+    public LpmlnProgram getLpmlnProgram() {
+        return lpmlnProgram;
+    }
+
+    @Override
+    public void setLpmlnProgram(LpmlnProgram lpmlnProgram) {
+        this.lpmlnProgram = lpmlnProgram;
     }
 }
