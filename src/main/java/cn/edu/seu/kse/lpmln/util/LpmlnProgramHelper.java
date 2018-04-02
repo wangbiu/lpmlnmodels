@@ -12,7 +12,7 @@ import java.util.Set;
  * @date 2018/4/2
  */
 public class LpmlnProgramHelper {
-    public Map<String,Set<String>> generateDependency(LpmlnProgram program){
+    public static Map<String,Set<String>> getDependency(LpmlnProgram program){
         Map<String,Set<String>> dependency = new HashMap<>();
         program.getRules().forEach(rule -> {
             Set<String> head = new HashSet<>();
