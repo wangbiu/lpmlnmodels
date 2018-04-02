@@ -52,7 +52,7 @@ public class IndependentSplitter {
         return false;
     }
 
-    protected static void merge(Map<String,Set<String>> dependency){
+    private static void merge(Map<String,Set<String>> dependency){
         new HashSet<>(dependency.keySet()).forEach(lit->{
             new HashSet<>(dependency.entrySet()).forEach(ent->{
                 //把lit的set合并到ent的set中
