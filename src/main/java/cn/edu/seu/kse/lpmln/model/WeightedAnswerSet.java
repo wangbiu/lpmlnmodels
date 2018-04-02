@@ -77,7 +77,7 @@ public class WeightedAnswerSet {
     public WeightedAnswerSet clone(){
         WeightedAnswerSet cloned = new WeightedAnswerSet();
         cloned.getWeights().addAll(weights);
-        cloned.getAnswerSet().setLiterals(answerSet.getLiterals());
+        cloned.getAnswerSet().getLiterals().addAll(answerSet.getLiterals());
         cloned.probability = probability;
         cloned.factor = factor;
         return cloned;

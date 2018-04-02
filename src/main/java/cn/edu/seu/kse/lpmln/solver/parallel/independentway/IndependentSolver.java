@@ -34,10 +34,10 @@ public class IndependentSolver extends LPMLNBaseSolver implements LPMLNSolver {
 
         List<LpmlnProgram> subprograms = IndependentSplitter.split(program);
         logger.info("IndependentSolver into {} subprograms.",subprograms.size());
-        subprograms.forEach(program1 -> {
+        subprograms.forEach(subprogram -> {
             //TODO:使用反射创建
             LPMLNSolver solver = new LPMLNBaseSolver();
-            solver.setLpmlnProgram(program);
+            solver.setLpmlnProgram(subprogram);
             solvers.add(solver);
             threadPool.execute(solver);
         });
@@ -53,9 +53,10 @@ public class IndependentSolver extends LPMLNBaseSolver implements LPMLNSolver {
      */
     private void mergeResult(){
         subWeightedAs = new ArrayList<>();
+        weightedAs = new ArrayList<>();
         solvers.forEach(solver->subWeightedAs.add(solver.getAllWeightedAs()));
 
-        Integer[] permutation = new Integer[subWeightedAs.size()];
+        int[] permutation = new int[subWeightedAs.size()];
         do {
             WeightedAnswerSet realAnswerSet = subWeightedAs.get(0).get(permutation[0]).clone();
             for(int i=1;i<permutation.length;i++){
@@ -76,7 +77,7 @@ public class IndependentSolver extends LPMLNBaseSolver implements LPMLNSolver {
         return true;
     }
 
-    private boolean nextPermutation(Integer[] permutation){
+    private boolean nextPermutation(int[] permutation){
         int idx=permutation.length-1;
         while(idx>=0&&permutation[idx]==subWeightedAs.get(idx).size()-1){
             idx--;
@@ -86,7 +87,7 @@ public class IndependentSolver extends LPMLNBaseSolver implements LPMLNSolver {
         }
         permutation[idx]++;
         for(int i=idx+1;i<permutation.length;i++){
-            permutation[idx]=0;
+            permutation[i]=0;
         }
         return true;
     }
