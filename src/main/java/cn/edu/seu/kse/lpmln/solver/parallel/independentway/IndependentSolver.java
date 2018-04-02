@@ -16,7 +16,7 @@ import java.util.List;
  * @author 许鸿翔
  * @date 2018/4/2
  */
-public class IndependentSolver extends LPMLNBaseSolver implements LPMLNSolver {
+public class IndependentSolver extends LPMLNBaseSolver{
     private LpmlnThreadPool threadPool;
     private static final String THREAD_POOL_NAME="IndependentSolver";
     private List<LPMLNSolver> solvers;

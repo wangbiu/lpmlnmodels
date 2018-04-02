@@ -11,6 +11,7 @@ import java.util.List;
  * @date 2018/1/17
  */
 public interface LPMLNSolver extends Runnable {
+    //TODO:写一个solve接口，只solve不操作
     /**
      * 求解程序
      * @param ruleFile 输入LPMLN程序文件
