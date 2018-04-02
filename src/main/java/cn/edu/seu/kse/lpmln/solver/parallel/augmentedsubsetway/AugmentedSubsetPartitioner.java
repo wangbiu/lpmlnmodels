@@ -10,7 +10,7 @@ import java.util.*;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.HEURISTIC;
+    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_RANDOM;
 
     /**
      * SPLIT_SIMPLE：二进制划分
