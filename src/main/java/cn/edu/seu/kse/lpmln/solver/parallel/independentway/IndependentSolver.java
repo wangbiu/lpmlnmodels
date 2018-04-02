@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.independentway;
 
+import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
@@ -56,12 +57,23 @@ public class IndependentSolver extends LPMLNBaseSolver implements LPMLNSolver {
 
         Integer[] permutation = new Integer[subWeightedAs.size()];
         do {
-
+            WeightedAnswerSet realAnswerSet = subWeightedAs.get(0).get(permutation[0]).clone();
+            for(int i=1;i<permutation.length;i++){
+                if(!merge(realAnswerSet,subWeightedAs.get(i).get(permutation[i]))){
+                    throw new SolveException("IndependentSolver merge fail");
+                }
+            }
+            weightedAs.add(realAnswerSet);
         }while(nextPermutation(permutation));
     }
 
-    private void merge(WeightedAnswerSet to,WeightedAnswerSet from){
-
+    private boolean merge(WeightedAnswerSet to,WeightedAnswerSet from){
+        //factor子程序间一致,probability会重新计算
+        //独立分割不会引发不一致
+        to.getAnswerSet().getLiterals().addAll(from.getAnswerSet().getLiterals());
+        to.getWeights().set(0,to.getWeights().get(0)+from.getWeights().get(0));
+        to.getWeights().set(1,to.getWeights().get(1)+from.getWeights().get(1));
+        return true;
     }
 
     private boolean nextPermutation(Integer[] permutation){
