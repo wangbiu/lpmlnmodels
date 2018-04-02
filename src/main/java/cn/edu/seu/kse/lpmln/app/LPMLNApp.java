@@ -4,6 +4,7 @@ import cn.edu.seu.kse.lpmln.exception.cmdlineexception.CommandLineException;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -142,8 +143,22 @@ public class LPMLNApp {
 //                throw new RuntimeException("unsupported ASP solver "+aspsolver);
 //            }
         }
+        //TODO:solver的在CMD中的组织方式
         if(cmd.hasOption("parallel")){
-            solver = new AugmentedSolver();
+            String solverName = cmd.getOptionValue("parallel");
+            if(solverName==null){
+                solver = new AugmentedSolver();
+            }else{
+                switch (solverName){
+                    case "i":
+                        solver = new IndependentSolver();
+                        break;
+                    case "a":
+                        solver = new AugmentedSolver();
+                    default:
+                        throw new CommandLineException("No correspond solver, i=independent,a=augmented,s=splitset");
+                }
+            }
         }else{
             solver = new LPMLNBaseSolver();
         }
