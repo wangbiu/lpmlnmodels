@@ -4,6 +4,7 @@ import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,25 +14,25 @@ import java.util.Set;
 public class AugmentedSubset implements Cloneable{
     protected Set<Integer> satIdx;
     protected Set<Integer> unsatIdx;
-    private Set<Integer> unknownIdx;
-    private LpmlnProgram lpmlnProgram;
+    protected Set<Integer> unknownIdx;
+    protected LpmlnProgram lpmlnProgram;
     public AugmentedSubset(LpmlnProgram lpmlnProgram){
         satIdx = new HashSet<>();
         unsatIdx = new HashSet<>();
         unknownIdx = new HashSet<>();
-        int unknownMax = lpmlnProgram.getRules().size();
-        if("weak".equals(LPMLNApp.semantics)){
-            for (Rule r : lpmlnProgram.getRules()) {
-                if(!r.isSoft()){
-                    unknownMax--;
-                }
+        List<Rule> rules = lpmlnProgram.getRules();
+        for(int i=0;i<rules.size();i++){
+            if("strong".equals(LPMLNApp.semantics)||rules.get(i).isSoft()){
+                unknownIdx.add(i);
             }
         }
-
-        for (int i=0;i<unknownMax;i++){
-            unknownIdx.add(i);
-        }
         this.lpmlnProgram = lpmlnProgram;
+    }
+
+    /**
+     * 只用于clone
+     */
+    AugmentedSubset(){
     }
 
     public boolean sat(int idx){
@@ -54,11 +55,11 @@ public class AugmentedSubset implements Cloneable{
 
     @Override
     public AugmentedSubset clone(){
-        AugmentedSubset cloned = new AugmentedSubset(lpmlnProgram);
-        cloned.satIdx.addAll(satIdx);
-        cloned.unsatIdx.addAll(unsatIdx);
-        cloned.unknownIdx.clear();
-        cloned.unknownIdx.addAll(unknownIdx);
+        AugmentedSubset cloned = new AugmentedSubset();
+        cloned.setLpmlnProgram(lpmlnProgram);
+        cloned.satIdx = new HashSet<>(satIdx);
+        cloned.unsatIdx = new HashSet<>(unsatIdx);
+        cloned.unknownIdx = new HashSet<>(unknownIdx);
         return cloned;
     }
 
