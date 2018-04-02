@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.solver.impl;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
+import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
@@ -18,7 +19,7 @@ import java.util.*;
 /**
  * Created by 王彬 on 2016/8/31.
  */
-public class LPMLNBaseSolver implements LPMLNSolver {
+public class LPMLNBaseSolver implements LPMLNSolver,Runnable {
     protected List<WeightedAnswerSet> weightedAs = null;
     protected List<WeightedAnswerSet> maxWeightAs = null;
     protected String maxWeight;
@@ -236,6 +237,14 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         sb.append(System.lineSeparator());
         maximalTime = sb.toString();
         return maxWeightAs;
+    }
+
+    @Override
+    public void run() {
+        if(lpmlnProgram==null){
+            throw new SolveException("subprogram not set.");
+        }
+        solveProgram(lpmlnProgram);
     }
 
     @Override
