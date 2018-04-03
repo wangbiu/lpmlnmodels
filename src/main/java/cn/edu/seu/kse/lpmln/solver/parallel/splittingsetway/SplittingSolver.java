@@ -4,7 +4,9 @@ import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,16 +16,52 @@ import java.util.Set;
  */
 public class SplittingSolver extends LPMLNBaseSolver {
     private LPMLNSolver bottomSolver;
-    private List<LPMLNSolver> topSolvers;
+    private List<PESolver> topSolvers;
     public static double k=0.5;
+    private LpmlnThreadPool threadPool;
+
+
     public SplittingSolver(){
         bottomSolver = new LPMLNBaseSolver();
+        topSolvers = new ArrayList<>();
+        threadPool = new LpmlnThreadPool("SplittingSolver!");
     }
 
     @Override
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
         lpmlnProgram = program;
+
+        // 1. 分割程序，需要用到bottom、top、U
+        Splitter splitter = new Splitter();
+        splitter.split(program, k);
+        LpmlnProgram bottom = splitter.getBottom();
+        LpmlnProgram top = splitter.getTop();
+        Set<String> U = splitter.getU();
+
+        // 2. 求解bottom
+        List<WeightedAnswerSet> Xs = bottomSolver.solveProgram(bottom);
+
+        // 3. 并行求Partial Evaluation
+        Xs.forEach(AS -> {
+            PESolver solver = new PESolver(top, U, AS);
+            topSolvers.add(solver);
+            threadPool.execute(solver);
+        });
+
+        // 4. 等待求解完成
+        threadPool.waitDone();
+
+        // 5. 产生结果
+        weightedAs = calculateProbability(filtWas(collectWas()));
+
         return weightedAs;
+    }
+
+    protected List<WeightedAnswerSet> collectWas(){
+        //收集过滤回答集
+        List<WeightedAnswerSet> collectedWas = new ArrayList<>();
+        topSolvers.forEach(solver -> collectedWas.addAll(solver.getAllWeightedAs()));
+        return collectedWas;
     }
 
     public static Set<String> getSplittingSet(LpmlnProgram program){
