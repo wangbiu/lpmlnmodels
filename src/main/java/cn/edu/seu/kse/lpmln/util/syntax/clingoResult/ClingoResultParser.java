@@ -831,9 +831,11 @@ public class ClingoResultParser extends Parser {
 
 	public static class WeightContext extends ParserRuleContext {
 		public TerminalNode OPT() { return getToken(ClingoResultParser.OPT, 0); }
-		public List<TerminalNode> POSITIVE_INT() { return getTokens(ClingoResultParser.POSITIVE_INT); }
-		public TerminalNode POSITIVE_INT(int i) {
-			return getToken(ClingoResultParser.POSITIVE_INT, i);
+		public List<IntegerContext> integer() {
+			return getRuleContexts(IntegerContext.class);
+		}
+		public IntegerContext integer(int i) {
+			return getRuleContext(IntegerContext.class,i);
 		}
 		public WeightContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -863,9 +865,9 @@ public class ClingoResultParser extends Parser {
 			setState(107);
 			match(OPT);
 			setState(108);
-			match(POSITIVE_INT);
+			integer();
 			setState(109);
-			match(POSITIVE_INT);
+			integer();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1020,7 +1022,7 @@ public class ClingoResultParser extends Parser {
 		"X\3\2\2\2[\\\7\t\2\2\\^\3\2\2\2]P\3\2\2\2]Q\3\2\2\2^\21\3\2\2\2_c\5\20"+
 		"\t\2`a\7\17\2\2ac\5\20\t\2b_\3\2\2\2b`\3\2\2\2c\23\3\2\2\2de\7\22\2\2"+
 		"ef\7\5\2\2f\25\3\2\2\2gi\5\22\n\2hg\3\2\2\2il\3\2\2\2jh\3\2\2\2jk\3\2"+
-		"\2\2k\27\3\2\2\2lj\3\2\2\2mn\7\23\2\2no\7\5\2\2op\7\5\2\2p\31\3\2\2\2"+
+		"\2\2k\27\3\2\2\2lj\3\2\2\2mn\7\23\2\2no\5\4\3\2op\5\4\3\2p\31\3\2\2\2"+
 		"qr\5\24\13\2rs\5\26\f\2st\5\30\r\2t\33\3\2\2\2uw\5\32\16\2vu\3\2\2\2w"+
 		"z\3\2\2\2xv\3\2\2\2xy\3\2\2\2y\35\3\2\2\2zx\3\2\2\2\16$/\67BEGNX]bjx";
 	public static final ATN _ATN =

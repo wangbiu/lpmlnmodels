@@ -85,7 +85,7 @@ answer_set_flag: ANSWER POSITIVE_INT;
 
 answer_set : literal* ;
 
-weight : OPT POSITIVE_INT POSITIVE_INT;
+weight : OPT integer integer;
 
 weighted_answer_set : answer_set_flag answer_set weight;
 

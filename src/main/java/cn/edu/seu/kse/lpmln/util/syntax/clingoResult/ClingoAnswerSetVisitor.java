@@ -35,7 +35,7 @@ public class ClingoAnswerSetVisitor extends ClingoResultBaseVisitor {
         int cnt=0;
 
         for(int i=1;i>=0;i--){
-            weight= Integer.valueOf(wctx.POSITIVE_INT(i).getText()) -1 ;
+            weight= Integer.valueOf(wctx.integer(i).getText()) -1 ;
             weights.add(weight);
             if(i == 0){
                 maxLevel2 = Math.max(maxLevel2,weight);
