@@ -6,6 +6,7 @@ import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -104,7 +105,7 @@ public class LPMLNApp {
             String marginal=solver.getMarginalDistribution();
             System.out.println("marginal result ");
             System.out.println(marginal);
-            System.out.println(solver.getMarginalTime());
+            //System.out.println(solver.getMarginalTime());
         }
 
         if(isMax) {
@@ -113,8 +114,8 @@ public class LPMLNApp {
             System.out.println(System.lineSeparator());
             System.out.println("maximal weight possible world ");
             System.out.println(maxWas);
-            System.out.println("weight "+solver.getMaxWeight());
-            System.out.println(solver.getMaximalTime());
+            //System.out.println("weight "+solver.getMaxWeight());
+            //System.out.println(solver.getMaximalTime());
         }
 
         printStatsInfo(solver);
@@ -159,10 +160,23 @@ public class LPMLNApp {
 //                throw new RuntimeException("unsupported ASP solver "+aspsolver);
 //            }
         }
-
         //TODO:给推理机使用一个统一框架
+        //TODO:solver的在CMD中的组织方式
         if(cmd.hasOption("parallel")){
-            solver = new AugmentedSolver();
+            String solverName = cmd.getOptionValue("parallel");
+            if(solverName==null){
+                solver = new AugmentedSolver();
+            }else{
+                switch (solverName){
+                    case "i":
+                        solver = new IndependentSolver();
+                        break;
+                    case "a":
+                        solver = new AugmentedSolver();
+                    default:
+                        throw new CommandLineException("No correspond solver, i=independent,a=augmented,s=splitset");
+                }
+            }
         }else{
             solver = new LPMLNBaseSolver();
         }

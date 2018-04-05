@@ -62,8 +62,11 @@ public class LPMLNOpts {
         transinfile.setOptionalArg(false);
 
         //启用并行
-        Option parallel=new Option("l", "parallel", false, "optional, enable parallel reasoning");
+        Option parallel=new Option("l", "parallel", true, "optional, enable parallel reasoning");
         parallel.setRequired(false);
+        parallel.setArgName("parallel-solver");
+        parallel.setValueSeparator(' ');
+        parallel.setOptionalArg(true);
 
         //实验
         Option experiment=new Option("j", "report-json", true, "optional, generate json report");

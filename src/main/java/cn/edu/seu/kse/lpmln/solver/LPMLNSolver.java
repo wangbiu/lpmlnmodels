@@ -11,7 +11,8 @@ import java.util.List;
  * @author 许鸿翔
  * @date 2018/1/17
  */
-public interface LPMLNSolver {
+public interface LPMLNSolver extends Runnable {
+    //TODO:写一个solve接口，只solve不操作
     /**
      * 求解程序
      * @param ruleFile 输入LPMLN程序文件
@@ -75,7 +76,13 @@ public interface LPMLNSolver {
     /**
      * 获取实验报告
      * @return 实验报告
-     */
+     * */
     ExperimentReport getReport();
+
+    /**
+     * for thread pool
+     * @param lpmlnProgram to solve
+     */
+    void setLpmlnProgram(LpmlnProgram lpmlnProgram);
 
 }

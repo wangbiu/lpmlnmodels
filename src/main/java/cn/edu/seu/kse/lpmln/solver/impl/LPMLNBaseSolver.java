@@ -2,6 +2,7 @@ package cn.edu.seu.kse.lpmln.solver.impl;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
+import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
@@ -250,8 +251,8 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     }
 
     @Override
-    public ExperimentReport getReport(){
-        if(report==null){
+    public ExperimentReport getReport() {
+        if (report == null) {
             report = new ExperimentReport();
             report.setSolver(this.getClass().getSimpleName());
             report.setTotalTime(String.valueOf(totalTime.time));
@@ -260,6 +261,14 @@ public class LPMLNBaseSolver implements LPMLNSolver {
             report.setProcessors("1");
         }
         return report;
+    }
+
+    @Override
+    public void run() {
+        if(lpmlnProgram==null){
+            throw new SolveException("subprogram not set.");
+        }
+        solveProgram(lpmlnProgram);
     }
 
     @Override
@@ -297,5 +306,14 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     public void setWeightedAs(List<WeightedAnswerSet> weightedAs) {
         this.weightedAs = weightedAs;
+    }
+
+    public LpmlnProgram getLpmlnProgram() {
+        return lpmlnProgram;
+    }
+
+    @Override
+    public void setLpmlnProgram(LpmlnProgram lpmlnProgram) {
+        this.lpmlnProgram = lpmlnProgram;
     }
 }
