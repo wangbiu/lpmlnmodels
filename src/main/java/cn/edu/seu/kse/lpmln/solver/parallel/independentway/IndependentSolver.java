@@ -58,6 +58,9 @@ public class IndependentSolver extends LPMLNBaseSolver{
 
         int[] permutation = new int[subWeightedAs.size()];
         do {
+            if(subWeightedAs.get(0).size()==0){
+                throw new SolveException("IndependentSolver no stable model.");
+            }
             WeightedAnswerSet realAnswerSet = subWeightedAs.get(0).get(permutation[0]).clone();
             for(int i=1;i<permutation.length;i++){
                 if(!merge(realAnswerSet,subWeightedAs.get(i).get(permutation[i]))){

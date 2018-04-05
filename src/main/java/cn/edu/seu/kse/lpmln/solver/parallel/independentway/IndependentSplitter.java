@@ -20,11 +20,11 @@ public class IndependentSplitter {
         List<Rule> programRuleList = program.getRules();
         List<LpmlnProgram> ind = new ArrayList<>();
         Map<String,Set<String>> dependency = LpmlnProgramHelper.getDependency(program);
-        merge(dependency);
-        dependency.forEach((k,v)->{
+        Set<Set<String>> litSets = merge(dependency);
+        litSets.forEach(lits->{
             List<Rule> subRules = new ArrayList<>();
             programRuleList.forEach(rule -> {
-                if(contain(rule,v)){
+                if(contain(rule,lits)){
                     subRules.add(rule);
                 }
             });
@@ -52,16 +52,31 @@ public class IndependentSplitter {
         return false;
     }
 
-    private static void merge(Map<String,Set<String>> dependency){
-        new HashSet<>(dependency.keySet()).forEach(lit->{
-            new HashSet<>(dependency.entrySet()).forEach(ent->{
-                //把lit的set合并到ent的set中
-                if((!lit.equals(ent.getKey()))
-                        &&ent.getValue().contains(lit)){
-                    dependency.get(ent.getKey()).addAll(dependency.get(lit));
-                    dependency.remove(lit);
-                }
-            });
+    private static Set<Set<String>> merge(Map<String,Set<String>> dependency){
+        Set<Set<String>> ans = new HashSet<>();
+        Set<String> visited = new HashSet<>();
+        Set<String> lits = dependency.keySet();
+        lits.forEach(lit->{
+            if(visited.contains(lit)){
+                return;
+            }
+            Set<String> subset = new HashSet<>();
+            LinkedList<String> current = new LinkedList<>();
+            subset.add(lit);
+            current.offer(lit);
+            while(current.size()>0){
+                String next = current.poll();
+                Set<String> nextDepend = dependency.get(next);
+                nextDepend.forEach(nextLit->{
+                    if(!subset.contains(nextLit)){
+                        subset.add(nextLit);
+                        current.offer(nextLit);
+                    }
+                });
+            }
+            visited.addAll(subset);
+            ans.add(subset);
         });
+        return ans;
     }
 }
