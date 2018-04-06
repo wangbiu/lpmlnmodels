@@ -101,8 +101,8 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         int i = sb.lastIndexOf(";");
         if (i != -1){
             sb.deleteCharAt(i);
+            sb.deleteCharAt(sb.lastIndexOf(" "));
         }
-        sb.deleteCharAt(sb.lastIndexOf(" "));
         sb.append(":- ");
         rule.getPositiveBody().forEach(lit -> sb.append(lit).append(", "));
         rule.getNegativeBody().forEach(lit -> sb.append(lit).append(", "));
@@ -113,6 +113,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         sb.deleteCharAt(sb.lastIndexOf(" "));
         sb.append(".");
         return sb.toString();
+
     }
 
     private Set<Rule> getDeletingSet() {

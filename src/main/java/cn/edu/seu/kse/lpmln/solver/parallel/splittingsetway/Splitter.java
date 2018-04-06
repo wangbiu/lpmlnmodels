@@ -47,10 +47,11 @@ public class Splitter {
         List<Rule> bottomRules = new ArrayList<>();
         List<Rule> topRules = new ArrayList<>();
         for (Rule rule: program.getRules()) {
-            if(rule.getHead().size()==0){
+            if (rule.getHead().size()==0) {
                 topRules.add(rule);
             }
             for (String h: rule.getHead()) {
+                // without considering head with not
                 if (U.contains(lit2int.get(h))) {
                     bottomRules.add(rule);
                 }
@@ -60,7 +61,7 @@ public class Splitter {
             }
         }
         bottom = new LpmlnProgram(bottomRules, program.getFactor(), program.getHerbrandUniverse(), "");
-        top = new LpmlnProgram(topRules, program.getFactor(), program.getHerbrandUniverse(), "");
+        top = new LpmlnProgram(topRules, program.getFactor(), program.getHerbrandUniverse(), program.getMetarule());
     }
 
     private void formatSplittingSet(Set<Integer> sst) {
