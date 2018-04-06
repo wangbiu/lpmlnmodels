@@ -81,8 +81,16 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
 
     private int contains(List<Rule> rules, Rule rule) {
         for (Rule r: rules) {
-            if (getText(r).equals(getText(rule)))
-                return rules.indexOf(rule);
+            if (!(r.getHead().size() == rule.getHead().size() || r.getHead().containsAll(rule.getHead()))) {
+                continue;
+            }
+            if (!(r.getPositiveBody().size() == rule.getPositiveBody().size() || r.getPositiveBody().containsAll(rule.getPositiveBody()))) {
+                continue;
+            }
+            if (!(r.getNegativeBody().size() == rule.getNegativeBody().size() || r.getNegativeBody().containsAll(rule.getNegativeBody()))) {
+                continue;
+            }
+            return rules.indexOf(r);
         }
         return -1;
     }
