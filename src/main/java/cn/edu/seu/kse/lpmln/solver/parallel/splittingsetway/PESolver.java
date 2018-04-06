@@ -50,7 +50,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             result.add(answerSet);
         });
         // 过滤并计算概率
-        weightedAs = calculateProbability(filtWas(result));
+        //weightedAs = calculateProbability(filtWas(result));
     }
 
     private void generatePartialEvaluation() {

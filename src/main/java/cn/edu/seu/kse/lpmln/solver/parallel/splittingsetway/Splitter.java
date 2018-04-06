@@ -47,6 +47,9 @@ public class Splitter {
         List<Rule> bottomRules = new ArrayList<>();
         List<Rule> topRules = new ArrayList<>();
         for (Rule rule: program.getRules()) {
+            if(rule.getHead().size()==0){
+                topRules.add(rule);
+            }
             for (String h: rule.getHead()) {
                 if (U.contains(lit2int.get(h))) {
                     bottomRules.add(rule);
