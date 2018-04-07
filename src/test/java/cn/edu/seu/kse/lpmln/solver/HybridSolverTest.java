@@ -14,7 +14,7 @@ import java.util.List;
 public class HybridSolverTest {
     @Test
     public void test() throws IOException{
-        LpmlnProgram program = SyntaxModule.parseLPMLN(new File("E:\\ML-KR\\LPMLN\\code\\lpmlnmodels\\src\\test\\resources\\bird\\b-3.txt"));
+        LpmlnProgram program = SyntaxModule.parseLPMLN(new File("D:\\ideaSpace\\lpmlnmodels\\src\\test\\resources\\bird\\b-3.txt"));
 
         LPMLNSolver solver = new LPMLNHybridSolver("ISA");
 

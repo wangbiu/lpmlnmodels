@@ -21,6 +21,7 @@ public class LPMLNHybridSolver extends LPMLNBaseSolver{
     }
 
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program) {
+        lpmlnProgram = program;
         LPMLNSolver solver = chooseSolver(arch);
         List<WeightedAnswerSet> result = solver.solveProgram(program);
         weightedAs = calculateProbability(filtWas(result));
