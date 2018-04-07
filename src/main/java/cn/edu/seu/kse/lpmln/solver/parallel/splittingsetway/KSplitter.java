@@ -14,6 +14,7 @@ public class KSplitter extends Splitter{
     private double k;
     private LpmlnProgram program;
     private Map<String,Set<String>> dependency;
+    private List<DecisionUnit> mdus;
     private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.LIT;
 
     @Override
@@ -21,6 +22,9 @@ public class KSplitter extends Splitter{
         this.k = k;
         this.program = program;
         this.dependency = LpmlnProgramHelper.getDependency(program);
+
+        this.mdus = generateMDUs();
+        buildRelations();
 
     }
 
@@ -71,6 +75,19 @@ public class KSplitter extends Splitter{
         return current;
     }
 
-
+    private void buildRelations(){
+        Map<String,DecisionUnit> map = new HashMap<>();
+        mdus.forEach(mdu-> {
+            mdu.getLit().forEach(lit-> {
+                map.put(lit,mdu);
+            });
+        });
+        dependency.forEach((lit,depends)->{
+            depends.forEach(depend->{
+                map.get(lit).getTo().add(map.get(depend));
+                map.get(depend).getFrom().add(map.get(lit));
+            });
+        });
+    }
 
 }
