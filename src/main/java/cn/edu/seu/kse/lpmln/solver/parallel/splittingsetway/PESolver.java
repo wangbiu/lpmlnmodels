@@ -109,8 +109,8 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         i = sb.lastIndexOf(",");
         if (i != -1) {
             sb.deleteCharAt(sb.lastIndexOf(","));
+            sb.deleteCharAt(sb.lastIndexOf(" "));
         }
-        sb.deleteCharAt(sb.lastIndexOf(" "));
         sb.append(".");
         return sb.toString();
 
