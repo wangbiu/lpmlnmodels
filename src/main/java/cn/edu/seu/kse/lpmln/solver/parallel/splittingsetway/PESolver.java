@@ -7,7 +7,6 @@ import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -56,7 +55,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         });
         // 过滤并计算概率
 //        weightedAs = calculateProbability(filtWas(result));
-        weightedAs = calculateProbability(result);
+        weightedAs = result;
     }
 
     private void generatePartialEvaluation() {

@@ -21,7 +21,12 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private List<LPMLNSolver> topSolvers;
     public static double k=0.5;
     private LpmlnThreadPool threadPool;
+<<<<<<< HEAD
     private String arch;
+=======
+    public enum SPLIT_TYPE{original,LIT,BOT,EDGE}
+    private SPLIT_TYPE policy = SPLIT_TYPE.LIT;
+>>>>>>> f64ed4e49cba6b2e59dea1646f98b03f84d23703
 
     public void run() {
         solveProgram(lpmlnProgram);
@@ -46,7 +51,21 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         lpmlnProgram = program;
 
         // 1. 分割程序，需要用到bottom、top、U
-        Splitter splitter = new Splitter();
+        Splitter splitter;
+        switch (policy){
+            case original:
+                splitter = new Splitter();
+                break;
+            case LIT:
+                splitter = new KSplitter(SPLIT_TYPE.LIT);
+                break;
+            case BOT:
+                splitter = new KSplitter(SPLIT_TYPE.BOT);
+                break;
+            default:
+                splitter = new Splitter();
+                break;
+        }
         splitter.split(program, k);
         LpmlnProgram bottom = splitter.getBottom();
         LpmlnProgram top = splitter.getTop();
@@ -57,7 +76,11 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
 
         // 3. 并行求Partial Evaluation
         Xs.forEach(AS -> {
+<<<<<<< HEAD
             PESolver solver = new PESolver(top, U, AS, arch);
+=======
+            PESolver solver = new PESolver(top.clone(), U, AS);
+>>>>>>> f64ed4e49cba6b2e59dea1646f98b03f84d23703
             topSolvers.add(solver);
             threadPool.execute(solver);
         });
