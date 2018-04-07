@@ -5,6 +5,8 @@ import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,10 +24,18 @@ public class IndependentSolver extends LPMLNBaseSolver{
     private List<LPMLNSolver> solvers;
     private List<List<WeightedAnswerSet>> subWeightedAs;
     private static Logger logger = LogManager.getLogger(IndependentSolver.class.getName());
+    private String arch;
 
-    public IndependentSolver(){
+    public IndependentSolver() {
         threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
         solvers = new ArrayList<>();
+        this.arch = "";
+    }
+
+    public IndependentSolver(String arch){
+        threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
+        solvers = new ArrayList<>();
+        this.arch = arch;
     }
 
     @Override
@@ -36,7 +46,7 @@ public class IndependentSolver extends LPMLNBaseSolver{
         logger.info("IndependentSolver into {} subprograms.",subprograms.size());
         subprograms.forEach(subprogram -> {
             //TODO:使用反射创建
-            LPMLNSolver solver = new LPMLNBaseSolver();
+            LPMLNSolver solver = chooseSolver(arch);
             solver.setLpmlnProgram(subprogram);
             solvers.add(solver);
             threadPool.execute(solver);

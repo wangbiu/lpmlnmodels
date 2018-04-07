@@ -14,19 +14,31 @@ import java.util.Set;
  * @author 许鸿翔
  * @date 2018/4/2
  */
-public class SplittingSolver extends LPMLNBaseSolver {
+public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private LPMLNSolver bottomSolver;
     private List<PESolver> topSolvers;
     public double k=0.5;
     private LpmlnThreadPool threadPool;
     public enum SPLIT_TYPE{ORIGINAL,LIT,BOT,EDGE}
+    private String arch;
     private SPLIT_TYPE policy = SPLIT_TYPE.LIT;
 
+    public void run() {
+        solveProgram(lpmlnProgram);
+    }
 
-    public SplittingSolver(){
+    public SplittingSolver() {
         bottomSolver = new LPMLNBaseSolver();
         topSolvers = new ArrayList<>();
         threadPool = new LpmlnThreadPool("SplittingSolver!");
+        this.arch = "";
+    }
+
+    public SplittingSolver(String arch) {
+        topSolvers = new ArrayList<>();
+        threadPool = new LpmlnThreadPool("SplittingSolver!");
+        this.arch = arch;
+        bottomSolver = chooseSolver(arch);
     }
 
     @Override
@@ -59,7 +71,7 @@ public class SplittingSolver extends LPMLNBaseSolver {
 
         // 3. 并行求Partial Evaluation
         Xs.forEach(AS -> {
-            PESolver solver = new PESolver(top.clone(), U, AS);
+            PESolver solver = new PESolver(top.clone(), U, AS,arch);
             topSolvers.add(solver);
             threadPool.execute(solver);
         });
