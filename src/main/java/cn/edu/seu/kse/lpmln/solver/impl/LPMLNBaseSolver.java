@@ -7,6 +7,9 @@ import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.AspSolver;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
@@ -245,6 +248,25 @@ public class LPMLNBaseSolver implements LPMLNSolver {
             throw new SolveException("subprogram not set.");
         }
         solveProgram(lpmlnProgram);
+    }
+
+    public LPMLNSolver chooseSolver(String arch) {
+        arch += "D";
+        switch (arch.charAt(0)) {
+            case 'i': {}
+            case 'I': {
+                return new IndependentSolver(arch.substring(1));
+            }
+            case 's': {}
+            case 'S': {
+                return new SplittingSolver(arch.substring(1));
+            }
+            case 'a': {}
+            case 'A': {
+                return new AugmentedSolver();
+            }
+            default: return new LPMLNBaseSolver();
+        }
     }
 
     @Override

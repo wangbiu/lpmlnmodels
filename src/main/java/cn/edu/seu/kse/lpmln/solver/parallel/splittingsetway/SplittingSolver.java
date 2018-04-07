@@ -4,6 +4,8 @@ import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 
 import java.util.ArrayList;
@@ -16,15 +18,23 @@ import java.util.Set;
  */
 public class SplittingSolver extends LPMLNBaseSolver {
     private LPMLNSolver bottomSolver;
-    private List<PESolver> topSolvers;
+    private List<LPMLNSolver> topSolvers;
     public static double k=0.5;
     private LpmlnThreadPool threadPool;
+    private String arch;
 
-
-    public SplittingSolver(){
+    public SplittingSolver() {
         bottomSolver = new LPMLNBaseSolver();
         topSolvers = new ArrayList<>();
         threadPool = new LpmlnThreadPool("SplittingSolver!");
+        this.arch = "";
+    }
+
+    public SplittingSolver(String arch) {
+        topSolvers = new ArrayList<>();
+        threadPool = new LpmlnThreadPool("SplittingSolver!");
+        this.arch = arch;
+        bottomSolver = chooseSolver(arch);
     }
 
     @Override
@@ -43,7 +53,7 @@ public class SplittingSolver extends LPMLNBaseSolver {
 
         // 3. 并行求Partial Evaluation
         Xs.forEach(AS -> {
-            PESolver solver = new PESolver(top, U, AS);
+            PESolver solver = new PESolver(top, U, AS, arch);
             topSolvers.add(solver);
             threadPool.execute(solver);
         });

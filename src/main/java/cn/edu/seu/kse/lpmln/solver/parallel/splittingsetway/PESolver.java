@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
+import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 
 import java.util.ArrayList;
@@ -15,16 +16,20 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     private Set<String> U;
     private WeightedAnswerSet x;
     private LpmlnProgram partialEvaluation;
+    private String arch;
+    private LPMLNSolver solver;
 
-    public PESolver(LpmlnProgram top, Set<String> U, WeightedAnswerSet x) {
+    public PESolver(LpmlnProgram top, Set<String> U, WeightedAnswerSet x, String arch) {
         this.top = top;
         this.U = U;
         this.x = x;
+        this.arch = arch;
+        solver = chooseSolver(arch);
     }
 
     public void run() {
         generatePartialEvaluation();
-        solveProgram(partialEvaluation);
+        weightedAs = solver.solveProgram(partialEvaluation);
         combineAnswerSet();
     }
 
