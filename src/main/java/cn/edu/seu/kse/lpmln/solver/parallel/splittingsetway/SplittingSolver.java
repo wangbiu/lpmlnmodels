@@ -19,6 +19,8 @@ public class SplittingSolver extends LPMLNBaseSolver {
     private List<PESolver> topSolvers;
     public static double k=0.5;
     private LpmlnThreadPool threadPool;
+    public enum SPLIT_TYPE{original,LIT,BOT,EDGE}
+    private SPLIT_TYPE policy = SPLIT_TYPE.LIT;
 
 
     public SplittingSolver(){
@@ -32,7 +34,21 @@ public class SplittingSolver extends LPMLNBaseSolver {
         lpmlnProgram = program;
 
         // 1. 分割程序，需要用到bottom、top、U
-        Splitter splitter = new Splitter();
+        Splitter splitter;
+        switch (policy){
+            case original:
+                splitter = new Splitter();
+                break;
+            case LIT:
+                splitter = new KSplitter(SPLIT_TYPE.LIT);
+                break;
+            case BOT:
+                splitter = new KSplitter(SPLIT_TYPE.BOT);
+                break;
+            default:
+                splitter = new Splitter();
+                break;
+        }
         splitter.split(program, k);
         LpmlnProgram bottom = splitter.getBottom();
         LpmlnProgram top = splitter.getTop();

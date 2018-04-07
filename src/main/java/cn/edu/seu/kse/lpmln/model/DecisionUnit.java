@@ -2,6 +2,7 @@ package cn.edu.seu.kse.lpmln.model;
 
 import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -19,6 +20,8 @@ public class DecisionUnit {
     public DecisionUnit(LpmlnProgram program,Set<String> lit){
         this.lit =lit;
         this.program = program;
+        from = new HashSet<>();
+        to = new HashSet<>();
     }
 
     private void generateWeight(){

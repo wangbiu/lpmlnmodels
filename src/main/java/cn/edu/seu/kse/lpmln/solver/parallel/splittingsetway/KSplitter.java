@@ -31,6 +31,14 @@ public class KSplitter extends Splitter{
         }
     };
 
+    public KSplitter(){
+
+    }
+
+    public KSplitter(SplittingSolver.SPLIT_TYPE policy){
+        this.policy = policy;
+    }
+
     @Override
     public void split(LpmlnProgram program, double k) {
         this.k = k;
