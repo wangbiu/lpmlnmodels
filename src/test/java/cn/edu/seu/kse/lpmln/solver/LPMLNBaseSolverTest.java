@@ -32,6 +32,7 @@ public class LPMLNBaseSolverTest {
         List<WeightedAnswerSet> was = solver.solve(new File(birdPath));
         String marginal = solver.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ");
         String result[] = marginal.split(" ");
+        solver.getAllWeightedAs().forEach(System.out::println);
         assert result[1].startsWith("0.909");
         assert result[3].startsWith("0.909");
         assert result[5].startsWith("0.909");

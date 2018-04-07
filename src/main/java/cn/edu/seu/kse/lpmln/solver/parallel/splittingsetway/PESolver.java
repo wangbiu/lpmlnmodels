@@ -50,23 +50,30 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             result.add(answerSet);
         });
         // 过滤并计算概率
-        //weightedAs = calculateProbability(filtWas(result));
+//        weightedAs = calculateProbability(filtWas(result));
+        weightedAs = calculateProbability(result);
     }
 
     private void generatePartialEvaluation() {
         // 1. 计算deleting set
-        Set<Rule> deletingSet = getDeletingSet();
+        List<Rule> deletingSet = getDeletingSet();
 
         // 2. 计算partial evaluation
         List<Rule> peRules = new ArrayList<>();
         for (Rule rule: top.getRules()) {
-            if (deletingSet.contains(rule)) {
+//            with deleting set as a hash set, question is how to calculate
+//            the hash code of a Rule
+//            if (deletingSet.contains(rule)) {
+//                continue;
+//            }
+            if (contains(deletingSet, rule) > -1) {
                 continue;
             }
             rule.getPositiveBody().removeIf(l -> U.contains(l));
             rule.getNegativeBody().removeIf(l -> U.contains(l.substring(4)));
-            rule.setText(getText(rule));
-            rule.setOriginalrule(getText(rule));
+            rule.setText(getText(rule, false));
+            rule.setOriginalrule(getText(rule, true));
+
             int ind;
             // group 和 rep rule 的计算
             if ((ind = contains(peRules, rule)) > -1) {
@@ -76,18 +83,18 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
                 peRules.add(rule);
             }
         }
-        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), " ");
+        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule());
     }
 
     private int contains(List<Rule> rules, Rule rule) {
         for (Rule r: rules) {
-            if (!(r.getHead().size() == rule.getHead().size() || r.getHead().containsAll(rule.getHead()))) {
+            if (!(r.getHead().size() == rule.getHead().size() && r.getHead().containsAll(rule.getHead()))) {
                 continue;
             }
-            if (!(r.getPositiveBody().size() == rule.getPositiveBody().size() || r.getPositiveBody().containsAll(rule.getPositiveBody()))) {
+            if (!(r.getPositiveBody().size() == rule.getPositiveBody().size() && r.getPositiveBody().containsAll(rule.getPositiveBody()))) {
                 continue;
             }
-            if (!(r.getNegativeBody().size() == rule.getNegativeBody().size() || r.getNegativeBody().containsAll(rule.getNegativeBody()))) {
+            if (!(r.getNegativeBody().size() == rule.getNegativeBody().size() && r.getNegativeBody().containsAll(rule.getNegativeBody()))) {
                 continue;
             }
             return rules.indexOf(r);
@@ -95,30 +102,35 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         return -1;
     }
 
-    private String getText(Rule rule) {
+    private String getText(Rule rule, boolean originalText) {
         StringBuilder sb = new StringBuilder();
         rule.getHead().forEach(lit -> sb.append(lit).append("; "));
         int i = sb.lastIndexOf(";");
         if (i != -1){
             sb.deleteCharAt(i);
         }
-        sb.deleteCharAt(sb.lastIndexOf(" "));
-        sb.append(":- ");
-        rule.getPositiveBody().forEach(lit -> sb.append(lit).append(", "));
-        rule.getNegativeBody().forEach(lit -> sb.append(lit).append(", "));
-        i = sb.lastIndexOf(",");
-        if (i != -1) {
-            sb.deleteCharAt(sb.lastIndexOf(","));
+        if (rule.getPositiveBody().size() != 0 || rule.getNegativeBody().size() != 0) {
+            sb.append(":- ");
+            rule.getPositiveBody().forEach(lit -> sb.append(lit).append(", "));
+            rule.getNegativeBody().forEach(lit -> sb.append(lit).append(", "));
+            if (originalText) {
+                sb.deleteCharAt(sb.lastIndexOf(","));
+                sb.deleteCharAt(sb.lastIndexOf(" "));
+                sb.append(".");
+            }
         }
-        sb.deleteCharAt(sb.lastIndexOf(" "));
-        sb.append(".");
+        else {
+            if (!originalText) sb.append(" :- ");
+            else sb.append(".");
+        }
+
         return sb.toString();
     }
 
-    private Set<Rule> getDeletingSet() {
+    private List<Rule> getDeletingSet() {
         Set<String> X = x.getAnswerSet().getLiterals();
         X.removeIf(literal -> literal.equals("kse_solve_trick"));
-        Set<Rule> DS = new HashSet<>();
+        List<Rule> DS = new ArrayList<>();
         for (Rule rule: top.getRules()) {
             boolean willAdd = false;
             boolean isNull = true;
