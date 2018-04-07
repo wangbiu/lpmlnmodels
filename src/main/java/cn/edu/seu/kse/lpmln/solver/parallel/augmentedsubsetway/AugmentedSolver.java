@@ -15,7 +15,7 @@ import java.util.List;
  * @author 许鸿翔
  * @date 2018/1/17
  */
-public class AugmentedSolver extends LPMLNBaseSolver {
+public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
     //通过增强子集 并行推理
     //Wang B, Zhang Z. A Parallel LP^{MLN Solver: Primary Report[C]// Aspocp. 2017.
     private int threadNums;

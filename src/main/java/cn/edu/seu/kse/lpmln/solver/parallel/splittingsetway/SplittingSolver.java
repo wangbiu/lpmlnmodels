@@ -16,12 +16,16 @@ import java.util.Set;
  * @author 许鸿翔
  * @date 2018/4/2
  */
-public class SplittingSolver extends LPMLNBaseSolver {
+public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private LPMLNSolver bottomSolver;
     private List<LPMLNSolver> topSolvers;
     public static double k=0.5;
     private LpmlnThreadPool threadPool;
     private String arch;
+
+    public void run() {
+        solveProgram(lpmlnProgram);
+    }
 
     public SplittingSolver() {
         bottomSolver = new LPMLNBaseSolver();
