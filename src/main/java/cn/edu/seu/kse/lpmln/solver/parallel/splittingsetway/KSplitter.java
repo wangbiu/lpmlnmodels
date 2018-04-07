@@ -4,6 +4,8 @@ import cn.edu.seu.kse.lpmln.model.DecisionUnit;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -21,15 +23,16 @@ public class KSplitter extends Splitter{
     private Comparator<DecisionUnit> comparatorLit = new Comparator<DecisionUnit>() {
         @Override
         public int compare(DecisionUnit o1, DecisionUnit o2) {
-            return o1.getWl()-o2.getWl();
+            return o2.getWl()-o1.getWl();
         }
     };
     private Comparator<DecisionUnit> comparatorRule = new Comparator<DecisionUnit>() {
         @Override
         public int compare(DecisionUnit o1, DecisionUnit o2) {
-            return o1.getWr()-o2.getWr();
+            return o2.getWr()-o1.getWr();
         }
     };
+    private Logger logger = LogManager.getLogger(KSplitter.class.getName());
 
     public KSplitter(){
 
@@ -50,7 +53,7 @@ public class KSplitter extends Splitter{
 
         generateU();
 
-
+        generateTopAndBottom();
     }
 
     private List<DecisionUnit> generateMDUs(){
@@ -109,8 +112,10 @@ public class KSplitter extends Splitter{
         });
         dependency.forEach((lit,depends)->{
             depends.forEach(depend->{
-                map.get(lit).getTo().add(map.get(depend));
-                map.get(depend).getFrom().add(map.get(lit));
+                if(!lit.equals(depend)){
+                    map.get(lit).getTo().add(map.get(depend));
+                    map.get(depend).getFrom().add(map.get(lit));
+                }
             });
         });
     }
@@ -150,6 +155,7 @@ public class KSplitter extends Splitter{
                 });
             }
         }
+        logger.debug("splitting set: lit weight:{}",currentLits);
     }
 
     private void generateUBot(){
@@ -165,7 +171,7 @@ public class KSplitter extends Splitter{
             DecisionUnit next = nextQueue.poll();
             if(next.getWr()+currentRules<k*program.getRules().size()){
                 U.addAll(next.getLit());
-                currentRules += next.getLit().size();
+                currentRules += next.getWr();
                 next.getFrom().forEach(father->{
                     father.getTo().remove(next);
                     if(father.getTo().size()==0){
@@ -174,6 +180,7 @@ public class KSplitter extends Splitter{
                 });
             }
         }
+        logger.debug("splitting set: bot weight:{}",currentRules);
     }
 
     private void generateTopAndBottom(){

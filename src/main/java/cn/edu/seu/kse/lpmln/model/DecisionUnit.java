@@ -22,6 +22,7 @@ public class DecisionUnit {
         this.program = program;
         from = new HashSet<>();
         to = new HashSet<>();
+        generateWeight();
     }
 
     private void generateWeight(){
@@ -35,6 +36,11 @@ public class DecisionUnit {
                 }
             }
         }
+    }
+
+    @Override
+    public String toString(){
+        return String.join(",",lit);
     }
 
     public int getWr() {
