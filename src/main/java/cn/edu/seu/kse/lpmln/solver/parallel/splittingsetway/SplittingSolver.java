@@ -43,7 +43,7 @@ public class SplittingSolver extends LPMLNBaseSolver {
 
         // 3. 并行求Partial Evaluation
         Xs.forEach(AS -> {
-            PESolver solver = new PESolver(top, U, AS);
+            PESolver solver = new PESolver(top.clone(), U, AS);
             topSolvers.add(solver);
             threadPool.execute(solver);
         });
