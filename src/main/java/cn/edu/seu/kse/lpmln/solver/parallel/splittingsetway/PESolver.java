@@ -44,12 +44,12 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             }
             answerSet.setWeights(weights);
             // 加入partial evaluation的SM的所有literal
-            answerSet.getAnswerSet().getLiterals().addAll(AS.getAnswerSet().getLiterals());
-            x.getAnswerSet().getLiterals().forEach(lit -> {
-                if (!lit.equals("kse_solve_trick")) {
-                    answerSet.getAnswerSet().add(lit);
-                }
-            });
+            answerSet.getAnswerSet().setLiterals(AS.getAnswerSet().getLiterals());
+//            x.getAnswerSet().getLiterals().forEach(lit -> {
+//                if (!lit.equals("kse_solve_trick")) {
+//                    answerSet.getAnswerSet().add(lit);
+//                }
+//            });
             // 将新的回答集加入最终结果
             result.add(answerSet);
         });
@@ -61,6 +61,11 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     private void generatePartialEvaluation() {
         // 1. 计算deleting set
         List<Rule> deletingSet = getDeletingSet();
+
+        StringBuilder botResult = new StringBuilder();
+        x.getAnswerSet().getLiterals().forEach(lit->{
+            botResult.append(lit).append(".").append(System.lineSeparator());
+        });
 
         // 2. 计算partial evaluation
         List<Rule> peRules = new ArrayList<>();
@@ -87,7 +92,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
                 peRules.add(rule);
             }
         }
-        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule());
+        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule()+botResult.toString());
     }
 
     private int contains(List<Rule> rules, Rule rule) {
