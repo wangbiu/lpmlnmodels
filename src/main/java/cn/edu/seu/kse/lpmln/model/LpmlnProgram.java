@@ -67,4 +67,11 @@ public class LpmlnProgram {
     public void setMetarule(String metarule) {
         this.metarule = metarule;
     }
+
+    @Override
+    public LpmlnProgram clone(){
+        List<Rule> clonedRules = new ArrayList<>();
+        rules.forEach(rule -> clonedRules.add(rule.clone()));
+        return new LpmlnProgram(clonedRules,factor,new HashSet<>(herbrandUniverse),metarule);
+    }
 }

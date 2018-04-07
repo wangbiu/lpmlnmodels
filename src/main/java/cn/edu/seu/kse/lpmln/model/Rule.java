@@ -138,6 +138,25 @@ public class Rule {
         return sb.toString();
     }
 
+    @Override
+    public Rule clone(){
+        Rule cloned = new Rule();
+        cloned.text = text;
+        cloned.id = id;
+        cloned.vars = new HashSet<>(vars);
+        cloned.isSoft = isSoft;
+        cloned.weight = weight;
+        cloned.innerweight = innerweight;
+        cloned.head = new ArrayList<>(head);
+        cloned.headCondition = new ArrayList<>(headCondition);
+        cloned.positiveBody = new ArrayList<>(positiveBody);
+        cloned.negativeBody = new ArrayList<>(negativeBody);
+        cloned.bodyContion = new ArrayList<>(bodyContion);
+        cloned.ruleLabel = ruleLabel;
+        cloned.originalrule = originalrule;
+        return cloned;
+    }
+
     public String getOriginalrule() {
         return originalrule;
     }
