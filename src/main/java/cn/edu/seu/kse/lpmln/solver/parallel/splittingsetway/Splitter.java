@@ -6,9 +6,9 @@ import cn.edu.seu.kse.lpmln.model.Rule;
 import java.util.*;
 
 public class Splitter {
-    private LpmlnProgram bottom;
-    private LpmlnProgram top;
-    private Set<String> U;
+    LpmlnProgram bottom;
+    LpmlnProgram top;
+    Set<String> U;
     private Map<String, Integer> lit2int;
     private Map<Integer, String> int2lit;
     private int count;

@@ -2,6 +2,7 @@ package cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway;
 
 import cn.edu.seu.kse.lpmln.model.DecisionUnit;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
+import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
 
 import java.util.*;
@@ -14,8 +15,21 @@ public class KSplitter extends Splitter{
     private double k;
     private LpmlnProgram program;
     private Map<String,Set<String>> dependency;
+    private Set<String> programLiterals;
     private List<DecisionUnit> mdus;
     private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.LIT;
+    private Comparator<DecisionUnit> comparatorLit = new Comparator<DecisionUnit>() {
+        @Override
+        public int compare(DecisionUnit o1, DecisionUnit o2) {
+            return o1.getWl()-o2.getWl();
+        }
+    };
+    private Comparator<DecisionUnit> comparatorRule = new Comparator<DecisionUnit>() {
+        @Override
+        public int compare(DecisionUnit o1, DecisionUnit o2) {
+            return o1.getWr()-o2.getWr();
+        }
+    };
 
     @Override
     public void split(LpmlnProgram program, double k) {
@@ -26,15 +40,18 @@ public class KSplitter extends Splitter{
         this.mdus = generateMDUs();
         buildRelations();
 
+        generateU();
+
+
     }
 
     private List<DecisionUnit> generateMDUs(){
         List<DecisionUnit> mdu = new ArrayList<>();
         //已经被加到之前mdu里的元素
         Set<String> used = new HashSet<>();
-        Set<String> litP = new HashSet<>(dependency.keySet());
-        dependency.values().forEach(depend->litP.addAll(depend));
-        litP.forEach(lit->{
+        programLiterals = new HashSet<>(dependency.keySet());
+        dependency.values().forEach(depend->programLiterals.addAll(depend));
+        programLiterals.forEach(lit->{
             if(used.contains(lit)){
                 return;
             }
@@ -88,6 +105,87 @@ public class KSplitter extends Splitter{
                 map.get(depend).getFrom().add(map.get(lit));
             });
         });
+    }
+
+    private void generateU(){
+        switch (policy){
+            case BOT:
+                generateUBot();
+                break;
+            case LIT:
+            default:
+                generateULit();
+                break;
+        }
+
+    }
+
+    private void generateULit(){
+        U = new HashSet<>();
+        int currentLits=0;
+        PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
+        mdus.forEach(mdu->{
+            if(mdu.getTo().size()==0){
+                nextQueue.offer(mdu);
+            }
+        });
+        while(nextQueue.size()>0){
+            DecisionUnit next = nextQueue.poll();
+            if(next.getWl()+currentLits<k*programLiterals.size()){
+                U.addAll(next.getLit());
+                currentLits += next.getLit().size();
+                next.getFrom().forEach(father->{
+                    father.getTo().remove(next);
+                    if(father.getTo().size()==0){
+                        nextQueue.offer(father);
+                    }
+                });
+            }
+        }
+    }
+
+    private void generateUBot(){
+        U = new HashSet<>();
+        int currentRules=0;
+        PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
+        mdus.forEach(mdu->{
+            if(mdu.getTo().size()==0){
+                nextQueue.offer(mdu);
+            }
+        });
+        while(nextQueue.size()>0){
+            DecisionUnit next = nextQueue.poll();
+            if(next.getWr()+currentRules<k*program.getRules().size()){
+                U.addAll(next.getLit());
+                currentRules += next.getLit().size();
+                next.getFrom().forEach(father->{
+                    father.getTo().remove(next);
+                    if(father.getTo().size()==0){
+                        nextQueue.offer(father);
+                    }
+                });
+            }
+        }
+    }
+
+    private void generateTopAndBottom(){
+        List<Rule> bottomRules = new ArrayList<>();
+        List<Rule> topRules = new ArrayList<>();
+        for (Rule rule : program.getRules()) {
+            boolean bot = false;
+            for (String headLit : rule.getHead()) {
+                if(U.contains(LpmlnProgramHelper.getLiteral(headLit))){
+                    bot = true;
+                }
+            }
+            if(bot){
+                bottomRules.add(rule);
+            }else{
+                topRules.add(rule);
+            }
+        }
+        bottom = new LpmlnProgram(bottomRules, program.getFactor(), program.getHerbrandUniverse(), "");
+        top = new LpmlnProgram(topRules, program.getFactor(), program.getHerbrandUniverse(), program.getMetarule());
     }
 
 }
