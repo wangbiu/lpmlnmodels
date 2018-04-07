@@ -5,6 +5,7 @@ import cn.edu.seu.kse.lpmln.experiment.util.ExperimentReporter;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.impl.LPMLNHybridSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
@@ -212,6 +213,12 @@ public class LPMLNApp {
                             }
                             ((SplittingSolver) solver).setK(Double.valueOf(param[1]));
                         }
+                        break;
+                    case "h":
+                        if(external==null){
+                            throw new CommandLineException("hybrid requires param -e");
+                        }
+                        solver = new LPMLNHybridSolver(external);
                         break;
                     default:
                         throw new CommandLineException("No correspond solver, i=independent,a=augmented,s=splitset");

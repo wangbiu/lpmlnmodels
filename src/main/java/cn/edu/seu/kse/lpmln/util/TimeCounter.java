@@ -27,12 +27,13 @@ public class TimeCounter {
     }
 
     public void stop(){
-        if(status!=Status.RUNNING){
-            throw new SolveException("Timer stop incorrect");
-        }else{
-            time += ((double)(System.currentTimeMillis()-startTime))/1000;
-            status = Status.STOPPED;
-        }
+        //TODO:处理计时器
+//        if(status!=Status.RUNNING){
+//            throw new SolveException("Timer stop incorrect");
+//        }else{
+//            time += ((double)(System.currentTimeMillis()-startTime))/1000;
+//            status = Status.STOPPED;
+//        }
     }
 
     public Status getStatus() {

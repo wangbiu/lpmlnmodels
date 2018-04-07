@@ -20,6 +20,7 @@ public class LPMLNHybridSolver extends LPMLNBaseSolver{
         this.arch = arch;
     }
 
+    @Override
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program) {
         lpmlnProgram = program;
         LPMLNSolver solver = chooseSolver(arch);
