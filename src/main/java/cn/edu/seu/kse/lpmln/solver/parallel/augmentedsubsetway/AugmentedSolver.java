@@ -116,4 +116,8 @@ public class AugmentedSolver extends LPMLNBaseSolver {
     public void setDeleteTranslatedFiles(boolean deleteTranslatedFiles) {
         this.deleteTranslatedFiles = deleteTranslatedFiles;
     }
+
+    public void setPolicy(AugmentedSubsetPartitioner.SPLIT_TYPE policy) {
+        this.partitioner.setPolicy(policy);
+    }
 }

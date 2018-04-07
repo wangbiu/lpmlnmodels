@@ -17,9 +17,9 @@ import java.util.Set;
 public class SplittingSolver extends LPMLNBaseSolver {
     private LPMLNSolver bottomSolver;
     private List<PESolver> topSolvers;
-    public static double k=0.5;
+    public double k=0.5;
     private LpmlnThreadPool threadPool;
-    public enum SPLIT_TYPE{original,LIT,BOT,EDGE}
+    public enum SPLIT_TYPE{ORIGINAL,LIT,BOT,EDGE}
     private SPLIT_TYPE policy = SPLIT_TYPE.LIT;
 
 
@@ -36,7 +36,7 @@ public class SplittingSolver extends LPMLNBaseSolver {
         // 1. 分割程序，需要用到bottom、top、U
         Splitter splitter;
         switch (policy){
-            case original:
+            case ORIGINAL:
                 splitter = new Splitter();
                 break;
             case LIT:
@@ -104,5 +104,21 @@ public class SplittingSolver extends LPMLNBaseSolver {
 //        });
         //TODO:next
         return null;
+    }
+
+    public SPLIT_TYPE getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(SPLIT_TYPE policy) {
+        this.policy = policy;
+    }
+
+    public double getK() {
+        return k;
+    }
+
+    public void setK(double k) {
+        this.k = k;
     }
 }

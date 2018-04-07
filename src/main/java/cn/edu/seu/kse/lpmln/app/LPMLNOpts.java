@@ -68,6 +68,13 @@ public class LPMLNOpts {
         parallel.setValueSeparator(' ');
         parallel.setOptionalArg(true);
 
+        //额外参数
+        Option external=new Option("e", "external", true, "optional, external param");
+        external.setRequired(false);
+        external.setArgName("parallel-external");
+        external.setValueSeparator(' ');
+        external.setOptionalArg(true);
+
         //实验
         Option experiment=new Option("j", "report-json", true, "optional, generate json report");
         experiment.setRequired(false);
@@ -75,7 +82,7 @@ public class LPMLNOpts {
         experiment.setValueSeparator(' ');
         experiment.setOptionalArg(true);
 
-        //LPMLN推理机
+        //LPMLN推理机 这个暂时不用
         Option lpmlnReasoner=new Option("n", "lpmln-solver",true,"optional, specify used LPMLN solver");
         lpmlnReasoner.setValueSeparator(' ');
         lpmlnReasoner.setRequired(false);
@@ -95,6 +102,7 @@ public class LPMLNOpts {
         opts.addOption(parallel);
         opts.addOption(experiment);
         opts.addOption(lpmlnReasoner);
+        opts.addOption(external);
 
         return opts;
     }

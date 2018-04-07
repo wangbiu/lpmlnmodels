@@ -10,14 +10,14 @@ import java.util.*;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected TRANSLATION_TYPE policy = TRANSLATION_TYPE.SPLIT_RANDOM;
+    protected SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_RANDOM;
 
     /**
      * SPLIT_SIMPLE：二进制划分
      * SPLIT_RANDOM：随机划分
      * HEURISTIC：启发式划分
      */
-    public enum TRANSLATION_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, HEURISTIC,TEST}
+    public enum SPLIT_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, HEURISTIC,TEST}
 
     //输入：原规则，翻译后的规则文本
     //输出：增强子集文件列表，子集对应的额外权重
@@ -151,5 +151,13 @@ public class AugmentedSubsetPartitioner {
         int idx = new ArrayList<>(set).get(randomIdx);
         set.remove((Integer) idx);
         return idx;
+    }
+
+    public SPLIT_TYPE getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(SPLIT_TYPE policy) {
+        this.policy = policy;
     }
 }

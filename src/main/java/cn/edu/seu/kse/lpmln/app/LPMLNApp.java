@@ -20,6 +20,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.HEURISTIC;
+import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.SPLIT_RANDOM;
+import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.BOT;
+import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.LIT;
+import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.ORIGINAL;
+
 /**
  * Created by 王彬 on 2016/10/14.
  */
@@ -165,6 +171,7 @@ public class LPMLNApp {
         //TODO:solver的在CMD中的组织方式
         if(cmd.hasOption("parallel")){
             String solverName = cmd.getOptionValue("parallel");
+            String external = cmd.getOptionValue("external");
             if(solverName==null){
                 solver = new AugmentedSolver();
             }else{
@@ -174,9 +181,37 @@ public class LPMLNApp {
                         break;
                     case "a":
                         solver = new AugmentedSolver();
+                        if(external!=null){
+                            switch (external){
+                                case "h":
+                                    ((AugmentedSolver) solver).setPolicy(HEURISTIC);
+                                    break;
+                                case "r":
+                                    ((AugmentedSolver) solver).setPolicy(SPLIT_RANDOM);
+                                default:
+                                    break;
+                            }
+                        }
                         break;
                     case "s":
                         solver = new SplittingSolver();
+                        if(external!=null){
+                            String[] param = external.split(",");
+                            switch (param[0]){
+                                case "o":
+                                    ((SplittingSolver) solver).setPolicy(ORIGINAL);
+                                    break;
+                                case "l":
+                                    ((SplittingSolver) solver).setPolicy(LIT);
+                                    break;
+                                case "b":
+                                    ((SplittingSolver) solver).setPolicy(BOT);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            ((SplittingSolver) solver).setK(Double.valueOf(param[1]));
+                        }
                         break;
                     default:
                         throw new CommandLineException("No correspond solver, i=independent,a=augmented,s=splitset");
