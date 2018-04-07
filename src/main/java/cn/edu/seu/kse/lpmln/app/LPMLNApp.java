@@ -7,6 +7,7 @@ import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -173,6 +174,10 @@ public class LPMLNApp {
                         break;
                     case "a":
                         solver = new AugmentedSolver();
+                        break;
+                    case "s":
+                        solver = new SplittingSolver();
+                        break;
                     default:
                         throw new CommandLineException("No correspond solver, i=independent,a=augmented,s=splitset");
                 }
