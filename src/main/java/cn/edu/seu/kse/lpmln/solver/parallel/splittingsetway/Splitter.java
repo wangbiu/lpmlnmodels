@@ -212,6 +212,7 @@ public class Splitter {
                 body.add(lit2int.get(lit));
             });
             rule.getNegativeBody().forEach(lit -> {
+                // eliminating not
                 String originalLit = lit.substring(4);
                 checkAndAdd(originalLit);
                 body.add(lit2int.get(originalLit));
