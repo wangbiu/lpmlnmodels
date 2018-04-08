@@ -66,6 +66,9 @@ public class IndependentSplitter {
             current.offer(lit);
             while(current.size()>0){
                 String next = current.poll();
+                if(!dependency.containsKey(next)){
+                    continue;
+                }
                 Set<String> nextDepend = dependency.get(next);
                 nextDepend.forEach(nextLit->{
                     if(!subset.contains(nextLit)){
