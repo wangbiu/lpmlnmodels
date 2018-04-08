@@ -1,7 +1,5 @@
 package cn.edu.seu.kse.lpmln.util;
 
-import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
-
 /**
  * @author 许鸿翔
  * @date 2018/3/2
@@ -19,11 +17,11 @@ public class TimeCounter {
     }
 
     public void start(){
-        if(status==Status.RUNNING){
-            throw new SolveException("Timer start incorrect");
-        }
-        status = Status.RUNNING;
-        startTime = System.currentTimeMillis();
+//        if(status==Status.RUNNING){
+//            throw new SolveException("Timer start incorrect");
+//        }
+//        status = Status.RUNNING;
+//        startTime = System.currentTimeMillis();
     }
 
     public void stop(){
