@@ -68,10 +68,11 @@ public class KSplitter extends Splitter{
             }
             //当前的mdu有的元素
             Set<String> current = dfs(lit);
-            used.addAll(current);
-            if(current.size()!=0){
-                mdu.add(new DecisionUnit(program,current));
+            if(current==null){
+                return;
             }
+            used.addAll(current);
+            mdu.add(new DecisionUnit(program,current));
         });
         return mdu;
     }
@@ -79,9 +80,8 @@ public class KSplitter extends Splitter{
     private Set<String> dfs(String lit){
         Set<String> current = new HashSet<>();
         Set<String> visited = new HashSet<>();
-        //TODO:修复这边
-        if(lit.charAt(0)<='9'&&lit.charAt(0)>='0'){
-            return current;
+        if(!dependency.containsKey(lit)){
+            return null;
         }
         //深度优先，stack1记录顺序，stack记录目前访问的,path记录当前路径下
         LinkedList<String> stack1 = new LinkedList<>();
