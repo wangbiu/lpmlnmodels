@@ -14,6 +14,7 @@ public class tsp {
     private static final int count=40;
     private static final String basePath = "/lpmlnexperiment/benchmark/tsp/";
     private static final Random rand = new Random();
+    private static final double k=0.6;
 
     @Test
     public void exec(){
@@ -44,11 +45,13 @@ public class tsp {
         }
 
         for(int i=1;i<=x;i++){
-            for(int j=1;j<=x;j++){
+            for(int j=i+1;j<=x;j++){
                 if(i!=j){
-                    int length = Math.abs(rand.nextInt()%20)+1;
-                    program.append("-"+length+": "+go(i,j)+".").append(System.lineSeparator());
-                    program.append("-"+length+": "+go(j,i)+".").append(System.lineSeparator());
+                    if(Math.abs(rand.nextInt())%1000<1000*k||j==i+1||(j==1&&i==x)){
+                        int length = Math.abs(rand.nextInt()%20)+1;
+                        program.append("-"+length+": "+go(i,j)+".").append(System.lineSeparator());
+                        program.append("-"+length+": "+go(j,i)+".").append(System.lineSeparator());
+                    }
                 }
             }
         }
@@ -62,7 +65,7 @@ public class tsp {
         }
 
         for(int i=1;i<=x;i++){
-            for(int j=i+1;j<=x;j++){
+            for(int j=1;j<=x;j++){
                 for(int k=1;k<=x;k++){
                     if(j!=k&&j!=i&&k!=i){
                         program.append(":- "+go(i,j)+","+go(i,k)+".").append(System.lineSeparator());
