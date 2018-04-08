@@ -92,8 +92,12 @@ public class KSplitter extends Splitter{
                     }
                 }else{
                     stack1.push(next);
-                    stack2.push(dependency.get(next).iterator());
-                    path.add(next);
+                    if(dependency.containsKey(next)){
+                        stack2.push(dependency.get(next).iterator());
+                        path.add(next);
+                    }else{
+                        stack1.pop();
+                    }
                 }
             }else{
                 stack2.pop();
