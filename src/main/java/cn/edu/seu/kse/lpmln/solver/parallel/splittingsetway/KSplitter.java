@@ -76,6 +76,10 @@ public class KSplitter extends Splitter{
 
     private Set<String> dfs(String lit){
         Set<String> current = new HashSet<>();
+        if(!dependency.containsKey(lit)){
+            current.add(lit);
+            return current;
+        }
         //深度优先，stack1记录顺序，stack记录目前访问的,path记录当前路径下
         LinkedList<String> stack1 = new LinkedList<>();
         LinkedList<Iterator<String>> stack2 = new LinkedList<>();
