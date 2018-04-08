@@ -67,6 +67,7 @@ public class LPMLNApp {
         //初始化参数
         initLpmlnmodels(cmd);
 
+        logger.debug("solve instance:{}",solver.getClass().getName());
         if(cmd.hasOption("input-file")){
             File lpmlnrulefile=new File(lpmlnfile);
 
@@ -183,7 +184,8 @@ public class LPMLNApp {
                     case "a":
                         solver = new AugmentedSolver();
                         if(external!=null){
-                            switch (external){
+                            String[] param = external.split(",");
+                            switch (param[0]){
                                 case "h":
                                     ((AugmentedSolver) solver).setPolicy(HEURISTIC);
                                     break;
@@ -192,6 +194,7 @@ public class LPMLNApp {
                                 default:
                                     break;
                             }
+                            ((AugmentedSolver) solver).setThreadNums(Integer.valueOf(param[1]));
                         }
                         break;
                     case "s":

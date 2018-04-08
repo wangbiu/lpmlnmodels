@@ -10,7 +10,7 @@ import java.util.*;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_RANDOM;
+    protected SPLIT_TYPE policy = SPLIT_TYPE.HEURISTIC;
 
     /**
      * SPLIT_SIMPLE：二进制划分
@@ -104,18 +104,16 @@ public class AugmentedSubsetPartitioner {
 
     public List<AugmentedSubset> heuristicPartition(LpmlnProgram lpmlnProgram,int count){
         List<AugmentedSubset> subsets = new ArrayList<>();
-        List<HeuristicAugmentedSubset> selectable = new ArrayList<>();
+        LinkedList<HeuristicAugmentedSubset> selectable = new LinkedList<>();
         Random rand = new Random();
         HeuristicAugmentedSubset subset = new HeuristicAugmentedSubset(lpmlnProgram);
         subsets.add(subset);
-        selectable.add(subset);
+        selectable.offer(subset);
 
         while(subsets.size()<count && selectable.size()>0){
             //选择一个增强子集
-            int randomIdx = Math.abs(rand.nextInt())%selectable.size();
-            HeuristicAugmentedSubset toSubstitute = selectable.get(randomIdx);
+            HeuristicAugmentedSubset toSubstitute = selectable.poll();
             subsets.remove(toSubstitute);
-            selectable.remove(toSubstitute);
             Set<Integer> enumrable = toSubstitute.getEnumerable();
 
             //选择一条要确定的规则
@@ -136,8 +134,8 @@ public class AugmentedSubsetPartitioner {
             subsets.add(negative);
 
             if(positive.getUnknownIdx().size()>0) {
-                selectable.add(positive);
-                selectable.add(negative);
+                selectable.offer(positive);
+                selectable.offer(negative);
             }
         }
         return subsets;
