@@ -69,17 +69,16 @@ public class KSplitter extends Splitter{
             //当前的mdu有的元素
             Set<String> current = dfs(lit);
             used.addAll(current);
-            mdu.add(new DecisionUnit(program,current));
+            if(current.size()!=0){
+                mdu.add(new DecisionUnit(program,current));
+            }
         });
         return mdu;
     }
 
     private Set<String> dfs(String lit){
         Set<String> current = new HashSet<>();
-        if(!dependency.containsKey(lit)){
-            current.add(lit);
-            return current;
-        }
+        Set<String> visited = new HashSet<>();
         //深度优先，stack1记录顺序，stack记录目前访问的,path记录当前路径下
         LinkedList<String> stack1 = new LinkedList<>();
         LinkedList<Iterator<String>> stack2 = new LinkedList<>();
@@ -87,10 +86,11 @@ public class KSplitter extends Splitter{
         stack1.push(lit);
         stack2.push(dependency.get(lit).iterator());
         path.add(lit);
+        visited.add(lit);
         while(stack2.size()>0){
             if(stack2.peek().hasNext()){
                 String next = stack2.peek().next();
-                if(path.contains(next)){
+                if(path.contains(next)||visited.contains(next)){
                     if(next.equals(lit)){
                         current.addAll(path);
                     }
@@ -103,6 +103,7 @@ public class KSplitter extends Splitter{
                         stack1.pop();
                     }
                 }
+                visited.add(next);
             }else{
                 stack2.pop();
                 path.remove(stack1.pop());
@@ -119,8 +120,11 @@ public class KSplitter extends Splitter{
             });
         });
         dependency.forEach((lit,depends)->{
+            if(!map.containsKey(lit)){
+                return;
+            }
             depends.forEach(depend->{
-                if(!lit.equals(depend)){
+                if(!lit.equals(depend)&&map.containsKey(depend)){
                     map.get(lit).getTo().add(map.get(depend));
                     map.get(depend).getFrom().add(map.get(lit));
                 }
