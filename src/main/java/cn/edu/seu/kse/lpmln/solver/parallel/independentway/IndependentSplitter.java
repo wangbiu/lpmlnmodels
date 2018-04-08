@@ -54,46 +54,69 @@ public class IndependentSplitter {
 
     private static Set<Set<String>> merge(Map<String,Set<String>> dependency){
         Set<Set<String>> ans = new HashSet<>();
-        Set<String> visited = new HashSet<>();
-        Set<String> lits = dependency.keySet();
-        lits.forEach(lit->{
-            if(visited.contains(lit)){
-                return;
-            }
-            boolean toadd = true;
-            Set<String> subset = new HashSet<>();
-            LinkedList<String> current = new LinkedList<>();
-            subset.add(lit);
-            current.offer(lit);
-            while(current.size()>0){
-                String next = current.poll();
-                if(!dependency.containsKey(next)){
-                    continue;
-                }
-                Set<String> nextDepend = dependency.get(next);
-                for (String nextLit : nextDepend) {
-                    if(!subset.contains(nextLit)){
-                        if(visited.contains(nextLit)){
-                            for (Set<String> prev : ans) {
-                                if(prev.contains(nextLit)){
-                                    prev.addAll(subset);
-                                    subset = prev;
-                                    toadd = false;
-                                    break;
-                                }
-                            }
-                        }else{
-                            subset.add(nextLit);
-                            current.offer(nextLit);
-                        }
-                    }
-                }
-            }
-            visited.addAll(subset);
-            if(toadd){
-                ans.add(subset);
-            }
+        Set<String> allLiterals = new HashSet<>(dependency.keySet());
+        dependency.values().forEach(depend->allLiterals.addAll(depend));
+        Map<String,Integer> litMap = new HashMap<>();
+        Map<Integer,String> idxMap = new HashMap<>();
+        Map<Integer,Set<String>> groups = new HashMap<>();
+        allLiterals.forEach(lit->{
+            litMap.put(lit,litMap.size());
+            idxMap.put(idxMap.size(),lit);
         });
+        Integer[] literalIdx = new Integer[allLiterals.size()];
+        Arrays.fill(literalIdx,-1);
+        dependency.forEach((lit,depend)->{
+            depend.forEach(y->join(litMap.get(lit),litMap.get(y),literalIdx));
+        });
+        for(int i=0;i<literalIdx.length;i++){
+            if(literalIdx[i]==-1){
+                groups.put(i,new HashSet<>());
+                groups.get(i).add(idxMap.get(i));
+            }
+        }
+        for(int i=0;i<literalIdx.length;i++){
+            int currentIdx = i;
+            if(groups.containsKey(currentIdx)){
+                continue;
+            }
+            while(!groups.keySet().contains(literalIdx[currentIdx])){
+                currentIdx = literalIdx[currentIdx];
+            }
+            groups.get(literalIdx[currentIdx]).add(idxMap.get(i));
+        }
+        groups.values().forEach(member->ans.add(member));
         return ans;
+    }
+
+    private static int find(int litIdx, Integer[] literalIdx){
+        int r=litIdx;
+        while(literalIdx[r]!=-1) {
+            //找到他的前导结点
+            r = literalIdx[r];
+        }
+        int i=litIdx,j;
+        //路径压缩算法
+        while(i!=r)
+        {
+            //记录x的前导结点
+            j=literalIdx[i];
+            //将i的前导结点设置为r根节点
+            literalIdx[i]=r;
+            i=j;
+        }
+        return r;
+    }
+
+    private static void join(int x,int y,Integer[] literalIdx){
+        //x的根节点为a
+        int a=find(x,literalIdx);
+        //y的根节点为b
+        int b=find(y,literalIdx);
+        //如果a,b不是相同的根节点，则说明ab不是连通的
+        if(a!=b)
+        {
+            //我们将ab相连 将a的前导结点设置为b
+            literalIdx[a]=b;
+        }
     }
 }
