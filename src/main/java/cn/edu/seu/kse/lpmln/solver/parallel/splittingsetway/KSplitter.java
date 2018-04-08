@@ -160,7 +160,7 @@ public class KSplitter extends Splitter{
         });
         while(nextQueue.size()>0){
             DecisionUnit next = nextQueue.poll();
-            if(next.getWl()+currentLits<k*programLiterals.size()){
+            if(next.getWl()+currentLits<Math.min(k*programLiterals.size(),350)){
                 U.addAll(next.getLit());
                 currentLits += next.getLit().size();
                 next.getFrom().forEach(father->{
@@ -185,7 +185,7 @@ public class KSplitter extends Splitter{
         });
         while(nextQueue.size()>0){
             DecisionUnit next = nextQueue.poll();
-            if(next.getWr()+currentRules<k*program.getRules().size()){
+            if(next.getWr()+currentRules<Math.min(k*program.getRules().size(),400)){
                 U.addAll(next.getLit());
                 currentRules += next.getWr();
                 next.getFrom().forEach(father->{
