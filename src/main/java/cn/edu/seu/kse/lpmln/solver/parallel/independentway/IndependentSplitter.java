@@ -60,6 +60,7 @@ public class IndependentSplitter {
             if(visited.contains(lit)){
                 return;
             }
+            boolean toadd = true;
             Set<String> subset = new HashSet<>();
             LinkedList<String> current = new LinkedList<>();
             subset.add(lit);
@@ -70,15 +71,28 @@ public class IndependentSplitter {
                     continue;
                 }
                 Set<String> nextDepend = dependency.get(next);
-                nextDepend.forEach(nextLit->{
+                for (String nextLit : nextDepend) {
                     if(!subset.contains(nextLit)){
-                        subset.add(nextLit);
-                        current.offer(nextLit);
+                        if(visited.contains(nextLit)){
+                            for (Set<String> prev : ans) {
+                                if(prev.contains(nextLit)){
+                                    prev.addAll(subset);
+                                    subset = prev;
+                                    toadd = false;
+                                    break;
+                                }
+                            }
+                        }else{
+                            subset.add(nextLit);
+                            current.offer(nextLit);
+                        }
                     }
-                });
+                }
             }
             visited.addAll(subset);
-            ans.add(subset);
+            if(toadd){
+                ans.add(subset);
+            }
         });
         return ans;
     }
