@@ -60,17 +60,23 @@ public class IndependentSolver extends LPMLNBaseSolver{
      * 排列组合生成答案
      */
     private void mergeResult(){
+        WeightedAnswerSet meta = new WeightedAnswerSet();
+        meta.getWeights().add(0);
+        meta.getWeights().add(0);
         if(solvers.size()==1){
             weightedAs = solvers.get(0).getAllWeightedAs();
         }
         subWeightedAs = new ArrayList<>();
         weightedAs = new ArrayList<>();
-        solvers.forEach(solver->subWeightedAs.add(solver.getAllWeightedAs()));
+        solvers.forEach(solver->{
+            if(solver.getAllWeightedAs().size()==1){
+                merge(meta,solver.getAllWeightedAs().get(0));
+            }else{
+                subWeightedAs.add(solver.getAllWeightedAs());
+            }
+        });
         if(subWeightedAs.size()==0){
-            WeightedAnswerSet empty = new WeightedAnswerSet();
-            empty.getWeights().add(0);
-            empty.getWeights().add(0);
-            weightedAs.add(empty);
+            weightedAs.add(meta);
             return;
         }
         int[] permutation = new int[subWeightedAs.size()];
@@ -79,7 +85,7 @@ public class IndependentSolver extends LPMLNBaseSolver{
                 throw new SolveException("IndependentSolver no stable model.");
             }
             WeightedAnswerSet realAnswerSet = subWeightedAs.get(0).get(permutation[0]).clone();
-            for(int i=1;i<permutation.length;i++){
+            for(int i=0;i<permutation.length;i++){
                 if(!merge(realAnswerSet,subWeightedAs.get(i).get(permutation[i]))){
                     throw new SolveException("IndependentSolver merge fail");
                 }
