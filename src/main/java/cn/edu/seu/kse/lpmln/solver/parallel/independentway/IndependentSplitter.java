@@ -20,7 +20,7 @@ public class IndependentSplitter {
         List<Rule> programRuleList = program.getRules();
         List<LpmlnProgram> ind = new ArrayList<>();
         Map<String,Set<String>> dependency = LpmlnProgramHelper.getDependency(program);
-        Set<Set<String>> litSets = merge(dependency);
+        Set<Set<String>> litSets = merge(program);
         litSets.forEach(lits->{
             List<Rule> subRules = new ArrayList<>();
             programRuleList.forEach(rule -> {
@@ -30,6 +30,10 @@ public class IndependentSplitter {
             });
             ind.add(new LpmlnProgram(subRules,program.getFactor(),program.getHerbrandUniverse(),program.getMetarule()));
         });
+        int sum=0;
+        for(int i=0;i<ind.size();i++){
+            sum += ind.get(i).getRules().size();
+        }
         return ind;
     }
 
@@ -52,10 +56,12 @@ public class IndependentSplitter {
         return false;
     }
 
-    private static Set<Set<String>> merge(Map<String,Set<String>> dependency){
+    private static Set<Set<String>> merge(LpmlnProgram program){
         Set<Set<String>> ans = new HashSet<>();
-        Set<String> allLiterals = new HashSet<>(dependency.keySet());
-        dependency.values().forEach(depend->allLiterals.addAll(depend));
+        Set<String> allLiterals = new HashSet<>();
+        Set<Set<String>> ruleLiterals = new HashSet<>();
+        program.getRules().forEach(rule->ruleLiterals.add(LpmlnProgramHelper.getRuleLiteral(rule)));
+        ruleLiterals.forEach(ruleLiteral->allLiterals.addAll(ruleLiteral));
         Map<String,Integer> litMap = new HashMap<>();
         Map<Integer,String> idxMap = new HashMap<>();
         Map<Integer,Set<String>> groups = new HashMap<>();
@@ -65,8 +71,13 @@ public class IndependentSplitter {
         });
         Integer[] literalIdx = new Integer[allLiterals.size()];
         Arrays.fill(literalIdx,-1);
-        dependency.forEach((lit,depend)->{
-            depend.forEach(y->join(litMap.get(lit),litMap.get(y),literalIdx));
+
+        ruleLiterals.forEach(ruleLiteral->{
+            String first = ruleLiteral.iterator().next();
+            ruleLiteral.forEach(insamerule->{
+                join(litMap.get(first),litMap.get(insamerule),literalIdx);
+            });
+
         });
         for(int i=0;i<literalIdx.length;i++){
             if(literalIdx[i]==-1){

@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.util;
 
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
+import cn.edu.seu.kse.lpmln.model.Rule;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,5 +45,19 @@ public class LpmlnProgramHelper {
             }
         }
         return lit;
+    }
+
+    public static Set<String> getRuleLiteral(Rule r){
+        Set<String> ans = new HashSet<>();
+        for (String lit : r.getHead()) {
+            ans.add(LpmlnProgramHelper.getLiteral(lit));
+        }
+        for (String lit : r.getPositiveBody()) {
+            ans.add(LpmlnProgramHelper.getLiteral(lit));
+        }
+        for (String lit : r.getNegativeBody()) {
+            ans.add(LpmlnProgramHelper.getLiteral(lit));
+        }
+        return ans;
     }
 }
