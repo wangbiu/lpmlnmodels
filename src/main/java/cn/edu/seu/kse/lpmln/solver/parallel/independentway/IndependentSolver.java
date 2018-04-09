@@ -60,6 +60,9 @@ public class IndependentSolver extends LPMLNBaseSolver{
      * 排列组合生成答案
      */
     private void mergeResult(){
+        if(solvers.size()==1){
+            weightedAs = solvers.get(0).getAllWeightedAs();
+        }
         subWeightedAs = new ArrayList<>();
         weightedAs = new ArrayList<>();
         solvers.forEach(solver->subWeightedAs.add(solver.getAllWeightedAs()));

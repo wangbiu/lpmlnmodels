@@ -19,7 +19,6 @@ public class IndependentSplitter {
     public static List<LpmlnProgram> split(LpmlnProgram program){
         List<Rule> programRuleList = program.getRules();
         List<LpmlnProgram> ind = new ArrayList<>();
-        Map<String,Set<String>> dependency = LpmlnProgramHelper.getDependency(program);
         Set<Set<String>> litSets = merge(program);
         litSets.forEach(lits->{
             List<Rule> subRules = new ArrayList<>();
