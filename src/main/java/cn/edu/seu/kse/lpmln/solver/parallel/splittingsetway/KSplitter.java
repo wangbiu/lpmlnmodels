@@ -152,6 +152,7 @@ public class KSplitter extends Splitter{
     private void generateULit(){
         U = new HashSet<>();
         int currentLits=0;
+        int limit=200;
         PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
         mdus.forEach(mdu->{
             if(mdu.getTo().size()==0){
@@ -160,7 +161,7 @@ public class KSplitter extends Splitter{
         });
         while(nextQueue.size()>0){
             DecisionUnit next = nextQueue.poll();
-            if(next.getWl()+currentLits<Math.min(k*programLiterals.size(),350)){
+            if(next.getWl()+currentLits<Math.min(k*programLiterals.size(),limit)){
                 U.addAll(next.getLit());
                 currentLits += next.getLit().size();
                 next.getFrom().forEach(father->{
@@ -169,6 +170,7 @@ public class KSplitter extends Splitter{
                         nextQueue.offer(father);
                     }
                 });
+                limit-=10;
             }
         }
         logger.debug("splitting set: lit weight:{}",currentLits);
@@ -177,6 +179,7 @@ public class KSplitter extends Splitter{
     private void generateUBot(){
         U = new HashSet<>();
         int currentRules=0;
+        int limit=300;
         PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
         mdus.forEach(mdu->{
             if(mdu.getTo().size()==0){
@@ -185,7 +188,7 @@ public class KSplitter extends Splitter{
         });
         while(nextQueue.size()>0){
             DecisionUnit next = nextQueue.poll();
-            if(next.getWr()+currentRules<Math.min(k*program.getRules().size(),400)){
+            if(next.getWr()+currentRules<Math.min(k*program.getRules().size(),limit)){
                 U.addAll(next.getLit());
                 currentRules += next.getWr();
                 next.getFrom().forEach(father->{
@@ -194,6 +197,7 @@ public class KSplitter extends Splitter{
                         nextQueue.offer(father);
                     }
                 });
+                limit-=15;
             }
         }
         logger.debug("splitting set: bot weight:{}",currentRules);

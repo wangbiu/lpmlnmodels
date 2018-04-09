@@ -5,8 +5,6 @@ import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
-import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
-import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,7 +63,13 @@ public class IndependentSolver extends LPMLNBaseSolver{
         subWeightedAs = new ArrayList<>();
         weightedAs = new ArrayList<>();
         solvers.forEach(solver->subWeightedAs.add(solver.getAllWeightedAs()));
-
+        if(subWeightedAs.size()==0){
+            WeightedAnswerSet empty = new WeightedAnswerSet();
+            empty.getWeights().add(0);
+            empty.getWeights().add(0);
+            weightedAs.add(empty);
+            return;
+        }
         int[] permutation = new int[subWeightedAs.size()];
         do {
             if(subWeightedAs.get(0).size()==0){
