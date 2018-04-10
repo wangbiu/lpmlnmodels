@@ -39,7 +39,6 @@ public class IndependentSolver extends LPMLNBaseSolver{
     @Override
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
         lpmlnProgram = program;
-
         List<LpmlnProgram> subprograms = IndependentSplitter.split(program);
         logger.info("IndependentSolver into {} subprograms.",subprograms.size());
         subprograms.forEach(subprogram -> {
@@ -65,6 +64,7 @@ public class IndependentSolver extends LPMLNBaseSolver{
         meta.getWeights().add(0);
         if(solvers.size()==1){
             weightedAs = solvers.get(0).getAllWeightedAs();
+            return;
         }
         subWeightedAs = new ArrayList<>();
         weightedAs = new ArrayList<>();
