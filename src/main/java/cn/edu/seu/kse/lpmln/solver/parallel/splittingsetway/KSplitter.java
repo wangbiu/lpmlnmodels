@@ -152,7 +152,7 @@ public class KSplitter extends Splitter{
     private void generateULit(){
         U = new HashSet<>();
         int currentLits=0;
-        int limit=200;
+        int limit=10;
         PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
         mdus.forEach(mdu->{
             if(mdu.getTo().size()==0){
@@ -170,7 +170,7 @@ public class KSplitter extends Splitter{
                         nextQueue.offer(father);
                     }
                 });
-                limit-=10;
+                limit-=1;
             }
         }
         logger.debug("splitting set: lit weight:{}",currentLits);
@@ -179,7 +179,7 @@ public class KSplitter extends Splitter{
     private void generateUBot(){
         U = new HashSet<>();
         int currentRules=0;
-        int limit=300;
+        int limit=10;
         PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
         mdus.forEach(mdu->{
             if(mdu.getTo().size()==0){
@@ -197,7 +197,7 @@ public class KSplitter extends Splitter{
                         nextQueue.offer(father);
                     }
                 });
-                limit-=15;
+                limit-=1;
             }
         }
         logger.debug("splitting set: bot weight:{}",currentRules);
@@ -211,6 +211,22 @@ public class KSplitter extends Splitter{
             for (String headLit : rule.getHead()) {
                 if(U.contains(LpmlnProgramHelper.getLiteral(headLit))){
                     bot = true;
+                    break;
+                }
+            }
+            if(rule.getHead().size()==0){
+                bot = true;
+                for (String bodyLit : rule.getNegativeBody()){
+                    if(!U.contains(LpmlnProgramHelper.getLiteral(bodyLit))){
+                        bot = false;
+                        break;
+                    }
+                }
+                for (String bodyLit : rule.getPositiveBody()){
+                    if(!U.contains(LpmlnProgramHelper.getLiteral(bodyLit))){
+                        bot = false;
+                        break;
+                    }
                 }
             }
             if(bot){
