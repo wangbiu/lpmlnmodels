@@ -40,6 +40,10 @@ public class IndependentSolver extends LPMLNBaseSolver{
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
         lpmlnProgram = program;
         List<LpmlnProgram> subprograms = IndependentSplitter.split(program);
+        if(subprograms==null){
+            subprograms = new ArrayList<>();
+            subprograms.add(program);
+        }
         logger.info("IndependentSolver into {} subprograms.",subprograms.size());
         subprograms.forEach(subprogram -> {
             //TODO:使用反射创建

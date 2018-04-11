@@ -20,6 +20,9 @@ public class IndependentSplitter {
         List<Rule> programRuleList = program.getRules();
         List<LpmlnProgram> ind = new ArrayList<>();
         Set<Set<String>> litSets = merge(program);
+        if(litSets==null){
+            return null;
+        }
         litSets.forEach(lits->{
             List<Rule> subRules = new ArrayList<>();
             programRuleList.forEach(rule -> {
@@ -85,16 +88,27 @@ public class IndependentSplitter {
             }
         }
         for(int i=0;i<literalIdx.length;i++){
-            int currentIdx = i;
-            if(groups.containsKey(currentIdx)){
+            if(groups.containsKey(i)){
                 continue;
             }
-            while(!groups.keySet().contains(literalIdx[currentIdx])){
-                currentIdx = literalIdx[currentIdx];
-            }
-            groups.get(literalIdx[currentIdx]).add(idxMap.get(i));
+            groups.get(find(i,literalIdx)).add(idxMap.get(i));
         }
-        groups.values().forEach(member->ans.add(member));
+        //单独处理单事实
+        Set<String> single = new HashSet<>();
+        groups.values().forEach(member->{
+            if(member.size()==1){
+                single.addAll(member);
+            }else{
+                ans.add(member);
+            }
+        });
+        if(ans.size()<=1){
+            //abandon independent
+            return null;
+        }
+        if(single.size()>0){
+            ans.add(single);
+        }
         return ans;
     }
 
