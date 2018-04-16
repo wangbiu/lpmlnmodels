@@ -21,8 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.HEURISTIC;
-import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.SPLIT_RANDOM;
+import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_HEURISTIC;
+import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_RANDOM;
 import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.BOT;
 import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.LIT;
 import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.ORIGINAL;
@@ -187,10 +187,10 @@ public class LPMLNApp {
                             String[] param = external.split(",");
                             switch (param[0]){
                                 case "h":
-                                    ((AugmentedSolver) solver).setPolicy(HEURISTIC);
+                                    ((AugmentedSolver) solver).setPolicy(DIVIDE_HEURISTIC);
                                     break;
                                 case "r":
-                                    ((AugmentedSolver) solver).setPolicy(SPLIT_RANDOM);
+                                    ((AugmentedSolver) solver).setPolicy(DIVIDE_RANDOM);
                                 default:
                                     break;
                             }

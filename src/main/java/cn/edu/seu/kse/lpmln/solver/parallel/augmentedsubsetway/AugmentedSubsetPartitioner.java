@@ -10,14 +10,15 @@ import java.util.*;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected SPLIT_TYPE policy = SPLIT_TYPE.HEURISTIC;
+    protected SPLIT_TYPE policy = SPLIT_TYPE.DIVIDE_RANDOM;
 
     /**
-     * SPLIT_SIMPLE：二进制划分
-     * SPLIT_RANDOM：随机划分
-     * HEURISTIC：启发式划分
+     * DIVIDE_SIMPLE：二进制划分
+     * DIVIDE_RANDOM：随机划分
+     * DIVIDE_HEURISTIC：启发式划分
      */
-    public enum SPLIT_TYPE{SPLIT_SIMPLE, SPLIT_RANDOM, HEURISTIC,TEST}
+    public enum SPLIT_TYPE{DIVIDE_SIMPLE, DIVIDE_RANDOM, DIVIDE_HEURISTIC
+    }
 
     //输入：原规则，翻译后的规则文本
     //输出：增强子集文件列表，子集对应的额外权重
@@ -27,13 +28,13 @@ public class AugmentedSubsetPartitioner {
             /**
              * 选择增强子集划分方式，后续可以思考怎么结合启发式信息
              */
-            case SPLIT_SIMPLE:
+            case DIVIDE_SIMPLE:
                 subsets = simplePartition(lpmlnProgram,count);
                 break;
-            case SPLIT_RANDOM:
+            case DIVIDE_RANDOM:
                 subsets = randomPartition(lpmlnProgram,count);
                 break;
-            case HEURISTIC:
+            case DIVIDE_HEURISTIC:
                 subsets = heuristicPartition(lpmlnProgram,count);
                 break;
             default:
