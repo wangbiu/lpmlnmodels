@@ -36,13 +36,13 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
 
     public SplittingSolver(String arch) {
         topSolvers = new ArrayList<>();
-        threadPool = new LpmlnThreadPool("SplittingSolver!");
         this.arch = arch;
         bottomSolver = chooseSolver(arch);
     }
 
     @Override
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+        threadPool = new LpmlnThreadPool("SplittingSolver!");
         lpmlnProgram = program;
 
         // 1. 分割程序，需要用到bottom、top、U

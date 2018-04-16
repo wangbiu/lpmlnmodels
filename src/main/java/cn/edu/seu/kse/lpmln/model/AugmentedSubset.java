@@ -24,7 +24,6 @@ public class AugmentedSubset implements Cloneable{
         for(int i=0;i<rules.size();i++){
             if("strong".equals(LPMLNApp.semantics)&&rules.get(i).isSoft()){
                 unknownIdx.add(i);
-                System.out.println("unkown:"+i);
             }else{
                 if(rules.get(i).isSoft()){
                     unknownIdx.add(unknownIdx.size());

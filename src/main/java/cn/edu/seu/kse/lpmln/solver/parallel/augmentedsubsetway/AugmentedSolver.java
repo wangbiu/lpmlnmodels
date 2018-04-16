@@ -31,7 +31,6 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
     private Logger logger = LogManager.getLogger(AugmentedSolver.class.getName());
 
     public AugmentedSolver(){
-        threadPool = new LpmlnThreadPool("AugmentedSolver");
         translatedFiles = new ArrayList<>();
         threadNums = Runtime.getRuntime().availableProcessors();
         subsetSolvers = new ArrayList<>();
@@ -54,6 +53,7 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
 
     @Override
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+        threadPool = new LpmlnThreadPool("AugmentedSolver");
         lpmlnProgram = program;
         //拆分为多个增强子集
         augmentedSubsets = partitioner.partition(program,threadNums);

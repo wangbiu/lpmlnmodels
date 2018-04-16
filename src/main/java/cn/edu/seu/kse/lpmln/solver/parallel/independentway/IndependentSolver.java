@@ -25,19 +25,18 @@ public class IndependentSolver extends LPMLNBaseSolver{
     private String arch;
 
     public IndependentSolver() {
-        threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
         solvers = new ArrayList<>();
         this.arch = "";
     }
 
     public IndependentSolver(String arch){
-        threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
         solvers = new ArrayList<>();
         this.arch = arch;
     }
 
     @Override
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+        threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
         lpmlnProgram = program;
         List<LpmlnProgram> subprograms = IndependentSplitter.split(program);
         if(subprograms==null){
