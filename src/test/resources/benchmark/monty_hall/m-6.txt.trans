@@ -1,0 +1,460 @@
+hbu(1).
+hbu(2).
+hbu(3).
+hbu(4).
+hbu(5).
+hbu(6).
+apply(rb(0, 1, 1)) | -apply(rb(0, 1, 1)) . 
+has_key(1) :- box(1),  apply(rb(0, 1, 1)).
+:- sat(rb(0, 1, 1)), -apply(rb(0, 1, 1)).
+sat(rb(0, 1, 1)) :- h(rb(0, 1, 1)), b(rb(0, 1, 1)).
+sat(rb(0, 1, 1)) :- not b(rb(0, 1, 1)), hold(rb(0, 1, 1)).
+b(rb(0, 1, 1)) :- box(1).
+h(rb(0, 1, 1)) :- has_key(1), hold(rb(0, 1, 1)).
+hold(rb(0, 1, 1)).
+:~ sat(rb(0, 1, 1)). [1@1, 0]
+
+apply(rb(1, 1, 1)) | -apply(rb(1, 1, 1)) . 
+has_key(2) :- box(2),  apply(rb(1, 1, 1)).
+:- sat(rb(1, 1, 1)), -apply(rb(1, 1, 1)).
+sat(rb(1, 1, 1)) :- h(rb(1, 1, 1)), b(rb(1, 1, 1)).
+sat(rb(1, 1, 1)) :- not b(rb(1, 1, 1)), hold(rb(1, 1, 1)).
+b(rb(1, 1, 1)) :- box(2).
+h(rb(1, 1, 1)) :- has_key(2), hold(rb(1, 1, 1)).
+hold(rb(1, 1, 1)).
+:~ sat(rb(1, 1, 1)). [1@1, 1]
+
+apply(rb(2, 1, 1)) | -apply(rb(2, 1, 1)) . 
+has_key(3) :- box(3),  apply(rb(2, 1, 1)).
+:- sat(rb(2, 1, 1)), -apply(rb(2, 1, 1)).
+sat(rb(2, 1, 1)) :- h(rb(2, 1, 1)), b(rb(2, 1, 1)).
+sat(rb(2, 1, 1)) :- not b(rb(2, 1, 1)), hold(rb(2, 1, 1)).
+b(rb(2, 1, 1)) :- box(3).
+h(rb(2, 1, 1)) :- has_key(3), hold(rb(2, 1, 1)).
+hold(rb(2, 1, 1)).
+:~ sat(rb(2, 1, 1)). [1@1, 2]
+
+apply(rb(3, 1, 1)) | -apply(rb(3, 1, 1)) . 
+has_key(4) :- box(4),  apply(rb(3, 1, 1)).
+:- sat(rb(3, 1, 1)), -apply(rb(3, 1, 1)).
+sat(rb(3, 1, 1)) :- h(rb(3, 1, 1)), b(rb(3, 1, 1)).
+sat(rb(3, 1, 1)) :- not b(rb(3, 1, 1)), hold(rb(3, 1, 1)).
+b(rb(3, 1, 1)) :- box(4).
+h(rb(3, 1, 1)) :- has_key(4), hold(rb(3, 1, 1)).
+hold(rb(3, 1, 1)).
+:~ sat(rb(3, 1, 1)). [1@1, 3]
+
+apply(rb(4, 1, 1)) | -apply(rb(4, 1, 1)) . 
+has_key(5) :- box(5),  apply(rb(4, 1, 1)).
+:- sat(rb(4, 1, 1)), -apply(rb(4, 1, 1)).
+sat(rb(4, 1, 1)) :- h(rb(4, 1, 1)), b(rb(4, 1, 1)).
+sat(rb(4, 1, 1)) :- not b(rb(4, 1, 1)), hold(rb(4, 1, 1)).
+b(rb(4, 1, 1)) :- box(5).
+h(rb(4, 1, 1)) :- has_key(5), hold(rb(4, 1, 1)).
+hold(rb(4, 1, 1)).
+:~ sat(rb(4, 1, 1)). [1@1, 4]
+
+apply(rb(5, 1, 1)) | -apply(rb(5, 1, 1)) . 
+has_key(6) :- box(6),  apply(rb(5, 1, 1)).
+:- sat(rb(5, 1, 1)), -apply(rb(5, 1, 1)).
+sat(rb(5, 1, 1)) :- h(rb(5, 1, 1)), b(rb(5, 1, 1)).
+sat(rb(5, 1, 1)) :- not b(rb(5, 1, 1)), hold(rb(5, 1, 1)).
+b(rb(5, 1, 1)) :- box(6).
+h(rb(5, 1, 1)) :- has_key(6), hold(rb(5, 1, 1)).
+hold(rb(5, 1, 1)).
+:~ sat(rb(5, 1, 1)). [1@1, 5]
+
+apply(rb(6, 1, 1)) | -apply(rb(6, 1, 1)) . 
+select(1) :- box(1),  apply(rb(6, 1, 1)).
+:- sat(rb(6, 1, 1)), -apply(rb(6, 1, 1)).
+sat(rb(6, 1, 1)) :- h(rb(6, 1, 1)), b(rb(6, 1, 1)).
+sat(rb(6, 1, 1)) :- not b(rb(6, 1, 1)), hold(rb(6, 1, 1)).
+b(rb(6, 1, 1)) :- box(1).
+h(rb(6, 1, 1)) :- select(1), hold(rb(6, 1, 1)).
+hold(rb(6, 1, 1)).
+:~ sat(rb(6, 1, 1)). [1@1, 6]
+
+apply(rb(7, 1, 1)) | -apply(rb(7, 1, 1)) . 
+select(2) :- box(2),  apply(rb(7, 1, 1)).
+:- sat(rb(7, 1, 1)), -apply(rb(7, 1, 1)).
+sat(rb(7, 1, 1)) :- h(rb(7, 1, 1)), b(rb(7, 1, 1)).
+sat(rb(7, 1, 1)) :- not b(rb(7, 1, 1)), hold(rb(7, 1, 1)).
+b(rb(7, 1, 1)) :- box(2).
+h(rb(7, 1, 1)) :- select(2), hold(rb(7, 1, 1)).
+hold(rb(7, 1, 1)).
+:~ sat(rb(7, 1, 1)). [1@1, 7]
+
+apply(rb(8, 1, 1)) | -apply(rb(8, 1, 1)) . 
+select(3) :- box(3),  apply(rb(8, 1, 1)).
+:- sat(rb(8, 1, 1)), -apply(rb(8, 1, 1)).
+sat(rb(8, 1, 1)) :- h(rb(8, 1, 1)), b(rb(8, 1, 1)).
+sat(rb(8, 1, 1)) :- not b(rb(8, 1, 1)), hold(rb(8, 1, 1)).
+b(rb(8, 1, 1)) :- box(3).
+h(rb(8, 1, 1)) :- select(3), hold(rb(8, 1, 1)).
+hold(rb(8, 1, 1)).
+:~ sat(rb(8, 1, 1)). [1@1, 8]
+
+apply(rb(9, 1, 1)) | -apply(rb(9, 1, 1)) . 
+select(4) :- box(4),  apply(rb(9, 1, 1)).
+:- sat(rb(9, 1, 1)), -apply(rb(9, 1, 1)).
+sat(rb(9, 1, 1)) :- h(rb(9, 1, 1)), b(rb(9, 1, 1)).
+sat(rb(9, 1, 1)) :- not b(rb(9, 1, 1)), hold(rb(9, 1, 1)).
+b(rb(9, 1, 1)) :- box(4).
+h(rb(9, 1, 1)) :- select(4), hold(rb(9, 1, 1)).
+hold(rb(9, 1, 1)).
+:~ sat(rb(9, 1, 1)). [1@1, 9]
+
+apply(rb(10, 1, 1)) | -apply(rb(10, 1, 1)) . 
+select(5) :- box(5),  apply(rb(10, 1, 1)).
+:- sat(rb(10, 1, 1)), -apply(rb(10, 1, 1)).
+sat(rb(10, 1, 1)) :- h(rb(10, 1, 1)), b(rb(10, 1, 1)).
+sat(rb(10, 1, 1)) :- not b(rb(10, 1, 1)), hold(rb(10, 1, 1)).
+b(rb(10, 1, 1)) :- box(5).
+h(rb(10, 1, 1)) :- select(5), hold(rb(10, 1, 1)).
+hold(rb(10, 1, 1)).
+:~ sat(rb(10, 1, 1)). [1@1, 10]
+
+apply(rb(11, 1, 1)) | -apply(rb(11, 1, 1)) . 
+select(6) :- box(6),  apply(rb(11, 1, 1)).
+:- sat(rb(11, 1, 1)), -apply(rb(11, 1, 1)).
+sat(rb(11, 1, 1)) :- h(rb(11, 1, 1)), b(rb(11, 1, 1)).
+sat(rb(11, 1, 1)) :- not b(rb(11, 1, 1)), hold(rb(11, 1, 1)).
+b(rb(11, 1, 1)) :- box(6).
+h(rb(11, 1, 1)) :- select(6), hold(rb(11, 1, 1)).
+hold(rb(11, 1, 1)).
+:~ sat(rb(11, 1, 1)). [1@1, 11]
+
+cannot_open(1):-select(1).
+cannot_open(2):-select(2).
+cannot_open(3):-select(3).
+cannot_open(4):-select(4).
+cannot_open(5):-select(5).
+cannot_open(6):-select(6).
+cannot_open(1):-has_key(1).
+cannot_open(2):-has_key(2).
+cannot_open(3):-has_key(3).
+cannot_open(4):-has_key(4).
+cannot_open(5):-has_key(5).
+cannot_open(6):-has_key(6).
+apply(rb(24, 1, 1)) | -apply(rb(24, 1, 1)) . 
+open(1) :- box(1),not cannot_open(1),  apply(rb(24, 1, 1)).
+:- sat(rb(24, 1, 1)), -apply(rb(24, 1, 1)).
+sat(rb(24, 1, 1)) :- h(rb(24, 1, 1)), b(rb(24, 1, 1)).
+sat(rb(24, 1, 1)) :- not b(rb(24, 1, 1)), hold(rb(24, 1, 1)).
+b(rb(24, 1, 1)) :- box(1),not cannot_open(1).
+h(rb(24, 1, 1)) :- open(1), hold(rb(24, 1, 1)).
+hold(rb(24, 1, 1)).
+:~ sat(rb(24, 1, 1)). [1@1, 24]
+
+apply(rb(25, 1, 1)) | -apply(rb(25, 1, 1)) . 
+open(2) :- box(2),not cannot_open(2),  apply(rb(25, 1, 1)).
+:- sat(rb(25, 1, 1)), -apply(rb(25, 1, 1)).
+sat(rb(25, 1, 1)) :- h(rb(25, 1, 1)), b(rb(25, 1, 1)).
+sat(rb(25, 1, 1)) :- not b(rb(25, 1, 1)), hold(rb(25, 1, 1)).
+b(rb(25, 1, 1)) :- box(2),not cannot_open(2).
+h(rb(25, 1, 1)) :- open(2), hold(rb(25, 1, 1)).
+hold(rb(25, 1, 1)).
+:~ sat(rb(25, 1, 1)). [1@1, 25]
+
+apply(rb(26, 1, 1)) | -apply(rb(26, 1, 1)) . 
+open(3) :- box(3),not cannot_open(3),  apply(rb(26, 1, 1)).
+:- sat(rb(26, 1, 1)), -apply(rb(26, 1, 1)).
+sat(rb(26, 1, 1)) :- h(rb(26, 1, 1)), b(rb(26, 1, 1)).
+sat(rb(26, 1, 1)) :- not b(rb(26, 1, 1)), hold(rb(26, 1, 1)).
+b(rb(26, 1, 1)) :- box(3),not cannot_open(3).
+h(rb(26, 1, 1)) :- open(3), hold(rb(26, 1, 1)).
+hold(rb(26, 1, 1)).
+:~ sat(rb(26, 1, 1)). [1@1, 26]
+
+apply(rb(27, 1, 1)) | -apply(rb(27, 1, 1)) . 
+open(4) :- box(4),not cannot_open(4),  apply(rb(27, 1, 1)).
+:- sat(rb(27, 1, 1)), -apply(rb(27, 1, 1)).
+sat(rb(27, 1, 1)) :- h(rb(27, 1, 1)), b(rb(27, 1, 1)).
+sat(rb(27, 1, 1)) :- not b(rb(27, 1, 1)), hold(rb(27, 1, 1)).
+b(rb(27, 1, 1)) :- box(4),not cannot_open(4).
+h(rb(27, 1, 1)) :- open(4), hold(rb(27, 1, 1)).
+hold(rb(27, 1, 1)).
+:~ sat(rb(27, 1, 1)). [1@1, 27]
+
+apply(rb(28, 1, 1)) | -apply(rb(28, 1, 1)) . 
+open(5) :- box(5),not cannot_open(5),  apply(rb(28, 1, 1)).
+:- sat(rb(28, 1, 1)), -apply(rb(28, 1, 1)).
+sat(rb(28, 1, 1)) :- h(rb(28, 1, 1)), b(rb(28, 1, 1)).
+sat(rb(28, 1, 1)) :- not b(rb(28, 1, 1)), hold(rb(28, 1, 1)).
+b(rb(28, 1, 1)) :- box(5),not cannot_open(5).
+h(rb(28, 1, 1)) :- open(5), hold(rb(28, 1, 1)).
+hold(rb(28, 1, 1)).
+:~ sat(rb(28, 1, 1)). [1@1, 28]
+
+apply(rb(29, 1, 1)) | -apply(rb(29, 1, 1)) . 
+open(6) :- box(6),not cannot_open(6),  apply(rb(29, 1, 1)).
+:- sat(rb(29, 1, 1)), -apply(rb(29, 1, 1)).
+sat(rb(29, 1, 1)) :- h(rb(29, 1, 1)), b(rb(29, 1, 1)).
+sat(rb(29, 1, 1)) :- not b(rb(29, 1, 1)), hold(rb(29, 1, 1)).
+b(rb(29, 1, 1)) :- box(6),not cannot_open(6).
+h(rb(29, 1, 1)) :- open(6), hold(rb(29, 1, 1)).
+hold(rb(29, 1, 1)).
+:~ sat(rb(29, 1, 1)). [1@1, 29]
+
+can_switch(1):-box(1),not select(1),not open(1).
+can_switch(2):-box(2),not select(2),not open(2).
+can_switch(3):-box(3),not select(3),not open(3).
+can_switch(4):-box(4),not select(4),not open(4).
+can_switch(5):-box(5),not select(5),not open(5).
+can_switch(6):-box(6),not select(6),not open(6).
+apply(rb(36, 1, 1)) | -apply(rb(36, 1, 1)) . 
+switch(1) :- can_switch(1),  apply(rb(36, 1, 1)).
+:- sat(rb(36, 1, 1)), -apply(rb(36, 1, 1)).
+sat(rb(36, 1, 1)) :- h(rb(36, 1, 1)), b(rb(36, 1, 1)).
+sat(rb(36, 1, 1)) :- not b(rb(36, 1, 1)), hold(rb(36, 1, 1)).
+b(rb(36, 1, 1)) :- can_switch(1).
+h(rb(36, 1, 1)) :- switch(1), hold(rb(36, 1, 1)).
+hold(rb(36, 1, 1)).
+:~ sat(rb(36, 1, 1)). [1@1, 36]
+
+apply(rb(37, 1, 1)) | -apply(rb(37, 1, 1)) . 
+switch(2) :- can_switch(2),  apply(rb(37, 1, 1)).
+:- sat(rb(37, 1, 1)), -apply(rb(37, 1, 1)).
+sat(rb(37, 1, 1)) :- h(rb(37, 1, 1)), b(rb(37, 1, 1)).
+sat(rb(37, 1, 1)) :- not b(rb(37, 1, 1)), hold(rb(37, 1, 1)).
+b(rb(37, 1, 1)) :- can_switch(2).
+h(rb(37, 1, 1)) :- switch(2), hold(rb(37, 1, 1)).
+hold(rb(37, 1, 1)).
+:~ sat(rb(37, 1, 1)). [1@1, 37]
+
+apply(rb(38, 1, 1)) | -apply(rb(38, 1, 1)) . 
+switch(3) :- can_switch(3),  apply(rb(38, 1, 1)).
+:- sat(rb(38, 1, 1)), -apply(rb(38, 1, 1)).
+sat(rb(38, 1, 1)) :- h(rb(38, 1, 1)), b(rb(38, 1, 1)).
+sat(rb(38, 1, 1)) :- not b(rb(38, 1, 1)), hold(rb(38, 1, 1)).
+b(rb(38, 1, 1)) :- can_switch(3).
+h(rb(38, 1, 1)) :- switch(3), hold(rb(38, 1, 1)).
+hold(rb(38, 1, 1)).
+:~ sat(rb(38, 1, 1)). [1@1, 38]
+
+apply(rb(39, 1, 1)) | -apply(rb(39, 1, 1)) . 
+switch(4) :- can_switch(4),  apply(rb(39, 1, 1)).
+:- sat(rb(39, 1, 1)), -apply(rb(39, 1, 1)).
+sat(rb(39, 1, 1)) :- h(rb(39, 1, 1)), b(rb(39, 1, 1)).
+sat(rb(39, 1, 1)) :- not b(rb(39, 1, 1)), hold(rb(39, 1, 1)).
+b(rb(39, 1, 1)) :- can_switch(4).
+h(rb(39, 1, 1)) :- switch(4), hold(rb(39, 1, 1)).
+hold(rb(39, 1, 1)).
+:~ sat(rb(39, 1, 1)). [1@1, 39]
+
+apply(rb(40, 1, 1)) | -apply(rb(40, 1, 1)) . 
+switch(5) :- can_switch(5),  apply(rb(40, 1, 1)).
+:- sat(rb(40, 1, 1)), -apply(rb(40, 1, 1)).
+sat(rb(40, 1, 1)) :- h(rb(40, 1, 1)), b(rb(40, 1, 1)).
+sat(rb(40, 1, 1)) :- not b(rb(40, 1, 1)), hold(rb(40, 1, 1)).
+b(rb(40, 1, 1)) :- can_switch(5).
+h(rb(40, 1, 1)) :- switch(5), hold(rb(40, 1, 1)).
+hold(rb(40, 1, 1)).
+:~ sat(rb(40, 1, 1)). [1@1, 40]
+
+apply(rb(41, 1, 1)) | -apply(rb(41, 1, 1)) . 
+switch(6) :- can_switch(6),  apply(rb(41, 1, 1)).
+:- sat(rb(41, 1, 1)), -apply(rb(41, 1, 1)).
+sat(rb(41, 1, 1)) :- h(rb(41, 1, 1)), b(rb(41, 1, 1)).
+sat(rb(41, 1, 1)) :- not b(rb(41, 1, 1)), hold(rb(41, 1, 1)).
+b(rb(41, 1, 1)) :- can_switch(6).
+h(rb(41, 1, 1)) :- switch(6), hold(rb(41, 1, 1)).
+hold(rb(41, 1, 1)).
+:~ sat(rb(41, 1, 1)). [1@1, 41]
+
+win_stay:-select(1),has_key(1).
+win_stay:-select(2),has_key(2).
+win_stay:-select(3),has_key(3).
+win_stay:-select(4),has_key(4).
+win_stay:-select(5),has_key(5).
+win_stay:-select(6),has_key(6).
+win_switch:-switch(1),has_key(1).
+win_switch:-switch(2),has_key(2).
+win_switch:-switch(3),has_key(3).
+win_switch:-switch(4),has_key(4).
+win_switch:-switch(5),has_key(5).
+win_switch:-switch(6),has_key(6).
+-switch(1):-switch(1),can_switch(1),1!=1.
+-switch(2):-switch(1),can_switch(2),2!=1.
+-switch(3):-switch(1),can_switch(3),3!=1.
+-switch(4):-switch(1),can_switch(4),4!=1.
+-switch(5):-switch(1),can_switch(5),5!=1.
+-switch(6):-switch(1),can_switch(6),6!=1.
+-switch(1):-switch(2),can_switch(1),1!=2.
+-switch(2):-switch(2),can_switch(2),2!=2.
+-switch(3):-switch(2),can_switch(3),3!=2.
+-switch(4):-switch(2),can_switch(4),4!=2.
+-switch(5):-switch(2),can_switch(5),5!=2.
+-switch(6):-switch(2),can_switch(6),6!=2.
+-switch(1):-switch(3),can_switch(1),1!=3.
+-switch(2):-switch(3),can_switch(2),2!=3.
+-switch(3):-switch(3),can_switch(3),3!=3.
+-switch(4):-switch(3),can_switch(4),4!=3.
+-switch(5):-switch(3),can_switch(5),5!=3.
+-switch(6):-switch(3),can_switch(6),6!=3.
+-switch(1):-switch(4),can_switch(1),1!=4.
+-switch(2):-switch(4),can_switch(2),2!=4.
+-switch(3):-switch(4),can_switch(3),3!=4.
+-switch(4):-switch(4),can_switch(4),4!=4.
+-switch(5):-switch(4),can_switch(5),5!=4.
+-switch(6):-switch(4),can_switch(6),6!=4.
+-switch(1):-switch(5),can_switch(1),1!=5.
+-switch(2):-switch(5),can_switch(2),2!=5.
+-switch(3):-switch(5),can_switch(3),3!=5.
+-switch(4):-switch(5),can_switch(4),4!=5.
+-switch(5):-switch(5),can_switch(5),5!=5.
+-switch(6):-switch(5),can_switch(6),6!=5.
+-switch(1):-switch(6),can_switch(1),1!=6.
+-switch(2):-switch(6),can_switch(2),2!=6.
+-switch(3):-switch(6),can_switch(3),3!=6.
+-switch(4):-switch(6),can_switch(4),4!=6.
+-switch(5):-switch(6),can_switch(5),5!=6.
+-switch(6):-switch(6),can_switch(6),6!=6.
+:-can_switch(1),not switch(1),not -switch(1).
+:-can_switch(2),not switch(2),not -switch(2).
+:-can_switch(3),not switch(3),not -switch(3).
+:-can_switch(4),not switch(4),not -switch(4).
+:-can_switch(5),not switch(5),not -switch(5).
+:-can_switch(6),not switch(6),not -switch(6).
+-select(1):-select(1),box(1),1!=1.
+-select(2):-select(1),box(2),2!=1.
+-select(3):-select(1),box(3),3!=1.
+-select(4):-select(1),box(4),4!=1.
+-select(5):-select(1),box(5),5!=1.
+-select(6):-select(1),box(6),6!=1.
+-select(1):-select(2),box(1),1!=2.
+-select(2):-select(2),box(2),2!=2.
+-select(3):-select(2),box(3),3!=2.
+-select(4):-select(2),box(4),4!=2.
+-select(5):-select(2),box(5),5!=2.
+-select(6):-select(2),box(6),6!=2.
+-select(1):-select(3),box(1),1!=3.
+-select(2):-select(3),box(2),2!=3.
+-select(3):-select(3),box(3),3!=3.
+-select(4):-select(3),box(4),4!=3.
+-select(5):-select(3),box(5),5!=3.
+-select(6):-select(3),box(6),6!=3.
+-select(1):-select(4),box(1),1!=4.
+-select(2):-select(4),box(2),2!=4.
+-select(3):-select(4),box(3),3!=4.
+-select(4):-select(4),box(4),4!=4.
+-select(5):-select(4),box(5),5!=4.
+-select(6):-select(4),box(6),6!=4.
+-select(1):-select(5),box(1),1!=5.
+-select(2):-select(5),box(2),2!=5.
+-select(3):-select(5),box(3),3!=5.
+-select(4):-select(5),box(4),4!=5.
+-select(5):-select(5),box(5),5!=5.
+-select(6):-select(5),box(6),6!=5.
+-select(1):-select(6),box(1),1!=6.
+-select(2):-select(6),box(2),2!=6.
+-select(3):-select(6),box(3),3!=6.
+-select(4):-select(6),box(4),4!=6.
+-select(5):-select(6),box(5),5!=6.
+-select(6):-select(6),box(6),6!=6.
+:-box(1),not select(1),not -select(1).
+:-box(2),not select(2),not -select(2).
+:-box(3),not select(3),not -select(3).
+:-box(4),not select(4),not -select(4).
+:-box(5),not select(5),not -select(5).
+:-box(6),not select(6),not -select(6).
+-open(1):-open(1),box(1),1!=1.
+-open(2):-open(1),box(2),2!=1.
+-open(3):-open(1),box(3),3!=1.
+-open(4):-open(1),box(4),4!=1.
+-open(5):-open(1),box(5),5!=1.
+-open(6):-open(1),box(6),6!=1.
+-open(1):-open(2),box(1),1!=2.
+-open(2):-open(2),box(2),2!=2.
+-open(3):-open(2),box(3),3!=2.
+-open(4):-open(2),box(4),4!=2.
+-open(5):-open(2),box(5),5!=2.
+-open(6):-open(2),box(6),6!=2.
+-open(1):-open(3),box(1),1!=3.
+-open(2):-open(3),box(2),2!=3.
+-open(3):-open(3),box(3),3!=3.
+-open(4):-open(3),box(4),4!=3.
+-open(5):-open(3),box(5),5!=3.
+-open(6):-open(3),box(6),6!=3.
+-open(1):-open(4),box(1),1!=4.
+-open(2):-open(4),box(2),2!=4.
+-open(3):-open(4),box(3),3!=4.
+-open(4):-open(4),box(4),4!=4.
+-open(5):-open(4),box(5),5!=4.
+-open(6):-open(4),box(6),6!=4.
+-open(1):-open(5),box(1),1!=5.
+-open(2):-open(5),box(2),2!=5.
+-open(3):-open(5),box(3),3!=5.
+-open(4):-open(5),box(4),4!=5.
+-open(5):-open(5),box(5),5!=5.
+-open(6):-open(5),box(6),6!=5.
+-open(1):-open(6),box(1),1!=6.
+-open(2):-open(6),box(2),2!=6.
+-open(3):-open(6),box(3),3!=6.
+-open(4):-open(6),box(4),4!=6.
+-open(5):-open(6),box(5),5!=6.
+-open(6):-open(6),box(6),6!=6.
+:-box(1),not open(1),not -open(1).
+:-box(2),not open(2),not -open(2).
+:-box(3),not open(3),not -open(3).
+:-box(4),not open(4),not -open(4).
+:-box(5),not open(5),not -open(5).
+:-box(6),not open(6),not -open(6).
+-has_key(1):-has_key(1),box(1),1!=1.
+-has_key(2):-has_key(1),box(2),2!=1.
+-has_key(3):-has_key(1),box(3),3!=1.
+-has_key(4):-has_key(1),box(4),4!=1.
+-has_key(5):-has_key(1),box(5),5!=1.
+-has_key(6):-has_key(1),box(6),6!=1.
+-has_key(1):-has_key(2),box(1),1!=2.
+-has_key(2):-has_key(2),box(2),2!=2.
+-has_key(3):-has_key(2),box(3),3!=2.
+-has_key(4):-has_key(2),box(4),4!=2.
+-has_key(5):-has_key(2),box(5),5!=2.
+-has_key(6):-has_key(2),box(6),6!=2.
+-has_key(1):-has_key(3),box(1),1!=3.
+-has_key(2):-has_key(3),box(2),2!=3.
+-has_key(3):-has_key(3),box(3),3!=3.
+-has_key(4):-has_key(3),box(4),4!=3.
+-has_key(5):-has_key(3),box(5),5!=3.
+-has_key(6):-has_key(3),box(6),6!=3.
+-has_key(1):-has_key(4),box(1),1!=4.
+-has_key(2):-has_key(4),box(2),2!=4.
+-has_key(3):-has_key(4),box(3),3!=4.
+-has_key(4):-has_key(4),box(4),4!=4.
+-has_key(5):-has_key(4),box(5),5!=4.
+-has_key(6):-has_key(4),box(6),6!=4.
+-has_key(1):-has_key(5),box(1),1!=5.
+-has_key(2):-has_key(5),box(2),2!=5.
+-has_key(3):-has_key(5),box(3),3!=5.
+-has_key(4):-has_key(5),box(4),4!=5.
+-has_key(5):-has_key(5),box(5),5!=5.
+-has_key(6):-has_key(5),box(6),6!=5.
+-has_key(1):-has_key(6),box(1),1!=6.
+-has_key(2):-has_key(6),box(2),2!=6.
+-has_key(3):-has_key(6),box(3),3!=6.
+-has_key(4):-has_key(6),box(4),4!=6.
+-has_key(5):-has_key(6),box(5),5!=6.
+-has_key(6):-has_key(6),box(6),6!=6.
+:-box(1),not has_key(1),not -has_key(1).
+:-box(2),not has_key(2),not -has_key(2).
+:-box(3),not has_key(3),not -has_key(3).
+:-box(4),not has_key(4),not -has_key(4).
+:-box(5),not has_key(5),not -has_key(5).
+:-box(6),not has_key(6),not -has_key(6).
+box(1).
+box(2).
+box(3).
+box(4).
+box(5).
+box(6).
+kse_solve_trick.  
+:~ kse_solve_trick. [1@1]
+:~ kse_solve_trick. [1@2]
+
+#showselect/1.
+#showhas_key/1.
+#showopen/1.
+#showwin_stay/0.
+#showswitch/1.
+#showwin_switch/0.

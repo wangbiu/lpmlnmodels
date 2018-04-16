@@ -1,0 +1,3538 @@
+hbu(11).
+hbu(22).
+hbu(12).
+hbu(23).
+hbu(13).
+hbu(24).
+hbu(14).
+hbu(15).
+hbu(16).
+hbu(17).
+hbu(18).
+hbu(19).
+hbu(1).
+hbu(2).
+hbu(3).
+hbu(4).
+hbu(5).
+hbu(6).
+hbu(7).
+hbu(8).
+hbu(9).
+hbu(20).
+hbu(10).
+hbu(21).
+apply(rb(0, 1, 1)) | -apply(rb(0, 1, 1)) . 
+has_key(1) :- box(1),  apply(rb(0, 1, 1)).
+:- sat(rb(0, 1, 1)), -apply(rb(0, 1, 1)).
+sat(rb(0, 1, 1)) :- h(rb(0, 1, 1)), b(rb(0, 1, 1)).
+sat(rb(0, 1, 1)) :- not b(rb(0, 1, 1)), hold(rb(0, 1, 1)).
+b(rb(0, 1, 1)) :- box(1).
+h(rb(0, 1, 1)) :- has_key(1), hold(rb(0, 1, 1)).
+hold(rb(0, 1, 1)).
+:~ sat(rb(0, 1, 1)). [1@1, 0]
+
+apply(rb(1, 1, 1)) | -apply(rb(1, 1, 1)) . 
+has_key(2) :- box(2),  apply(rb(1, 1, 1)).
+:- sat(rb(1, 1, 1)), -apply(rb(1, 1, 1)).
+sat(rb(1, 1, 1)) :- h(rb(1, 1, 1)), b(rb(1, 1, 1)).
+sat(rb(1, 1, 1)) :- not b(rb(1, 1, 1)), hold(rb(1, 1, 1)).
+b(rb(1, 1, 1)) :- box(2).
+h(rb(1, 1, 1)) :- has_key(2), hold(rb(1, 1, 1)).
+hold(rb(1, 1, 1)).
+:~ sat(rb(1, 1, 1)). [1@1, 1]
+
+apply(rb(2, 1, 1)) | -apply(rb(2, 1, 1)) . 
+has_key(3) :- box(3),  apply(rb(2, 1, 1)).
+:- sat(rb(2, 1, 1)), -apply(rb(2, 1, 1)).
+sat(rb(2, 1, 1)) :- h(rb(2, 1, 1)), b(rb(2, 1, 1)).
+sat(rb(2, 1, 1)) :- not b(rb(2, 1, 1)), hold(rb(2, 1, 1)).
+b(rb(2, 1, 1)) :- box(3).
+h(rb(2, 1, 1)) :- has_key(3), hold(rb(2, 1, 1)).
+hold(rb(2, 1, 1)).
+:~ sat(rb(2, 1, 1)). [1@1, 2]
+
+apply(rb(3, 1, 1)) | -apply(rb(3, 1, 1)) . 
+has_key(4) :- box(4),  apply(rb(3, 1, 1)).
+:- sat(rb(3, 1, 1)), -apply(rb(3, 1, 1)).
+sat(rb(3, 1, 1)) :- h(rb(3, 1, 1)), b(rb(3, 1, 1)).
+sat(rb(3, 1, 1)) :- not b(rb(3, 1, 1)), hold(rb(3, 1, 1)).
+b(rb(3, 1, 1)) :- box(4).
+h(rb(3, 1, 1)) :- has_key(4), hold(rb(3, 1, 1)).
+hold(rb(3, 1, 1)).
+:~ sat(rb(3, 1, 1)). [1@1, 3]
+
+apply(rb(4, 1, 1)) | -apply(rb(4, 1, 1)) . 
+has_key(5) :- box(5),  apply(rb(4, 1, 1)).
+:- sat(rb(4, 1, 1)), -apply(rb(4, 1, 1)).
+sat(rb(4, 1, 1)) :- h(rb(4, 1, 1)), b(rb(4, 1, 1)).
+sat(rb(4, 1, 1)) :- not b(rb(4, 1, 1)), hold(rb(4, 1, 1)).
+b(rb(4, 1, 1)) :- box(5).
+h(rb(4, 1, 1)) :- has_key(5), hold(rb(4, 1, 1)).
+hold(rb(4, 1, 1)).
+:~ sat(rb(4, 1, 1)). [1@1, 4]
+
+apply(rb(5, 1, 1)) | -apply(rb(5, 1, 1)) . 
+has_key(6) :- box(6),  apply(rb(5, 1, 1)).
+:- sat(rb(5, 1, 1)), -apply(rb(5, 1, 1)).
+sat(rb(5, 1, 1)) :- h(rb(5, 1, 1)), b(rb(5, 1, 1)).
+sat(rb(5, 1, 1)) :- not b(rb(5, 1, 1)), hold(rb(5, 1, 1)).
+b(rb(5, 1, 1)) :- box(6).
+h(rb(5, 1, 1)) :- has_key(6), hold(rb(5, 1, 1)).
+hold(rb(5, 1, 1)).
+:~ sat(rb(5, 1, 1)). [1@1, 5]
+
+apply(rb(6, 1, 1)) | -apply(rb(6, 1, 1)) . 
+has_key(7) :- box(7),  apply(rb(6, 1, 1)).
+:- sat(rb(6, 1, 1)), -apply(rb(6, 1, 1)).
+sat(rb(6, 1, 1)) :- h(rb(6, 1, 1)), b(rb(6, 1, 1)).
+sat(rb(6, 1, 1)) :- not b(rb(6, 1, 1)), hold(rb(6, 1, 1)).
+b(rb(6, 1, 1)) :- box(7).
+h(rb(6, 1, 1)) :- has_key(7), hold(rb(6, 1, 1)).
+hold(rb(6, 1, 1)).
+:~ sat(rb(6, 1, 1)). [1@1, 6]
+
+apply(rb(7, 1, 1)) | -apply(rb(7, 1, 1)) . 
+has_key(8) :- box(8),  apply(rb(7, 1, 1)).
+:- sat(rb(7, 1, 1)), -apply(rb(7, 1, 1)).
+sat(rb(7, 1, 1)) :- h(rb(7, 1, 1)), b(rb(7, 1, 1)).
+sat(rb(7, 1, 1)) :- not b(rb(7, 1, 1)), hold(rb(7, 1, 1)).
+b(rb(7, 1, 1)) :- box(8).
+h(rb(7, 1, 1)) :- has_key(8), hold(rb(7, 1, 1)).
+hold(rb(7, 1, 1)).
+:~ sat(rb(7, 1, 1)). [1@1, 7]
+
+apply(rb(8, 1, 1)) | -apply(rb(8, 1, 1)) . 
+has_key(9) :- box(9),  apply(rb(8, 1, 1)).
+:- sat(rb(8, 1, 1)), -apply(rb(8, 1, 1)).
+sat(rb(8, 1, 1)) :- h(rb(8, 1, 1)), b(rb(8, 1, 1)).
+sat(rb(8, 1, 1)) :- not b(rb(8, 1, 1)), hold(rb(8, 1, 1)).
+b(rb(8, 1, 1)) :- box(9).
+h(rb(8, 1, 1)) :- has_key(9), hold(rb(8, 1, 1)).
+hold(rb(8, 1, 1)).
+:~ sat(rb(8, 1, 1)). [1@1, 8]
+
+apply(rb(9, 1, 1)) | -apply(rb(9, 1, 1)) . 
+has_key(10) :- box(10),  apply(rb(9, 1, 1)).
+:- sat(rb(9, 1, 1)), -apply(rb(9, 1, 1)).
+sat(rb(9, 1, 1)) :- h(rb(9, 1, 1)), b(rb(9, 1, 1)).
+sat(rb(9, 1, 1)) :- not b(rb(9, 1, 1)), hold(rb(9, 1, 1)).
+b(rb(9, 1, 1)) :- box(10).
+h(rb(9, 1, 1)) :- has_key(10), hold(rb(9, 1, 1)).
+hold(rb(9, 1, 1)).
+:~ sat(rb(9, 1, 1)). [1@1, 9]
+
+apply(rb(10, 1, 1)) | -apply(rb(10, 1, 1)) . 
+has_key(11) :- box(11),  apply(rb(10, 1, 1)).
+:- sat(rb(10, 1, 1)), -apply(rb(10, 1, 1)).
+sat(rb(10, 1, 1)) :- h(rb(10, 1, 1)), b(rb(10, 1, 1)).
+sat(rb(10, 1, 1)) :- not b(rb(10, 1, 1)), hold(rb(10, 1, 1)).
+b(rb(10, 1, 1)) :- box(11).
+h(rb(10, 1, 1)) :- has_key(11), hold(rb(10, 1, 1)).
+hold(rb(10, 1, 1)).
+:~ sat(rb(10, 1, 1)). [1@1, 10]
+
+apply(rb(11, 1, 1)) | -apply(rb(11, 1, 1)) . 
+has_key(12) :- box(12),  apply(rb(11, 1, 1)).
+:- sat(rb(11, 1, 1)), -apply(rb(11, 1, 1)).
+sat(rb(11, 1, 1)) :- h(rb(11, 1, 1)), b(rb(11, 1, 1)).
+sat(rb(11, 1, 1)) :- not b(rb(11, 1, 1)), hold(rb(11, 1, 1)).
+b(rb(11, 1, 1)) :- box(12).
+h(rb(11, 1, 1)) :- has_key(12), hold(rb(11, 1, 1)).
+hold(rb(11, 1, 1)).
+:~ sat(rb(11, 1, 1)). [1@1, 11]
+
+apply(rb(12, 1, 1)) | -apply(rb(12, 1, 1)) . 
+has_key(13) :- box(13),  apply(rb(12, 1, 1)).
+:- sat(rb(12, 1, 1)), -apply(rb(12, 1, 1)).
+sat(rb(12, 1, 1)) :- h(rb(12, 1, 1)), b(rb(12, 1, 1)).
+sat(rb(12, 1, 1)) :- not b(rb(12, 1, 1)), hold(rb(12, 1, 1)).
+b(rb(12, 1, 1)) :- box(13).
+h(rb(12, 1, 1)) :- has_key(13), hold(rb(12, 1, 1)).
+hold(rb(12, 1, 1)).
+:~ sat(rb(12, 1, 1)). [1@1, 12]
+
+apply(rb(13, 1, 1)) | -apply(rb(13, 1, 1)) . 
+has_key(14) :- box(14),  apply(rb(13, 1, 1)).
+:- sat(rb(13, 1, 1)), -apply(rb(13, 1, 1)).
+sat(rb(13, 1, 1)) :- h(rb(13, 1, 1)), b(rb(13, 1, 1)).
+sat(rb(13, 1, 1)) :- not b(rb(13, 1, 1)), hold(rb(13, 1, 1)).
+b(rb(13, 1, 1)) :- box(14).
+h(rb(13, 1, 1)) :- has_key(14), hold(rb(13, 1, 1)).
+hold(rb(13, 1, 1)).
+:~ sat(rb(13, 1, 1)). [1@1, 13]
+
+apply(rb(14, 1, 1)) | -apply(rb(14, 1, 1)) . 
+has_key(15) :- box(15),  apply(rb(14, 1, 1)).
+:- sat(rb(14, 1, 1)), -apply(rb(14, 1, 1)).
+sat(rb(14, 1, 1)) :- h(rb(14, 1, 1)), b(rb(14, 1, 1)).
+sat(rb(14, 1, 1)) :- not b(rb(14, 1, 1)), hold(rb(14, 1, 1)).
+b(rb(14, 1, 1)) :- box(15).
+h(rb(14, 1, 1)) :- has_key(15), hold(rb(14, 1, 1)).
+hold(rb(14, 1, 1)).
+:~ sat(rb(14, 1, 1)). [1@1, 14]
+
+apply(rb(15, 1, 1)) | -apply(rb(15, 1, 1)) . 
+has_key(16) :- box(16),  apply(rb(15, 1, 1)).
+:- sat(rb(15, 1, 1)), -apply(rb(15, 1, 1)).
+sat(rb(15, 1, 1)) :- h(rb(15, 1, 1)), b(rb(15, 1, 1)).
+sat(rb(15, 1, 1)) :- not b(rb(15, 1, 1)), hold(rb(15, 1, 1)).
+b(rb(15, 1, 1)) :- box(16).
+h(rb(15, 1, 1)) :- has_key(16), hold(rb(15, 1, 1)).
+hold(rb(15, 1, 1)).
+:~ sat(rb(15, 1, 1)). [1@1, 15]
+
+apply(rb(16, 1, 1)) | -apply(rb(16, 1, 1)) . 
+has_key(17) :- box(17),  apply(rb(16, 1, 1)).
+:- sat(rb(16, 1, 1)), -apply(rb(16, 1, 1)).
+sat(rb(16, 1, 1)) :- h(rb(16, 1, 1)), b(rb(16, 1, 1)).
+sat(rb(16, 1, 1)) :- not b(rb(16, 1, 1)), hold(rb(16, 1, 1)).
+b(rb(16, 1, 1)) :- box(17).
+h(rb(16, 1, 1)) :- has_key(17), hold(rb(16, 1, 1)).
+hold(rb(16, 1, 1)).
+:~ sat(rb(16, 1, 1)). [1@1, 16]
+
+apply(rb(17, 1, 1)) | -apply(rb(17, 1, 1)) . 
+has_key(18) :- box(18),  apply(rb(17, 1, 1)).
+:- sat(rb(17, 1, 1)), -apply(rb(17, 1, 1)).
+sat(rb(17, 1, 1)) :- h(rb(17, 1, 1)), b(rb(17, 1, 1)).
+sat(rb(17, 1, 1)) :- not b(rb(17, 1, 1)), hold(rb(17, 1, 1)).
+b(rb(17, 1, 1)) :- box(18).
+h(rb(17, 1, 1)) :- has_key(18), hold(rb(17, 1, 1)).
+hold(rb(17, 1, 1)).
+:~ sat(rb(17, 1, 1)). [1@1, 17]
+
+apply(rb(18, 1, 1)) | -apply(rb(18, 1, 1)) . 
+has_key(19) :- box(19),  apply(rb(18, 1, 1)).
+:- sat(rb(18, 1, 1)), -apply(rb(18, 1, 1)).
+sat(rb(18, 1, 1)) :- h(rb(18, 1, 1)), b(rb(18, 1, 1)).
+sat(rb(18, 1, 1)) :- not b(rb(18, 1, 1)), hold(rb(18, 1, 1)).
+b(rb(18, 1, 1)) :- box(19).
+h(rb(18, 1, 1)) :- has_key(19), hold(rb(18, 1, 1)).
+hold(rb(18, 1, 1)).
+:~ sat(rb(18, 1, 1)). [1@1, 18]
+
+apply(rb(19, 1, 1)) | -apply(rb(19, 1, 1)) . 
+has_key(20) :- box(20),  apply(rb(19, 1, 1)).
+:- sat(rb(19, 1, 1)), -apply(rb(19, 1, 1)).
+sat(rb(19, 1, 1)) :- h(rb(19, 1, 1)), b(rb(19, 1, 1)).
+sat(rb(19, 1, 1)) :- not b(rb(19, 1, 1)), hold(rb(19, 1, 1)).
+b(rb(19, 1, 1)) :- box(20).
+h(rb(19, 1, 1)) :- has_key(20), hold(rb(19, 1, 1)).
+hold(rb(19, 1, 1)).
+:~ sat(rb(19, 1, 1)). [1@1, 19]
+
+apply(rb(20, 1, 1)) | -apply(rb(20, 1, 1)) . 
+has_key(21) :- box(21),  apply(rb(20, 1, 1)).
+:- sat(rb(20, 1, 1)), -apply(rb(20, 1, 1)).
+sat(rb(20, 1, 1)) :- h(rb(20, 1, 1)), b(rb(20, 1, 1)).
+sat(rb(20, 1, 1)) :- not b(rb(20, 1, 1)), hold(rb(20, 1, 1)).
+b(rb(20, 1, 1)) :- box(21).
+h(rb(20, 1, 1)) :- has_key(21), hold(rb(20, 1, 1)).
+hold(rb(20, 1, 1)).
+:~ sat(rb(20, 1, 1)). [1@1, 20]
+
+apply(rb(21, 1, 1)) | -apply(rb(21, 1, 1)) . 
+has_key(22) :- box(22),  apply(rb(21, 1, 1)).
+:- sat(rb(21, 1, 1)), -apply(rb(21, 1, 1)).
+sat(rb(21, 1, 1)) :- h(rb(21, 1, 1)), b(rb(21, 1, 1)).
+sat(rb(21, 1, 1)) :- not b(rb(21, 1, 1)), hold(rb(21, 1, 1)).
+b(rb(21, 1, 1)) :- box(22).
+h(rb(21, 1, 1)) :- has_key(22), hold(rb(21, 1, 1)).
+hold(rb(21, 1, 1)).
+:~ sat(rb(21, 1, 1)). [1@1, 21]
+
+apply(rb(22, 1, 1)) | -apply(rb(22, 1, 1)) . 
+has_key(23) :- box(23),  apply(rb(22, 1, 1)).
+:- sat(rb(22, 1, 1)), -apply(rb(22, 1, 1)).
+sat(rb(22, 1, 1)) :- h(rb(22, 1, 1)), b(rb(22, 1, 1)).
+sat(rb(22, 1, 1)) :- not b(rb(22, 1, 1)), hold(rb(22, 1, 1)).
+b(rb(22, 1, 1)) :- box(23).
+h(rb(22, 1, 1)) :- has_key(23), hold(rb(22, 1, 1)).
+hold(rb(22, 1, 1)).
+:~ sat(rb(22, 1, 1)). [1@1, 22]
+
+apply(rb(23, 1, 1)) | -apply(rb(23, 1, 1)) . 
+has_key(24) :- box(24),  apply(rb(23, 1, 1)).
+:- sat(rb(23, 1, 1)), -apply(rb(23, 1, 1)).
+sat(rb(23, 1, 1)) :- h(rb(23, 1, 1)), b(rb(23, 1, 1)).
+sat(rb(23, 1, 1)) :- not b(rb(23, 1, 1)), hold(rb(23, 1, 1)).
+b(rb(23, 1, 1)) :- box(24).
+h(rb(23, 1, 1)) :- has_key(24), hold(rb(23, 1, 1)).
+hold(rb(23, 1, 1)).
+:~ sat(rb(23, 1, 1)). [1@1, 23]
+
+apply(rb(24, 1, 1)) | -apply(rb(24, 1, 1)) . 
+select(1) :- box(1),  apply(rb(24, 1, 1)).
+:- sat(rb(24, 1, 1)), -apply(rb(24, 1, 1)).
+sat(rb(24, 1, 1)) :- h(rb(24, 1, 1)), b(rb(24, 1, 1)).
+sat(rb(24, 1, 1)) :- not b(rb(24, 1, 1)), hold(rb(24, 1, 1)).
+b(rb(24, 1, 1)) :- box(1).
+h(rb(24, 1, 1)) :- select(1), hold(rb(24, 1, 1)).
+hold(rb(24, 1, 1)).
+:~ sat(rb(24, 1, 1)). [1@1, 24]
+
+apply(rb(25, 1, 1)) | -apply(rb(25, 1, 1)) . 
+select(2) :- box(2),  apply(rb(25, 1, 1)).
+:- sat(rb(25, 1, 1)), -apply(rb(25, 1, 1)).
+sat(rb(25, 1, 1)) :- h(rb(25, 1, 1)), b(rb(25, 1, 1)).
+sat(rb(25, 1, 1)) :- not b(rb(25, 1, 1)), hold(rb(25, 1, 1)).
+b(rb(25, 1, 1)) :- box(2).
+h(rb(25, 1, 1)) :- select(2), hold(rb(25, 1, 1)).
+hold(rb(25, 1, 1)).
+:~ sat(rb(25, 1, 1)). [1@1, 25]
+
+apply(rb(26, 1, 1)) | -apply(rb(26, 1, 1)) . 
+select(3) :- box(3),  apply(rb(26, 1, 1)).
+:- sat(rb(26, 1, 1)), -apply(rb(26, 1, 1)).
+sat(rb(26, 1, 1)) :- h(rb(26, 1, 1)), b(rb(26, 1, 1)).
+sat(rb(26, 1, 1)) :- not b(rb(26, 1, 1)), hold(rb(26, 1, 1)).
+b(rb(26, 1, 1)) :- box(3).
+h(rb(26, 1, 1)) :- select(3), hold(rb(26, 1, 1)).
+hold(rb(26, 1, 1)).
+:~ sat(rb(26, 1, 1)). [1@1, 26]
+
+apply(rb(27, 1, 1)) | -apply(rb(27, 1, 1)) . 
+select(4) :- box(4),  apply(rb(27, 1, 1)).
+:- sat(rb(27, 1, 1)), -apply(rb(27, 1, 1)).
+sat(rb(27, 1, 1)) :- h(rb(27, 1, 1)), b(rb(27, 1, 1)).
+sat(rb(27, 1, 1)) :- not b(rb(27, 1, 1)), hold(rb(27, 1, 1)).
+b(rb(27, 1, 1)) :- box(4).
+h(rb(27, 1, 1)) :- select(4), hold(rb(27, 1, 1)).
+hold(rb(27, 1, 1)).
+:~ sat(rb(27, 1, 1)). [1@1, 27]
+
+apply(rb(28, 1, 1)) | -apply(rb(28, 1, 1)) . 
+select(5) :- box(5),  apply(rb(28, 1, 1)).
+:- sat(rb(28, 1, 1)), -apply(rb(28, 1, 1)).
+sat(rb(28, 1, 1)) :- h(rb(28, 1, 1)), b(rb(28, 1, 1)).
+sat(rb(28, 1, 1)) :- not b(rb(28, 1, 1)), hold(rb(28, 1, 1)).
+b(rb(28, 1, 1)) :- box(5).
+h(rb(28, 1, 1)) :- select(5), hold(rb(28, 1, 1)).
+hold(rb(28, 1, 1)).
+:~ sat(rb(28, 1, 1)). [1@1, 28]
+
+apply(rb(29, 1, 1)) | -apply(rb(29, 1, 1)) . 
+select(6) :- box(6),  apply(rb(29, 1, 1)).
+:- sat(rb(29, 1, 1)), -apply(rb(29, 1, 1)).
+sat(rb(29, 1, 1)) :- h(rb(29, 1, 1)), b(rb(29, 1, 1)).
+sat(rb(29, 1, 1)) :- not b(rb(29, 1, 1)), hold(rb(29, 1, 1)).
+b(rb(29, 1, 1)) :- box(6).
+h(rb(29, 1, 1)) :- select(6), hold(rb(29, 1, 1)).
+hold(rb(29, 1, 1)).
+:~ sat(rb(29, 1, 1)). [1@1, 29]
+
+apply(rb(30, 1, 1)) | -apply(rb(30, 1, 1)) . 
+select(7) :- box(7),  apply(rb(30, 1, 1)).
+:- sat(rb(30, 1, 1)), -apply(rb(30, 1, 1)).
+sat(rb(30, 1, 1)) :- h(rb(30, 1, 1)), b(rb(30, 1, 1)).
+sat(rb(30, 1, 1)) :- not b(rb(30, 1, 1)), hold(rb(30, 1, 1)).
+b(rb(30, 1, 1)) :- box(7).
+h(rb(30, 1, 1)) :- select(7), hold(rb(30, 1, 1)).
+hold(rb(30, 1, 1)).
+:~ sat(rb(30, 1, 1)). [1@1, 30]
+
+apply(rb(31, 1, 1)) | -apply(rb(31, 1, 1)) . 
+select(8) :- box(8),  apply(rb(31, 1, 1)).
+:- sat(rb(31, 1, 1)), -apply(rb(31, 1, 1)).
+sat(rb(31, 1, 1)) :- h(rb(31, 1, 1)), b(rb(31, 1, 1)).
+sat(rb(31, 1, 1)) :- not b(rb(31, 1, 1)), hold(rb(31, 1, 1)).
+b(rb(31, 1, 1)) :- box(8).
+h(rb(31, 1, 1)) :- select(8), hold(rb(31, 1, 1)).
+hold(rb(31, 1, 1)).
+:~ sat(rb(31, 1, 1)). [1@1, 31]
+
+apply(rb(32, 1, 1)) | -apply(rb(32, 1, 1)) . 
+select(9) :- box(9),  apply(rb(32, 1, 1)).
+:- sat(rb(32, 1, 1)), -apply(rb(32, 1, 1)).
+sat(rb(32, 1, 1)) :- h(rb(32, 1, 1)), b(rb(32, 1, 1)).
+sat(rb(32, 1, 1)) :- not b(rb(32, 1, 1)), hold(rb(32, 1, 1)).
+b(rb(32, 1, 1)) :- box(9).
+h(rb(32, 1, 1)) :- select(9), hold(rb(32, 1, 1)).
+hold(rb(32, 1, 1)).
+:~ sat(rb(32, 1, 1)). [1@1, 32]
+
+apply(rb(33, 1, 1)) | -apply(rb(33, 1, 1)) . 
+select(10) :- box(10),  apply(rb(33, 1, 1)).
+:- sat(rb(33, 1, 1)), -apply(rb(33, 1, 1)).
+sat(rb(33, 1, 1)) :- h(rb(33, 1, 1)), b(rb(33, 1, 1)).
+sat(rb(33, 1, 1)) :- not b(rb(33, 1, 1)), hold(rb(33, 1, 1)).
+b(rb(33, 1, 1)) :- box(10).
+h(rb(33, 1, 1)) :- select(10), hold(rb(33, 1, 1)).
+hold(rb(33, 1, 1)).
+:~ sat(rb(33, 1, 1)). [1@1, 33]
+
+apply(rb(34, 1, 1)) | -apply(rb(34, 1, 1)) . 
+select(11) :- box(11),  apply(rb(34, 1, 1)).
+:- sat(rb(34, 1, 1)), -apply(rb(34, 1, 1)).
+sat(rb(34, 1, 1)) :- h(rb(34, 1, 1)), b(rb(34, 1, 1)).
+sat(rb(34, 1, 1)) :- not b(rb(34, 1, 1)), hold(rb(34, 1, 1)).
+b(rb(34, 1, 1)) :- box(11).
+h(rb(34, 1, 1)) :- select(11), hold(rb(34, 1, 1)).
+hold(rb(34, 1, 1)).
+:~ sat(rb(34, 1, 1)). [1@1, 34]
+
+apply(rb(35, 1, 1)) | -apply(rb(35, 1, 1)) . 
+select(12) :- box(12),  apply(rb(35, 1, 1)).
+:- sat(rb(35, 1, 1)), -apply(rb(35, 1, 1)).
+sat(rb(35, 1, 1)) :- h(rb(35, 1, 1)), b(rb(35, 1, 1)).
+sat(rb(35, 1, 1)) :- not b(rb(35, 1, 1)), hold(rb(35, 1, 1)).
+b(rb(35, 1, 1)) :- box(12).
+h(rb(35, 1, 1)) :- select(12), hold(rb(35, 1, 1)).
+hold(rb(35, 1, 1)).
+:~ sat(rb(35, 1, 1)). [1@1, 35]
+
+apply(rb(36, 1, 1)) | -apply(rb(36, 1, 1)) . 
+select(13) :- box(13),  apply(rb(36, 1, 1)).
+:- sat(rb(36, 1, 1)), -apply(rb(36, 1, 1)).
+sat(rb(36, 1, 1)) :- h(rb(36, 1, 1)), b(rb(36, 1, 1)).
+sat(rb(36, 1, 1)) :- not b(rb(36, 1, 1)), hold(rb(36, 1, 1)).
+b(rb(36, 1, 1)) :- box(13).
+h(rb(36, 1, 1)) :- select(13), hold(rb(36, 1, 1)).
+hold(rb(36, 1, 1)).
+:~ sat(rb(36, 1, 1)). [1@1, 36]
+
+apply(rb(37, 1, 1)) | -apply(rb(37, 1, 1)) . 
+select(14) :- box(14),  apply(rb(37, 1, 1)).
+:- sat(rb(37, 1, 1)), -apply(rb(37, 1, 1)).
+sat(rb(37, 1, 1)) :- h(rb(37, 1, 1)), b(rb(37, 1, 1)).
+sat(rb(37, 1, 1)) :- not b(rb(37, 1, 1)), hold(rb(37, 1, 1)).
+b(rb(37, 1, 1)) :- box(14).
+h(rb(37, 1, 1)) :- select(14), hold(rb(37, 1, 1)).
+hold(rb(37, 1, 1)).
+:~ sat(rb(37, 1, 1)). [1@1, 37]
+
+apply(rb(38, 1, 1)) | -apply(rb(38, 1, 1)) . 
+select(15) :- box(15),  apply(rb(38, 1, 1)).
+:- sat(rb(38, 1, 1)), -apply(rb(38, 1, 1)).
+sat(rb(38, 1, 1)) :- h(rb(38, 1, 1)), b(rb(38, 1, 1)).
+sat(rb(38, 1, 1)) :- not b(rb(38, 1, 1)), hold(rb(38, 1, 1)).
+b(rb(38, 1, 1)) :- box(15).
+h(rb(38, 1, 1)) :- select(15), hold(rb(38, 1, 1)).
+hold(rb(38, 1, 1)).
+:~ sat(rb(38, 1, 1)). [1@1, 38]
+
+apply(rb(39, 1, 1)) | -apply(rb(39, 1, 1)) . 
+select(16) :- box(16),  apply(rb(39, 1, 1)).
+:- sat(rb(39, 1, 1)), -apply(rb(39, 1, 1)).
+sat(rb(39, 1, 1)) :- h(rb(39, 1, 1)), b(rb(39, 1, 1)).
+sat(rb(39, 1, 1)) :- not b(rb(39, 1, 1)), hold(rb(39, 1, 1)).
+b(rb(39, 1, 1)) :- box(16).
+h(rb(39, 1, 1)) :- select(16), hold(rb(39, 1, 1)).
+hold(rb(39, 1, 1)).
+:~ sat(rb(39, 1, 1)). [1@1, 39]
+
+apply(rb(40, 1, 1)) | -apply(rb(40, 1, 1)) . 
+select(17) :- box(17),  apply(rb(40, 1, 1)).
+:- sat(rb(40, 1, 1)), -apply(rb(40, 1, 1)).
+sat(rb(40, 1, 1)) :- h(rb(40, 1, 1)), b(rb(40, 1, 1)).
+sat(rb(40, 1, 1)) :- not b(rb(40, 1, 1)), hold(rb(40, 1, 1)).
+b(rb(40, 1, 1)) :- box(17).
+h(rb(40, 1, 1)) :- select(17), hold(rb(40, 1, 1)).
+hold(rb(40, 1, 1)).
+:~ sat(rb(40, 1, 1)). [1@1, 40]
+
+apply(rb(41, 1, 1)) | -apply(rb(41, 1, 1)) . 
+select(18) :- box(18),  apply(rb(41, 1, 1)).
+:- sat(rb(41, 1, 1)), -apply(rb(41, 1, 1)).
+sat(rb(41, 1, 1)) :- h(rb(41, 1, 1)), b(rb(41, 1, 1)).
+sat(rb(41, 1, 1)) :- not b(rb(41, 1, 1)), hold(rb(41, 1, 1)).
+b(rb(41, 1, 1)) :- box(18).
+h(rb(41, 1, 1)) :- select(18), hold(rb(41, 1, 1)).
+hold(rb(41, 1, 1)).
+:~ sat(rb(41, 1, 1)). [1@1, 41]
+
+apply(rb(42, 1, 1)) | -apply(rb(42, 1, 1)) . 
+select(19) :- box(19),  apply(rb(42, 1, 1)).
+:- sat(rb(42, 1, 1)), -apply(rb(42, 1, 1)).
+sat(rb(42, 1, 1)) :- h(rb(42, 1, 1)), b(rb(42, 1, 1)).
+sat(rb(42, 1, 1)) :- not b(rb(42, 1, 1)), hold(rb(42, 1, 1)).
+b(rb(42, 1, 1)) :- box(19).
+h(rb(42, 1, 1)) :- select(19), hold(rb(42, 1, 1)).
+hold(rb(42, 1, 1)).
+:~ sat(rb(42, 1, 1)). [1@1, 42]
+
+apply(rb(43, 1, 1)) | -apply(rb(43, 1, 1)) . 
+select(20) :- box(20),  apply(rb(43, 1, 1)).
+:- sat(rb(43, 1, 1)), -apply(rb(43, 1, 1)).
+sat(rb(43, 1, 1)) :- h(rb(43, 1, 1)), b(rb(43, 1, 1)).
+sat(rb(43, 1, 1)) :- not b(rb(43, 1, 1)), hold(rb(43, 1, 1)).
+b(rb(43, 1, 1)) :- box(20).
+h(rb(43, 1, 1)) :- select(20), hold(rb(43, 1, 1)).
+hold(rb(43, 1, 1)).
+:~ sat(rb(43, 1, 1)). [1@1, 43]
+
+apply(rb(44, 1, 1)) | -apply(rb(44, 1, 1)) . 
+select(21) :- box(21),  apply(rb(44, 1, 1)).
+:- sat(rb(44, 1, 1)), -apply(rb(44, 1, 1)).
+sat(rb(44, 1, 1)) :- h(rb(44, 1, 1)), b(rb(44, 1, 1)).
+sat(rb(44, 1, 1)) :- not b(rb(44, 1, 1)), hold(rb(44, 1, 1)).
+b(rb(44, 1, 1)) :- box(21).
+h(rb(44, 1, 1)) :- select(21), hold(rb(44, 1, 1)).
+hold(rb(44, 1, 1)).
+:~ sat(rb(44, 1, 1)). [1@1, 44]
+
+apply(rb(45, 1, 1)) | -apply(rb(45, 1, 1)) . 
+select(22) :- box(22),  apply(rb(45, 1, 1)).
+:- sat(rb(45, 1, 1)), -apply(rb(45, 1, 1)).
+sat(rb(45, 1, 1)) :- h(rb(45, 1, 1)), b(rb(45, 1, 1)).
+sat(rb(45, 1, 1)) :- not b(rb(45, 1, 1)), hold(rb(45, 1, 1)).
+b(rb(45, 1, 1)) :- box(22).
+h(rb(45, 1, 1)) :- select(22), hold(rb(45, 1, 1)).
+hold(rb(45, 1, 1)).
+:~ sat(rb(45, 1, 1)). [1@1, 45]
+
+apply(rb(46, 1, 1)) | -apply(rb(46, 1, 1)) . 
+select(23) :- box(23),  apply(rb(46, 1, 1)).
+:- sat(rb(46, 1, 1)), -apply(rb(46, 1, 1)).
+sat(rb(46, 1, 1)) :- h(rb(46, 1, 1)), b(rb(46, 1, 1)).
+sat(rb(46, 1, 1)) :- not b(rb(46, 1, 1)), hold(rb(46, 1, 1)).
+b(rb(46, 1, 1)) :- box(23).
+h(rb(46, 1, 1)) :- select(23), hold(rb(46, 1, 1)).
+hold(rb(46, 1, 1)).
+:~ sat(rb(46, 1, 1)). [1@1, 46]
+
+apply(rb(47, 1, 1)) | -apply(rb(47, 1, 1)) . 
+select(24) :- box(24),  apply(rb(47, 1, 1)).
+:- sat(rb(47, 1, 1)), -apply(rb(47, 1, 1)).
+sat(rb(47, 1, 1)) :- h(rb(47, 1, 1)), b(rb(47, 1, 1)).
+sat(rb(47, 1, 1)) :- not b(rb(47, 1, 1)), hold(rb(47, 1, 1)).
+b(rb(47, 1, 1)) :- box(24).
+h(rb(47, 1, 1)) :- select(24), hold(rb(47, 1, 1)).
+hold(rb(47, 1, 1)).
+:~ sat(rb(47, 1, 1)). [1@1, 47]
+
+cannot_open(1):-select(1).
+cannot_open(2):-select(2).
+cannot_open(3):-select(3).
+cannot_open(4):-select(4).
+cannot_open(5):-select(5).
+cannot_open(6):-select(6).
+cannot_open(7):-select(7).
+cannot_open(8):-select(8).
+cannot_open(9):-select(9).
+cannot_open(10):-select(10).
+cannot_open(11):-select(11).
+cannot_open(12):-select(12).
+cannot_open(13):-select(13).
+cannot_open(14):-select(14).
+cannot_open(15):-select(15).
+cannot_open(16):-select(16).
+cannot_open(17):-select(17).
+cannot_open(18):-select(18).
+cannot_open(19):-select(19).
+cannot_open(20):-select(20).
+cannot_open(21):-select(21).
+cannot_open(22):-select(22).
+cannot_open(23):-select(23).
+cannot_open(24):-select(24).
+cannot_open(1):-has_key(1).
+cannot_open(2):-has_key(2).
+cannot_open(3):-has_key(3).
+cannot_open(4):-has_key(4).
+cannot_open(5):-has_key(5).
+cannot_open(6):-has_key(6).
+cannot_open(7):-has_key(7).
+cannot_open(8):-has_key(8).
+cannot_open(9):-has_key(9).
+cannot_open(10):-has_key(10).
+cannot_open(11):-has_key(11).
+cannot_open(12):-has_key(12).
+cannot_open(13):-has_key(13).
+cannot_open(14):-has_key(14).
+cannot_open(15):-has_key(15).
+cannot_open(16):-has_key(16).
+cannot_open(17):-has_key(17).
+cannot_open(18):-has_key(18).
+cannot_open(19):-has_key(19).
+cannot_open(20):-has_key(20).
+cannot_open(21):-has_key(21).
+cannot_open(22):-has_key(22).
+cannot_open(23):-has_key(23).
+cannot_open(24):-has_key(24).
+apply(rb(96, 1, 1)) | -apply(rb(96, 1, 1)) . 
+open(1) :- box(1),not cannot_open(1),  apply(rb(96, 1, 1)).
+:- sat(rb(96, 1, 1)), -apply(rb(96, 1, 1)).
+sat(rb(96, 1, 1)) :- h(rb(96, 1, 1)), b(rb(96, 1, 1)).
+sat(rb(96, 1, 1)) :- not b(rb(96, 1, 1)), hold(rb(96, 1, 1)).
+b(rb(96, 1, 1)) :- box(1),not cannot_open(1).
+h(rb(96, 1, 1)) :- open(1), hold(rb(96, 1, 1)).
+hold(rb(96, 1, 1)).
+:~ sat(rb(96, 1, 1)). [1@1, 96]
+
+apply(rb(97, 1, 1)) | -apply(rb(97, 1, 1)) . 
+open(2) :- box(2),not cannot_open(2),  apply(rb(97, 1, 1)).
+:- sat(rb(97, 1, 1)), -apply(rb(97, 1, 1)).
+sat(rb(97, 1, 1)) :- h(rb(97, 1, 1)), b(rb(97, 1, 1)).
+sat(rb(97, 1, 1)) :- not b(rb(97, 1, 1)), hold(rb(97, 1, 1)).
+b(rb(97, 1, 1)) :- box(2),not cannot_open(2).
+h(rb(97, 1, 1)) :- open(2), hold(rb(97, 1, 1)).
+hold(rb(97, 1, 1)).
+:~ sat(rb(97, 1, 1)). [1@1, 97]
+
+apply(rb(98, 1, 1)) | -apply(rb(98, 1, 1)) . 
+open(3) :- box(3),not cannot_open(3),  apply(rb(98, 1, 1)).
+:- sat(rb(98, 1, 1)), -apply(rb(98, 1, 1)).
+sat(rb(98, 1, 1)) :- h(rb(98, 1, 1)), b(rb(98, 1, 1)).
+sat(rb(98, 1, 1)) :- not b(rb(98, 1, 1)), hold(rb(98, 1, 1)).
+b(rb(98, 1, 1)) :- box(3),not cannot_open(3).
+h(rb(98, 1, 1)) :- open(3), hold(rb(98, 1, 1)).
+hold(rb(98, 1, 1)).
+:~ sat(rb(98, 1, 1)). [1@1, 98]
+
+apply(rb(99, 1, 1)) | -apply(rb(99, 1, 1)) . 
+open(4) :- box(4),not cannot_open(4),  apply(rb(99, 1, 1)).
+:- sat(rb(99, 1, 1)), -apply(rb(99, 1, 1)).
+sat(rb(99, 1, 1)) :- h(rb(99, 1, 1)), b(rb(99, 1, 1)).
+sat(rb(99, 1, 1)) :- not b(rb(99, 1, 1)), hold(rb(99, 1, 1)).
+b(rb(99, 1, 1)) :- box(4),not cannot_open(4).
+h(rb(99, 1, 1)) :- open(4), hold(rb(99, 1, 1)).
+hold(rb(99, 1, 1)).
+:~ sat(rb(99, 1, 1)). [1@1, 99]
+
+apply(rb(100, 1, 1)) | -apply(rb(100, 1, 1)) . 
+open(5) :- box(5),not cannot_open(5),  apply(rb(100, 1, 1)).
+:- sat(rb(100, 1, 1)), -apply(rb(100, 1, 1)).
+sat(rb(100, 1, 1)) :- h(rb(100, 1, 1)), b(rb(100, 1, 1)).
+sat(rb(100, 1, 1)) :- not b(rb(100, 1, 1)), hold(rb(100, 1, 1)).
+b(rb(100, 1, 1)) :- box(5),not cannot_open(5).
+h(rb(100, 1, 1)) :- open(5), hold(rb(100, 1, 1)).
+hold(rb(100, 1, 1)).
+:~ sat(rb(100, 1, 1)). [1@1, 100]
+
+apply(rb(101, 1, 1)) | -apply(rb(101, 1, 1)) . 
+open(6) :- box(6),not cannot_open(6),  apply(rb(101, 1, 1)).
+:- sat(rb(101, 1, 1)), -apply(rb(101, 1, 1)).
+sat(rb(101, 1, 1)) :- h(rb(101, 1, 1)), b(rb(101, 1, 1)).
+sat(rb(101, 1, 1)) :- not b(rb(101, 1, 1)), hold(rb(101, 1, 1)).
+b(rb(101, 1, 1)) :- box(6),not cannot_open(6).
+h(rb(101, 1, 1)) :- open(6), hold(rb(101, 1, 1)).
+hold(rb(101, 1, 1)).
+:~ sat(rb(101, 1, 1)). [1@1, 101]
+
+apply(rb(102, 1, 1)) | -apply(rb(102, 1, 1)) . 
+open(7) :- box(7),not cannot_open(7),  apply(rb(102, 1, 1)).
+:- sat(rb(102, 1, 1)), -apply(rb(102, 1, 1)).
+sat(rb(102, 1, 1)) :- h(rb(102, 1, 1)), b(rb(102, 1, 1)).
+sat(rb(102, 1, 1)) :- not b(rb(102, 1, 1)), hold(rb(102, 1, 1)).
+b(rb(102, 1, 1)) :- box(7),not cannot_open(7).
+h(rb(102, 1, 1)) :- open(7), hold(rb(102, 1, 1)).
+hold(rb(102, 1, 1)).
+:~ sat(rb(102, 1, 1)). [1@1, 102]
+
+apply(rb(103, 1, 1)) | -apply(rb(103, 1, 1)) . 
+open(8) :- box(8),not cannot_open(8),  apply(rb(103, 1, 1)).
+:- sat(rb(103, 1, 1)), -apply(rb(103, 1, 1)).
+sat(rb(103, 1, 1)) :- h(rb(103, 1, 1)), b(rb(103, 1, 1)).
+sat(rb(103, 1, 1)) :- not b(rb(103, 1, 1)), hold(rb(103, 1, 1)).
+b(rb(103, 1, 1)) :- box(8),not cannot_open(8).
+h(rb(103, 1, 1)) :- open(8), hold(rb(103, 1, 1)).
+hold(rb(103, 1, 1)).
+:~ sat(rb(103, 1, 1)). [1@1, 103]
+
+apply(rb(104, 1, 1)) | -apply(rb(104, 1, 1)) . 
+open(9) :- box(9),not cannot_open(9),  apply(rb(104, 1, 1)).
+:- sat(rb(104, 1, 1)), -apply(rb(104, 1, 1)).
+sat(rb(104, 1, 1)) :- h(rb(104, 1, 1)), b(rb(104, 1, 1)).
+sat(rb(104, 1, 1)) :- not b(rb(104, 1, 1)), hold(rb(104, 1, 1)).
+b(rb(104, 1, 1)) :- box(9),not cannot_open(9).
+h(rb(104, 1, 1)) :- open(9), hold(rb(104, 1, 1)).
+hold(rb(104, 1, 1)).
+:~ sat(rb(104, 1, 1)). [1@1, 104]
+
+apply(rb(105, 1, 1)) | -apply(rb(105, 1, 1)) . 
+open(10) :- box(10),not cannot_open(10),  apply(rb(105, 1, 1)).
+:- sat(rb(105, 1, 1)), -apply(rb(105, 1, 1)).
+sat(rb(105, 1, 1)) :- h(rb(105, 1, 1)), b(rb(105, 1, 1)).
+sat(rb(105, 1, 1)) :- not b(rb(105, 1, 1)), hold(rb(105, 1, 1)).
+b(rb(105, 1, 1)) :- box(10),not cannot_open(10).
+h(rb(105, 1, 1)) :- open(10), hold(rb(105, 1, 1)).
+hold(rb(105, 1, 1)).
+:~ sat(rb(105, 1, 1)). [1@1, 105]
+
+apply(rb(106, 1, 1)) | -apply(rb(106, 1, 1)) . 
+open(11) :- box(11),not cannot_open(11),  apply(rb(106, 1, 1)).
+:- sat(rb(106, 1, 1)), -apply(rb(106, 1, 1)).
+sat(rb(106, 1, 1)) :- h(rb(106, 1, 1)), b(rb(106, 1, 1)).
+sat(rb(106, 1, 1)) :- not b(rb(106, 1, 1)), hold(rb(106, 1, 1)).
+b(rb(106, 1, 1)) :- box(11),not cannot_open(11).
+h(rb(106, 1, 1)) :- open(11), hold(rb(106, 1, 1)).
+hold(rb(106, 1, 1)).
+:~ sat(rb(106, 1, 1)). [1@1, 106]
+
+apply(rb(107, 1, 1)) | -apply(rb(107, 1, 1)) . 
+open(12) :- box(12),not cannot_open(12),  apply(rb(107, 1, 1)).
+:- sat(rb(107, 1, 1)), -apply(rb(107, 1, 1)).
+sat(rb(107, 1, 1)) :- h(rb(107, 1, 1)), b(rb(107, 1, 1)).
+sat(rb(107, 1, 1)) :- not b(rb(107, 1, 1)), hold(rb(107, 1, 1)).
+b(rb(107, 1, 1)) :- box(12),not cannot_open(12).
+h(rb(107, 1, 1)) :- open(12), hold(rb(107, 1, 1)).
+hold(rb(107, 1, 1)).
+:~ sat(rb(107, 1, 1)). [1@1, 107]
+
+apply(rb(108, 1, 1)) | -apply(rb(108, 1, 1)) . 
+open(13) :- box(13),not cannot_open(13),  apply(rb(108, 1, 1)).
+:- sat(rb(108, 1, 1)), -apply(rb(108, 1, 1)).
+sat(rb(108, 1, 1)) :- h(rb(108, 1, 1)), b(rb(108, 1, 1)).
+sat(rb(108, 1, 1)) :- not b(rb(108, 1, 1)), hold(rb(108, 1, 1)).
+b(rb(108, 1, 1)) :- box(13),not cannot_open(13).
+h(rb(108, 1, 1)) :- open(13), hold(rb(108, 1, 1)).
+hold(rb(108, 1, 1)).
+:~ sat(rb(108, 1, 1)). [1@1, 108]
+
+apply(rb(109, 1, 1)) | -apply(rb(109, 1, 1)) . 
+open(14) :- box(14),not cannot_open(14),  apply(rb(109, 1, 1)).
+:- sat(rb(109, 1, 1)), -apply(rb(109, 1, 1)).
+sat(rb(109, 1, 1)) :- h(rb(109, 1, 1)), b(rb(109, 1, 1)).
+sat(rb(109, 1, 1)) :- not b(rb(109, 1, 1)), hold(rb(109, 1, 1)).
+b(rb(109, 1, 1)) :- box(14),not cannot_open(14).
+h(rb(109, 1, 1)) :- open(14), hold(rb(109, 1, 1)).
+hold(rb(109, 1, 1)).
+:~ sat(rb(109, 1, 1)). [1@1, 109]
+
+apply(rb(110, 1, 1)) | -apply(rb(110, 1, 1)) . 
+open(15) :- box(15),not cannot_open(15),  apply(rb(110, 1, 1)).
+:- sat(rb(110, 1, 1)), -apply(rb(110, 1, 1)).
+sat(rb(110, 1, 1)) :- h(rb(110, 1, 1)), b(rb(110, 1, 1)).
+sat(rb(110, 1, 1)) :- not b(rb(110, 1, 1)), hold(rb(110, 1, 1)).
+b(rb(110, 1, 1)) :- box(15),not cannot_open(15).
+h(rb(110, 1, 1)) :- open(15), hold(rb(110, 1, 1)).
+hold(rb(110, 1, 1)).
+:~ sat(rb(110, 1, 1)). [1@1, 110]
+
+apply(rb(111, 1, 1)) | -apply(rb(111, 1, 1)) . 
+open(16) :- box(16),not cannot_open(16),  apply(rb(111, 1, 1)).
+:- sat(rb(111, 1, 1)), -apply(rb(111, 1, 1)).
+sat(rb(111, 1, 1)) :- h(rb(111, 1, 1)), b(rb(111, 1, 1)).
+sat(rb(111, 1, 1)) :- not b(rb(111, 1, 1)), hold(rb(111, 1, 1)).
+b(rb(111, 1, 1)) :- box(16),not cannot_open(16).
+h(rb(111, 1, 1)) :- open(16), hold(rb(111, 1, 1)).
+hold(rb(111, 1, 1)).
+:~ sat(rb(111, 1, 1)). [1@1, 111]
+
+apply(rb(112, 1, 1)) | -apply(rb(112, 1, 1)) . 
+open(17) :- box(17),not cannot_open(17),  apply(rb(112, 1, 1)).
+:- sat(rb(112, 1, 1)), -apply(rb(112, 1, 1)).
+sat(rb(112, 1, 1)) :- h(rb(112, 1, 1)), b(rb(112, 1, 1)).
+sat(rb(112, 1, 1)) :- not b(rb(112, 1, 1)), hold(rb(112, 1, 1)).
+b(rb(112, 1, 1)) :- box(17),not cannot_open(17).
+h(rb(112, 1, 1)) :- open(17), hold(rb(112, 1, 1)).
+hold(rb(112, 1, 1)).
+:~ sat(rb(112, 1, 1)). [1@1, 112]
+
+apply(rb(113, 1, 1)) | -apply(rb(113, 1, 1)) . 
+open(18) :- box(18),not cannot_open(18),  apply(rb(113, 1, 1)).
+:- sat(rb(113, 1, 1)), -apply(rb(113, 1, 1)).
+sat(rb(113, 1, 1)) :- h(rb(113, 1, 1)), b(rb(113, 1, 1)).
+sat(rb(113, 1, 1)) :- not b(rb(113, 1, 1)), hold(rb(113, 1, 1)).
+b(rb(113, 1, 1)) :- box(18),not cannot_open(18).
+h(rb(113, 1, 1)) :- open(18), hold(rb(113, 1, 1)).
+hold(rb(113, 1, 1)).
+:~ sat(rb(113, 1, 1)). [1@1, 113]
+
+apply(rb(114, 1, 1)) | -apply(rb(114, 1, 1)) . 
+open(19) :- box(19),not cannot_open(19),  apply(rb(114, 1, 1)).
+:- sat(rb(114, 1, 1)), -apply(rb(114, 1, 1)).
+sat(rb(114, 1, 1)) :- h(rb(114, 1, 1)), b(rb(114, 1, 1)).
+sat(rb(114, 1, 1)) :- not b(rb(114, 1, 1)), hold(rb(114, 1, 1)).
+b(rb(114, 1, 1)) :- box(19),not cannot_open(19).
+h(rb(114, 1, 1)) :- open(19), hold(rb(114, 1, 1)).
+hold(rb(114, 1, 1)).
+:~ sat(rb(114, 1, 1)). [1@1, 114]
+
+apply(rb(115, 1, 1)) | -apply(rb(115, 1, 1)) . 
+open(20) :- box(20),not cannot_open(20),  apply(rb(115, 1, 1)).
+:- sat(rb(115, 1, 1)), -apply(rb(115, 1, 1)).
+sat(rb(115, 1, 1)) :- h(rb(115, 1, 1)), b(rb(115, 1, 1)).
+sat(rb(115, 1, 1)) :- not b(rb(115, 1, 1)), hold(rb(115, 1, 1)).
+b(rb(115, 1, 1)) :- box(20),not cannot_open(20).
+h(rb(115, 1, 1)) :- open(20), hold(rb(115, 1, 1)).
+hold(rb(115, 1, 1)).
+:~ sat(rb(115, 1, 1)). [1@1, 115]
+
+apply(rb(116, 1, 1)) | -apply(rb(116, 1, 1)) . 
+open(21) :- box(21),not cannot_open(21),  apply(rb(116, 1, 1)).
+:- sat(rb(116, 1, 1)), -apply(rb(116, 1, 1)).
+sat(rb(116, 1, 1)) :- h(rb(116, 1, 1)), b(rb(116, 1, 1)).
+sat(rb(116, 1, 1)) :- not b(rb(116, 1, 1)), hold(rb(116, 1, 1)).
+b(rb(116, 1, 1)) :- box(21),not cannot_open(21).
+h(rb(116, 1, 1)) :- open(21), hold(rb(116, 1, 1)).
+hold(rb(116, 1, 1)).
+:~ sat(rb(116, 1, 1)). [1@1, 116]
+
+apply(rb(117, 1, 1)) | -apply(rb(117, 1, 1)) . 
+open(22) :- box(22),not cannot_open(22),  apply(rb(117, 1, 1)).
+:- sat(rb(117, 1, 1)), -apply(rb(117, 1, 1)).
+sat(rb(117, 1, 1)) :- h(rb(117, 1, 1)), b(rb(117, 1, 1)).
+sat(rb(117, 1, 1)) :- not b(rb(117, 1, 1)), hold(rb(117, 1, 1)).
+b(rb(117, 1, 1)) :- box(22),not cannot_open(22).
+h(rb(117, 1, 1)) :- open(22), hold(rb(117, 1, 1)).
+hold(rb(117, 1, 1)).
+:~ sat(rb(117, 1, 1)). [1@1, 117]
+
+apply(rb(118, 1, 1)) | -apply(rb(118, 1, 1)) . 
+open(23) :- box(23),not cannot_open(23),  apply(rb(118, 1, 1)).
+:- sat(rb(118, 1, 1)), -apply(rb(118, 1, 1)).
+sat(rb(118, 1, 1)) :- h(rb(118, 1, 1)), b(rb(118, 1, 1)).
+sat(rb(118, 1, 1)) :- not b(rb(118, 1, 1)), hold(rb(118, 1, 1)).
+b(rb(118, 1, 1)) :- box(23),not cannot_open(23).
+h(rb(118, 1, 1)) :- open(23), hold(rb(118, 1, 1)).
+hold(rb(118, 1, 1)).
+:~ sat(rb(118, 1, 1)). [1@1, 118]
+
+apply(rb(119, 1, 1)) | -apply(rb(119, 1, 1)) . 
+open(24) :- box(24),not cannot_open(24),  apply(rb(119, 1, 1)).
+:- sat(rb(119, 1, 1)), -apply(rb(119, 1, 1)).
+sat(rb(119, 1, 1)) :- h(rb(119, 1, 1)), b(rb(119, 1, 1)).
+sat(rb(119, 1, 1)) :- not b(rb(119, 1, 1)), hold(rb(119, 1, 1)).
+b(rb(119, 1, 1)) :- box(24),not cannot_open(24).
+h(rb(119, 1, 1)) :- open(24), hold(rb(119, 1, 1)).
+hold(rb(119, 1, 1)).
+:~ sat(rb(119, 1, 1)). [1@1, 119]
+
+can_switch(1):-box(1),not select(1),not open(1).
+can_switch(2):-box(2),not select(2),not open(2).
+can_switch(3):-box(3),not select(3),not open(3).
+can_switch(4):-box(4),not select(4),not open(4).
+can_switch(5):-box(5),not select(5),not open(5).
+can_switch(6):-box(6),not select(6),not open(6).
+can_switch(7):-box(7),not select(7),not open(7).
+can_switch(8):-box(8),not select(8),not open(8).
+can_switch(9):-box(9),not select(9),not open(9).
+can_switch(10):-box(10),not select(10),not open(10).
+can_switch(11):-box(11),not select(11),not open(11).
+can_switch(12):-box(12),not select(12),not open(12).
+can_switch(13):-box(13),not select(13),not open(13).
+can_switch(14):-box(14),not select(14),not open(14).
+can_switch(15):-box(15),not select(15),not open(15).
+can_switch(16):-box(16),not select(16),not open(16).
+can_switch(17):-box(17),not select(17),not open(17).
+can_switch(18):-box(18),not select(18),not open(18).
+can_switch(19):-box(19),not select(19),not open(19).
+can_switch(20):-box(20),not select(20),not open(20).
+can_switch(21):-box(21),not select(21),not open(21).
+can_switch(22):-box(22),not select(22),not open(22).
+can_switch(23):-box(23),not select(23),not open(23).
+can_switch(24):-box(24),not select(24),not open(24).
+apply(rb(144, 1, 1)) | -apply(rb(144, 1, 1)) . 
+switch(1) :- can_switch(1),  apply(rb(144, 1, 1)).
+:- sat(rb(144, 1, 1)), -apply(rb(144, 1, 1)).
+sat(rb(144, 1, 1)) :- h(rb(144, 1, 1)), b(rb(144, 1, 1)).
+sat(rb(144, 1, 1)) :- not b(rb(144, 1, 1)), hold(rb(144, 1, 1)).
+b(rb(144, 1, 1)) :- can_switch(1).
+h(rb(144, 1, 1)) :- switch(1), hold(rb(144, 1, 1)).
+hold(rb(144, 1, 1)).
+:~ sat(rb(144, 1, 1)). [1@1, 144]
+
+apply(rb(145, 1, 1)) | -apply(rb(145, 1, 1)) . 
+switch(2) :- can_switch(2),  apply(rb(145, 1, 1)).
+:- sat(rb(145, 1, 1)), -apply(rb(145, 1, 1)).
+sat(rb(145, 1, 1)) :- h(rb(145, 1, 1)), b(rb(145, 1, 1)).
+sat(rb(145, 1, 1)) :- not b(rb(145, 1, 1)), hold(rb(145, 1, 1)).
+b(rb(145, 1, 1)) :- can_switch(2).
+h(rb(145, 1, 1)) :- switch(2), hold(rb(145, 1, 1)).
+hold(rb(145, 1, 1)).
+:~ sat(rb(145, 1, 1)). [1@1, 145]
+
+apply(rb(146, 1, 1)) | -apply(rb(146, 1, 1)) . 
+switch(3) :- can_switch(3),  apply(rb(146, 1, 1)).
+:- sat(rb(146, 1, 1)), -apply(rb(146, 1, 1)).
+sat(rb(146, 1, 1)) :- h(rb(146, 1, 1)), b(rb(146, 1, 1)).
+sat(rb(146, 1, 1)) :- not b(rb(146, 1, 1)), hold(rb(146, 1, 1)).
+b(rb(146, 1, 1)) :- can_switch(3).
+h(rb(146, 1, 1)) :- switch(3), hold(rb(146, 1, 1)).
+hold(rb(146, 1, 1)).
+:~ sat(rb(146, 1, 1)). [1@1, 146]
+
+apply(rb(147, 1, 1)) | -apply(rb(147, 1, 1)) . 
+switch(4) :- can_switch(4),  apply(rb(147, 1, 1)).
+:- sat(rb(147, 1, 1)), -apply(rb(147, 1, 1)).
+sat(rb(147, 1, 1)) :- h(rb(147, 1, 1)), b(rb(147, 1, 1)).
+sat(rb(147, 1, 1)) :- not b(rb(147, 1, 1)), hold(rb(147, 1, 1)).
+b(rb(147, 1, 1)) :- can_switch(4).
+h(rb(147, 1, 1)) :- switch(4), hold(rb(147, 1, 1)).
+hold(rb(147, 1, 1)).
+:~ sat(rb(147, 1, 1)). [1@1, 147]
+
+apply(rb(148, 1, 1)) | -apply(rb(148, 1, 1)) . 
+switch(5) :- can_switch(5),  apply(rb(148, 1, 1)).
+:- sat(rb(148, 1, 1)), -apply(rb(148, 1, 1)).
+sat(rb(148, 1, 1)) :- h(rb(148, 1, 1)), b(rb(148, 1, 1)).
+sat(rb(148, 1, 1)) :- not b(rb(148, 1, 1)), hold(rb(148, 1, 1)).
+b(rb(148, 1, 1)) :- can_switch(5).
+h(rb(148, 1, 1)) :- switch(5), hold(rb(148, 1, 1)).
+hold(rb(148, 1, 1)).
+:~ sat(rb(148, 1, 1)). [1@1, 148]
+
+apply(rb(149, 1, 1)) | -apply(rb(149, 1, 1)) . 
+switch(6) :- can_switch(6),  apply(rb(149, 1, 1)).
+:- sat(rb(149, 1, 1)), -apply(rb(149, 1, 1)).
+sat(rb(149, 1, 1)) :- h(rb(149, 1, 1)), b(rb(149, 1, 1)).
+sat(rb(149, 1, 1)) :- not b(rb(149, 1, 1)), hold(rb(149, 1, 1)).
+b(rb(149, 1, 1)) :- can_switch(6).
+h(rb(149, 1, 1)) :- switch(6), hold(rb(149, 1, 1)).
+hold(rb(149, 1, 1)).
+:~ sat(rb(149, 1, 1)). [1@1, 149]
+
+apply(rb(150, 1, 1)) | -apply(rb(150, 1, 1)) . 
+switch(7) :- can_switch(7),  apply(rb(150, 1, 1)).
+:- sat(rb(150, 1, 1)), -apply(rb(150, 1, 1)).
+sat(rb(150, 1, 1)) :- h(rb(150, 1, 1)), b(rb(150, 1, 1)).
+sat(rb(150, 1, 1)) :- not b(rb(150, 1, 1)), hold(rb(150, 1, 1)).
+b(rb(150, 1, 1)) :- can_switch(7).
+h(rb(150, 1, 1)) :- switch(7), hold(rb(150, 1, 1)).
+hold(rb(150, 1, 1)).
+:~ sat(rb(150, 1, 1)). [1@1, 150]
+
+apply(rb(151, 1, 1)) | -apply(rb(151, 1, 1)) . 
+switch(8) :- can_switch(8),  apply(rb(151, 1, 1)).
+:- sat(rb(151, 1, 1)), -apply(rb(151, 1, 1)).
+sat(rb(151, 1, 1)) :- h(rb(151, 1, 1)), b(rb(151, 1, 1)).
+sat(rb(151, 1, 1)) :- not b(rb(151, 1, 1)), hold(rb(151, 1, 1)).
+b(rb(151, 1, 1)) :- can_switch(8).
+h(rb(151, 1, 1)) :- switch(8), hold(rb(151, 1, 1)).
+hold(rb(151, 1, 1)).
+:~ sat(rb(151, 1, 1)). [1@1, 151]
+
+apply(rb(152, 1, 1)) | -apply(rb(152, 1, 1)) . 
+switch(9) :- can_switch(9),  apply(rb(152, 1, 1)).
+:- sat(rb(152, 1, 1)), -apply(rb(152, 1, 1)).
+sat(rb(152, 1, 1)) :- h(rb(152, 1, 1)), b(rb(152, 1, 1)).
+sat(rb(152, 1, 1)) :- not b(rb(152, 1, 1)), hold(rb(152, 1, 1)).
+b(rb(152, 1, 1)) :- can_switch(9).
+h(rb(152, 1, 1)) :- switch(9), hold(rb(152, 1, 1)).
+hold(rb(152, 1, 1)).
+:~ sat(rb(152, 1, 1)). [1@1, 152]
+
+apply(rb(153, 1, 1)) | -apply(rb(153, 1, 1)) . 
+switch(10) :- can_switch(10),  apply(rb(153, 1, 1)).
+:- sat(rb(153, 1, 1)), -apply(rb(153, 1, 1)).
+sat(rb(153, 1, 1)) :- h(rb(153, 1, 1)), b(rb(153, 1, 1)).
+sat(rb(153, 1, 1)) :- not b(rb(153, 1, 1)), hold(rb(153, 1, 1)).
+b(rb(153, 1, 1)) :- can_switch(10).
+h(rb(153, 1, 1)) :- switch(10), hold(rb(153, 1, 1)).
+hold(rb(153, 1, 1)).
+:~ sat(rb(153, 1, 1)). [1@1, 153]
+
+apply(rb(154, 1, 1)) | -apply(rb(154, 1, 1)) . 
+switch(11) :- can_switch(11),  apply(rb(154, 1, 1)).
+:- sat(rb(154, 1, 1)), -apply(rb(154, 1, 1)).
+sat(rb(154, 1, 1)) :- h(rb(154, 1, 1)), b(rb(154, 1, 1)).
+sat(rb(154, 1, 1)) :- not b(rb(154, 1, 1)), hold(rb(154, 1, 1)).
+b(rb(154, 1, 1)) :- can_switch(11).
+h(rb(154, 1, 1)) :- switch(11), hold(rb(154, 1, 1)).
+hold(rb(154, 1, 1)).
+:~ sat(rb(154, 1, 1)). [1@1, 154]
+
+apply(rb(155, 1, 1)) | -apply(rb(155, 1, 1)) . 
+switch(12) :- can_switch(12),  apply(rb(155, 1, 1)).
+:- sat(rb(155, 1, 1)), -apply(rb(155, 1, 1)).
+sat(rb(155, 1, 1)) :- h(rb(155, 1, 1)), b(rb(155, 1, 1)).
+sat(rb(155, 1, 1)) :- not b(rb(155, 1, 1)), hold(rb(155, 1, 1)).
+b(rb(155, 1, 1)) :- can_switch(12).
+h(rb(155, 1, 1)) :- switch(12), hold(rb(155, 1, 1)).
+hold(rb(155, 1, 1)).
+:~ sat(rb(155, 1, 1)). [1@1, 155]
+
+apply(rb(156, 1, 1)) | -apply(rb(156, 1, 1)) . 
+switch(13) :- can_switch(13),  apply(rb(156, 1, 1)).
+:- sat(rb(156, 1, 1)), -apply(rb(156, 1, 1)).
+sat(rb(156, 1, 1)) :- h(rb(156, 1, 1)), b(rb(156, 1, 1)).
+sat(rb(156, 1, 1)) :- not b(rb(156, 1, 1)), hold(rb(156, 1, 1)).
+b(rb(156, 1, 1)) :- can_switch(13).
+h(rb(156, 1, 1)) :- switch(13), hold(rb(156, 1, 1)).
+hold(rb(156, 1, 1)).
+:~ sat(rb(156, 1, 1)). [1@1, 156]
+
+apply(rb(157, 1, 1)) | -apply(rb(157, 1, 1)) . 
+switch(14) :- can_switch(14),  apply(rb(157, 1, 1)).
+:- sat(rb(157, 1, 1)), -apply(rb(157, 1, 1)).
+sat(rb(157, 1, 1)) :- h(rb(157, 1, 1)), b(rb(157, 1, 1)).
+sat(rb(157, 1, 1)) :- not b(rb(157, 1, 1)), hold(rb(157, 1, 1)).
+b(rb(157, 1, 1)) :- can_switch(14).
+h(rb(157, 1, 1)) :- switch(14), hold(rb(157, 1, 1)).
+hold(rb(157, 1, 1)).
+:~ sat(rb(157, 1, 1)). [1@1, 157]
+
+apply(rb(158, 1, 1)) | -apply(rb(158, 1, 1)) . 
+switch(15) :- can_switch(15),  apply(rb(158, 1, 1)).
+:- sat(rb(158, 1, 1)), -apply(rb(158, 1, 1)).
+sat(rb(158, 1, 1)) :- h(rb(158, 1, 1)), b(rb(158, 1, 1)).
+sat(rb(158, 1, 1)) :- not b(rb(158, 1, 1)), hold(rb(158, 1, 1)).
+b(rb(158, 1, 1)) :- can_switch(15).
+h(rb(158, 1, 1)) :- switch(15), hold(rb(158, 1, 1)).
+hold(rb(158, 1, 1)).
+:~ sat(rb(158, 1, 1)). [1@1, 158]
+
+apply(rb(159, 1, 1)) | -apply(rb(159, 1, 1)) . 
+switch(16) :- can_switch(16),  apply(rb(159, 1, 1)).
+:- sat(rb(159, 1, 1)), -apply(rb(159, 1, 1)).
+sat(rb(159, 1, 1)) :- h(rb(159, 1, 1)), b(rb(159, 1, 1)).
+sat(rb(159, 1, 1)) :- not b(rb(159, 1, 1)), hold(rb(159, 1, 1)).
+b(rb(159, 1, 1)) :- can_switch(16).
+h(rb(159, 1, 1)) :- switch(16), hold(rb(159, 1, 1)).
+hold(rb(159, 1, 1)).
+:~ sat(rb(159, 1, 1)). [1@1, 159]
+
+apply(rb(160, 1, 1)) | -apply(rb(160, 1, 1)) . 
+switch(17) :- can_switch(17),  apply(rb(160, 1, 1)).
+:- sat(rb(160, 1, 1)), -apply(rb(160, 1, 1)).
+sat(rb(160, 1, 1)) :- h(rb(160, 1, 1)), b(rb(160, 1, 1)).
+sat(rb(160, 1, 1)) :- not b(rb(160, 1, 1)), hold(rb(160, 1, 1)).
+b(rb(160, 1, 1)) :- can_switch(17).
+h(rb(160, 1, 1)) :- switch(17), hold(rb(160, 1, 1)).
+hold(rb(160, 1, 1)).
+:~ sat(rb(160, 1, 1)). [1@1, 160]
+
+apply(rb(161, 1, 1)) | -apply(rb(161, 1, 1)) . 
+switch(18) :- can_switch(18),  apply(rb(161, 1, 1)).
+:- sat(rb(161, 1, 1)), -apply(rb(161, 1, 1)).
+sat(rb(161, 1, 1)) :- h(rb(161, 1, 1)), b(rb(161, 1, 1)).
+sat(rb(161, 1, 1)) :- not b(rb(161, 1, 1)), hold(rb(161, 1, 1)).
+b(rb(161, 1, 1)) :- can_switch(18).
+h(rb(161, 1, 1)) :- switch(18), hold(rb(161, 1, 1)).
+hold(rb(161, 1, 1)).
+:~ sat(rb(161, 1, 1)). [1@1, 161]
+
+apply(rb(162, 1, 1)) | -apply(rb(162, 1, 1)) . 
+switch(19) :- can_switch(19),  apply(rb(162, 1, 1)).
+:- sat(rb(162, 1, 1)), -apply(rb(162, 1, 1)).
+sat(rb(162, 1, 1)) :- h(rb(162, 1, 1)), b(rb(162, 1, 1)).
+sat(rb(162, 1, 1)) :- not b(rb(162, 1, 1)), hold(rb(162, 1, 1)).
+b(rb(162, 1, 1)) :- can_switch(19).
+h(rb(162, 1, 1)) :- switch(19), hold(rb(162, 1, 1)).
+hold(rb(162, 1, 1)).
+:~ sat(rb(162, 1, 1)). [1@1, 162]
+
+apply(rb(163, 1, 1)) | -apply(rb(163, 1, 1)) . 
+switch(20) :- can_switch(20),  apply(rb(163, 1, 1)).
+:- sat(rb(163, 1, 1)), -apply(rb(163, 1, 1)).
+sat(rb(163, 1, 1)) :- h(rb(163, 1, 1)), b(rb(163, 1, 1)).
+sat(rb(163, 1, 1)) :- not b(rb(163, 1, 1)), hold(rb(163, 1, 1)).
+b(rb(163, 1, 1)) :- can_switch(20).
+h(rb(163, 1, 1)) :- switch(20), hold(rb(163, 1, 1)).
+hold(rb(163, 1, 1)).
+:~ sat(rb(163, 1, 1)). [1@1, 163]
+
+apply(rb(164, 1, 1)) | -apply(rb(164, 1, 1)) . 
+switch(21) :- can_switch(21),  apply(rb(164, 1, 1)).
+:- sat(rb(164, 1, 1)), -apply(rb(164, 1, 1)).
+sat(rb(164, 1, 1)) :- h(rb(164, 1, 1)), b(rb(164, 1, 1)).
+sat(rb(164, 1, 1)) :- not b(rb(164, 1, 1)), hold(rb(164, 1, 1)).
+b(rb(164, 1, 1)) :- can_switch(21).
+h(rb(164, 1, 1)) :- switch(21), hold(rb(164, 1, 1)).
+hold(rb(164, 1, 1)).
+:~ sat(rb(164, 1, 1)). [1@1, 164]
+
+apply(rb(165, 1, 1)) | -apply(rb(165, 1, 1)) . 
+switch(22) :- can_switch(22),  apply(rb(165, 1, 1)).
+:- sat(rb(165, 1, 1)), -apply(rb(165, 1, 1)).
+sat(rb(165, 1, 1)) :- h(rb(165, 1, 1)), b(rb(165, 1, 1)).
+sat(rb(165, 1, 1)) :- not b(rb(165, 1, 1)), hold(rb(165, 1, 1)).
+b(rb(165, 1, 1)) :- can_switch(22).
+h(rb(165, 1, 1)) :- switch(22), hold(rb(165, 1, 1)).
+hold(rb(165, 1, 1)).
+:~ sat(rb(165, 1, 1)). [1@1, 165]
+
+apply(rb(166, 1, 1)) | -apply(rb(166, 1, 1)) . 
+switch(23) :- can_switch(23),  apply(rb(166, 1, 1)).
+:- sat(rb(166, 1, 1)), -apply(rb(166, 1, 1)).
+sat(rb(166, 1, 1)) :- h(rb(166, 1, 1)), b(rb(166, 1, 1)).
+sat(rb(166, 1, 1)) :- not b(rb(166, 1, 1)), hold(rb(166, 1, 1)).
+b(rb(166, 1, 1)) :- can_switch(23).
+h(rb(166, 1, 1)) :- switch(23), hold(rb(166, 1, 1)).
+hold(rb(166, 1, 1)).
+:~ sat(rb(166, 1, 1)). [1@1, 166]
+
+apply(rb(167, 1, 1)) | -apply(rb(167, 1, 1)) . 
+switch(24) :- can_switch(24),  apply(rb(167, 1, 1)).
+:- sat(rb(167, 1, 1)), -apply(rb(167, 1, 1)).
+sat(rb(167, 1, 1)) :- h(rb(167, 1, 1)), b(rb(167, 1, 1)).
+sat(rb(167, 1, 1)) :- not b(rb(167, 1, 1)), hold(rb(167, 1, 1)).
+b(rb(167, 1, 1)) :- can_switch(24).
+h(rb(167, 1, 1)) :- switch(24), hold(rb(167, 1, 1)).
+hold(rb(167, 1, 1)).
+:~ sat(rb(167, 1, 1)). [1@1, 167]
+
+win_stay:-select(1),has_key(1).
+win_stay:-select(2),has_key(2).
+win_stay:-select(3),has_key(3).
+win_stay:-select(4),has_key(4).
+win_stay:-select(5),has_key(5).
+win_stay:-select(6),has_key(6).
+win_stay:-select(7),has_key(7).
+win_stay:-select(8),has_key(8).
+win_stay:-select(9),has_key(9).
+win_stay:-select(10),has_key(10).
+win_stay:-select(11),has_key(11).
+win_stay:-select(12),has_key(12).
+win_stay:-select(13),has_key(13).
+win_stay:-select(14),has_key(14).
+win_stay:-select(15),has_key(15).
+win_stay:-select(16),has_key(16).
+win_stay:-select(17),has_key(17).
+win_stay:-select(18),has_key(18).
+win_stay:-select(19),has_key(19).
+win_stay:-select(20),has_key(20).
+win_stay:-select(21),has_key(21).
+win_stay:-select(22),has_key(22).
+win_stay:-select(23),has_key(23).
+win_stay:-select(24),has_key(24).
+win_switch:-switch(1),has_key(1).
+win_switch:-switch(2),has_key(2).
+win_switch:-switch(3),has_key(3).
+win_switch:-switch(4),has_key(4).
+win_switch:-switch(5),has_key(5).
+win_switch:-switch(6),has_key(6).
+win_switch:-switch(7),has_key(7).
+win_switch:-switch(8),has_key(8).
+win_switch:-switch(9),has_key(9).
+win_switch:-switch(10),has_key(10).
+win_switch:-switch(11),has_key(11).
+win_switch:-switch(12),has_key(12).
+win_switch:-switch(13),has_key(13).
+win_switch:-switch(14),has_key(14).
+win_switch:-switch(15),has_key(15).
+win_switch:-switch(16),has_key(16).
+win_switch:-switch(17),has_key(17).
+win_switch:-switch(18),has_key(18).
+win_switch:-switch(19),has_key(19).
+win_switch:-switch(20),has_key(20).
+win_switch:-switch(21),has_key(21).
+win_switch:-switch(22),has_key(22).
+win_switch:-switch(23),has_key(23).
+win_switch:-switch(24),has_key(24).
+-switch(1):-switch(1),can_switch(1),1!=1.
+-switch(2):-switch(1),can_switch(2),2!=1.
+-switch(3):-switch(1),can_switch(3),3!=1.
+-switch(4):-switch(1),can_switch(4),4!=1.
+-switch(5):-switch(1),can_switch(5),5!=1.
+-switch(6):-switch(1),can_switch(6),6!=1.
+-switch(7):-switch(1),can_switch(7),7!=1.
+-switch(8):-switch(1),can_switch(8),8!=1.
+-switch(9):-switch(1),can_switch(9),9!=1.
+-switch(10):-switch(1),can_switch(10),10!=1.
+-switch(11):-switch(1),can_switch(11),11!=1.
+-switch(12):-switch(1),can_switch(12),12!=1.
+-switch(13):-switch(1),can_switch(13),13!=1.
+-switch(14):-switch(1),can_switch(14),14!=1.
+-switch(15):-switch(1),can_switch(15),15!=1.
+-switch(16):-switch(1),can_switch(16),16!=1.
+-switch(17):-switch(1),can_switch(17),17!=1.
+-switch(18):-switch(1),can_switch(18),18!=1.
+-switch(19):-switch(1),can_switch(19),19!=1.
+-switch(20):-switch(1),can_switch(20),20!=1.
+-switch(21):-switch(1),can_switch(21),21!=1.
+-switch(22):-switch(1),can_switch(22),22!=1.
+-switch(23):-switch(1),can_switch(23),23!=1.
+-switch(24):-switch(1),can_switch(24),24!=1.
+-switch(1):-switch(2),can_switch(1),1!=2.
+-switch(2):-switch(2),can_switch(2),2!=2.
+-switch(3):-switch(2),can_switch(3),3!=2.
+-switch(4):-switch(2),can_switch(4),4!=2.
+-switch(5):-switch(2),can_switch(5),5!=2.
+-switch(6):-switch(2),can_switch(6),6!=2.
+-switch(7):-switch(2),can_switch(7),7!=2.
+-switch(8):-switch(2),can_switch(8),8!=2.
+-switch(9):-switch(2),can_switch(9),9!=2.
+-switch(10):-switch(2),can_switch(10),10!=2.
+-switch(11):-switch(2),can_switch(11),11!=2.
+-switch(12):-switch(2),can_switch(12),12!=2.
+-switch(13):-switch(2),can_switch(13),13!=2.
+-switch(14):-switch(2),can_switch(14),14!=2.
+-switch(15):-switch(2),can_switch(15),15!=2.
+-switch(16):-switch(2),can_switch(16),16!=2.
+-switch(17):-switch(2),can_switch(17),17!=2.
+-switch(18):-switch(2),can_switch(18),18!=2.
+-switch(19):-switch(2),can_switch(19),19!=2.
+-switch(20):-switch(2),can_switch(20),20!=2.
+-switch(21):-switch(2),can_switch(21),21!=2.
+-switch(22):-switch(2),can_switch(22),22!=2.
+-switch(23):-switch(2),can_switch(23),23!=2.
+-switch(24):-switch(2),can_switch(24),24!=2.
+-switch(1):-switch(3),can_switch(1),1!=3.
+-switch(2):-switch(3),can_switch(2),2!=3.
+-switch(3):-switch(3),can_switch(3),3!=3.
+-switch(4):-switch(3),can_switch(4),4!=3.
+-switch(5):-switch(3),can_switch(5),5!=3.
+-switch(6):-switch(3),can_switch(6),6!=3.
+-switch(7):-switch(3),can_switch(7),7!=3.
+-switch(8):-switch(3),can_switch(8),8!=3.
+-switch(9):-switch(3),can_switch(9),9!=3.
+-switch(10):-switch(3),can_switch(10),10!=3.
+-switch(11):-switch(3),can_switch(11),11!=3.
+-switch(12):-switch(3),can_switch(12),12!=3.
+-switch(13):-switch(3),can_switch(13),13!=3.
+-switch(14):-switch(3),can_switch(14),14!=3.
+-switch(15):-switch(3),can_switch(15),15!=3.
+-switch(16):-switch(3),can_switch(16),16!=3.
+-switch(17):-switch(3),can_switch(17),17!=3.
+-switch(18):-switch(3),can_switch(18),18!=3.
+-switch(19):-switch(3),can_switch(19),19!=3.
+-switch(20):-switch(3),can_switch(20),20!=3.
+-switch(21):-switch(3),can_switch(21),21!=3.
+-switch(22):-switch(3),can_switch(22),22!=3.
+-switch(23):-switch(3),can_switch(23),23!=3.
+-switch(24):-switch(3),can_switch(24),24!=3.
+-switch(1):-switch(4),can_switch(1),1!=4.
+-switch(2):-switch(4),can_switch(2),2!=4.
+-switch(3):-switch(4),can_switch(3),3!=4.
+-switch(4):-switch(4),can_switch(4),4!=4.
+-switch(5):-switch(4),can_switch(5),5!=4.
+-switch(6):-switch(4),can_switch(6),6!=4.
+-switch(7):-switch(4),can_switch(7),7!=4.
+-switch(8):-switch(4),can_switch(8),8!=4.
+-switch(9):-switch(4),can_switch(9),9!=4.
+-switch(10):-switch(4),can_switch(10),10!=4.
+-switch(11):-switch(4),can_switch(11),11!=4.
+-switch(12):-switch(4),can_switch(12),12!=4.
+-switch(13):-switch(4),can_switch(13),13!=4.
+-switch(14):-switch(4),can_switch(14),14!=4.
+-switch(15):-switch(4),can_switch(15),15!=4.
+-switch(16):-switch(4),can_switch(16),16!=4.
+-switch(17):-switch(4),can_switch(17),17!=4.
+-switch(18):-switch(4),can_switch(18),18!=4.
+-switch(19):-switch(4),can_switch(19),19!=4.
+-switch(20):-switch(4),can_switch(20),20!=4.
+-switch(21):-switch(4),can_switch(21),21!=4.
+-switch(22):-switch(4),can_switch(22),22!=4.
+-switch(23):-switch(4),can_switch(23),23!=4.
+-switch(24):-switch(4),can_switch(24),24!=4.
+-switch(1):-switch(5),can_switch(1),1!=5.
+-switch(2):-switch(5),can_switch(2),2!=5.
+-switch(3):-switch(5),can_switch(3),3!=5.
+-switch(4):-switch(5),can_switch(4),4!=5.
+-switch(5):-switch(5),can_switch(5),5!=5.
+-switch(6):-switch(5),can_switch(6),6!=5.
+-switch(7):-switch(5),can_switch(7),7!=5.
+-switch(8):-switch(5),can_switch(8),8!=5.
+-switch(9):-switch(5),can_switch(9),9!=5.
+-switch(10):-switch(5),can_switch(10),10!=5.
+-switch(11):-switch(5),can_switch(11),11!=5.
+-switch(12):-switch(5),can_switch(12),12!=5.
+-switch(13):-switch(5),can_switch(13),13!=5.
+-switch(14):-switch(5),can_switch(14),14!=5.
+-switch(15):-switch(5),can_switch(15),15!=5.
+-switch(16):-switch(5),can_switch(16),16!=5.
+-switch(17):-switch(5),can_switch(17),17!=5.
+-switch(18):-switch(5),can_switch(18),18!=5.
+-switch(19):-switch(5),can_switch(19),19!=5.
+-switch(20):-switch(5),can_switch(20),20!=5.
+-switch(21):-switch(5),can_switch(21),21!=5.
+-switch(22):-switch(5),can_switch(22),22!=5.
+-switch(23):-switch(5),can_switch(23),23!=5.
+-switch(24):-switch(5),can_switch(24),24!=5.
+-switch(1):-switch(6),can_switch(1),1!=6.
+-switch(2):-switch(6),can_switch(2),2!=6.
+-switch(3):-switch(6),can_switch(3),3!=6.
+-switch(4):-switch(6),can_switch(4),4!=6.
+-switch(5):-switch(6),can_switch(5),5!=6.
+-switch(6):-switch(6),can_switch(6),6!=6.
+-switch(7):-switch(6),can_switch(7),7!=6.
+-switch(8):-switch(6),can_switch(8),8!=6.
+-switch(9):-switch(6),can_switch(9),9!=6.
+-switch(10):-switch(6),can_switch(10),10!=6.
+-switch(11):-switch(6),can_switch(11),11!=6.
+-switch(12):-switch(6),can_switch(12),12!=6.
+-switch(13):-switch(6),can_switch(13),13!=6.
+-switch(14):-switch(6),can_switch(14),14!=6.
+-switch(15):-switch(6),can_switch(15),15!=6.
+-switch(16):-switch(6),can_switch(16),16!=6.
+-switch(17):-switch(6),can_switch(17),17!=6.
+-switch(18):-switch(6),can_switch(18),18!=6.
+-switch(19):-switch(6),can_switch(19),19!=6.
+-switch(20):-switch(6),can_switch(20),20!=6.
+-switch(21):-switch(6),can_switch(21),21!=6.
+-switch(22):-switch(6),can_switch(22),22!=6.
+-switch(23):-switch(6),can_switch(23),23!=6.
+-switch(24):-switch(6),can_switch(24),24!=6.
+-switch(1):-switch(7),can_switch(1),1!=7.
+-switch(2):-switch(7),can_switch(2),2!=7.
+-switch(3):-switch(7),can_switch(3),3!=7.
+-switch(4):-switch(7),can_switch(4),4!=7.
+-switch(5):-switch(7),can_switch(5),5!=7.
+-switch(6):-switch(7),can_switch(6),6!=7.
+-switch(7):-switch(7),can_switch(7),7!=7.
+-switch(8):-switch(7),can_switch(8),8!=7.
+-switch(9):-switch(7),can_switch(9),9!=7.
+-switch(10):-switch(7),can_switch(10),10!=7.
+-switch(11):-switch(7),can_switch(11),11!=7.
+-switch(12):-switch(7),can_switch(12),12!=7.
+-switch(13):-switch(7),can_switch(13),13!=7.
+-switch(14):-switch(7),can_switch(14),14!=7.
+-switch(15):-switch(7),can_switch(15),15!=7.
+-switch(16):-switch(7),can_switch(16),16!=7.
+-switch(17):-switch(7),can_switch(17),17!=7.
+-switch(18):-switch(7),can_switch(18),18!=7.
+-switch(19):-switch(7),can_switch(19),19!=7.
+-switch(20):-switch(7),can_switch(20),20!=7.
+-switch(21):-switch(7),can_switch(21),21!=7.
+-switch(22):-switch(7),can_switch(22),22!=7.
+-switch(23):-switch(7),can_switch(23),23!=7.
+-switch(24):-switch(7),can_switch(24),24!=7.
+-switch(1):-switch(8),can_switch(1),1!=8.
+-switch(2):-switch(8),can_switch(2),2!=8.
+-switch(3):-switch(8),can_switch(3),3!=8.
+-switch(4):-switch(8),can_switch(4),4!=8.
+-switch(5):-switch(8),can_switch(5),5!=8.
+-switch(6):-switch(8),can_switch(6),6!=8.
+-switch(7):-switch(8),can_switch(7),7!=8.
+-switch(8):-switch(8),can_switch(8),8!=8.
+-switch(9):-switch(8),can_switch(9),9!=8.
+-switch(10):-switch(8),can_switch(10),10!=8.
+-switch(11):-switch(8),can_switch(11),11!=8.
+-switch(12):-switch(8),can_switch(12),12!=8.
+-switch(13):-switch(8),can_switch(13),13!=8.
+-switch(14):-switch(8),can_switch(14),14!=8.
+-switch(15):-switch(8),can_switch(15),15!=8.
+-switch(16):-switch(8),can_switch(16),16!=8.
+-switch(17):-switch(8),can_switch(17),17!=8.
+-switch(18):-switch(8),can_switch(18),18!=8.
+-switch(19):-switch(8),can_switch(19),19!=8.
+-switch(20):-switch(8),can_switch(20),20!=8.
+-switch(21):-switch(8),can_switch(21),21!=8.
+-switch(22):-switch(8),can_switch(22),22!=8.
+-switch(23):-switch(8),can_switch(23),23!=8.
+-switch(24):-switch(8),can_switch(24),24!=8.
+-switch(1):-switch(9),can_switch(1),1!=9.
+-switch(2):-switch(9),can_switch(2),2!=9.
+-switch(3):-switch(9),can_switch(3),3!=9.
+-switch(4):-switch(9),can_switch(4),4!=9.
+-switch(5):-switch(9),can_switch(5),5!=9.
+-switch(6):-switch(9),can_switch(6),6!=9.
+-switch(7):-switch(9),can_switch(7),7!=9.
+-switch(8):-switch(9),can_switch(8),8!=9.
+-switch(9):-switch(9),can_switch(9),9!=9.
+-switch(10):-switch(9),can_switch(10),10!=9.
+-switch(11):-switch(9),can_switch(11),11!=9.
+-switch(12):-switch(9),can_switch(12),12!=9.
+-switch(13):-switch(9),can_switch(13),13!=9.
+-switch(14):-switch(9),can_switch(14),14!=9.
+-switch(15):-switch(9),can_switch(15),15!=9.
+-switch(16):-switch(9),can_switch(16),16!=9.
+-switch(17):-switch(9),can_switch(17),17!=9.
+-switch(18):-switch(9),can_switch(18),18!=9.
+-switch(19):-switch(9),can_switch(19),19!=9.
+-switch(20):-switch(9),can_switch(20),20!=9.
+-switch(21):-switch(9),can_switch(21),21!=9.
+-switch(22):-switch(9),can_switch(22),22!=9.
+-switch(23):-switch(9),can_switch(23),23!=9.
+-switch(24):-switch(9),can_switch(24),24!=9.
+-switch(1):-switch(10),can_switch(1),1!=10.
+-switch(2):-switch(10),can_switch(2),2!=10.
+-switch(3):-switch(10),can_switch(3),3!=10.
+-switch(4):-switch(10),can_switch(4),4!=10.
+-switch(5):-switch(10),can_switch(5),5!=10.
+-switch(6):-switch(10),can_switch(6),6!=10.
+-switch(7):-switch(10),can_switch(7),7!=10.
+-switch(8):-switch(10),can_switch(8),8!=10.
+-switch(9):-switch(10),can_switch(9),9!=10.
+-switch(10):-switch(10),can_switch(10),10!=10.
+-switch(11):-switch(10),can_switch(11),11!=10.
+-switch(12):-switch(10),can_switch(12),12!=10.
+-switch(13):-switch(10),can_switch(13),13!=10.
+-switch(14):-switch(10),can_switch(14),14!=10.
+-switch(15):-switch(10),can_switch(15),15!=10.
+-switch(16):-switch(10),can_switch(16),16!=10.
+-switch(17):-switch(10),can_switch(17),17!=10.
+-switch(18):-switch(10),can_switch(18),18!=10.
+-switch(19):-switch(10),can_switch(19),19!=10.
+-switch(20):-switch(10),can_switch(20),20!=10.
+-switch(21):-switch(10),can_switch(21),21!=10.
+-switch(22):-switch(10),can_switch(22),22!=10.
+-switch(23):-switch(10),can_switch(23),23!=10.
+-switch(24):-switch(10),can_switch(24),24!=10.
+-switch(1):-switch(11),can_switch(1),1!=11.
+-switch(2):-switch(11),can_switch(2),2!=11.
+-switch(3):-switch(11),can_switch(3),3!=11.
+-switch(4):-switch(11),can_switch(4),4!=11.
+-switch(5):-switch(11),can_switch(5),5!=11.
+-switch(6):-switch(11),can_switch(6),6!=11.
+-switch(7):-switch(11),can_switch(7),7!=11.
+-switch(8):-switch(11),can_switch(8),8!=11.
+-switch(9):-switch(11),can_switch(9),9!=11.
+-switch(10):-switch(11),can_switch(10),10!=11.
+-switch(11):-switch(11),can_switch(11),11!=11.
+-switch(12):-switch(11),can_switch(12),12!=11.
+-switch(13):-switch(11),can_switch(13),13!=11.
+-switch(14):-switch(11),can_switch(14),14!=11.
+-switch(15):-switch(11),can_switch(15),15!=11.
+-switch(16):-switch(11),can_switch(16),16!=11.
+-switch(17):-switch(11),can_switch(17),17!=11.
+-switch(18):-switch(11),can_switch(18),18!=11.
+-switch(19):-switch(11),can_switch(19),19!=11.
+-switch(20):-switch(11),can_switch(20),20!=11.
+-switch(21):-switch(11),can_switch(21),21!=11.
+-switch(22):-switch(11),can_switch(22),22!=11.
+-switch(23):-switch(11),can_switch(23),23!=11.
+-switch(24):-switch(11),can_switch(24),24!=11.
+-switch(1):-switch(12),can_switch(1),1!=12.
+-switch(2):-switch(12),can_switch(2),2!=12.
+-switch(3):-switch(12),can_switch(3),3!=12.
+-switch(4):-switch(12),can_switch(4),4!=12.
+-switch(5):-switch(12),can_switch(5),5!=12.
+-switch(6):-switch(12),can_switch(6),6!=12.
+-switch(7):-switch(12),can_switch(7),7!=12.
+-switch(8):-switch(12),can_switch(8),8!=12.
+-switch(9):-switch(12),can_switch(9),9!=12.
+-switch(10):-switch(12),can_switch(10),10!=12.
+-switch(11):-switch(12),can_switch(11),11!=12.
+-switch(12):-switch(12),can_switch(12),12!=12.
+-switch(13):-switch(12),can_switch(13),13!=12.
+-switch(14):-switch(12),can_switch(14),14!=12.
+-switch(15):-switch(12),can_switch(15),15!=12.
+-switch(16):-switch(12),can_switch(16),16!=12.
+-switch(17):-switch(12),can_switch(17),17!=12.
+-switch(18):-switch(12),can_switch(18),18!=12.
+-switch(19):-switch(12),can_switch(19),19!=12.
+-switch(20):-switch(12),can_switch(20),20!=12.
+-switch(21):-switch(12),can_switch(21),21!=12.
+-switch(22):-switch(12),can_switch(22),22!=12.
+-switch(23):-switch(12),can_switch(23),23!=12.
+-switch(24):-switch(12),can_switch(24),24!=12.
+-switch(1):-switch(13),can_switch(1),1!=13.
+-switch(2):-switch(13),can_switch(2),2!=13.
+-switch(3):-switch(13),can_switch(3),3!=13.
+-switch(4):-switch(13),can_switch(4),4!=13.
+-switch(5):-switch(13),can_switch(5),5!=13.
+-switch(6):-switch(13),can_switch(6),6!=13.
+-switch(7):-switch(13),can_switch(7),7!=13.
+-switch(8):-switch(13),can_switch(8),8!=13.
+-switch(9):-switch(13),can_switch(9),9!=13.
+-switch(10):-switch(13),can_switch(10),10!=13.
+-switch(11):-switch(13),can_switch(11),11!=13.
+-switch(12):-switch(13),can_switch(12),12!=13.
+-switch(13):-switch(13),can_switch(13),13!=13.
+-switch(14):-switch(13),can_switch(14),14!=13.
+-switch(15):-switch(13),can_switch(15),15!=13.
+-switch(16):-switch(13),can_switch(16),16!=13.
+-switch(17):-switch(13),can_switch(17),17!=13.
+-switch(18):-switch(13),can_switch(18),18!=13.
+-switch(19):-switch(13),can_switch(19),19!=13.
+-switch(20):-switch(13),can_switch(20),20!=13.
+-switch(21):-switch(13),can_switch(21),21!=13.
+-switch(22):-switch(13),can_switch(22),22!=13.
+-switch(23):-switch(13),can_switch(23),23!=13.
+-switch(24):-switch(13),can_switch(24),24!=13.
+-switch(1):-switch(14),can_switch(1),1!=14.
+-switch(2):-switch(14),can_switch(2),2!=14.
+-switch(3):-switch(14),can_switch(3),3!=14.
+-switch(4):-switch(14),can_switch(4),4!=14.
+-switch(5):-switch(14),can_switch(5),5!=14.
+-switch(6):-switch(14),can_switch(6),6!=14.
+-switch(7):-switch(14),can_switch(7),7!=14.
+-switch(8):-switch(14),can_switch(8),8!=14.
+-switch(9):-switch(14),can_switch(9),9!=14.
+-switch(10):-switch(14),can_switch(10),10!=14.
+-switch(11):-switch(14),can_switch(11),11!=14.
+-switch(12):-switch(14),can_switch(12),12!=14.
+-switch(13):-switch(14),can_switch(13),13!=14.
+-switch(14):-switch(14),can_switch(14),14!=14.
+-switch(15):-switch(14),can_switch(15),15!=14.
+-switch(16):-switch(14),can_switch(16),16!=14.
+-switch(17):-switch(14),can_switch(17),17!=14.
+-switch(18):-switch(14),can_switch(18),18!=14.
+-switch(19):-switch(14),can_switch(19),19!=14.
+-switch(20):-switch(14),can_switch(20),20!=14.
+-switch(21):-switch(14),can_switch(21),21!=14.
+-switch(22):-switch(14),can_switch(22),22!=14.
+-switch(23):-switch(14),can_switch(23),23!=14.
+-switch(24):-switch(14),can_switch(24),24!=14.
+-switch(1):-switch(15),can_switch(1),1!=15.
+-switch(2):-switch(15),can_switch(2),2!=15.
+-switch(3):-switch(15),can_switch(3),3!=15.
+-switch(4):-switch(15),can_switch(4),4!=15.
+-switch(5):-switch(15),can_switch(5),5!=15.
+-switch(6):-switch(15),can_switch(6),6!=15.
+-switch(7):-switch(15),can_switch(7),7!=15.
+-switch(8):-switch(15),can_switch(8),8!=15.
+-switch(9):-switch(15),can_switch(9),9!=15.
+-switch(10):-switch(15),can_switch(10),10!=15.
+-switch(11):-switch(15),can_switch(11),11!=15.
+-switch(12):-switch(15),can_switch(12),12!=15.
+-switch(13):-switch(15),can_switch(13),13!=15.
+-switch(14):-switch(15),can_switch(14),14!=15.
+-switch(15):-switch(15),can_switch(15),15!=15.
+-switch(16):-switch(15),can_switch(16),16!=15.
+-switch(17):-switch(15),can_switch(17),17!=15.
+-switch(18):-switch(15),can_switch(18),18!=15.
+-switch(19):-switch(15),can_switch(19),19!=15.
+-switch(20):-switch(15),can_switch(20),20!=15.
+-switch(21):-switch(15),can_switch(21),21!=15.
+-switch(22):-switch(15),can_switch(22),22!=15.
+-switch(23):-switch(15),can_switch(23),23!=15.
+-switch(24):-switch(15),can_switch(24),24!=15.
+-switch(1):-switch(16),can_switch(1),1!=16.
+-switch(2):-switch(16),can_switch(2),2!=16.
+-switch(3):-switch(16),can_switch(3),3!=16.
+-switch(4):-switch(16),can_switch(4),4!=16.
+-switch(5):-switch(16),can_switch(5),5!=16.
+-switch(6):-switch(16),can_switch(6),6!=16.
+-switch(7):-switch(16),can_switch(7),7!=16.
+-switch(8):-switch(16),can_switch(8),8!=16.
+-switch(9):-switch(16),can_switch(9),9!=16.
+-switch(10):-switch(16),can_switch(10),10!=16.
+-switch(11):-switch(16),can_switch(11),11!=16.
+-switch(12):-switch(16),can_switch(12),12!=16.
+-switch(13):-switch(16),can_switch(13),13!=16.
+-switch(14):-switch(16),can_switch(14),14!=16.
+-switch(15):-switch(16),can_switch(15),15!=16.
+-switch(16):-switch(16),can_switch(16),16!=16.
+-switch(17):-switch(16),can_switch(17),17!=16.
+-switch(18):-switch(16),can_switch(18),18!=16.
+-switch(19):-switch(16),can_switch(19),19!=16.
+-switch(20):-switch(16),can_switch(20),20!=16.
+-switch(21):-switch(16),can_switch(21),21!=16.
+-switch(22):-switch(16),can_switch(22),22!=16.
+-switch(23):-switch(16),can_switch(23),23!=16.
+-switch(24):-switch(16),can_switch(24),24!=16.
+-switch(1):-switch(17),can_switch(1),1!=17.
+-switch(2):-switch(17),can_switch(2),2!=17.
+-switch(3):-switch(17),can_switch(3),3!=17.
+-switch(4):-switch(17),can_switch(4),4!=17.
+-switch(5):-switch(17),can_switch(5),5!=17.
+-switch(6):-switch(17),can_switch(6),6!=17.
+-switch(7):-switch(17),can_switch(7),7!=17.
+-switch(8):-switch(17),can_switch(8),8!=17.
+-switch(9):-switch(17),can_switch(9),9!=17.
+-switch(10):-switch(17),can_switch(10),10!=17.
+-switch(11):-switch(17),can_switch(11),11!=17.
+-switch(12):-switch(17),can_switch(12),12!=17.
+-switch(13):-switch(17),can_switch(13),13!=17.
+-switch(14):-switch(17),can_switch(14),14!=17.
+-switch(15):-switch(17),can_switch(15),15!=17.
+-switch(16):-switch(17),can_switch(16),16!=17.
+-switch(17):-switch(17),can_switch(17),17!=17.
+-switch(18):-switch(17),can_switch(18),18!=17.
+-switch(19):-switch(17),can_switch(19),19!=17.
+-switch(20):-switch(17),can_switch(20),20!=17.
+-switch(21):-switch(17),can_switch(21),21!=17.
+-switch(22):-switch(17),can_switch(22),22!=17.
+-switch(23):-switch(17),can_switch(23),23!=17.
+-switch(24):-switch(17),can_switch(24),24!=17.
+-switch(1):-switch(18),can_switch(1),1!=18.
+-switch(2):-switch(18),can_switch(2),2!=18.
+-switch(3):-switch(18),can_switch(3),3!=18.
+-switch(4):-switch(18),can_switch(4),4!=18.
+-switch(5):-switch(18),can_switch(5),5!=18.
+-switch(6):-switch(18),can_switch(6),6!=18.
+-switch(7):-switch(18),can_switch(7),7!=18.
+-switch(8):-switch(18),can_switch(8),8!=18.
+-switch(9):-switch(18),can_switch(9),9!=18.
+-switch(10):-switch(18),can_switch(10),10!=18.
+-switch(11):-switch(18),can_switch(11),11!=18.
+-switch(12):-switch(18),can_switch(12),12!=18.
+-switch(13):-switch(18),can_switch(13),13!=18.
+-switch(14):-switch(18),can_switch(14),14!=18.
+-switch(15):-switch(18),can_switch(15),15!=18.
+-switch(16):-switch(18),can_switch(16),16!=18.
+-switch(17):-switch(18),can_switch(17),17!=18.
+-switch(18):-switch(18),can_switch(18),18!=18.
+-switch(19):-switch(18),can_switch(19),19!=18.
+-switch(20):-switch(18),can_switch(20),20!=18.
+-switch(21):-switch(18),can_switch(21),21!=18.
+-switch(22):-switch(18),can_switch(22),22!=18.
+-switch(23):-switch(18),can_switch(23),23!=18.
+-switch(24):-switch(18),can_switch(24),24!=18.
+-switch(1):-switch(19),can_switch(1),1!=19.
+-switch(2):-switch(19),can_switch(2),2!=19.
+-switch(3):-switch(19),can_switch(3),3!=19.
+-switch(4):-switch(19),can_switch(4),4!=19.
+-switch(5):-switch(19),can_switch(5),5!=19.
+-switch(6):-switch(19),can_switch(6),6!=19.
+-switch(7):-switch(19),can_switch(7),7!=19.
+-switch(8):-switch(19),can_switch(8),8!=19.
+-switch(9):-switch(19),can_switch(9),9!=19.
+-switch(10):-switch(19),can_switch(10),10!=19.
+-switch(11):-switch(19),can_switch(11),11!=19.
+-switch(12):-switch(19),can_switch(12),12!=19.
+-switch(13):-switch(19),can_switch(13),13!=19.
+-switch(14):-switch(19),can_switch(14),14!=19.
+-switch(15):-switch(19),can_switch(15),15!=19.
+-switch(16):-switch(19),can_switch(16),16!=19.
+-switch(17):-switch(19),can_switch(17),17!=19.
+-switch(18):-switch(19),can_switch(18),18!=19.
+-switch(19):-switch(19),can_switch(19),19!=19.
+-switch(20):-switch(19),can_switch(20),20!=19.
+-switch(21):-switch(19),can_switch(21),21!=19.
+-switch(22):-switch(19),can_switch(22),22!=19.
+-switch(23):-switch(19),can_switch(23),23!=19.
+-switch(24):-switch(19),can_switch(24),24!=19.
+-switch(1):-switch(20),can_switch(1),1!=20.
+-switch(2):-switch(20),can_switch(2),2!=20.
+-switch(3):-switch(20),can_switch(3),3!=20.
+-switch(4):-switch(20),can_switch(4),4!=20.
+-switch(5):-switch(20),can_switch(5),5!=20.
+-switch(6):-switch(20),can_switch(6),6!=20.
+-switch(7):-switch(20),can_switch(7),7!=20.
+-switch(8):-switch(20),can_switch(8),8!=20.
+-switch(9):-switch(20),can_switch(9),9!=20.
+-switch(10):-switch(20),can_switch(10),10!=20.
+-switch(11):-switch(20),can_switch(11),11!=20.
+-switch(12):-switch(20),can_switch(12),12!=20.
+-switch(13):-switch(20),can_switch(13),13!=20.
+-switch(14):-switch(20),can_switch(14),14!=20.
+-switch(15):-switch(20),can_switch(15),15!=20.
+-switch(16):-switch(20),can_switch(16),16!=20.
+-switch(17):-switch(20),can_switch(17),17!=20.
+-switch(18):-switch(20),can_switch(18),18!=20.
+-switch(19):-switch(20),can_switch(19),19!=20.
+-switch(20):-switch(20),can_switch(20),20!=20.
+-switch(21):-switch(20),can_switch(21),21!=20.
+-switch(22):-switch(20),can_switch(22),22!=20.
+-switch(23):-switch(20),can_switch(23),23!=20.
+-switch(24):-switch(20),can_switch(24),24!=20.
+-switch(1):-switch(21),can_switch(1),1!=21.
+-switch(2):-switch(21),can_switch(2),2!=21.
+-switch(3):-switch(21),can_switch(3),3!=21.
+-switch(4):-switch(21),can_switch(4),4!=21.
+-switch(5):-switch(21),can_switch(5),5!=21.
+-switch(6):-switch(21),can_switch(6),6!=21.
+-switch(7):-switch(21),can_switch(7),7!=21.
+-switch(8):-switch(21),can_switch(8),8!=21.
+-switch(9):-switch(21),can_switch(9),9!=21.
+-switch(10):-switch(21),can_switch(10),10!=21.
+-switch(11):-switch(21),can_switch(11),11!=21.
+-switch(12):-switch(21),can_switch(12),12!=21.
+-switch(13):-switch(21),can_switch(13),13!=21.
+-switch(14):-switch(21),can_switch(14),14!=21.
+-switch(15):-switch(21),can_switch(15),15!=21.
+-switch(16):-switch(21),can_switch(16),16!=21.
+-switch(17):-switch(21),can_switch(17),17!=21.
+-switch(18):-switch(21),can_switch(18),18!=21.
+-switch(19):-switch(21),can_switch(19),19!=21.
+-switch(20):-switch(21),can_switch(20),20!=21.
+-switch(21):-switch(21),can_switch(21),21!=21.
+-switch(22):-switch(21),can_switch(22),22!=21.
+-switch(23):-switch(21),can_switch(23),23!=21.
+-switch(24):-switch(21),can_switch(24),24!=21.
+-switch(1):-switch(22),can_switch(1),1!=22.
+-switch(2):-switch(22),can_switch(2),2!=22.
+-switch(3):-switch(22),can_switch(3),3!=22.
+-switch(4):-switch(22),can_switch(4),4!=22.
+-switch(5):-switch(22),can_switch(5),5!=22.
+-switch(6):-switch(22),can_switch(6),6!=22.
+-switch(7):-switch(22),can_switch(7),7!=22.
+-switch(8):-switch(22),can_switch(8),8!=22.
+-switch(9):-switch(22),can_switch(9),9!=22.
+-switch(10):-switch(22),can_switch(10),10!=22.
+-switch(11):-switch(22),can_switch(11),11!=22.
+-switch(12):-switch(22),can_switch(12),12!=22.
+-switch(13):-switch(22),can_switch(13),13!=22.
+-switch(14):-switch(22),can_switch(14),14!=22.
+-switch(15):-switch(22),can_switch(15),15!=22.
+-switch(16):-switch(22),can_switch(16),16!=22.
+-switch(17):-switch(22),can_switch(17),17!=22.
+-switch(18):-switch(22),can_switch(18),18!=22.
+-switch(19):-switch(22),can_switch(19),19!=22.
+-switch(20):-switch(22),can_switch(20),20!=22.
+-switch(21):-switch(22),can_switch(21),21!=22.
+-switch(22):-switch(22),can_switch(22),22!=22.
+-switch(23):-switch(22),can_switch(23),23!=22.
+-switch(24):-switch(22),can_switch(24),24!=22.
+-switch(1):-switch(23),can_switch(1),1!=23.
+-switch(2):-switch(23),can_switch(2),2!=23.
+-switch(3):-switch(23),can_switch(3),3!=23.
+-switch(4):-switch(23),can_switch(4),4!=23.
+-switch(5):-switch(23),can_switch(5),5!=23.
+-switch(6):-switch(23),can_switch(6),6!=23.
+-switch(7):-switch(23),can_switch(7),7!=23.
+-switch(8):-switch(23),can_switch(8),8!=23.
+-switch(9):-switch(23),can_switch(9),9!=23.
+-switch(10):-switch(23),can_switch(10),10!=23.
+-switch(11):-switch(23),can_switch(11),11!=23.
+-switch(12):-switch(23),can_switch(12),12!=23.
+-switch(13):-switch(23),can_switch(13),13!=23.
+-switch(14):-switch(23),can_switch(14),14!=23.
+-switch(15):-switch(23),can_switch(15),15!=23.
+-switch(16):-switch(23),can_switch(16),16!=23.
+-switch(17):-switch(23),can_switch(17),17!=23.
+-switch(18):-switch(23),can_switch(18),18!=23.
+-switch(19):-switch(23),can_switch(19),19!=23.
+-switch(20):-switch(23),can_switch(20),20!=23.
+-switch(21):-switch(23),can_switch(21),21!=23.
+-switch(22):-switch(23),can_switch(22),22!=23.
+-switch(23):-switch(23),can_switch(23),23!=23.
+-switch(24):-switch(23),can_switch(24),24!=23.
+-switch(1):-switch(24),can_switch(1),1!=24.
+-switch(2):-switch(24),can_switch(2),2!=24.
+-switch(3):-switch(24),can_switch(3),3!=24.
+-switch(4):-switch(24),can_switch(4),4!=24.
+-switch(5):-switch(24),can_switch(5),5!=24.
+-switch(6):-switch(24),can_switch(6),6!=24.
+-switch(7):-switch(24),can_switch(7),7!=24.
+-switch(8):-switch(24),can_switch(8),8!=24.
+-switch(9):-switch(24),can_switch(9),9!=24.
+-switch(10):-switch(24),can_switch(10),10!=24.
+-switch(11):-switch(24),can_switch(11),11!=24.
+-switch(12):-switch(24),can_switch(12),12!=24.
+-switch(13):-switch(24),can_switch(13),13!=24.
+-switch(14):-switch(24),can_switch(14),14!=24.
+-switch(15):-switch(24),can_switch(15),15!=24.
+-switch(16):-switch(24),can_switch(16),16!=24.
+-switch(17):-switch(24),can_switch(17),17!=24.
+-switch(18):-switch(24),can_switch(18),18!=24.
+-switch(19):-switch(24),can_switch(19),19!=24.
+-switch(20):-switch(24),can_switch(20),20!=24.
+-switch(21):-switch(24),can_switch(21),21!=24.
+-switch(22):-switch(24),can_switch(22),22!=24.
+-switch(23):-switch(24),can_switch(23),23!=24.
+-switch(24):-switch(24),can_switch(24),24!=24.
+:-can_switch(1),not switch(1),not -switch(1).
+:-can_switch(2),not switch(2),not -switch(2).
+:-can_switch(3),not switch(3),not -switch(3).
+:-can_switch(4),not switch(4),not -switch(4).
+:-can_switch(5),not switch(5),not -switch(5).
+:-can_switch(6),not switch(6),not -switch(6).
+:-can_switch(7),not switch(7),not -switch(7).
+:-can_switch(8),not switch(8),not -switch(8).
+:-can_switch(9),not switch(9),not -switch(9).
+:-can_switch(10),not switch(10),not -switch(10).
+:-can_switch(11),not switch(11),not -switch(11).
+:-can_switch(12),not switch(12),not -switch(12).
+:-can_switch(13),not switch(13),not -switch(13).
+:-can_switch(14),not switch(14),not -switch(14).
+:-can_switch(15),not switch(15),not -switch(15).
+:-can_switch(16),not switch(16),not -switch(16).
+:-can_switch(17),not switch(17),not -switch(17).
+:-can_switch(18),not switch(18),not -switch(18).
+:-can_switch(19),not switch(19),not -switch(19).
+:-can_switch(20),not switch(20),not -switch(20).
+:-can_switch(21),not switch(21),not -switch(21).
+:-can_switch(22),not switch(22),not -switch(22).
+:-can_switch(23),not switch(23),not -switch(23).
+:-can_switch(24),not switch(24),not -switch(24).
+-select(1):-select(1),box(1),1!=1.
+-select(2):-select(1),box(2),2!=1.
+-select(3):-select(1),box(3),3!=1.
+-select(4):-select(1),box(4),4!=1.
+-select(5):-select(1),box(5),5!=1.
+-select(6):-select(1),box(6),6!=1.
+-select(7):-select(1),box(7),7!=1.
+-select(8):-select(1),box(8),8!=1.
+-select(9):-select(1),box(9),9!=1.
+-select(10):-select(1),box(10),10!=1.
+-select(11):-select(1),box(11),11!=1.
+-select(12):-select(1),box(12),12!=1.
+-select(13):-select(1),box(13),13!=1.
+-select(14):-select(1),box(14),14!=1.
+-select(15):-select(1),box(15),15!=1.
+-select(16):-select(1),box(16),16!=1.
+-select(17):-select(1),box(17),17!=1.
+-select(18):-select(1),box(18),18!=1.
+-select(19):-select(1),box(19),19!=1.
+-select(20):-select(1),box(20),20!=1.
+-select(21):-select(1),box(21),21!=1.
+-select(22):-select(1),box(22),22!=1.
+-select(23):-select(1),box(23),23!=1.
+-select(24):-select(1),box(24),24!=1.
+-select(1):-select(2),box(1),1!=2.
+-select(2):-select(2),box(2),2!=2.
+-select(3):-select(2),box(3),3!=2.
+-select(4):-select(2),box(4),4!=2.
+-select(5):-select(2),box(5),5!=2.
+-select(6):-select(2),box(6),6!=2.
+-select(7):-select(2),box(7),7!=2.
+-select(8):-select(2),box(8),8!=2.
+-select(9):-select(2),box(9),9!=2.
+-select(10):-select(2),box(10),10!=2.
+-select(11):-select(2),box(11),11!=2.
+-select(12):-select(2),box(12),12!=2.
+-select(13):-select(2),box(13),13!=2.
+-select(14):-select(2),box(14),14!=2.
+-select(15):-select(2),box(15),15!=2.
+-select(16):-select(2),box(16),16!=2.
+-select(17):-select(2),box(17),17!=2.
+-select(18):-select(2),box(18),18!=2.
+-select(19):-select(2),box(19),19!=2.
+-select(20):-select(2),box(20),20!=2.
+-select(21):-select(2),box(21),21!=2.
+-select(22):-select(2),box(22),22!=2.
+-select(23):-select(2),box(23),23!=2.
+-select(24):-select(2),box(24),24!=2.
+-select(1):-select(3),box(1),1!=3.
+-select(2):-select(3),box(2),2!=3.
+-select(3):-select(3),box(3),3!=3.
+-select(4):-select(3),box(4),4!=3.
+-select(5):-select(3),box(5),5!=3.
+-select(6):-select(3),box(6),6!=3.
+-select(7):-select(3),box(7),7!=3.
+-select(8):-select(3),box(8),8!=3.
+-select(9):-select(3),box(9),9!=3.
+-select(10):-select(3),box(10),10!=3.
+-select(11):-select(3),box(11),11!=3.
+-select(12):-select(3),box(12),12!=3.
+-select(13):-select(3),box(13),13!=3.
+-select(14):-select(3),box(14),14!=3.
+-select(15):-select(3),box(15),15!=3.
+-select(16):-select(3),box(16),16!=3.
+-select(17):-select(3),box(17),17!=3.
+-select(18):-select(3),box(18),18!=3.
+-select(19):-select(3),box(19),19!=3.
+-select(20):-select(3),box(20),20!=3.
+-select(21):-select(3),box(21),21!=3.
+-select(22):-select(3),box(22),22!=3.
+-select(23):-select(3),box(23),23!=3.
+-select(24):-select(3),box(24),24!=3.
+-select(1):-select(4),box(1),1!=4.
+-select(2):-select(4),box(2),2!=4.
+-select(3):-select(4),box(3),3!=4.
+-select(4):-select(4),box(4),4!=4.
+-select(5):-select(4),box(5),5!=4.
+-select(6):-select(4),box(6),6!=4.
+-select(7):-select(4),box(7),7!=4.
+-select(8):-select(4),box(8),8!=4.
+-select(9):-select(4),box(9),9!=4.
+-select(10):-select(4),box(10),10!=4.
+-select(11):-select(4),box(11),11!=4.
+-select(12):-select(4),box(12),12!=4.
+-select(13):-select(4),box(13),13!=4.
+-select(14):-select(4),box(14),14!=4.
+-select(15):-select(4),box(15),15!=4.
+-select(16):-select(4),box(16),16!=4.
+-select(17):-select(4),box(17),17!=4.
+-select(18):-select(4),box(18),18!=4.
+-select(19):-select(4),box(19),19!=4.
+-select(20):-select(4),box(20),20!=4.
+-select(21):-select(4),box(21),21!=4.
+-select(22):-select(4),box(22),22!=4.
+-select(23):-select(4),box(23),23!=4.
+-select(24):-select(4),box(24),24!=4.
+-select(1):-select(5),box(1),1!=5.
+-select(2):-select(5),box(2),2!=5.
+-select(3):-select(5),box(3),3!=5.
+-select(4):-select(5),box(4),4!=5.
+-select(5):-select(5),box(5),5!=5.
+-select(6):-select(5),box(6),6!=5.
+-select(7):-select(5),box(7),7!=5.
+-select(8):-select(5),box(8),8!=5.
+-select(9):-select(5),box(9),9!=5.
+-select(10):-select(5),box(10),10!=5.
+-select(11):-select(5),box(11),11!=5.
+-select(12):-select(5),box(12),12!=5.
+-select(13):-select(5),box(13),13!=5.
+-select(14):-select(5),box(14),14!=5.
+-select(15):-select(5),box(15),15!=5.
+-select(16):-select(5),box(16),16!=5.
+-select(17):-select(5),box(17),17!=5.
+-select(18):-select(5),box(18),18!=5.
+-select(19):-select(5),box(19),19!=5.
+-select(20):-select(5),box(20),20!=5.
+-select(21):-select(5),box(21),21!=5.
+-select(22):-select(5),box(22),22!=5.
+-select(23):-select(5),box(23),23!=5.
+-select(24):-select(5),box(24),24!=5.
+-select(1):-select(6),box(1),1!=6.
+-select(2):-select(6),box(2),2!=6.
+-select(3):-select(6),box(3),3!=6.
+-select(4):-select(6),box(4),4!=6.
+-select(5):-select(6),box(5),5!=6.
+-select(6):-select(6),box(6),6!=6.
+-select(7):-select(6),box(7),7!=6.
+-select(8):-select(6),box(8),8!=6.
+-select(9):-select(6),box(9),9!=6.
+-select(10):-select(6),box(10),10!=6.
+-select(11):-select(6),box(11),11!=6.
+-select(12):-select(6),box(12),12!=6.
+-select(13):-select(6),box(13),13!=6.
+-select(14):-select(6),box(14),14!=6.
+-select(15):-select(6),box(15),15!=6.
+-select(16):-select(6),box(16),16!=6.
+-select(17):-select(6),box(17),17!=6.
+-select(18):-select(6),box(18),18!=6.
+-select(19):-select(6),box(19),19!=6.
+-select(20):-select(6),box(20),20!=6.
+-select(21):-select(6),box(21),21!=6.
+-select(22):-select(6),box(22),22!=6.
+-select(23):-select(6),box(23),23!=6.
+-select(24):-select(6),box(24),24!=6.
+-select(1):-select(7),box(1),1!=7.
+-select(2):-select(7),box(2),2!=7.
+-select(3):-select(7),box(3),3!=7.
+-select(4):-select(7),box(4),4!=7.
+-select(5):-select(7),box(5),5!=7.
+-select(6):-select(7),box(6),6!=7.
+-select(7):-select(7),box(7),7!=7.
+-select(8):-select(7),box(8),8!=7.
+-select(9):-select(7),box(9),9!=7.
+-select(10):-select(7),box(10),10!=7.
+-select(11):-select(7),box(11),11!=7.
+-select(12):-select(7),box(12),12!=7.
+-select(13):-select(7),box(13),13!=7.
+-select(14):-select(7),box(14),14!=7.
+-select(15):-select(7),box(15),15!=7.
+-select(16):-select(7),box(16),16!=7.
+-select(17):-select(7),box(17),17!=7.
+-select(18):-select(7),box(18),18!=7.
+-select(19):-select(7),box(19),19!=7.
+-select(20):-select(7),box(20),20!=7.
+-select(21):-select(7),box(21),21!=7.
+-select(22):-select(7),box(22),22!=7.
+-select(23):-select(7),box(23),23!=7.
+-select(24):-select(7),box(24),24!=7.
+-select(1):-select(8),box(1),1!=8.
+-select(2):-select(8),box(2),2!=8.
+-select(3):-select(8),box(3),3!=8.
+-select(4):-select(8),box(4),4!=8.
+-select(5):-select(8),box(5),5!=8.
+-select(6):-select(8),box(6),6!=8.
+-select(7):-select(8),box(7),7!=8.
+-select(8):-select(8),box(8),8!=8.
+-select(9):-select(8),box(9),9!=8.
+-select(10):-select(8),box(10),10!=8.
+-select(11):-select(8),box(11),11!=8.
+-select(12):-select(8),box(12),12!=8.
+-select(13):-select(8),box(13),13!=8.
+-select(14):-select(8),box(14),14!=8.
+-select(15):-select(8),box(15),15!=8.
+-select(16):-select(8),box(16),16!=8.
+-select(17):-select(8),box(17),17!=8.
+-select(18):-select(8),box(18),18!=8.
+-select(19):-select(8),box(19),19!=8.
+-select(20):-select(8),box(20),20!=8.
+-select(21):-select(8),box(21),21!=8.
+-select(22):-select(8),box(22),22!=8.
+-select(23):-select(8),box(23),23!=8.
+-select(24):-select(8),box(24),24!=8.
+-select(1):-select(9),box(1),1!=9.
+-select(2):-select(9),box(2),2!=9.
+-select(3):-select(9),box(3),3!=9.
+-select(4):-select(9),box(4),4!=9.
+-select(5):-select(9),box(5),5!=9.
+-select(6):-select(9),box(6),6!=9.
+-select(7):-select(9),box(7),7!=9.
+-select(8):-select(9),box(8),8!=9.
+-select(9):-select(9),box(9),9!=9.
+-select(10):-select(9),box(10),10!=9.
+-select(11):-select(9),box(11),11!=9.
+-select(12):-select(9),box(12),12!=9.
+-select(13):-select(9),box(13),13!=9.
+-select(14):-select(9),box(14),14!=9.
+-select(15):-select(9),box(15),15!=9.
+-select(16):-select(9),box(16),16!=9.
+-select(17):-select(9),box(17),17!=9.
+-select(18):-select(9),box(18),18!=9.
+-select(19):-select(9),box(19),19!=9.
+-select(20):-select(9),box(20),20!=9.
+-select(21):-select(9),box(21),21!=9.
+-select(22):-select(9),box(22),22!=9.
+-select(23):-select(9),box(23),23!=9.
+-select(24):-select(9),box(24),24!=9.
+-select(1):-select(10),box(1),1!=10.
+-select(2):-select(10),box(2),2!=10.
+-select(3):-select(10),box(3),3!=10.
+-select(4):-select(10),box(4),4!=10.
+-select(5):-select(10),box(5),5!=10.
+-select(6):-select(10),box(6),6!=10.
+-select(7):-select(10),box(7),7!=10.
+-select(8):-select(10),box(8),8!=10.
+-select(9):-select(10),box(9),9!=10.
+-select(10):-select(10),box(10),10!=10.
+-select(11):-select(10),box(11),11!=10.
+-select(12):-select(10),box(12),12!=10.
+-select(13):-select(10),box(13),13!=10.
+-select(14):-select(10),box(14),14!=10.
+-select(15):-select(10),box(15),15!=10.
+-select(16):-select(10),box(16),16!=10.
+-select(17):-select(10),box(17),17!=10.
+-select(18):-select(10),box(18),18!=10.
+-select(19):-select(10),box(19),19!=10.
+-select(20):-select(10),box(20),20!=10.
+-select(21):-select(10),box(21),21!=10.
+-select(22):-select(10),box(22),22!=10.
+-select(23):-select(10),box(23),23!=10.
+-select(24):-select(10),box(24),24!=10.
+-select(1):-select(11),box(1),1!=11.
+-select(2):-select(11),box(2),2!=11.
+-select(3):-select(11),box(3),3!=11.
+-select(4):-select(11),box(4),4!=11.
+-select(5):-select(11),box(5),5!=11.
+-select(6):-select(11),box(6),6!=11.
+-select(7):-select(11),box(7),7!=11.
+-select(8):-select(11),box(8),8!=11.
+-select(9):-select(11),box(9),9!=11.
+-select(10):-select(11),box(10),10!=11.
+-select(11):-select(11),box(11),11!=11.
+-select(12):-select(11),box(12),12!=11.
+-select(13):-select(11),box(13),13!=11.
+-select(14):-select(11),box(14),14!=11.
+-select(15):-select(11),box(15),15!=11.
+-select(16):-select(11),box(16),16!=11.
+-select(17):-select(11),box(17),17!=11.
+-select(18):-select(11),box(18),18!=11.
+-select(19):-select(11),box(19),19!=11.
+-select(20):-select(11),box(20),20!=11.
+-select(21):-select(11),box(21),21!=11.
+-select(22):-select(11),box(22),22!=11.
+-select(23):-select(11),box(23),23!=11.
+-select(24):-select(11),box(24),24!=11.
+-select(1):-select(12),box(1),1!=12.
+-select(2):-select(12),box(2),2!=12.
+-select(3):-select(12),box(3),3!=12.
+-select(4):-select(12),box(4),4!=12.
+-select(5):-select(12),box(5),5!=12.
+-select(6):-select(12),box(6),6!=12.
+-select(7):-select(12),box(7),7!=12.
+-select(8):-select(12),box(8),8!=12.
+-select(9):-select(12),box(9),9!=12.
+-select(10):-select(12),box(10),10!=12.
+-select(11):-select(12),box(11),11!=12.
+-select(12):-select(12),box(12),12!=12.
+-select(13):-select(12),box(13),13!=12.
+-select(14):-select(12),box(14),14!=12.
+-select(15):-select(12),box(15),15!=12.
+-select(16):-select(12),box(16),16!=12.
+-select(17):-select(12),box(17),17!=12.
+-select(18):-select(12),box(18),18!=12.
+-select(19):-select(12),box(19),19!=12.
+-select(20):-select(12),box(20),20!=12.
+-select(21):-select(12),box(21),21!=12.
+-select(22):-select(12),box(22),22!=12.
+-select(23):-select(12),box(23),23!=12.
+-select(24):-select(12),box(24),24!=12.
+-select(1):-select(13),box(1),1!=13.
+-select(2):-select(13),box(2),2!=13.
+-select(3):-select(13),box(3),3!=13.
+-select(4):-select(13),box(4),4!=13.
+-select(5):-select(13),box(5),5!=13.
+-select(6):-select(13),box(6),6!=13.
+-select(7):-select(13),box(7),7!=13.
+-select(8):-select(13),box(8),8!=13.
+-select(9):-select(13),box(9),9!=13.
+-select(10):-select(13),box(10),10!=13.
+-select(11):-select(13),box(11),11!=13.
+-select(12):-select(13),box(12),12!=13.
+-select(13):-select(13),box(13),13!=13.
+-select(14):-select(13),box(14),14!=13.
+-select(15):-select(13),box(15),15!=13.
+-select(16):-select(13),box(16),16!=13.
+-select(17):-select(13),box(17),17!=13.
+-select(18):-select(13),box(18),18!=13.
+-select(19):-select(13),box(19),19!=13.
+-select(20):-select(13),box(20),20!=13.
+-select(21):-select(13),box(21),21!=13.
+-select(22):-select(13),box(22),22!=13.
+-select(23):-select(13),box(23),23!=13.
+-select(24):-select(13),box(24),24!=13.
+-select(1):-select(14),box(1),1!=14.
+-select(2):-select(14),box(2),2!=14.
+-select(3):-select(14),box(3),3!=14.
+-select(4):-select(14),box(4),4!=14.
+-select(5):-select(14),box(5),5!=14.
+-select(6):-select(14),box(6),6!=14.
+-select(7):-select(14),box(7),7!=14.
+-select(8):-select(14),box(8),8!=14.
+-select(9):-select(14),box(9),9!=14.
+-select(10):-select(14),box(10),10!=14.
+-select(11):-select(14),box(11),11!=14.
+-select(12):-select(14),box(12),12!=14.
+-select(13):-select(14),box(13),13!=14.
+-select(14):-select(14),box(14),14!=14.
+-select(15):-select(14),box(15),15!=14.
+-select(16):-select(14),box(16),16!=14.
+-select(17):-select(14),box(17),17!=14.
+-select(18):-select(14),box(18),18!=14.
+-select(19):-select(14),box(19),19!=14.
+-select(20):-select(14),box(20),20!=14.
+-select(21):-select(14),box(21),21!=14.
+-select(22):-select(14),box(22),22!=14.
+-select(23):-select(14),box(23),23!=14.
+-select(24):-select(14),box(24),24!=14.
+-select(1):-select(15),box(1),1!=15.
+-select(2):-select(15),box(2),2!=15.
+-select(3):-select(15),box(3),3!=15.
+-select(4):-select(15),box(4),4!=15.
+-select(5):-select(15),box(5),5!=15.
+-select(6):-select(15),box(6),6!=15.
+-select(7):-select(15),box(7),7!=15.
+-select(8):-select(15),box(8),8!=15.
+-select(9):-select(15),box(9),9!=15.
+-select(10):-select(15),box(10),10!=15.
+-select(11):-select(15),box(11),11!=15.
+-select(12):-select(15),box(12),12!=15.
+-select(13):-select(15),box(13),13!=15.
+-select(14):-select(15),box(14),14!=15.
+-select(15):-select(15),box(15),15!=15.
+-select(16):-select(15),box(16),16!=15.
+-select(17):-select(15),box(17),17!=15.
+-select(18):-select(15),box(18),18!=15.
+-select(19):-select(15),box(19),19!=15.
+-select(20):-select(15),box(20),20!=15.
+-select(21):-select(15),box(21),21!=15.
+-select(22):-select(15),box(22),22!=15.
+-select(23):-select(15),box(23),23!=15.
+-select(24):-select(15),box(24),24!=15.
+-select(1):-select(16),box(1),1!=16.
+-select(2):-select(16),box(2),2!=16.
+-select(3):-select(16),box(3),3!=16.
+-select(4):-select(16),box(4),4!=16.
+-select(5):-select(16),box(5),5!=16.
+-select(6):-select(16),box(6),6!=16.
+-select(7):-select(16),box(7),7!=16.
+-select(8):-select(16),box(8),8!=16.
+-select(9):-select(16),box(9),9!=16.
+-select(10):-select(16),box(10),10!=16.
+-select(11):-select(16),box(11),11!=16.
+-select(12):-select(16),box(12),12!=16.
+-select(13):-select(16),box(13),13!=16.
+-select(14):-select(16),box(14),14!=16.
+-select(15):-select(16),box(15),15!=16.
+-select(16):-select(16),box(16),16!=16.
+-select(17):-select(16),box(17),17!=16.
+-select(18):-select(16),box(18),18!=16.
+-select(19):-select(16),box(19),19!=16.
+-select(20):-select(16),box(20),20!=16.
+-select(21):-select(16),box(21),21!=16.
+-select(22):-select(16),box(22),22!=16.
+-select(23):-select(16),box(23),23!=16.
+-select(24):-select(16),box(24),24!=16.
+-select(1):-select(17),box(1),1!=17.
+-select(2):-select(17),box(2),2!=17.
+-select(3):-select(17),box(3),3!=17.
+-select(4):-select(17),box(4),4!=17.
+-select(5):-select(17),box(5),5!=17.
+-select(6):-select(17),box(6),6!=17.
+-select(7):-select(17),box(7),7!=17.
+-select(8):-select(17),box(8),8!=17.
+-select(9):-select(17),box(9),9!=17.
+-select(10):-select(17),box(10),10!=17.
+-select(11):-select(17),box(11),11!=17.
+-select(12):-select(17),box(12),12!=17.
+-select(13):-select(17),box(13),13!=17.
+-select(14):-select(17),box(14),14!=17.
+-select(15):-select(17),box(15),15!=17.
+-select(16):-select(17),box(16),16!=17.
+-select(17):-select(17),box(17),17!=17.
+-select(18):-select(17),box(18),18!=17.
+-select(19):-select(17),box(19),19!=17.
+-select(20):-select(17),box(20),20!=17.
+-select(21):-select(17),box(21),21!=17.
+-select(22):-select(17),box(22),22!=17.
+-select(23):-select(17),box(23),23!=17.
+-select(24):-select(17),box(24),24!=17.
+-select(1):-select(18),box(1),1!=18.
+-select(2):-select(18),box(2),2!=18.
+-select(3):-select(18),box(3),3!=18.
+-select(4):-select(18),box(4),4!=18.
+-select(5):-select(18),box(5),5!=18.
+-select(6):-select(18),box(6),6!=18.
+-select(7):-select(18),box(7),7!=18.
+-select(8):-select(18),box(8),8!=18.
+-select(9):-select(18),box(9),9!=18.
+-select(10):-select(18),box(10),10!=18.
+-select(11):-select(18),box(11),11!=18.
+-select(12):-select(18),box(12),12!=18.
+-select(13):-select(18),box(13),13!=18.
+-select(14):-select(18),box(14),14!=18.
+-select(15):-select(18),box(15),15!=18.
+-select(16):-select(18),box(16),16!=18.
+-select(17):-select(18),box(17),17!=18.
+-select(18):-select(18),box(18),18!=18.
+-select(19):-select(18),box(19),19!=18.
+-select(20):-select(18),box(20),20!=18.
+-select(21):-select(18),box(21),21!=18.
+-select(22):-select(18),box(22),22!=18.
+-select(23):-select(18),box(23),23!=18.
+-select(24):-select(18),box(24),24!=18.
+-select(1):-select(19),box(1),1!=19.
+-select(2):-select(19),box(2),2!=19.
+-select(3):-select(19),box(3),3!=19.
+-select(4):-select(19),box(4),4!=19.
+-select(5):-select(19),box(5),5!=19.
+-select(6):-select(19),box(6),6!=19.
+-select(7):-select(19),box(7),7!=19.
+-select(8):-select(19),box(8),8!=19.
+-select(9):-select(19),box(9),9!=19.
+-select(10):-select(19),box(10),10!=19.
+-select(11):-select(19),box(11),11!=19.
+-select(12):-select(19),box(12),12!=19.
+-select(13):-select(19),box(13),13!=19.
+-select(14):-select(19),box(14),14!=19.
+-select(15):-select(19),box(15),15!=19.
+-select(16):-select(19),box(16),16!=19.
+-select(17):-select(19),box(17),17!=19.
+-select(18):-select(19),box(18),18!=19.
+-select(19):-select(19),box(19),19!=19.
+-select(20):-select(19),box(20),20!=19.
+-select(21):-select(19),box(21),21!=19.
+-select(22):-select(19),box(22),22!=19.
+-select(23):-select(19),box(23),23!=19.
+-select(24):-select(19),box(24),24!=19.
+-select(1):-select(20),box(1),1!=20.
+-select(2):-select(20),box(2),2!=20.
+-select(3):-select(20),box(3),3!=20.
+-select(4):-select(20),box(4),4!=20.
+-select(5):-select(20),box(5),5!=20.
+-select(6):-select(20),box(6),6!=20.
+-select(7):-select(20),box(7),7!=20.
+-select(8):-select(20),box(8),8!=20.
+-select(9):-select(20),box(9),9!=20.
+-select(10):-select(20),box(10),10!=20.
+-select(11):-select(20),box(11),11!=20.
+-select(12):-select(20),box(12),12!=20.
+-select(13):-select(20),box(13),13!=20.
+-select(14):-select(20),box(14),14!=20.
+-select(15):-select(20),box(15),15!=20.
+-select(16):-select(20),box(16),16!=20.
+-select(17):-select(20),box(17),17!=20.
+-select(18):-select(20),box(18),18!=20.
+-select(19):-select(20),box(19),19!=20.
+-select(20):-select(20),box(20),20!=20.
+-select(21):-select(20),box(21),21!=20.
+-select(22):-select(20),box(22),22!=20.
+-select(23):-select(20),box(23),23!=20.
+-select(24):-select(20),box(24),24!=20.
+-select(1):-select(21),box(1),1!=21.
+-select(2):-select(21),box(2),2!=21.
+-select(3):-select(21),box(3),3!=21.
+-select(4):-select(21),box(4),4!=21.
+-select(5):-select(21),box(5),5!=21.
+-select(6):-select(21),box(6),6!=21.
+-select(7):-select(21),box(7),7!=21.
+-select(8):-select(21),box(8),8!=21.
+-select(9):-select(21),box(9),9!=21.
+-select(10):-select(21),box(10),10!=21.
+-select(11):-select(21),box(11),11!=21.
+-select(12):-select(21),box(12),12!=21.
+-select(13):-select(21),box(13),13!=21.
+-select(14):-select(21),box(14),14!=21.
+-select(15):-select(21),box(15),15!=21.
+-select(16):-select(21),box(16),16!=21.
+-select(17):-select(21),box(17),17!=21.
+-select(18):-select(21),box(18),18!=21.
+-select(19):-select(21),box(19),19!=21.
+-select(20):-select(21),box(20),20!=21.
+-select(21):-select(21),box(21),21!=21.
+-select(22):-select(21),box(22),22!=21.
+-select(23):-select(21),box(23),23!=21.
+-select(24):-select(21),box(24),24!=21.
+-select(1):-select(22),box(1),1!=22.
+-select(2):-select(22),box(2),2!=22.
+-select(3):-select(22),box(3),3!=22.
+-select(4):-select(22),box(4),4!=22.
+-select(5):-select(22),box(5),5!=22.
+-select(6):-select(22),box(6),6!=22.
+-select(7):-select(22),box(7),7!=22.
+-select(8):-select(22),box(8),8!=22.
+-select(9):-select(22),box(9),9!=22.
+-select(10):-select(22),box(10),10!=22.
+-select(11):-select(22),box(11),11!=22.
+-select(12):-select(22),box(12),12!=22.
+-select(13):-select(22),box(13),13!=22.
+-select(14):-select(22),box(14),14!=22.
+-select(15):-select(22),box(15),15!=22.
+-select(16):-select(22),box(16),16!=22.
+-select(17):-select(22),box(17),17!=22.
+-select(18):-select(22),box(18),18!=22.
+-select(19):-select(22),box(19),19!=22.
+-select(20):-select(22),box(20),20!=22.
+-select(21):-select(22),box(21),21!=22.
+-select(22):-select(22),box(22),22!=22.
+-select(23):-select(22),box(23),23!=22.
+-select(24):-select(22),box(24),24!=22.
+-select(1):-select(23),box(1),1!=23.
+-select(2):-select(23),box(2),2!=23.
+-select(3):-select(23),box(3),3!=23.
+-select(4):-select(23),box(4),4!=23.
+-select(5):-select(23),box(5),5!=23.
+-select(6):-select(23),box(6),6!=23.
+-select(7):-select(23),box(7),7!=23.
+-select(8):-select(23),box(8),8!=23.
+-select(9):-select(23),box(9),9!=23.
+-select(10):-select(23),box(10),10!=23.
+-select(11):-select(23),box(11),11!=23.
+-select(12):-select(23),box(12),12!=23.
+-select(13):-select(23),box(13),13!=23.
+-select(14):-select(23),box(14),14!=23.
+-select(15):-select(23),box(15),15!=23.
+-select(16):-select(23),box(16),16!=23.
+-select(17):-select(23),box(17),17!=23.
+-select(18):-select(23),box(18),18!=23.
+-select(19):-select(23),box(19),19!=23.
+-select(20):-select(23),box(20),20!=23.
+-select(21):-select(23),box(21),21!=23.
+-select(22):-select(23),box(22),22!=23.
+-select(23):-select(23),box(23),23!=23.
+-select(24):-select(23),box(24),24!=23.
+-select(1):-select(24),box(1),1!=24.
+-select(2):-select(24),box(2),2!=24.
+-select(3):-select(24),box(3),3!=24.
+-select(4):-select(24),box(4),4!=24.
+-select(5):-select(24),box(5),5!=24.
+-select(6):-select(24),box(6),6!=24.
+-select(7):-select(24),box(7),7!=24.
+-select(8):-select(24),box(8),8!=24.
+-select(9):-select(24),box(9),9!=24.
+-select(10):-select(24),box(10),10!=24.
+-select(11):-select(24),box(11),11!=24.
+-select(12):-select(24),box(12),12!=24.
+-select(13):-select(24),box(13),13!=24.
+-select(14):-select(24),box(14),14!=24.
+-select(15):-select(24),box(15),15!=24.
+-select(16):-select(24),box(16),16!=24.
+-select(17):-select(24),box(17),17!=24.
+-select(18):-select(24),box(18),18!=24.
+-select(19):-select(24),box(19),19!=24.
+-select(20):-select(24),box(20),20!=24.
+-select(21):-select(24),box(21),21!=24.
+-select(22):-select(24),box(22),22!=24.
+-select(23):-select(24),box(23),23!=24.
+-select(24):-select(24),box(24),24!=24.
+:-box(1),not select(1),not -select(1).
+:-box(2),not select(2),not -select(2).
+:-box(3),not select(3),not -select(3).
+:-box(4),not select(4),not -select(4).
+:-box(5),not select(5),not -select(5).
+:-box(6),not select(6),not -select(6).
+:-box(7),not select(7),not -select(7).
+:-box(8),not select(8),not -select(8).
+:-box(9),not select(9),not -select(9).
+:-box(10),not select(10),not -select(10).
+:-box(11),not select(11),not -select(11).
+:-box(12),not select(12),not -select(12).
+:-box(13),not select(13),not -select(13).
+:-box(14),not select(14),not -select(14).
+:-box(15),not select(15),not -select(15).
+:-box(16),not select(16),not -select(16).
+:-box(17),not select(17),not -select(17).
+:-box(18),not select(18),not -select(18).
+:-box(19),not select(19),not -select(19).
+:-box(20),not select(20),not -select(20).
+:-box(21),not select(21),not -select(21).
+:-box(22),not select(22),not -select(22).
+:-box(23),not select(23),not -select(23).
+:-box(24),not select(24),not -select(24).
+-open(1):-open(1),box(1),1!=1.
+-open(2):-open(1),box(2),2!=1.
+-open(3):-open(1),box(3),3!=1.
+-open(4):-open(1),box(4),4!=1.
+-open(5):-open(1),box(5),5!=1.
+-open(6):-open(1),box(6),6!=1.
+-open(7):-open(1),box(7),7!=1.
+-open(8):-open(1),box(8),8!=1.
+-open(9):-open(1),box(9),9!=1.
+-open(10):-open(1),box(10),10!=1.
+-open(11):-open(1),box(11),11!=1.
+-open(12):-open(1),box(12),12!=1.
+-open(13):-open(1),box(13),13!=1.
+-open(14):-open(1),box(14),14!=1.
+-open(15):-open(1),box(15),15!=1.
+-open(16):-open(1),box(16),16!=1.
+-open(17):-open(1),box(17),17!=1.
+-open(18):-open(1),box(18),18!=1.
+-open(19):-open(1),box(19),19!=1.
+-open(20):-open(1),box(20),20!=1.
+-open(21):-open(1),box(21),21!=1.
+-open(22):-open(1),box(22),22!=1.
+-open(23):-open(1),box(23),23!=1.
+-open(24):-open(1),box(24),24!=1.
+-open(1):-open(2),box(1),1!=2.
+-open(2):-open(2),box(2),2!=2.
+-open(3):-open(2),box(3),3!=2.
+-open(4):-open(2),box(4),4!=2.
+-open(5):-open(2),box(5),5!=2.
+-open(6):-open(2),box(6),6!=2.
+-open(7):-open(2),box(7),7!=2.
+-open(8):-open(2),box(8),8!=2.
+-open(9):-open(2),box(9),9!=2.
+-open(10):-open(2),box(10),10!=2.
+-open(11):-open(2),box(11),11!=2.
+-open(12):-open(2),box(12),12!=2.
+-open(13):-open(2),box(13),13!=2.
+-open(14):-open(2),box(14),14!=2.
+-open(15):-open(2),box(15),15!=2.
+-open(16):-open(2),box(16),16!=2.
+-open(17):-open(2),box(17),17!=2.
+-open(18):-open(2),box(18),18!=2.
+-open(19):-open(2),box(19),19!=2.
+-open(20):-open(2),box(20),20!=2.
+-open(21):-open(2),box(21),21!=2.
+-open(22):-open(2),box(22),22!=2.
+-open(23):-open(2),box(23),23!=2.
+-open(24):-open(2),box(24),24!=2.
+-open(1):-open(3),box(1),1!=3.
+-open(2):-open(3),box(2),2!=3.
+-open(3):-open(3),box(3),3!=3.
+-open(4):-open(3),box(4),4!=3.
+-open(5):-open(3),box(5),5!=3.
+-open(6):-open(3),box(6),6!=3.
+-open(7):-open(3),box(7),7!=3.
+-open(8):-open(3),box(8),8!=3.
+-open(9):-open(3),box(9),9!=3.
+-open(10):-open(3),box(10),10!=3.
+-open(11):-open(3),box(11),11!=3.
+-open(12):-open(3),box(12),12!=3.
+-open(13):-open(3),box(13),13!=3.
+-open(14):-open(3),box(14),14!=3.
+-open(15):-open(3),box(15),15!=3.
+-open(16):-open(3),box(16),16!=3.
+-open(17):-open(3),box(17),17!=3.
+-open(18):-open(3),box(18),18!=3.
+-open(19):-open(3),box(19),19!=3.
+-open(20):-open(3),box(20),20!=3.
+-open(21):-open(3),box(21),21!=3.
+-open(22):-open(3),box(22),22!=3.
+-open(23):-open(3),box(23),23!=3.
+-open(24):-open(3),box(24),24!=3.
+-open(1):-open(4),box(1),1!=4.
+-open(2):-open(4),box(2),2!=4.
+-open(3):-open(4),box(3),3!=4.
+-open(4):-open(4),box(4),4!=4.
+-open(5):-open(4),box(5),5!=4.
+-open(6):-open(4),box(6),6!=4.
+-open(7):-open(4),box(7),7!=4.
+-open(8):-open(4),box(8),8!=4.
+-open(9):-open(4),box(9),9!=4.
+-open(10):-open(4),box(10),10!=4.
+-open(11):-open(4),box(11),11!=4.
+-open(12):-open(4),box(12),12!=4.
+-open(13):-open(4),box(13),13!=4.
+-open(14):-open(4),box(14),14!=4.
+-open(15):-open(4),box(15),15!=4.
+-open(16):-open(4),box(16),16!=4.
+-open(17):-open(4),box(17),17!=4.
+-open(18):-open(4),box(18),18!=4.
+-open(19):-open(4),box(19),19!=4.
+-open(20):-open(4),box(20),20!=4.
+-open(21):-open(4),box(21),21!=4.
+-open(22):-open(4),box(22),22!=4.
+-open(23):-open(4),box(23),23!=4.
+-open(24):-open(4),box(24),24!=4.
+-open(1):-open(5),box(1),1!=5.
+-open(2):-open(5),box(2),2!=5.
+-open(3):-open(5),box(3),3!=5.
+-open(4):-open(5),box(4),4!=5.
+-open(5):-open(5),box(5),5!=5.
+-open(6):-open(5),box(6),6!=5.
+-open(7):-open(5),box(7),7!=5.
+-open(8):-open(5),box(8),8!=5.
+-open(9):-open(5),box(9),9!=5.
+-open(10):-open(5),box(10),10!=5.
+-open(11):-open(5),box(11),11!=5.
+-open(12):-open(5),box(12),12!=5.
+-open(13):-open(5),box(13),13!=5.
+-open(14):-open(5),box(14),14!=5.
+-open(15):-open(5),box(15),15!=5.
+-open(16):-open(5),box(16),16!=5.
+-open(17):-open(5),box(17),17!=5.
+-open(18):-open(5),box(18),18!=5.
+-open(19):-open(5),box(19),19!=5.
+-open(20):-open(5),box(20),20!=5.
+-open(21):-open(5),box(21),21!=5.
+-open(22):-open(5),box(22),22!=5.
+-open(23):-open(5),box(23),23!=5.
+-open(24):-open(5),box(24),24!=5.
+-open(1):-open(6),box(1),1!=6.
+-open(2):-open(6),box(2),2!=6.
+-open(3):-open(6),box(3),3!=6.
+-open(4):-open(6),box(4),4!=6.
+-open(5):-open(6),box(5),5!=6.
+-open(6):-open(6),box(6),6!=6.
+-open(7):-open(6),box(7),7!=6.
+-open(8):-open(6),box(8),8!=6.
+-open(9):-open(6),box(9),9!=6.
+-open(10):-open(6),box(10),10!=6.
+-open(11):-open(6),box(11),11!=6.
+-open(12):-open(6),box(12),12!=6.
+-open(13):-open(6),box(13),13!=6.
+-open(14):-open(6),box(14),14!=6.
+-open(15):-open(6),box(15),15!=6.
+-open(16):-open(6),box(16),16!=6.
+-open(17):-open(6),box(17),17!=6.
+-open(18):-open(6),box(18),18!=6.
+-open(19):-open(6),box(19),19!=6.
+-open(20):-open(6),box(20),20!=6.
+-open(21):-open(6),box(21),21!=6.
+-open(22):-open(6),box(22),22!=6.
+-open(23):-open(6),box(23),23!=6.
+-open(24):-open(6),box(24),24!=6.
+-open(1):-open(7),box(1),1!=7.
+-open(2):-open(7),box(2),2!=7.
+-open(3):-open(7),box(3),3!=7.
+-open(4):-open(7),box(4),4!=7.
+-open(5):-open(7),box(5),5!=7.
+-open(6):-open(7),box(6),6!=7.
+-open(7):-open(7),box(7),7!=7.
+-open(8):-open(7),box(8),8!=7.
+-open(9):-open(7),box(9),9!=7.
+-open(10):-open(7),box(10),10!=7.
+-open(11):-open(7),box(11),11!=7.
+-open(12):-open(7),box(12),12!=7.
+-open(13):-open(7),box(13),13!=7.
+-open(14):-open(7),box(14),14!=7.
+-open(15):-open(7),box(15),15!=7.
+-open(16):-open(7),box(16),16!=7.
+-open(17):-open(7),box(17),17!=7.
+-open(18):-open(7),box(18),18!=7.
+-open(19):-open(7),box(19),19!=7.
+-open(20):-open(7),box(20),20!=7.
+-open(21):-open(7),box(21),21!=7.
+-open(22):-open(7),box(22),22!=7.
+-open(23):-open(7),box(23),23!=7.
+-open(24):-open(7),box(24),24!=7.
+-open(1):-open(8),box(1),1!=8.
+-open(2):-open(8),box(2),2!=8.
+-open(3):-open(8),box(3),3!=8.
+-open(4):-open(8),box(4),4!=8.
+-open(5):-open(8),box(5),5!=8.
+-open(6):-open(8),box(6),6!=8.
+-open(7):-open(8),box(7),7!=8.
+-open(8):-open(8),box(8),8!=8.
+-open(9):-open(8),box(9),9!=8.
+-open(10):-open(8),box(10),10!=8.
+-open(11):-open(8),box(11),11!=8.
+-open(12):-open(8),box(12),12!=8.
+-open(13):-open(8),box(13),13!=8.
+-open(14):-open(8),box(14),14!=8.
+-open(15):-open(8),box(15),15!=8.
+-open(16):-open(8),box(16),16!=8.
+-open(17):-open(8),box(17),17!=8.
+-open(18):-open(8),box(18),18!=8.
+-open(19):-open(8),box(19),19!=8.
+-open(20):-open(8),box(20),20!=8.
+-open(21):-open(8),box(21),21!=8.
+-open(22):-open(8),box(22),22!=8.
+-open(23):-open(8),box(23),23!=8.
+-open(24):-open(8),box(24),24!=8.
+-open(1):-open(9),box(1),1!=9.
+-open(2):-open(9),box(2),2!=9.
+-open(3):-open(9),box(3),3!=9.
+-open(4):-open(9),box(4),4!=9.
+-open(5):-open(9),box(5),5!=9.
+-open(6):-open(9),box(6),6!=9.
+-open(7):-open(9),box(7),7!=9.
+-open(8):-open(9),box(8),8!=9.
+-open(9):-open(9),box(9),9!=9.
+-open(10):-open(9),box(10),10!=9.
+-open(11):-open(9),box(11),11!=9.
+-open(12):-open(9),box(12),12!=9.
+-open(13):-open(9),box(13),13!=9.
+-open(14):-open(9),box(14),14!=9.
+-open(15):-open(9),box(15),15!=9.
+-open(16):-open(9),box(16),16!=9.
+-open(17):-open(9),box(17),17!=9.
+-open(18):-open(9),box(18),18!=9.
+-open(19):-open(9),box(19),19!=9.
+-open(20):-open(9),box(20),20!=9.
+-open(21):-open(9),box(21),21!=9.
+-open(22):-open(9),box(22),22!=9.
+-open(23):-open(9),box(23),23!=9.
+-open(24):-open(9),box(24),24!=9.
+-open(1):-open(10),box(1),1!=10.
+-open(2):-open(10),box(2),2!=10.
+-open(3):-open(10),box(3),3!=10.
+-open(4):-open(10),box(4),4!=10.
+-open(5):-open(10),box(5),5!=10.
+-open(6):-open(10),box(6),6!=10.
+-open(7):-open(10),box(7),7!=10.
+-open(8):-open(10),box(8),8!=10.
+-open(9):-open(10),box(9),9!=10.
+-open(10):-open(10),box(10),10!=10.
+-open(11):-open(10),box(11),11!=10.
+-open(12):-open(10),box(12),12!=10.
+-open(13):-open(10),box(13),13!=10.
+-open(14):-open(10),box(14),14!=10.
+-open(15):-open(10),box(15),15!=10.
+-open(16):-open(10),box(16),16!=10.
+-open(17):-open(10),box(17),17!=10.
+-open(18):-open(10),box(18),18!=10.
+-open(19):-open(10),box(19),19!=10.
+-open(20):-open(10),box(20),20!=10.
+-open(21):-open(10),box(21),21!=10.
+-open(22):-open(10),box(22),22!=10.
+-open(23):-open(10),box(23),23!=10.
+-open(24):-open(10),box(24),24!=10.
+-open(1):-open(11),box(1),1!=11.
+-open(2):-open(11),box(2),2!=11.
+-open(3):-open(11),box(3),3!=11.
+-open(4):-open(11),box(4),4!=11.
+-open(5):-open(11),box(5),5!=11.
+-open(6):-open(11),box(6),6!=11.
+-open(7):-open(11),box(7),7!=11.
+-open(8):-open(11),box(8),8!=11.
+-open(9):-open(11),box(9),9!=11.
+-open(10):-open(11),box(10),10!=11.
+-open(11):-open(11),box(11),11!=11.
+-open(12):-open(11),box(12),12!=11.
+-open(13):-open(11),box(13),13!=11.
+-open(14):-open(11),box(14),14!=11.
+-open(15):-open(11),box(15),15!=11.
+-open(16):-open(11),box(16),16!=11.
+-open(17):-open(11),box(17),17!=11.
+-open(18):-open(11),box(18),18!=11.
+-open(19):-open(11),box(19),19!=11.
+-open(20):-open(11),box(20),20!=11.
+-open(21):-open(11),box(21),21!=11.
+-open(22):-open(11),box(22),22!=11.
+-open(23):-open(11),box(23),23!=11.
+-open(24):-open(11),box(24),24!=11.
+-open(1):-open(12),box(1),1!=12.
+-open(2):-open(12),box(2),2!=12.
+-open(3):-open(12),box(3),3!=12.
+-open(4):-open(12),box(4),4!=12.
+-open(5):-open(12),box(5),5!=12.
+-open(6):-open(12),box(6),6!=12.
+-open(7):-open(12),box(7),7!=12.
+-open(8):-open(12),box(8),8!=12.
+-open(9):-open(12),box(9),9!=12.
+-open(10):-open(12),box(10),10!=12.
+-open(11):-open(12),box(11),11!=12.
+-open(12):-open(12),box(12),12!=12.
+-open(13):-open(12),box(13),13!=12.
+-open(14):-open(12),box(14),14!=12.
+-open(15):-open(12),box(15),15!=12.
+-open(16):-open(12),box(16),16!=12.
+-open(17):-open(12),box(17),17!=12.
+-open(18):-open(12),box(18),18!=12.
+-open(19):-open(12),box(19),19!=12.
+-open(20):-open(12),box(20),20!=12.
+-open(21):-open(12),box(21),21!=12.
+-open(22):-open(12),box(22),22!=12.
+-open(23):-open(12),box(23),23!=12.
+-open(24):-open(12),box(24),24!=12.
+-open(1):-open(13),box(1),1!=13.
+-open(2):-open(13),box(2),2!=13.
+-open(3):-open(13),box(3),3!=13.
+-open(4):-open(13),box(4),4!=13.
+-open(5):-open(13),box(5),5!=13.
+-open(6):-open(13),box(6),6!=13.
+-open(7):-open(13),box(7),7!=13.
+-open(8):-open(13),box(8),8!=13.
+-open(9):-open(13),box(9),9!=13.
+-open(10):-open(13),box(10),10!=13.
+-open(11):-open(13),box(11),11!=13.
+-open(12):-open(13),box(12),12!=13.
+-open(13):-open(13),box(13),13!=13.
+-open(14):-open(13),box(14),14!=13.
+-open(15):-open(13),box(15),15!=13.
+-open(16):-open(13),box(16),16!=13.
+-open(17):-open(13),box(17),17!=13.
+-open(18):-open(13),box(18),18!=13.
+-open(19):-open(13),box(19),19!=13.
+-open(20):-open(13),box(20),20!=13.
+-open(21):-open(13),box(21),21!=13.
+-open(22):-open(13),box(22),22!=13.
+-open(23):-open(13),box(23),23!=13.
+-open(24):-open(13),box(24),24!=13.
+-open(1):-open(14),box(1),1!=14.
+-open(2):-open(14),box(2),2!=14.
+-open(3):-open(14),box(3),3!=14.
+-open(4):-open(14),box(4),4!=14.
+-open(5):-open(14),box(5),5!=14.
+-open(6):-open(14),box(6),6!=14.
+-open(7):-open(14),box(7),7!=14.
+-open(8):-open(14),box(8),8!=14.
+-open(9):-open(14),box(9),9!=14.
+-open(10):-open(14),box(10),10!=14.
+-open(11):-open(14),box(11),11!=14.
+-open(12):-open(14),box(12),12!=14.
+-open(13):-open(14),box(13),13!=14.
+-open(14):-open(14),box(14),14!=14.
+-open(15):-open(14),box(15),15!=14.
+-open(16):-open(14),box(16),16!=14.
+-open(17):-open(14),box(17),17!=14.
+-open(18):-open(14),box(18),18!=14.
+-open(19):-open(14),box(19),19!=14.
+-open(20):-open(14),box(20),20!=14.
+-open(21):-open(14),box(21),21!=14.
+-open(22):-open(14),box(22),22!=14.
+-open(23):-open(14),box(23),23!=14.
+-open(24):-open(14),box(24),24!=14.
+-open(1):-open(15),box(1),1!=15.
+-open(2):-open(15),box(2),2!=15.
+-open(3):-open(15),box(3),3!=15.
+-open(4):-open(15),box(4),4!=15.
+-open(5):-open(15),box(5),5!=15.
+-open(6):-open(15),box(6),6!=15.
+-open(7):-open(15),box(7),7!=15.
+-open(8):-open(15),box(8),8!=15.
+-open(9):-open(15),box(9),9!=15.
+-open(10):-open(15),box(10),10!=15.
+-open(11):-open(15),box(11),11!=15.
+-open(12):-open(15),box(12),12!=15.
+-open(13):-open(15),box(13),13!=15.
+-open(14):-open(15),box(14),14!=15.
+-open(15):-open(15),box(15),15!=15.
+-open(16):-open(15),box(16),16!=15.
+-open(17):-open(15),box(17),17!=15.
+-open(18):-open(15),box(18),18!=15.
+-open(19):-open(15),box(19),19!=15.
+-open(20):-open(15),box(20),20!=15.
+-open(21):-open(15),box(21),21!=15.
+-open(22):-open(15),box(22),22!=15.
+-open(23):-open(15),box(23),23!=15.
+-open(24):-open(15),box(24),24!=15.
+-open(1):-open(16),box(1),1!=16.
+-open(2):-open(16),box(2),2!=16.
+-open(3):-open(16),box(3),3!=16.
+-open(4):-open(16),box(4),4!=16.
+-open(5):-open(16),box(5),5!=16.
+-open(6):-open(16),box(6),6!=16.
+-open(7):-open(16),box(7),7!=16.
+-open(8):-open(16),box(8),8!=16.
+-open(9):-open(16),box(9),9!=16.
+-open(10):-open(16),box(10),10!=16.
+-open(11):-open(16),box(11),11!=16.
+-open(12):-open(16),box(12),12!=16.
+-open(13):-open(16),box(13),13!=16.
+-open(14):-open(16),box(14),14!=16.
+-open(15):-open(16),box(15),15!=16.
+-open(16):-open(16),box(16),16!=16.
+-open(17):-open(16),box(17),17!=16.
+-open(18):-open(16),box(18),18!=16.
+-open(19):-open(16),box(19),19!=16.
+-open(20):-open(16),box(20),20!=16.
+-open(21):-open(16),box(21),21!=16.
+-open(22):-open(16),box(22),22!=16.
+-open(23):-open(16),box(23),23!=16.
+-open(24):-open(16),box(24),24!=16.
+-open(1):-open(17),box(1),1!=17.
+-open(2):-open(17),box(2),2!=17.
+-open(3):-open(17),box(3),3!=17.
+-open(4):-open(17),box(4),4!=17.
+-open(5):-open(17),box(5),5!=17.
+-open(6):-open(17),box(6),6!=17.
+-open(7):-open(17),box(7),7!=17.
+-open(8):-open(17),box(8),8!=17.
+-open(9):-open(17),box(9),9!=17.
+-open(10):-open(17),box(10),10!=17.
+-open(11):-open(17),box(11),11!=17.
+-open(12):-open(17),box(12),12!=17.
+-open(13):-open(17),box(13),13!=17.
+-open(14):-open(17),box(14),14!=17.
+-open(15):-open(17),box(15),15!=17.
+-open(16):-open(17),box(16),16!=17.
+-open(17):-open(17),box(17),17!=17.
+-open(18):-open(17),box(18),18!=17.
+-open(19):-open(17),box(19),19!=17.
+-open(20):-open(17),box(20),20!=17.
+-open(21):-open(17),box(21),21!=17.
+-open(22):-open(17),box(22),22!=17.
+-open(23):-open(17),box(23),23!=17.
+-open(24):-open(17),box(24),24!=17.
+-open(1):-open(18),box(1),1!=18.
+-open(2):-open(18),box(2),2!=18.
+-open(3):-open(18),box(3),3!=18.
+-open(4):-open(18),box(4),4!=18.
+-open(5):-open(18),box(5),5!=18.
+-open(6):-open(18),box(6),6!=18.
+-open(7):-open(18),box(7),7!=18.
+-open(8):-open(18),box(8),8!=18.
+-open(9):-open(18),box(9),9!=18.
+-open(10):-open(18),box(10),10!=18.
+-open(11):-open(18),box(11),11!=18.
+-open(12):-open(18),box(12),12!=18.
+-open(13):-open(18),box(13),13!=18.
+-open(14):-open(18),box(14),14!=18.
+-open(15):-open(18),box(15),15!=18.
+-open(16):-open(18),box(16),16!=18.
+-open(17):-open(18),box(17),17!=18.
+-open(18):-open(18),box(18),18!=18.
+-open(19):-open(18),box(19),19!=18.
+-open(20):-open(18),box(20),20!=18.
+-open(21):-open(18),box(21),21!=18.
+-open(22):-open(18),box(22),22!=18.
+-open(23):-open(18),box(23),23!=18.
+-open(24):-open(18),box(24),24!=18.
+-open(1):-open(19),box(1),1!=19.
+-open(2):-open(19),box(2),2!=19.
+-open(3):-open(19),box(3),3!=19.
+-open(4):-open(19),box(4),4!=19.
+-open(5):-open(19),box(5),5!=19.
+-open(6):-open(19),box(6),6!=19.
+-open(7):-open(19),box(7),7!=19.
+-open(8):-open(19),box(8),8!=19.
+-open(9):-open(19),box(9),9!=19.
+-open(10):-open(19),box(10),10!=19.
+-open(11):-open(19),box(11),11!=19.
+-open(12):-open(19),box(12),12!=19.
+-open(13):-open(19),box(13),13!=19.
+-open(14):-open(19),box(14),14!=19.
+-open(15):-open(19),box(15),15!=19.
+-open(16):-open(19),box(16),16!=19.
+-open(17):-open(19),box(17),17!=19.
+-open(18):-open(19),box(18),18!=19.
+-open(19):-open(19),box(19),19!=19.
+-open(20):-open(19),box(20),20!=19.
+-open(21):-open(19),box(21),21!=19.
+-open(22):-open(19),box(22),22!=19.
+-open(23):-open(19),box(23),23!=19.
+-open(24):-open(19),box(24),24!=19.
+-open(1):-open(20),box(1),1!=20.
+-open(2):-open(20),box(2),2!=20.
+-open(3):-open(20),box(3),3!=20.
+-open(4):-open(20),box(4),4!=20.
+-open(5):-open(20),box(5),5!=20.
+-open(6):-open(20),box(6),6!=20.
+-open(7):-open(20),box(7),7!=20.
+-open(8):-open(20),box(8),8!=20.
+-open(9):-open(20),box(9),9!=20.
+-open(10):-open(20),box(10),10!=20.
+-open(11):-open(20),box(11),11!=20.
+-open(12):-open(20),box(12),12!=20.
+-open(13):-open(20),box(13),13!=20.
+-open(14):-open(20),box(14),14!=20.
+-open(15):-open(20),box(15),15!=20.
+-open(16):-open(20),box(16),16!=20.
+-open(17):-open(20),box(17),17!=20.
+-open(18):-open(20),box(18),18!=20.
+-open(19):-open(20),box(19),19!=20.
+-open(20):-open(20),box(20),20!=20.
+-open(21):-open(20),box(21),21!=20.
+-open(22):-open(20),box(22),22!=20.
+-open(23):-open(20),box(23),23!=20.
+-open(24):-open(20),box(24),24!=20.
+-open(1):-open(21),box(1),1!=21.
+-open(2):-open(21),box(2),2!=21.
+-open(3):-open(21),box(3),3!=21.
+-open(4):-open(21),box(4),4!=21.
+-open(5):-open(21),box(5),5!=21.
+-open(6):-open(21),box(6),6!=21.
+-open(7):-open(21),box(7),7!=21.
+-open(8):-open(21),box(8),8!=21.
+-open(9):-open(21),box(9),9!=21.
+-open(10):-open(21),box(10),10!=21.
+-open(11):-open(21),box(11),11!=21.
+-open(12):-open(21),box(12),12!=21.
+-open(13):-open(21),box(13),13!=21.
+-open(14):-open(21),box(14),14!=21.
+-open(15):-open(21),box(15),15!=21.
+-open(16):-open(21),box(16),16!=21.
+-open(17):-open(21),box(17),17!=21.
+-open(18):-open(21),box(18),18!=21.
+-open(19):-open(21),box(19),19!=21.
+-open(20):-open(21),box(20),20!=21.
+-open(21):-open(21),box(21),21!=21.
+-open(22):-open(21),box(22),22!=21.
+-open(23):-open(21),box(23),23!=21.
+-open(24):-open(21),box(24),24!=21.
+-open(1):-open(22),box(1),1!=22.
+-open(2):-open(22),box(2),2!=22.
+-open(3):-open(22),box(3),3!=22.
+-open(4):-open(22),box(4),4!=22.
+-open(5):-open(22),box(5),5!=22.
+-open(6):-open(22),box(6),6!=22.
+-open(7):-open(22),box(7),7!=22.
+-open(8):-open(22),box(8),8!=22.
+-open(9):-open(22),box(9),9!=22.
+-open(10):-open(22),box(10),10!=22.
+-open(11):-open(22),box(11),11!=22.
+-open(12):-open(22),box(12),12!=22.
+-open(13):-open(22),box(13),13!=22.
+-open(14):-open(22),box(14),14!=22.
+-open(15):-open(22),box(15),15!=22.
+-open(16):-open(22),box(16),16!=22.
+-open(17):-open(22),box(17),17!=22.
+-open(18):-open(22),box(18),18!=22.
+-open(19):-open(22),box(19),19!=22.
+-open(20):-open(22),box(20),20!=22.
+-open(21):-open(22),box(21),21!=22.
+-open(22):-open(22),box(22),22!=22.
+-open(23):-open(22),box(23),23!=22.
+-open(24):-open(22),box(24),24!=22.
+-open(1):-open(23),box(1),1!=23.
+-open(2):-open(23),box(2),2!=23.
+-open(3):-open(23),box(3),3!=23.
+-open(4):-open(23),box(4),4!=23.
+-open(5):-open(23),box(5),5!=23.
+-open(6):-open(23),box(6),6!=23.
+-open(7):-open(23),box(7),7!=23.
+-open(8):-open(23),box(8),8!=23.
+-open(9):-open(23),box(9),9!=23.
+-open(10):-open(23),box(10),10!=23.
+-open(11):-open(23),box(11),11!=23.
+-open(12):-open(23),box(12),12!=23.
+-open(13):-open(23),box(13),13!=23.
+-open(14):-open(23),box(14),14!=23.
+-open(15):-open(23),box(15),15!=23.
+-open(16):-open(23),box(16),16!=23.
+-open(17):-open(23),box(17),17!=23.
+-open(18):-open(23),box(18),18!=23.
+-open(19):-open(23),box(19),19!=23.
+-open(20):-open(23),box(20),20!=23.
+-open(21):-open(23),box(21),21!=23.
+-open(22):-open(23),box(22),22!=23.
+-open(23):-open(23),box(23),23!=23.
+-open(24):-open(23),box(24),24!=23.
+-open(1):-open(24),box(1),1!=24.
+-open(2):-open(24),box(2),2!=24.
+-open(3):-open(24),box(3),3!=24.
+-open(4):-open(24),box(4),4!=24.
+-open(5):-open(24),box(5),5!=24.
+-open(6):-open(24),box(6),6!=24.
+-open(7):-open(24),box(7),7!=24.
+-open(8):-open(24),box(8),8!=24.
+-open(9):-open(24),box(9),9!=24.
+-open(10):-open(24),box(10),10!=24.
+-open(11):-open(24),box(11),11!=24.
+-open(12):-open(24),box(12),12!=24.
+-open(13):-open(24),box(13),13!=24.
+-open(14):-open(24),box(14),14!=24.
+-open(15):-open(24),box(15),15!=24.
+-open(16):-open(24),box(16),16!=24.
+-open(17):-open(24),box(17),17!=24.
+-open(18):-open(24),box(18),18!=24.
+-open(19):-open(24),box(19),19!=24.
+-open(20):-open(24),box(20),20!=24.
+-open(21):-open(24),box(21),21!=24.
+-open(22):-open(24),box(22),22!=24.
+-open(23):-open(24),box(23),23!=24.
+-open(24):-open(24),box(24),24!=24.
+:-box(1),not open(1),not -open(1).
+:-box(2),not open(2),not -open(2).
+:-box(3),not open(3),not -open(3).
+:-box(4),not open(4),not -open(4).
+:-box(5),not open(5),not -open(5).
+:-box(6),not open(6),not -open(6).
+:-box(7),not open(7),not -open(7).
+:-box(8),not open(8),not -open(8).
+:-box(9),not open(9),not -open(9).
+:-box(10),not open(10),not -open(10).
+:-box(11),not open(11),not -open(11).
+:-box(12),not open(12),not -open(12).
+:-box(13),not open(13),not -open(13).
+:-box(14),not open(14),not -open(14).
+:-box(15),not open(15),not -open(15).
+:-box(16),not open(16),not -open(16).
+:-box(17),not open(17),not -open(17).
+:-box(18),not open(18),not -open(18).
+:-box(19),not open(19),not -open(19).
+:-box(20),not open(20),not -open(20).
+:-box(21),not open(21),not -open(21).
+:-box(22),not open(22),not -open(22).
+:-box(23),not open(23),not -open(23).
+:-box(24),not open(24),not -open(24).
+-has_key(1):-has_key(1),box(1),1!=1.
+-has_key(2):-has_key(1),box(2),2!=1.
+-has_key(3):-has_key(1),box(3),3!=1.
+-has_key(4):-has_key(1),box(4),4!=1.
+-has_key(5):-has_key(1),box(5),5!=1.
+-has_key(6):-has_key(1),box(6),6!=1.
+-has_key(7):-has_key(1),box(7),7!=1.
+-has_key(8):-has_key(1),box(8),8!=1.
+-has_key(9):-has_key(1),box(9),9!=1.
+-has_key(10):-has_key(1),box(10),10!=1.
+-has_key(11):-has_key(1),box(11),11!=1.
+-has_key(12):-has_key(1),box(12),12!=1.
+-has_key(13):-has_key(1),box(13),13!=1.
+-has_key(14):-has_key(1),box(14),14!=1.
+-has_key(15):-has_key(1),box(15),15!=1.
+-has_key(16):-has_key(1),box(16),16!=1.
+-has_key(17):-has_key(1),box(17),17!=1.
+-has_key(18):-has_key(1),box(18),18!=1.
+-has_key(19):-has_key(1),box(19),19!=1.
+-has_key(20):-has_key(1),box(20),20!=1.
+-has_key(21):-has_key(1),box(21),21!=1.
+-has_key(22):-has_key(1),box(22),22!=1.
+-has_key(23):-has_key(1),box(23),23!=1.
+-has_key(24):-has_key(1),box(24),24!=1.
+-has_key(1):-has_key(2),box(1),1!=2.
+-has_key(2):-has_key(2),box(2),2!=2.
+-has_key(3):-has_key(2),box(3),3!=2.
+-has_key(4):-has_key(2),box(4),4!=2.
+-has_key(5):-has_key(2),box(5),5!=2.
+-has_key(6):-has_key(2),box(6),6!=2.
+-has_key(7):-has_key(2),box(7),7!=2.
+-has_key(8):-has_key(2),box(8),8!=2.
+-has_key(9):-has_key(2),box(9),9!=2.
+-has_key(10):-has_key(2),box(10),10!=2.
+-has_key(11):-has_key(2),box(11),11!=2.
+-has_key(12):-has_key(2),box(12),12!=2.
+-has_key(13):-has_key(2),box(13),13!=2.
+-has_key(14):-has_key(2),box(14),14!=2.
+-has_key(15):-has_key(2),box(15),15!=2.
+-has_key(16):-has_key(2),box(16),16!=2.
+-has_key(17):-has_key(2),box(17),17!=2.
+-has_key(18):-has_key(2),box(18),18!=2.
+-has_key(19):-has_key(2),box(19),19!=2.
+-has_key(20):-has_key(2),box(20),20!=2.
+-has_key(21):-has_key(2),box(21),21!=2.
+-has_key(22):-has_key(2),box(22),22!=2.
+-has_key(23):-has_key(2),box(23),23!=2.
+-has_key(24):-has_key(2),box(24),24!=2.
+-has_key(1):-has_key(3),box(1),1!=3.
+-has_key(2):-has_key(3),box(2),2!=3.
+-has_key(3):-has_key(3),box(3),3!=3.
+-has_key(4):-has_key(3),box(4),4!=3.
+-has_key(5):-has_key(3),box(5),5!=3.
+-has_key(6):-has_key(3),box(6),6!=3.
+-has_key(7):-has_key(3),box(7),7!=3.
+-has_key(8):-has_key(3),box(8),8!=3.
+-has_key(9):-has_key(3),box(9),9!=3.
+-has_key(10):-has_key(3),box(10),10!=3.
+-has_key(11):-has_key(3),box(11),11!=3.
+-has_key(12):-has_key(3),box(12),12!=3.
+-has_key(13):-has_key(3),box(13),13!=3.
+-has_key(14):-has_key(3),box(14),14!=3.
+-has_key(15):-has_key(3),box(15),15!=3.
+-has_key(16):-has_key(3),box(16),16!=3.
+-has_key(17):-has_key(3),box(17),17!=3.
+-has_key(18):-has_key(3),box(18),18!=3.
+-has_key(19):-has_key(3),box(19),19!=3.
+-has_key(20):-has_key(3),box(20),20!=3.
+-has_key(21):-has_key(3),box(21),21!=3.
+-has_key(22):-has_key(3),box(22),22!=3.
+-has_key(23):-has_key(3),box(23),23!=3.
+-has_key(24):-has_key(3),box(24),24!=3.
+-has_key(1):-has_key(4),box(1),1!=4.
+-has_key(2):-has_key(4),box(2),2!=4.
+-has_key(3):-has_key(4),box(3),3!=4.
+-has_key(4):-has_key(4),box(4),4!=4.
+-has_key(5):-has_key(4),box(5),5!=4.
+-has_key(6):-has_key(4),box(6),6!=4.
+-has_key(7):-has_key(4),box(7),7!=4.
+-has_key(8):-has_key(4),box(8),8!=4.
+-has_key(9):-has_key(4),box(9),9!=4.
+-has_key(10):-has_key(4),box(10),10!=4.
+-has_key(11):-has_key(4),box(11),11!=4.
+-has_key(12):-has_key(4),box(12),12!=4.
+-has_key(13):-has_key(4),box(13),13!=4.
+-has_key(14):-has_key(4),box(14),14!=4.
+-has_key(15):-has_key(4),box(15),15!=4.
+-has_key(16):-has_key(4),box(16),16!=4.
+-has_key(17):-has_key(4),box(17),17!=4.
+-has_key(18):-has_key(4),box(18),18!=4.
+-has_key(19):-has_key(4),box(19),19!=4.
+-has_key(20):-has_key(4),box(20),20!=4.
+-has_key(21):-has_key(4),box(21),21!=4.
+-has_key(22):-has_key(4),box(22),22!=4.
+-has_key(23):-has_key(4),box(23),23!=4.
+-has_key(24):-has_key(4),box(24),24!=4.
+-has_key(1):-has_key(5),box(1),1!=5.
+-has_key(2):-has_key(5),box(2),2!=5.
+-has_key(3):-has_key(5),box(3),3!=5.
+-has_key(4):-has_key(5),box(4),4!=5.
+-has_key(5):-has_key(5),box(5),5!=5.
+-has_key(6):-has_key(5),box(6),6!=5.
+-has_key(7):-has_key(5),box(7),7!=5.
+-has_key(8):-has_key(5),box(8),8!=5.
+-has_key(9):-has_key(5),box(9),9!=5.
+-has_key(10):-has_key(5),box(10),10!=5.
+-has_key(11):-has_key(5),box(11),11!=5.
+-has_key(12):-has_key(5),box(12),12!=5.
+-has_key(13):-has_key(5),box(13),13!=5.
+-has_key(14):-has_key(5),box(14),14!=5.
+-has_key(15):-has_key(5),box(15),15!=5.
+-has_key(16):-has_key(5),box(16),16!=5.
+-has_key(17):-has_key(5),box(17),17!=5.
+-has_key(18):-has_key(5),box(18),18!=5.
+-has_key(19):-has_key(5),box(19),19!=5.
+-has_key(20):-has_key(5),box(20),20!=5.
+-has_key(21):-has_key(5),box(21),21!=5.
+-has_key(22):-has_key(5),box(22),22!=5.
+-has_key(23):-has_key(5),box(23),23!=5.
+-has_key(24):-has_key(5),box(24),24!=5.
+-has_key(1):-has_key(6),box(1),1!=6.
+-has_key(2):-has_key(6),box(2),2!=6.
+-has_key(3):-has_key(6),box(3),3!=6.
+-has_key(4):-has_key(6),box(4),4!=6.
+-has_key(5):-has_key(6),box(5),5!=6.
+-has_key(6):-has_key(6),box(6),6!=6.
+-has_key(7):-has_key(6),box(7),7!=6.
+-has_key(8):-has_key(6),box(8),8!=6.
+-has_key(9):-has_key(6),box(9),9!=6.
+-has_key(10):-has_key(6),box(10),10!=6.
+-has_key(11):-has_key(6),box(11),11!=6.
+-has_key(12):-has_key(6),box(12),12!=6.
+-has_key(13):-has_key(6),box(13),13!=6.
+-has_key(14):-has_key(6),box(14),14!=6.
+-has_key(15):-has_key(6),box(15),15!=6.
+-has_key(16):-has_key(6),box(16),16!=6.
+-has_key(17):-has_key(6),box(17),17!=6.
+-has_key(18):-has_key(6),box(18),18!=6.
+-has_key(19):-has_key(6),box(19),19!=6.
+-has_key(20):-has_key(6),box(20),20!=6.
+-has_key(21):-has_key(6),box(21),21!=6.
+-has_key(22):-has_key(6),box(22),22!=6.
+-has_key(23):-has_key(6),box(23),23!=6.
+-has_key(24):-has_key(6),box(24),24!=6.
+-has_key(1):-has_key(7),box(1),1!=7.
+-has_key(2):-has_key(7),box(2),2!=7.
+-has_key(3):-has_key(7),box(3),3!=7.
+-has_key(4):-has_key(7),box(4),4!=7.
+-has_key(5):-has_key(7),box(5),5!=7.
+-has_key(6):-has_key(7),box(6),6!=7.
+-has_key(7):-has_key(7),box(7),7!=7.
+-has_key(8):-has_key(7),box(8),8!=7.
+-has_key(9):-has_key(7),box(9),9!=7.
+-has_key(10):-has_key(7),box(10),10!=7.
+-has_key(11):-has_key(7),box(11),11!=7.
+-has_key(12):-has_key(7),box(12),12!=7.
+-has_key(13):-has_key(7),box(13),13!=7.
+-has_key(14):-has_key(7),box(14),14!=7.
+-has_key(15):-has_key(7),box(15),15!=7.
+-has_key(16):-has_key(7),box(16),16!=7.
+-has_key(17):-has_key(7),box(17),17!=7.
+-has_key(18):-has_key(7),box(18),18!=7.
+-has_key(19):-has_key(7),box(19),19!=7.
+-has_key(20):-has_key(7),box(20),20!=7.
+-has_key(21):-has_key(7),box(21),21!=7.
+-has_key(22):-has_key(7),box(22),22!=7.
+-has_key(23):-has_key(7),box(23),23!=7.
+-has_key(24):-has_key(7),box(24),24!=7.
+-has_key(1):-has_key(8),box(1),1!=8.
+-has_key(2):-has_key(8),box(2),2!=8.
+-has_key(3):-has_key(8),box(3),3!=8.
+-has_key(4):-has_key(8),box(4),4!=8.
+-has_key(5):-has_key(8),box(5),5!=8.
+-has_key(6):-has_key(8),box(6),6!=8.
+-has_key(7):-has_key(8),box(7),7!=8.
+-has_key(8):-has_key(8),box(8),8!=8.
+-has_key(9):-has_key(8),box(9),9!=8.
+-has_key(10):-has_key(8),box(10),10!=8.
+-has_key(11):-has_key(8),box(11),11!=8.
+-has_key(12):-has_key(8),box(12),12!=8.
+-has_key(13):-has_key(8),box(13),13!=8.
+-has_key(14):-has_key(8),box(14),14!=8.
+-has_key(15):-has_key(8),box(15),15!=8.
+-has_key(16):-has_key(8),box(16),16!=8.
+-has_key(17):-has_key(8),box(17),17!=8.
+-has_key(18):-has_key(8),box(18),18!=8.
+-has_key(19):-has_key(8),box(19),19!=8.
+-has_key(20):-has_key(8),box(20),20!=8.
+-has_key(21):-has_key(8),box(21),21!=8.
+-has_key(22):-has_key(8),box(22),22!=8.
+-has_key(23):-has_key(8),box(23),23!=8.
+-has_key(24):-has_key(8),box(24),24!=8.
+-has_key(1):-has_key(9),box(1),1!=9.
+-has_key(2):-has_key(9),box(2),2!=9.
+-has_key(3):-has_key(9),box(3),3!=9.
+-has_key(4):-has_key(9),box(4),4!=9.
+-has_key(5):-has_key(9),box(5),5!=9.
+-has_key(6):-has_key(9),box(6),6!=9.
+-has_key(7):-has_key(9),box(7),7!=9.
+-has_key(8):-has_key(9),box(8),8!=9.
+-has_key(9):-has_key(9),box(9),9!=9.
+-has_key(10):-has_key(9),box(10),10!=9.
+-has_key(11):-has_key(9),box(11),11!=9.
+-has_key(12):-has_key(9),box(12),12!=9.
+-has_key(13):-has_key(9),box(13),13!=9.
+-has_key(14):-has_key(9),box(14),14!=9.
+-has_key(15):-has_key(9),box(15),15!=9.
+-has_key(16):-has_key(9),box(16),16!=9.
+-has_key(17):-has_key(9),box(17),17!=9.
+-has_key(18):-has_key(9),box(18),18!=9.
+-has_key(19):-has_key(9),box(19),19!=9.
+-has_key(20):-has_key(9),box(20),20!=9.
+-has_key(21):-has_key(9),box(21),21!=9.
+-has_key(22):-has_key(9),box(22),22!=9.
+-has_key(23):-has_key(9),box(23),23!=9.
+-has_key(24):-has_key(9),box(24),24!=9.
+-has_key(1):-has_key(10),box(1),1!=10.
+-has_key(2):-has_key(10),box(2),2!=10.
+-has_key(3):-has_key(10),box(3),3!=10.
+-has_key(4):-has_key(10),box(4),4!=10.
+-has_key(5):-has_key(10),box(5),5!=10.
+-has_key(6):-has_key(10),box(6),6!=10.
+-has_key(7):-has_key(10),box(7),7!=10.
+-has_key(8):-has_key(10),box(8),8!=10.
+-has_key(9):-has_key(10),box(9),9!=10.
+-has_key(10):-has_key(10),box(10),10!=10.
+-has_key(11):-has_key(10),box(11),11!=10.
+-has_key(12):-has_key(10),box(12),12!=10.
+-has_key(13):-has_key(10),box(13),13!=10.
+-has_key(14):-has_key(10),box(14),14!=10.
+-has_key(15):-has_key(10),box(15),15!=10.
+-has_key(16):-has_key(10),box(16),16!=10.
+-has_key(17):-has_key(10),box(17),17!=10.
+-has_key(18):-has_key(10),box(18),18!=10.
+-has_key(19):-has_key(10),box(19),19!=10.
+-has_key(20):-has_key(10),box(20),20!=10.
+-has_key(21):-has_key(10),box(21),21!=10.
+-has_key(22):-has_key(10),box(22),22!=10.
+-has_key(23):-has_key(10),box(23),23!=10.
+-has_key(24):-has_key(10),box(24),24!=10.
+-has_key(1):-has_key(11),box(1),1!=11.
+-has_key(2):-has_key(11),box(2),2!=11.
+-has_key(3):-has_key(11),box(3),3!=11.
+-has_key(4):-has_key(11),box(4),4!=11.
+-has_key(5):-has_key(11),box(5),5!=11.
+-has_key(6):-has_key(11),box(6),6!=11.
+-has_key(7):-has_key(11),box(7),7!=11.
+-has_key(8):-has_key(11),box(8),8!=11.
+-has_key(9):-has_key(11),box(9),9!=11.
+-has_key(10):-has_key(11),box(10),10!=11.
+-has_key(11):-has_key(11),box(11),11!=11.
+-has_key(12):-has_key(11),box(12),12!=11.
+-has_key(13):-has_key(11),box(13),13!=11.
+-has_key(14):-has_key(11),box(14),14!=11.
+-has_key(15):-has_key(11),box(15),15!=11.
+-has_key(16):-has_key(11),box(16),16!=11.
+-has_key(17):-has_key(11),box(17),17!=11.
+-has_key(18):-has_key(11),box(18),18!=11.
+-has_key(19):-has_key(11),box(19),19!=11.
+-has_key(20):-has_key(11),box(20),20!=11.
+-has_key(21):-has_key(11),box(21),21!=11.
+-has_key(22):-has_key(11),box(22),22!=11.
+-has_key(23):-has_key(11),box(23),23!=11.
+-has_key(24):-has_key(11),box(24),24!=11.
+-has_key(1):-has_key(12),box(1),1!=12.
+-has_key(2):-has_key(12),box(2),2!=12.
+-has_key(3):-has_key(12),box(3),3!=12.
+-has_key(4):-has_key(12),box(4),4!=12.
+-has_key(5):-has_key(12),box(5),5!=12.
+-has_key(6):-has_key(12),box(6),6!=12.
+-has_key(7):-has_key(12),box(7),7!=12.
+-has_key(8):-has_key(12),box(8),8!=12.
+-has_key(9):-has_key(12),box(9),9!=12.
+-has_key(10):-has_key(12),box(10),10!=12.
+-has_key(11):-has_key(12),box(11),11!=12.
+-has_key(12):-has_key(12),box(12),12!=12.
+-has_key(13):-has_key(12),box(13),13!=12.
+-has_key(14):-has_key(12),box(14),14!=12.
+-has_key(15):-has_key(12),box(15),15!=12.
+-has_key(16):-has_key(12),box(16),16!=12.
+-has_key(17):-has_key(12),box(17),17!=12.
+-has_key(18):-has_key(12),box(18),18!=12.
+-has_key(19):-has_key(12),box(19),19!=12.
+-has_key(20):-has_key(12),box(20),20!=12.
+-has_key(21):-has_key(12),box(21),21!=12.
+-has_key(22):-has_key(12),box(22),22!=12.
+-has_key(23):-has_key(12),box(23),23!=12.
+-has_key(24):-has_key(12),box(24),24!=12.
+-has_key(1):-has_key(13),box(1),1!=13.
+-has_key(2):-has_key(13),box(2),2!=13.
+-has_key(3):-has_key(13),box(3),3!=13.
+-has_key(4):-has_key(13),box(4),4!=13.
+-has_key(5):-has_key(13),box(5),5!=13.
+-has_key(6):-has_key(13),box(6),6!=13.
+-has_key(7):-has_key(13),box(7),7!=13.
+-has_key(8):-has_key(13),box(8),8!=13.
+-has_key(9):-has_key(13),box(9),9!=13.
+-has_key(10):-has_key(13),box(10),10!=13.
+-has_key(11):-has_key(13),box(11),11!=13.
+-has_key(12):-has_key(13),box(12),12!=13.
+-has_key(13):-has_key(13),box(13),13!=13.
+-has_key(14):-has_key(13),box(14),14!=13.
+-has_key(15):-has_key(13),box(15),15!=13.
+-has_key(16):-has_key(13),box(16),16!=13.
+-has_key(17):-has_key(13),box(17),17!=13.
+-has_key(18):-has_key(13),box(18),18!=13.
+-has_key(19):-has_key(13),box(19),19!=13.
+-has_key(20):-has_key(13),box(20),20!=13.
+-has_key(21):-has_key(13),box(21),21!=13.
+-has_key(22):-has_key(13),box(22),22!=13.
+-has_key(23):-has_key(13),box(23),23!=13.
+-has_key(24):-has_key(13),box(24),24!=13.
+-has_key(1):-has_key(14),box(1),1!=14.
+-has_key(2):-has_key(14),box(2),2!=14.
+-has_key(3):-has_key(14),box(3),3!=14.
+-has_key(4):-has_key(14),box(4),4!=14.
+-has_key(5):-has_key(14),box(5),5!=14.
+-has_key(6):-has_key(14),box(6),6!=14.
+-has_key(7):-has_key(14),box(7),7!=14.
+-has_key(8):-has_key(14),box(8),8!=14.
+-has_key(9):-has_key(14),box(9),9!=14.
+-has_key(10):-has_key(14),box(10),10!=14.
+-has_key(11):-has_key(14),box(11),11!=14.
+-has_key(12):-has_key(14),box(12),12!=14.
+-has_key(13):-has_key(14),box(13),13!=14.
+-has_key(14):-has_key(14),box(14),14!=14.
+-has_key(15):-has_key(14),box(15),15!=14.
+-has_key(16):-has_key(14),box(16),16!=14.
+-has_key(17):-has_key(14),box(17),17!=14.
+-has_key(18):-has_key(14),box(18),18!=14.
+-has_key(19):-has_key(14),box(19),19!=14.
+-has_key(20):-has_key(14),box(20),20!=14.
+-has_key(21):-has_key(14),box(21),21!=14.
+-has_key(22):-has_key(14),box(22),22!=14.
+-has_key(23):-has_key(14),box(23),23!=14.
+-has_key(24):-has_key(14),box(24),24!=14.
+-has_key(1):-has_key(15),box(1),1!=15.
+-has_key(2):-has_key(15),box(2),2!=15.
+-has_key(3):-has_key(15),box(3),3!=15.
+-has_key(4):-has_key(15),box(4),4!=15.
+-has_key(5):-has_key(15),box(5),5!=15.
+-has_key(6):-has_key(15),box(6),6!=15.
+-has_key(7):-has_key(15),box(7),7!=15.
+-has_key(8):-has_key(15),box(8),8!=15.
+-has_key(9):-has_key(15),box(9),9!=15.
+-has_key(10):-has_key(15),box(10),10!=15.
+-has_key(11):-has_key(15),box(11),11!=15.
+-has_key(12):-has_key(15),box(12),12!=15.
+-has_key(13):-has_key(15),box(13),13!=15.
+-has_key(14):-has_key(15),box(14),14!=15.
+-has_key(15):-has_key(15),box(15),15!=15.
+-has_key(16):-has_key(15),box(16),16!=15.
+-has_key(17):-has_key(15),box(17),17!=15.
+-has_key(18):-has_key(15),box(18),18!=15.
+-has_key(19):-has_key(15),box(19),19!=15.
+-has_key(20):-has_key(15),box(20),20!=15.
+-has_key(21):-has_key(15),box(21),21!=15.
+-has_key(22):-has_key(15),box(22),22!=15.
+-has_key(23):-has_key(15),box(23),23!=15.
+-has_key(24):-has_key(15),box(24),24!=15.
+-has_key(1):-has_key(16),box(1),1!=16.
+-has_key(2):-has_key(16),box(2),2!=16.
+-has_key(3):-has_key(16),box(3),3!=16.
+-has_key(4):-has_key(16),box(4),4!=16.
+-has_key(5):-has_key(16),box(5),5!=16.
+-has_key(6):-has_key(16),box(6),6!=16.
+-has_key(7):-has_key(16),box(7),7!=16.
+-has_key(8):-has_key(16),box(8),8!=16.
+-has_key(9):-has_key(16),box(9),9!=16.
+-has_key(10):-has_key(16),box(10),10!=16.
+-has_key(11):-has_key(16),box(11),11!=16.
+-has_key(12):-has_key(16),box(12),12!=16.
+-has_key(13):-has_key(16),box(13),13!=16.
+-has_key(14):-has_key(16),box(14),14!=16.
+-has_key(15):-has_key(16),box(15),15!=16.
+-has_key(16):-has_key(16),box(16),16!=16.
+-has_key(17):-has_key(16),box(17),17!=16.
+-has_key(18):-has_key(16),box(18),18!=16.
+-has_key(19):-has_key(16),box(19),19!=16.
+-has_key(20):-has_key(16),box(20),20!=16.
+-has_key(21):-has_key(16),box(21),21!=16.
+-has_key(22):-has_key(16),box(22),22!=16.
+-has_key(23):-has_key(16),box(23),23!=16.
+-has_key(24):-has_key(16),box(24),24!=16.
+-has_key(1):-has_key(17),box(1),1!=17.
+-has_key(2):-has_key(17),box(2),2!=17.
+-has_key(3):-has_key(17),box(3),3!=17.
+-has_key(4):-has_key(17),box(4),4!=17.
+-has_key(5):-has_key(17),box(5),5!=17.
+-has_key(6):-has_key(17),box(6),6!=17.
+-has_key(7):-has_key(17),box(7),7!=17.
+-has_key(8):-has_key(17),box(8),8!=17.
+-has_key(9):-has_key(17),box(9),9!=17.
+-has_key(10):-has_key(17),box(10),10!=17.
+-has_key(11):-has_key(17),box(11),11!=17.
+-has_key(12):-has_key(17),box(12),12!=17.
+-has_key(13):-has_key(17),box(13),13!=17.
+-has_key(14):-has_key(17),box(14),14!=17.
+-has_key(15):-has_key(17),box(15),15!=17.
+-has_key(16):-has_key(17),box(16),16!=17.
+-has_key(17):-has_key(17),box(17),17!=17.
+-has_key(18):-has_key(17),box(18),18!=17.
+-has_key(19):-has_key(17),box(19),19!=17.
+-has_key(20):-has_key(17),box(20),20!=17.
+-has_key(21):-has_key(17),box(21),21!=17.
+-has_key(22):-has_key(17),box(22),22!=17.
+-has_key(23):-has_key(17),box(23),23!=17.
+-has_key(24):-has_key(17),box(24),24!=17.
+-has_key(1):-has_key(18),box(1),1!=18.
+-has_key(2):-has_key(18),box(2),2!=18.
+-has_key(3):-has_key(18),box(3),3!=18.
+-has_key(4):-has_key(18),box(4),4!=18.
+-has_key(5):-has_key(18),box(5),5!=18.
+-has_key(6):-has_key(18),box(6),6!=18.
+-has_key(7):-has_key(18),box(7),7!=18.
+-has_key(8):-has_key(18),box(8),8!=18.
+-has_key(9):-has_key(18),box(9),9!=18.
+-has_key(10):-has_key(18),box(10),10!=18.
+-has_key(11):-has_key(18),box(11),11!=18.
+-has_key(12):-has_key(18),box(12),12!=18.
+-has_key(13):-has_key(18),box(13),13!=18.
+-has_key(14):-has_key(18),box(14),14!=18.
+-has_key(15):-has_key(18),box(15),15!=18.
+-has_key(16):-has_key(18),box(16),16!=18.
+-has_key(17):-has_key(18),box(17),17!=18.
+-has_key(18):-has_key(18),box(18),18!=18.
+-has_key(19):-has_key(18),box(19),19!=18.
+-has_key(20):-has_key(18),box(20),20!=18.
+-has_key(21):-has_key(18),box(21),21!=18.
+-has_key(22):-has_key(18),box(22),22!=18.
+-has_key(23):-has_key(18),box(23),23!=18.
+-has_key(24):-has_key(18),box(24),24!=18.
+-has_key(1):-has_key(19),box(1),1!=19.
+-has_key(2):-has_key(19),box(2),2!=19.
+-has_key(3):-has_key(19),box(3),3!=19.
+-has_key(4):-has_key(19),box(4),4!=19.
+-has_key(5):-has_key(19),box(5),5!=19.
+-has_key(6):-has_key(19),box(6),6!=19.
+-has_key(7):-has_key(19),box(7),7!=19.
+-has_key(8):-has_key(19),box(8),8!=19.
+-has_key(9):-has_key(19),box(9),9!=19.
+-has_key(10):-has_key(19),box(10),10!=19.
+-has_key(11):-has_key(19),box(11),11!=19.
+-has_key(12):-has_key(19),box(12),12!=19.
+-has_key(13):-has_key(19),box(13),13!=19.
+-has_key(14):-has_key(19),box(14),14!=19.
+-has_key(15):-has_key(19),box(15),15!=19.
+-has_key(16):-has_key(19),box(16),16!=19.
+-has_key(17):-has_key(19),box(17),17!=19.
+-has_key(18):-has_key(19),box(18),18!=19.
+-has_key(19):-has_key(19),box(19),19!=19.
+-has_key(20):-has_key(19),box(20),20!=19.
+-has_key(21):-has_key(19),box(21),21!=19.
+-has_key(22):-has_key(19),box(22),22!=19.
+-has_key(23):-has_key(19),box(23),23!=19.
+-has_key(24):-has_key(19),box(24),24!=19.
+-has_key(1):-has_key(20),box(1),1!=20.
+-has_key(2):-has_key(20),box(2),2!=20.
+-has_key(3):-has_key(20),box(3),3!=20.
+-has_key(4):-has_key(20),box(4),4!=20.
+-has_key(5):-has_key(20),box(5),5!=20.
+-has_key(6):-has_key(20),box(6),6!=20.
+-has_key(7):-has_key(20),box(7),7!=20.
+-has_key(8):-has_key(20),box(8),8!=20.
+-has_key(9):-has_key(20),box(9),9!=20.
+-has_key(10):-has_key(20),box(10),10!=20.
+-has_key(11):-has_key(20),box(11),11!=20.
+-has_key(12):-has_key(20),box(12),12!=20.
+-has_key(13):-has_key(20),box(13),13!=20.
+-has_key(14):-has_key(20),box(14),14!=20.
+-has_key(15):-has_key(20),box(15),15!=20.
+-has_key(16):-has_key(20),box(16),16!=20.
+-has_key(17):-has_key(20),box(17),17!=20.
+-has_key(18):-has_key(20),box(18),18!=20.
+-has_key(19):-has_key(20),box(19),19!=20.
+-has_key(20):-has_key(20),box(20),20!=20.
+-has_key(21):-has_key(20),box(21),21!=20.
+-has_key(22):-has_key(20),box(22),22!=20.
+-has_key(23):-has_key(20),box(23),23!=20.
+-has_key(24):-has_key(20),box(24),24!=20.
+-has_key(1):-has_key(21),box(1),1!=21.
+-has_key(2):-has_key(21),box(2),2!=21.
+-has_key(3):-has_key(21),box(3),3!=21.
+-has_key(4):-has_key(21),box(4),4!=21.
+-has_key(5):-has_key(21),box(5),5!=21.
+-has_key(6):-has_key(21),box(6),6!=21.
+-has_key(7):-has_key(21),box(7),7!=21.
+-has_key(8):-has_key(21),box(8),8!=21.
+-has_key(9):-has_key(21),box(9),9!=21.
+-has_key(10):-has_key(21),box(10),10!=21.
+-has_key(11):-has_key(21),box(11),11!=21.
+-has_key(12):-has_key(21),box(12),12!=21.
+-has_key(13):-has_key(21),box(13),13!=21.
+-has_key(14):-has_key(21),box(14),14!=21.
+-has_key(15):-has_key(21),box(15),15!=21.
+-has_key(16):-has_key(21),box(16),16!=21.
+-has_key(17):-has_key(21),box(17),17!=21.
+-has_key(18):-has_key(21),box(18),18!=21.
+-has_key(19):-has_key(21),box(19),19!=21.
+-has_key(20):-has_key(21),box(20),20!=21.
+-has_key(21):-has_key(21),box(21),21!=21.
+-has_key(22):-has_key(21),box(22),22!=21.
+-has_key(23):-has_key(21),box(23),23!=21.
+-has_key(24):-has_key(21),box(24),24!=21.
+-has_key(1):-has_key(22),box(1),1!=22.
+-has_key(2):-has_key(22),box(2),2!=22.
+-has_key(3):-has_key(22),box(3),3!=22.
+-has_key(4):-has_key(22),box(4),4!=22.
+-has_key(5):-has_key(22),box(5),5!=22.
+-has_key(6):-has_key(22),box(6),6!=22.
+-has_key(7):-has_key(22),box(7),7!=22.
+-has_key(8):-has_key(22),box(8),8!=22.
+-has_key(9):-has_key(22),box(9),9!=22.
+-has_key(10):-has_key(22),box(10),10!=22.
+-has_key(11):-has_key(22),box(11),11!=22.
+-has_key(12):-has_key(22),box(12),12!=22.
+-has_key(13):-has_key(22),box(13),13!=22.
+-has_key(14):-has_key(22),box(14),14!=22.
+-has_key(15):-has_key(22),box(15),15!=22.
+-has_key(16):-has_key(22),box(16),16!=22.
+-has_key(17):-has_key(22),box(17),17!=22.
+-has_key(18):-has_key(22),box(18),18!=22.
+-has_key(19):-has_key(22),box(19),19!=22.
+-has_key(20):-has_key(22),box(20),20!=22.
+-has_key(21):-has_key(22),box(21),21!=22.
+-has_key(22):-has_key(22),box(22),22!=22.
+-has_key(23):-has_key(22),box(23),23!=22.
+-has_key(24):-has_key(22),box(24),24!=22.
+-has_key(1):-has_key(23),box(1),1!=23.
+-has_key(2):-has_key(23),box(2),2!=23.
+-has_key(3):-has_key(23),box(3),3!=23.
+-has_key(4):-has_key(23),box(4),4!=23.
+-has_key(5):-has_key(23),box(5),5!=23.
+-has_key(6):-has_key(23),box(6),6!=23.
+-has_key(7):-has_key(23),box(7),7!=23.
+-has_key(8):-has_key(23),box(8),8!=23.
+-has_key(9):-has_key(23),box(9),9!=23.
+-has_key(10):-has_key(23),box(10),10!=23.
+-has_key(11):-has_key(23),box(11),11!=23.
+-has_key(12):-has_key(23),box(12),12!=23.
+-has_key(13):-has_key(23),box(13),13!=23.
+-has_key(14):-has_key(23),box(14),14!=23.
+-has_key(15):-has_key(23),box(15),15!=23.
+-has_key(16):-has_key(23),box(16),16!=23.
+-has_key(17):-has_key(23),box(17),17!=23.
+-has_key(18):-has_key(23),box(18),18!=23.
+-has_key(19):-has_key(23),box(19),19!=23.
+-has_key(20):-has_key(23),box(20),20!=23.
+-has_key(21):-has_key(23),box(21),21!=23.
+-has_key(22):-has_key(23),box(22),22!=23.
+-has_key(23):-has_key(23),box(23),23!=23.
+-has_key(24):-has_key(23),box(24),24!=23.
+-has_key(1):-has_key(24),box(1),1!=24.
+-has_key(2):-has_key(24),box(2),2!=24.
+-has_key(3):-has_key(24),box(3),3!=24.
+-has_key(4):-has_key(24),box(4),4!=24.
+-has_key(5):-has_key(24),box(5),5!=24.
+-has_key(6):-has_key(24),box(6),6!=24.
+-has_key(7):-has_key(24),box(7),7!=24.
+-has_key(8):-has_key(24),box(8),8!=24.
+-has_key(9):-has_key(24),box(9),9!=24.
+-has_key(10):-has_key(24),box(10),10!=24.
+-has_key(11):-has_key(24),box(11),11!=24.
+-has_key(12):-has_key(24),box(12),12!=24.
+-has_key(13):-has_key(24),box(13),13!=24.
+-has_key(14):-has_key(24),box(14),14!=24.
+-has_key(15):-has_key(24),box(15),15!=24.
+-has_key(16):-has_key(24),box(16),16!=24.
+-has_key(17):-has_key(24),box(17),17!=24.
+-has_key(18):-has_key(24),box(18),18!=24.
+-has_key(19):-has_key(24),box(19),19!=24.
+-has_key(20):-has_key(24),box(20),20!=24.
+-has_key(21):-has_key(24),box(21),21!=24.
+-has_key(22):-has_key(24),box(22),22!=24.
+-has_key(23):-has_key(24),box(23),23!=24.
+-has_key(24):-has_key(24),box(24),24!=24.
+:-box(1),not has_key(1),not -has_key(1).
+:-box(2),not has_key(2),not -has_key(2).
+:-box(3),not has_key(3),not -has_key(3).
+:-box(4),not has_key(4),not -has_key(4).
+:-box(5),not has_key(5),not -has_key(5).
+:-box(6),not has_key(6),not -has_key(6).
+:-box(7),not has_key(7),not -has_key(7).
+:-box(8),not has_key(8),not -has_key(8).
+:-box(9),not has_key(9),not -has_key(9).
+:-box(10),not has_key(10),not -has_key(10).
+:-box(11),not has_key(11),not -has_key(11).
+:-box(12),not has_key(12),not -has_key(12).
+:-box(13),not has_key(13),not -has_key(13).
+:-box(14),not has_key(14),not -has_key(14).
+:-box(15),not has_key(15),not -has_key(15).
+:-box(16),not has_key(16),not -has_key(16).
+:-box(17),not has_key(17),not -has_key(17).
+:-box(18),not has_key(18),not -has_key(18).
+:-box(19),not has_key(19),not -has_key(19).
+:-box(20),not has_key(20),not -has_key(20).
+:-box(21),not has_key(21),not -has_key(21).
+:-box(22),not has_key(22),not -has_key(22).
+:-box(23),not has_key(23),not -has_key(23).
+:-box(24),not has_key(24),not -has_key(24).
+box(1).
+box(2).
+box(3).
+box(4).
+box(5).
+box(6).
+box(7).
+box(8).
+box(9).
+box(10).
+box(11).
+box(12).
+box(13).
+box(14).
+box(15).
+box(16).
+box(17).
+box(18).
+box(19).
+box(20).
+box(21).
+box(22).
+box(23).
+box(24).
+kse_solve_trick.  
+:~ kse_solve_trick. [1@1]
+:~ kse_solve_trick. [1@2]
+
+#showselect/1.
+#showhas_key/1.
+#showopen/1.
+#showwin_stay/0.
+#showswitch/1.
+#showwin_switch/0.
