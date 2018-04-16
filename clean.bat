@@ -1,0 +1,2 @@
+del *.tmp;
+del *.lp;
