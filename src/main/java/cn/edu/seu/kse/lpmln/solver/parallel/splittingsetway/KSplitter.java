@@ -19,7 +19,7 @@ public class KSplitter extends Splitter{
     private Map<String,Set<String>> dependency;
     private Set<String> programLiterals;
     private List<DecisionUnit> mdus;
-    private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.LIT;
+    private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.SPLIT_LIT;
     private Comparator<DecisionUnit> comparatorLit = new Comparator<DecisionUnit>() {
         @Override
         public int compare(DecisionUnit o1, DecisionUnit o2) {
@@ -138,10 +138,10 @@ public class KSplitter extends Splitter{
 
     private void generateU(){
         switch (policy){
-            case BOT:
+            case SPLIT_BOT:
                 generateUBot();
                 break;
-            case LIT:
+            case SPLIT_LIT:
             default:
                 generateULit();
                 break;

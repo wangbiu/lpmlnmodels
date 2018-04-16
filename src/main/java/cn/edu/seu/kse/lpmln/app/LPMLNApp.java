@@ -23,9 +23,9 @@ import java.util.UUID;
 
 import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_HEURISTIC;
 import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_RANDOM;
-import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.BOT;
-import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.LIT;
-import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.ORIGINAL;
+import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_BOT;
+import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_LIT;
+import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_ORIGINAL;
 
 /**
  * Created by 王彬 on 2016/10/14.
@@ -203,13 +203,13 @@ public class LPMLNApp {
                             String[] param = external.split(",");
                             switch (param[0]){
                                 case "o":
-                                    ((SplittingSolver) solver).setPolicy(ORIGINAL);
+                                    ((SplittingSolver) solver).setPolicy(SPLIT_ORIGINAL);
                                     break;
                                 case "l":
-                                    ((SplittingSolver) solver).setPolicy(LIT);
+                                    ((SplittingSolver) solver).setPolicy(SPLIT_LIT);
                                     break;
                                 case "b":
-                                    ((SplittingSolver) solver).setPolicy(BOT);
+                                    ((SplittingSolver) solver).setPolicy(SPLIT_BOT);
                                     break;
                                 default:
                                     break;
