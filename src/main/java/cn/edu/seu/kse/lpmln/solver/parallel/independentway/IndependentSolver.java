@@ -44,6 +44,7 @@ public class IndependentSolver extends LPMLNBaseSolver{
             subprograms.add(program);
         }
         logger.info("IndependentSolver into {} subprograms.",subprograms.size());
+        solvers.clear();
         subprograms.forEach(subprogram -> {
             //TODO:使用反射创建
             LPMLNSolver solver = chooseSolver(arch);
@@ -87,7 +88,7 @@ public class IndependentSolver extends LPMLNBaseSolver{
             if(subWeightedAs.get(0).size()==0){
                 throw new SolveException("IndependentSolver no stable model.");
             }
-            WeightedAnswerSet realAnswerSet = subWeightedAs.get(0).get(permutation[0]).clone();
+            WeightedAnswerSet realAnswerSet = meta.clone();
             for(int i=0;i<permutation.length;i++){
                 if(!merge(realAnswerSet,subWeightedAs.get(i).get(permutation[i]))){
                     throw new SolveException("IndependentSolver merge fail");
