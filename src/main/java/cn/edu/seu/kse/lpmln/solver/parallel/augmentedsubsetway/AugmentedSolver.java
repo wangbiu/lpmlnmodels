@@ -59,6 +59,7 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         augmentedSubsets = partitioner.partition(program,threadNums);
 
         solveTime.start();
+        subsetSolvers.clear();
         //增强子集求解
         augmentedSubsets.forEach(subset -> {
             AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver(subset);

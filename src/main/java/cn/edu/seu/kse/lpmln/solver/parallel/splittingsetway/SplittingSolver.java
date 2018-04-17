@@ -70,6 +70,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         List<WeightedAnswerSet> Xs = bottomSolver.solveProgram(bottom);
 
         System.out.println("Bottom:"+Xs.size());
+        topSolvers.clear();
         // 3. 并行求Partial Evaluation
         Xs.forEach(AS -> {
             PESolver solver = new PESolver(top.clone(), U, AS,arch);
