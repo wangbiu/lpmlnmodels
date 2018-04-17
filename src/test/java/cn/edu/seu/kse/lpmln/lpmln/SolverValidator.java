@@ -40,6 +40,7 @@ public class SolverValidator {
                 assert ans2.get(k).equals(v);
             });
         }catch (AssertionError assertionError){
+            System.out.println("test file: "+filepath);
             System.out.println("toValidate.getAllWeightedAs().size(): "+toValidate.getAllWeightedAs().size());
             System.out.println("basesolver.getAllWeightedAs().size(): "+basesolver.getAllWeightedAs().size());
             System.out.println("ans1.size(): "+ans1.size());
