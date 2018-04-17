@@ -32,7 +32,7 @@ public class FileHelper {
     }
 
     public static File randomFile(){
-        return new File(UUID.randomUUID()+".tmp");
+        return new File("/lpmlnmodels/tmp/"+UUID.randomUUID()+".tmp");
     }
 
     /**
@@ -41,11 +41,11 @@ public class FileHelper {
      * @param out 要写的内容
      */
     public static void writeFile(File file, String out){
+        tempFiles.add(file);
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+        }
         try(BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"))){
-            tempFiles.add(file);
-            if(!file.exists()){
-                file.getParentFile().mkdirs();
-            }
             bw.write(out);
         } catch (IOException e) {
             e.printStackTrace();
