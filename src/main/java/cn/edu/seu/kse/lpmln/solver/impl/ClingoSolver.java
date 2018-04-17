@@ -21,12 +21,13 @@ public class ClingoSolver implements AspSolver {
     public LpmlnThreadPool threadPool;
 
     public ClingoSolver() {
-        threadPool = new LpmlnThreadPool(THREAD_NAME);
-        acmd = new AdvancedCommandLine(threadPool);
+
     }
 
     @Override
     public List<WeightedAnswerSet> solve(File file) {
+        threadPool = new LpmlnThreadPool(THREAD_NAME);
+        acmd = new AdvancedCommandLine(threadPool);
         String cmd = null;
         List<WeightedAnswerSet> result;
         try {
