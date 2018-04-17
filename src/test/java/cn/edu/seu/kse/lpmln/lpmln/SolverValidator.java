@@ -28,8 +28,8 @@ public class SolverValidator {
 
     public boolean validate(String filepath){
         File testFile = new File(filepath);
-        toValidate.solve(testFile);
         basesolver.solve(testFile);
+        toValidate.solve(testFile);
         Map<String,String> ans1 = getMPL(basesolver);
         Map<String,String> ans2 = getMPL(toValidate);
         try {
@@ -63,6 +63,7 @@ public class SolverValidator {
                 ans.put(lit[0],df.format(Double.valueOf(lit[1])));
             }
         }catch (AssertionError assertionError){
+            System.out.println(solver.getClass().getSimpleName());
             if(lit==null){
                 System.out.println("lit==null.");
             }else{

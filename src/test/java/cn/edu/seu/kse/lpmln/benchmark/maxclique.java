@@ -11,8 +11,8 @@ import java.util.Random;
  * @date 2018/4/6
  */
 public class maxclique {
-    private static final int end=200;
-    private static final int start=10;
+    private static final int end=60;
+    private static final int start=1;
     private static final String basePath = "/lpmlnexperiment/benchmark/maxclique/";
     private static final Random rand = new Random();
     private static final double density = 0.5;

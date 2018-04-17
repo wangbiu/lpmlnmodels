@@ -10,9 +10,9 @@ import java.io.File;
  * @date 2018/4/5
  */
 public class fireDir {
-    private static final int startX = 3;
+    private static final int startX = 1;
     private static final int endX = 8;
-    private static final int startY = 3;
+    private static final int startY = 1;
     private static final int endY = 8;
     private static final String basePath = "/lpmlnexperiment/benchmark/fireDir/";
 

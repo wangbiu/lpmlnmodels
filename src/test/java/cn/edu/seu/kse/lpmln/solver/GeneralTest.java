@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.lpmln.SolverValidator;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNHybridSolver;
@@ -18,19 +19,22 @@ import java.util.List;
  * @date 2018/4/16
  */
 public class GeneralTest {
-    public String[] filePaths = {"./src/test/resources/benchmark/bird/b-3.txt",
+    public String[] filePaths = {
+            "./src/test/resources/benchmark/bird/b-3.txt",
             "./src/test/resources/benchmark/fire/fire_3_3.lp",
             "./src/test/resources/benchmark/fireDir/fireDir_2_2.lp",
             "./src/test/resources/benchmark/hat/hat_5.lp",
-            "./src/test/resources/benchmark/maxclique/maxclique_10.lp",
+            "./src/test/resources/benchmark/maxclique/maxclique_4.lp",
             "./src/test/resources/benchmark/monty_hall/m-4.txt",
-            "./src/test/resources/benchmark/bird/b-3.txt"};
+            "./src/test/resources/benchmark/tsp/tsp_3.lp"
+    };
     public List<LPMLNSolver> toCheck = new ArrayList<>();
     public List<String> testFilePaths;
     public LPMLNSolver base = new LPMLNBaseSolver();
 
     @Before
     public void initSolvers(){
+        LPMLNApp.semantics = "weak";
         testFilePaths = Arrays.asList(filePaths);
         toCheck.add(asRandom());
         toCheck.add(asHeuristic());
