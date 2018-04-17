@@ -37,10 +37,15 @@ public class SolverValidator {
             assert ans1.size()==ans2.size();
             System.out.println("answer set size of "+testFile.getName()+":"+toValidate.getAllWeightedAs().size());
             ans1.forEach((k,v)->{
-                assert ans2.get(k).equals(v);
+                if(!ans2.get(k).equals(v)){
+                    System.out.println("k:"+k+"\t"+"v:"+v);
+                    System.out.println("k:"+k+"\t"+"ans2.get(k):"+ans2.get(k));
+                    assert false;
+                }
             });
         }catch (AssertionError assertionError){
             System.out.println("test file: "+filepath);
+            System.out.println(toValidate.getClass().getSimpleName());
             System.out.println("toValidate.getAllWeightedAs().size(): "+toValidate.getAllWeightedAs().size());
             System.out.println("basesolver.getAllWeightedAs().size(): "+basesolver.getAllWeightedAs().size());
             System.out.println("ans1.size(): "+ans1.size());
