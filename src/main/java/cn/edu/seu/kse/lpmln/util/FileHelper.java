@@ -42,7 +42,7 @@ public class FileHelper {
      */
     public static void writeFile(File file, String out){
         tempFiles.add(file);
-        if(!file.exists()){
+        if(!file.exists()&&file.getParentFile()!=null){
             file.getParentFile().mkdirs();
         }
         try(BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"))){
