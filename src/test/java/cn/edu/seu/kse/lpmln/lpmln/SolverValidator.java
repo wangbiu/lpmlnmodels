@@ -32,12 +32,21 @@ public class SolverValidator {
         basesolver.solve(testFile);
         Map<String,String> ans1 = getMPL(basesolver);
         Map<String,String> ans2 = getMPL(toValidate);
-        assert toValidate.getAllWeightedAs().size()==basesolver.getAllWeightedAs().size();
-        assert ans1.size()==ans2.size();
-        System.out.println("answer set size of "+testFile.getName()+":"+toValidate.getAllWeightedAs().size());
-        ans1.forEach((k,v)->{
-            assert ans2.get(k).equals(v);
-        });
+        try {
+            assert toValidate.getAllWeightedAs().size()==basesolver.getAllWeightedAs().size();
+            assert ans1.size()==ans2.size();
+            System.out.println("answer set size of "+testFile.getName()+":"+toValidate.getAllWeightedAs().size());
+            ans1.forEach((k,v)->{
+                assert ans2.get(k).equals(v);
+            });
+        }catch (AssertionError assertionError){
+            System.out.println("toValidate.getAllWeightedAs().size(): "+toValidate.getAllWeightedAs().size());
+            System.out.println("basesolver.getAllWeightedAs().size(): "+basesolver.getAllWeightedAs().size());
+            System.out.println("ans1.size(): "+ans1.size());
+            System.out.println("ans2.size(): "+ans2.size());
+            throw assertionError;
+        }
+
         FileHelper.cleanFiles();
         return true;
     }
@@ -45,11 +54,22 @@ public class SolverValidator {
     public Map<String,String> getMPL(LPMLNSolver solver){
         String[] results = solver.getMarginalDistribution().split(System.lineSeparator());
         Map<String,String> ans = new HashMap<>();
-        for (String result : results) {
-            String[] lit = result.split("  ");
-            assert lit.length==2;
-            ans.put(lit[0],df.format(Double.valueOf(lit[1])));
+        String[] lit = null;
+        try {
+            for (String result : results) {
+                lit = result.split("  ");
+                assert lit.length==2;
+                ans.put(lit[0],df.format(Double.valueOf(lit[1])));
+            }
+        }catch (AssertionError assertionError){
+            if(lit==null){
+                System.out.println("lit==null.");
+            }else{
+                System.out.println("lit.length: "+lit.length);
+            }
+            throw assertionError;
         }
+
         return ans;
     }
 }
