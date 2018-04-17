@@ -6,6 +6,7 @@ import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNHybridSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner;
+import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,7 @@ public class GeneralTest {
         toCheck.add(asHeuristic());
         toCheck.add(spBot());
         toCheck.add(spLit());
+        toCheck.add(ind());
         toCheck.add(hybridISA());
         toCheck.add(hybridIA());
     }
@@ -75,6 +77,11 @@ public class GeneralTest {
     public LPMLNSolver spBot(){
         SplittingSolver solver = new SplittingSolver();
         solver.setPolicy(SplittingSolver.SPLIT_TYPE.SPLIT_BOT);
+        return solver;
+    }
+
+    public LPMLNSolver ind(){
+        IndependentSolver solver = new IndependentSolver();
         return solver;
     }
 
