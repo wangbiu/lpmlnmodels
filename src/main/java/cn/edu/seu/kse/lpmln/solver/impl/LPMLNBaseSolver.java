@@ -128,6 +128,18 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     @Override
     public String getMarginalDistribution() {
         Date enter = new Date();
+        Map<String, Double> result = getMarginalMap();
+        String res = formatMarginalResult(result);
+        Date exit = new Date();
+        StringBuilder sb = new StringBuilder();
+        sb.append("求边缘分布用时：").append(exit.getTime() - enter.getTime()).append(" ms");
+        sb.append(System.lineSeparator());
+        marginalTime = sb.toString();
+        return res;
+    }
+
+    @Override
+    public Map<String, Double> getMarginalMap() {
         HashMap<String, Double> result = new HashMap<>();
         double wsum = 0;
         double expw = 0;
@@ -147,17 +159,10 @@ public class LPMLNBaseSolver implements LPMLNSolver {
                 result.put(lit, wsum);
             }
         }
-
-        String res = formatMarginalResult(result);
-        Date exit = new Date();
-        StringBuilder sb = new StringBuilder();
-        sb.append("求边缘分布用时：").append(exit.getTime() - enter.getTime()).append(" ms");
-        sb.append(System.lineSeparator());
-        marginalTime = sb.toString();
-        return res;
+        return result;
     }
 
-    public String formatMarginalResult(HashMap<String, Double> result) {
+    public String formatMarginalResult(Map<String, Double> result) {
         StringBuilder fres = new StringBuilder();
         for (HashMap.Entry<String, Double> entry : result.entrySet()) {
             fres.append(entry.getKey()).append("  ").append(entry.getValue()).append(System.lineSeparator());

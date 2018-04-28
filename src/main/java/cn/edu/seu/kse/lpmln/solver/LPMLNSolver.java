@@ -5,6 +5,7 @@ import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 许鸿翔
@@ -71,6 +72,10 @@ public interface LPMLNSolver {
      */
     String getMarginalDistribution();
 
-
+    /**
+     * 获取边缘分布
+     * @return 边缘分布映射
+     */
+    Map<String,Double> getMarginalMap();
 
 }
