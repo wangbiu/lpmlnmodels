@@ -32,7 +32,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * lit所有状态都可行
      */
     private static final int TRUE=7;
-    private HashSet<String> headlits = new HashSet<>();
 
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
@@ -65,21 +64,36 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         Map<String,Integer> unsatRestrict = new HashMap<>();
         unsatRestricts[idx] = unsatRestrict;
         r.getHead().forEach(headLit->{
-            headlits.add(headLit);
+            equation(headLit);
+            atomRestrict.put(headLit,TRUE);
             LitCond cond = getLitCond(headLit);
             satRestrict.restrict.put(cond.realLit,cond.cond);
             unsatRestrict.put(cond.realLit,TRUE^cond.cond);
         });
         r.getPositiveBody().forEach(bodyLit->{
+            equation(bodyLit);
             LitCond cond = getLitCond(bodyLit);
             satRestrict.restrict.put(cond.realLit,TRUE^cond.cond);
             unsatRestrict.put(cond.realLit,cond.cond);
         });
         r.getNegativeBody().forEach(bodyLit->{
+            equation(bodyLit);
             LitCond cond = getLitCond(bodyLit);
             satRestrict.restrict.put(cond.realLit,TRUE^cond.cond);
             unsatRestrict.put(cond.realLit,cond.cond);
         });
+    }
+
+    //表达式比较，需要完善
+    private void equation(String str){
+        if(str.contains("!=")){
+            String[] tocomp = str.split("!=");
+            if(tocomp[0].replaceAll(" ","").equals(tocomp[1].replaceAll(" ",""))){
+                atomRestrict.put(str,5);
+            }else{
+                atomRestrict.put(str,2);
+            }
+        }
     }
 
     private LitCond getLitCond(String literal){
@@ -128,7 +142,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.unsatRestricts = unsatRestricts;
         //不确定深复制对效率的影响
         cloned.activeRuleRestrict = activeRuleRestrict;
-        cloned.headlits = headlits;
         return cloned;
     }
 
@@ -162,11 +175,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         satRestrict.status = true;
         Map<String,Integer> toRestrict = new HashMap<>();
         for (Map.Entry<String,Integer> ent : satRestrict.restrict.entrySet()) {
-            int ori = atomRestrict.getOrDefault(ent.getKey(),TRUE);
-            if(!headlits.contains(ent.getKey())){
-                //头部不存在此谓词
-                ori = 5;
-            }
+            int ori = atomRestrict.getOrDefault(ent.getKey(),TRUE-2);
             int nextStatus = ori&ent.getValue();
             if(nextStatus == ori){
                 //规则已经被满足
