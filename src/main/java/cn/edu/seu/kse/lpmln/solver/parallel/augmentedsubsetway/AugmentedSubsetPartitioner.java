@@ -118,25 +118,21 @@ public class AugmentedSubsetPartitioner {
             Set<Integer> enumrable = toSubstitute.getEnumerable();
 
             //选择一条要确定的规则
-            int toEnum = randomPop(enumrable);
-            while(toEnum>=0&&!toSubstitute.enumerable(toEnum)){
-                toEnum = randomPop(enumrable);
-            }
-            if(toEnum==-1){
-                subsets.add(toSubstitute);
-                continue;
-            }
-            HeuristicAugmentedSubset positive = toSubstitute.clone();
-            HeuristicAugmentedSubset negative = toSubstitute.clone();
-
-            positive.sat(toEnum);
-            negative.unsat(toEnum);
-            subsets.add(positive);
-            subsets.add(negative);
-
-            if(positive.getUnknownIdx().size()>0) {
-                selectable.offer(positive);
-                selectable.offer(negative);
+            while(enumrable.size()>0){
+                int toEnum = randomPop(enumrable);
+                HeuristicAugmentedSubset positive = toSubstitute.clone();
+                HeuristicAugmentedSubset negative = toSubstitute.clone();
+                if(positive.sat(toEnum)&&negative.unsat(toEnum)){
+                    subsets.add(positive);
+                    subsets.add(negative);
+                    if(positive.getUnknownIdx().size()>0) {
+                        selectable.offer(positive);
+                        selectable.offer(negative);
+                    }
+                    break;
+                }else{
+                    toSubstitute.setUnenumerable(toEnum);
+                }
             }
         }
         return subsets;

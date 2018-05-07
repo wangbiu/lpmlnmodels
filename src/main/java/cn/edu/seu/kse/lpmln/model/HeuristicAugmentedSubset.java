@@ -14,11 +14,20 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * 010表示原子a只支持a
      * 101表示原子可以是not a或者-a
      */
-    protected HashMap<String,Integer> atomRestrict;
-    protected HashMap<String,Integer>[] headRestrictList;
-    protected HashMap<String,Integer>[] bodyRestrictList;
-    protected HashMap<String,Integer>[] unsatRestrictList;
-    protected Set<Integer> enumerable;
+    private HashMap<String,Integer> atomRestrict;
+    /**
+     * sat需要加的限制，析取式，无法成立的项去除
+     */
+    private SATRestrict[] satRestricts;
+    /**
+     * unsat需要加的限制，合取表达式
+     */
+    private Map<String,Integer>[] unsatRestricts;
+    private Set<Integer> enumerable;
+    /**
+     * 从文字到规则下标idx的映射，表示satRestricts[idx]中需要考虑这个文字
+     */
+    private HashMap<String,Set<Integer>> activeRuleRestrict;
     /**
      * lit所有状态都可行
      */
@@ -28,43 +37,47 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         super(lpmlnProgram);
         enumerable = new HashSet<>(unknownIdx);
         atomRestrict = new HashMap<>();
-        headRestrictList = new HashMap[lpmlnProgram.getRules().size()];
-        bodyRestrictList = new HashMap[lpmlnProgram.getRules().size()];
-        unsatRestrictList = new HashMap[lpmlnProgram.getRules().size()];
+        satRestricts = new SATRestrict[lpmlnProgram.getRules().size()];
+        unsatRestricts = new HashMap[lpmlnProgram.getRules().size()];
+        activeRuleRestrict = new HashMap<>();
         List<Rule> rules = lpmlnProgram.getRules();
-        for (int idx : unknownIdx) {
-            Rule r = rules.get(idx);
-            HashMap<String,Integer> rheadRestrict = new HashMap<>();
-            HashMap<String,Integer> rbodyRestrict = new HashMap<>();
-            r.getHead().forEach(lit->restrict(lit,rheadRestrict,true));
-            r.getNegativeBody().forEach(lit->restrict(lit,rbodyRestrict,false));
-            r.getPositiveBody().forEach(lit->restrict(lit,rbodyRestrict,false));
-            headRestrictList[idx] = rheadRestrict;
-            bodyRestrictList[idx] = rbodyRestrict;
-            unsatRestrictList[idx] = combineRestrict(rheadRestrict,rbodyRestrict);
+        for(int i=0;i<rules.size();i++){
+            getRuleCond(rules.get(i),i);
+            if(!unknownIdx.contains(i)){
+                sat(i);
+            }
         }
     }
 
-    private HashMap<String,Integer> combineRestrict(HashMap<String,Integer> rheadRestrict,HashMap<String,Integer> rbodyRestrict){
-        HashMap<String,Integer> restrict = new HashMap<>(rbodyRestrict);
-        rheadRestrict.forEach((key,value)->{
-            if(restrict.containsKey(key)){
-                restrict.put(key,(TRUE-value)&restrict.get(key));
-            }else{
-                restrict.put(key,TRUE-value);
-            }
+    /**
+     * 生成规则对于谓词的要求，暂时未处理重复谓词
+     * @param r 需要处理的规则
+     * @param idx 规则在程序中的位置
+     */
+    private void getRuleCond(Rule r,int idx){
+        SATRestrict satRestrict = new SATRestrict();
+        satRestricts[idx] = satRestrict;
+        Map<String,Integer> unsatRestrict = new HashMap<>();
+        unsatRestricts[idx] = unsatRestrict;
+        r.getHead().forEach(headLit->{
+            LitCond cond = getLitCond(headLit);
+            satRestrict.restrict.put(cond.realLit,cond.cond);
+            unsatRestrict.put(cond.realLit,TRUE^cond.cond);
         });
-        return restrict;
+        r.getPositiveBody().forEach(bodyLit->{
+            LitCond cond = getLitCond(bodyLit);
+            satRestrict.restrict.put(cond.realLit,TRUE^cond.cond);
+            unsatRestrict.put(cond.realLit,cond.cond);
+        });
+        r.getNegativeBody().forEach(bodyLit->{
+            LitCond cond = getLitCond(bodyLit);
+            satRestrict.restrict.put(cond.realLit,TRUE^cond.cond);
+            unsatRestrict.put(cond.realLit,cond.cond);
+        });
     }
 
-    /**
-     * 生成对于文字的要求
-     * @param lit   not* -? lit,比如not -a
-     * @param restrict  当前要求的map
-     * @param type  true：头部合取，false：体部析取
-     */
-    protected void restrict(String lit,HashMap<String,Integer> restrict,boolean type){
-        String realLit = lit.trim();
+    private LitCond getLitCond(String literal){
+        String realLit = literal.trim();
         //0:弱否定，1：强否定
         LinkedList<Integer> neg = new LinkedList<>();
         int status = 2;
@@ -86,15 +99,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 status=1;
             }
         }
-        if(restrict.containsKey(realLit)){
-            if(type){
-                restrict.put(realLit,status|restrict.get(realLit));
-            }else{
-                restrict.put(realLit,status&restrict.get(realLit));
-            }
-        }else{
-            restrict.put(realLit,status);
-        }
+        return new LitCond(realLit,status);
     }
 
     HeuristicAugmentedSubset(){
@@ -107,11 +112,15 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.satIdx = new HashSet<>(satIdx);
         cloned.unsatIdx = new HashSet<>(unsatIdx);
         cloned.unknownIdx = new HashSet<>(unknownIdx);
-        cloned.headRestrictList = headRestrictList;
-        cloned.bodyRestrictList = bodyRestrictList;
-        cloned.unsatRestrictList = unsatRestrictList;
         cloned.atomRestrict = new HashMap<>(atomRestrict);
         cloned.enumerable = new HashSet<>(enumerable);
+        cloned.satRestricts = new SATRestrict[satRestricts.length];
+        for(int i=0;i<satRestricts.length;i++){
+            cloned.satRestricts[i] = satRestricts[i].clone();
+        }
+        cloned.unsatRestricts = unsatRestricts;
+        //不确定深复制对效率的影响
+        cloned.activeRuleRestrict = activeRuleRestrict;
         return cloned;
     }
 
@@ -122,24 +131,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      */
     @Override
     public boolean sat(int idx){
-        if(headRestrictList[idx].size()+bodyRestrictList[idx].size()==1){
-            if(headRestrictList[idx].size()==1){
-                Map.Entry<String,Integer> ent = headRestrictList[idx].entrySet().iterator().next();
-                if(atomRestrict.containsKey(ent.getKey())){
-                    atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&ent.getValue());
-                }else{
-                    atomRestrict.put(ent.getKey(),ent.getValue());
-                }
-            }else{
-                Map.Entry<String,Integer> ent = bodyRestrictList[idx].entrySet().iterator().next();
-                if(atomRestrict.containsKey(ent.getKey())){
-                    atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&(TRUE-ent.getValue()));
-                }else{
-                    atomRestrict.put(ent.getKey(),ent.getValue());
-                }
-            }
-        }
-        return super.sat(idx);
+        return satable(idx)&super.sat(idx);
     }
 
     /**
@@ -149,42 +141,106 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      */
     @Override
     public boolean unsat(int idx){
-        HashMap<String,Integer> restrict = unsatRestrictList[idx];
-        for (Map.Entry<String,Integer> ent : restrict.entrySet()) {
-            if(atomRestrict.containsKey(ent.getKey())){
-                atomRestrict.put(ent.getKey(),atomRestrict.get(ent.getKey())&ent.getValue());
-            }else{
-                atomRestrict.put(ent.getKey(),ent.getValue());
-            }
-        }
-        return super.unsat(idx);
+        return unsatable(idx)&super.unsat(idx);
     }
 
     /**
-     * 判断规则是否可以枚举
-     * * @param idx   规则下标
-     * @return  true：可 false：不可
+     * 规则放到sat中后有回答集
+     * @param idx 规则下标
+     * @return true=有
      */
-    public boolean enumerable(int idx){
-        //是否肯定无法满足:放到unsat之后没影响
-        //是否肯定满足:放到unsat之后有谓词为0
-        boolean change = false;
-        HashMap<String,Integer> restrict = unsatRestrictList[idx];
-        for (Map.Entry<String,Integer> ent : restrict.entrySet()) {
-            if(atomRestrict.containsKey(ent.getKey())){
-                if((atomRestrict.get(ent.getKey())&ent.getValue())==0){
-                    return false;
-                }else if((atomRestrict.get(ent.getKey())&ent.getValue())!=atomRestrict.get(ent.getKey())){
-                    change = true;
-                }
-            }else{
-                if(ent.getValue()==0){
-                    return false;
-                }
-                change = true;
+    private boolean satable(int idx){
+        SATRestrict satRestrict = satRestricts[idx];
+        satRestrict.status = true;
+        Map<String,Integer> toRestrict = new HashMap<>();
+        for (Map.Entry<String,Integer> ent : satRestrict.restrict.entrySet()) {
+            int nextStatus = atomRestrict.get(ent.getKey())&ent.getValue();
+            if(nextStatus!=0){
+                toRestrict.put(ent.getKey(),nextStatus);
             }
         }
-        return change;
+        if(toRestrict.size()>1){
+            satRestrict.restrict.clear();
+            toRestrict.forEach((lit,stat)->{
+                satRestrict.restrict.put(lit,stat);
+                if(activeRuleRestrict.containsKey(lit)){
+                    activeRuleRestrict.get(lit).add(idx);
+                }else{
+                    Set<Integer> ruleIdxs = new HashSet<>();
+                    ruleIdxs.add(idx);
+                    activeRuleRestrict.put(lit,ruleIdxs);
+                }
+            });
+            return true;
+        }else if(toRestrict.size()==0){
+            //合取无法被满足
+            return false;
+        }else{
+            return restrictLit(toRestrict.keySet().iterator().next(),toRestrict.values().iterator().next());
+        }
+    }
+
+    //这个函数需要优化一下
+
+    /**
+     * 约束一个lit到某个状态，可能应发一系列变化
+     * @param lit
+     * @param status
+     * @return
+     */
+    private boolean restrictLit(String lit,int status){
+        LinkedList<LitCond> conds = new LinkedList<>();
+        conds.offer(new LitCond(lit,status));
+        while(conds.size()>0){
+            LitCond nextCond = conds.poll();
+            //根据sat判断
+            Set<Integer> ruleIdxs = activeRuleRestrict.get(nextCond.realLit);
+            for (int idx : ruleIdxs) {
+                SATRestrict satRestrict = satRestricts[idx];
+                //规则被激活
+                if(satRestrict.status){
+                    //规则中这个lit还可能被满足
+                    if(satRestrict.restrict.containsKey(nextCond.realLit)){
+                        int ori = satRestrict.restrict.get(nextCond.realLit);
+                        if((ori&nextCond.cond)==0){
+                            //合取式中无法被满足
+                            satRestrict.restrict.remove(nextCond.realLit);
+                            if(satRestrict.restrict.size()==1){
+                                //合取式中仅剩一个条件可被满足
+                                conds.offer(new LitCond(satRestrict.restrict.keySet().iterator().next(),satRestrict.restrict.values().iterator().next()));
+                                satRestrict.status = false;
+                            }
+                        }else{
+                            //加上约束后规则中这个lit还可能被满足
+                            satRestrict.restrict.put(nextCond.realLit,ori);
+                        }
+                    }
+                }
+            }
+            //根据unsat判断
+            int ori = atomRestrict.get(nextCond.realLit);
+            if((ori&nextCond.cond)==0){
+                return false;
+            }else{
+                atomRestrict.put(nextCond.realLit,ori&nextCond.cond);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 规则放到unsat后有回答集
+     * @param idx 规则下标
+     * @return true=有
+     */
+    private boolean unsatable(int idx){
+        Map<String,Integer> unsatMap = unsatRestricts[idx];
+        for (Map.Entry<String,Integer> ent : unsatMap.entrySet()) {
+            if(!restrictLit(ent.getKey(),ent.getValue())){
+                return false;
+            }
+        }
+        return true;
     }
 
     public Set<Integer> getEnumerable() {
@@ -193,5 +249,34 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
     public void setEnumerable(Set<Integer> enumerable) {
         this.enumerable = enumerable;
+    }
+
+    public void setUnenumerable(Integer unenumerable){
+        this.enumerable.remove(unenumerable);
+    }
+
+    private static class SATRestrict {
+        //true:restrict should be considered
+        boolean status;
+        Map<String,Integer> restrict;
+        SATRestrict(){
+            restrict = new HashMap<>();
+        }
+
+        @Override
+        public SATRestrict clone(){
+            SATRestrict cloned = new SATRestrict();
+            cloned.restrict = new HashMap<>(this.restrict);
+            return cloned;
+        }
+    }
+
+    private static class LitCond{
+        String realLit;
+        Integer cond;
+        LitCond(String realLit, Integer cond){
+            this.realLit = realLit;
+            this.cond = cond;
+        }
     }
 }
