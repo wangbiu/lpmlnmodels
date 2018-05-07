@@ -81,8 +81,8 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         subsetSolvers.forEach(solver->{
-            collectedWas.addAll(solver.getAllWeightedAs());
             logger.debug(solver.getAllWeightedAs().size()+" was collected");
+            collectedWas.addAll(solver.getAllWeightedAs());
         });
         return collectedWas;
     }

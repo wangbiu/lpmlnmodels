@@ -114,7 +114,6 @@ public class AugmentedSubsetPartitioner {
         while(subsets.size()<count && selectable.size()>0){
             //选择一个增强子集
             HeuristicAugmentedSubset toSubstitute = selectable.poll();
-            subsets.remove(toSubstitute);
             Set<Integer> enumrable = toSubstitute.getEnumerable();
 
             //选择一条要确定的规则
@@ -125,6 +124,7 @@ public class AugmentedSubsetPartitioner {
                 if(positive.sat(toEnum)&&negative.unsat(toEnum)){
                     subsets.add(positive);
                     subsets.add(negative);
+                    subsets.remove(toSubstitute);
                     if(positive.getUnknownIdx().size()>0) {
                         selectable.offer(positive);
                         selectable.offer(negative);
@@ -135,7 +135,24 @@ public class AugmentedSubsetPartitioner {
                 }
             }
         }
+        //printStatus(subsets);
         return subsets;
+    }
+
+    private void printStatus(List<AugmentedSubset> augmentedSubsets){
+        augmentedSubsets.forEach(augmentedSubset -> {
+            String[] status = new String[augmentedSubset.getLpmlnProgram().getRules().size()];
+            augmentedSubset.getUnknownIdx().forEach(unIdx->{
+                status[unIdx] = "1";
+            });
+            augmentedSubset.getSatIdx().forEach(unIdx->{
+                status[unIdx] = "2";
+            });
+            augmentedSubset.getUnsatIdx().forEach(unIdx->{
+                status[unIdx] = "3";
+            });
+            System.out.println(String.join(" ",status));
+        });
     }
 
     private int randomPop(Set<Integer> set){

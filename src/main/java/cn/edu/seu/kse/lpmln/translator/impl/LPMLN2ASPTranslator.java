@@ -38,6 +38,9 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
         for(Rule r:program.getRules()){
             if(isWeakTranslate&&!r.isSoft()){
                 sb.append(r.getOriginalrule()).append(System.lineSeparator());
+                getSatRules().add("");
+                getUnknownRules().add("");
+                getUnsatRules().add("");
             }else{
                 rulestr = translateRule(r);
                 unsatRulestr = translateRuleUnsat(r);

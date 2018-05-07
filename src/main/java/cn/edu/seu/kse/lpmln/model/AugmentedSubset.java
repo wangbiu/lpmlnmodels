@@ -26,7 +26,7 @@ public class AugmentedSubset implements Cloneable{
                 unknownIdx.add(i);
             }else{
                 if(rules.get(i).isSoft()){
-                    unknownIdx.add(unknownIdx.size());
+                    unknownIdx.add(i);
                 }
             }
         }

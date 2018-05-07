@@ -194,7 +194,9 @@ public class LPMLNApp {
                                 default:
                                     break;
                             }
-                            ((AugmentedSolver) solver).setThreadNums(Integer.valueOf(param[1]));
+                            if(param.length>1){
+                                ((AugmentedSolver) solver).setThreadNums(Integer.valueOf(param[1]));
+                            }
                         }
                         break;
                     case "s":

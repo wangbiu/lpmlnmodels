@@ -31,7 +31,8 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     /**
      * lit所有状态都可行
      */
-    protected static final int TRUE=7;
+    private static final int TRUE=7;
+    private HashSet<String> headlits = new HashSet<>();
 
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
@@ -43,10 +44,14 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         List<Rule> rules = lpmlnProgram.getRules();
         for(int i=0;i<rules.size();i++){
             getRuleCond(rules.get(i),i);
+        }
+        for(int i=0;i<rules.size();i++){
             if(!unknownIdx.contains(i)){
+                unknownIdx.add(i);
                 sat(i);
             }
         }
+        System.out.println("init done");
     }
 
     /**
@@ -60,6 +65,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         Map<String,Integer> unsatRestrict = new HashMap<>();
         unsatRestricts[idx] = unsatRestrict;
         r.getHead().forEach(headLit->{
+            headlits.add(headLit);
             LitCond cond = getLitCond(headLit);
             satRestrict.restrict.put(cond.realLit,cond.cond);
             unsatRestrict.put(cond.realLit,TRUE^cond.cond);
@@ -117,10 +123,12 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.satRestricts = new SATRestrict[satRestricts.length];
         for(int i=0;i<satRestricts.length;i++){
             cloned.satRestricts[i] = satRestricts[i].clone();
+            cloned.satRestricts[i].status = satRestricts[i].status;
         }
         cloned.unsatRestricts = unsatRestricts;
         //不确定深复制对效率的影响
         cloned.activeRuleRestrict = activeRuleRestrict;
+        cloned.headlits = headlits;
         return cloned;
     }
 
@@ -154,7 +162,17 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         satRestrict.status = true;
         Map<String,Integer> toRestrict = new HashMap<>();
         for (Map.Entry<String,Integer> ent : satRestrict.restrict.entrySet()) {
-            int nextStatus = atomRestrict.get(ent.getKey())&ent.getValue();
+            int ori = atomRestrict.getOrDefault(ent.getKey(),TRUE);
+            if(!headlits.contains(ent.getKey())){
+                //头部不存在此谓词
+                ori = 5;
+            }
+            int nextStatus = ori&ent.getValue();
+            if(nextStatus == ori){
+                //规则已经被满足
+                satRestrict.status = false;
+                return true;
+            }
             if(nextStatus!=0){
                 toRestrict.put(ent.getKey(),nextStatus);
             }
@@ -194,7 +212,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         while(conds.size()>0){
             LitCond nextCond = conds.poll();
             //根据sat判断
-            Set<Integer> ruleIdxs = activeRuleRestrict.get(nextCond.realLit);
+            Set<Integer> ruleIdxs = activeRuleRestrict.getOrDefault(nextCond.realLit,new HashSet<>());
             for (int idx : ruleIdxs) {
                 SATRestrict satRestrict = satRestricts[idx];
                 //规则被激活
@@ -218,7 +236,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 }
             }
             //根据unsat判断
-            int ori = atomRestrict.get(nextCond.realLit);
+            int ori = atomRestrict.getOrDefault(nextCond.realLit,TRUE);
             if((ori&nextCond.cond)==0){
                 return false;
             }else{
