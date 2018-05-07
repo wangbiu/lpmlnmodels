@@ -32,6 +32,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * lit所有状态都可行
      */
     private static final int TRUE=7;
+    private double weight;
 
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
@@ -41,6 +42,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         unsatRestricts = new HashMap[lpmlnProgram.getRules().size()];
         activeRuleRestrict = new HashMap<>();
         List<Rule> rules = lpmlnProgram.getRules();
+        weight=0;
         for(int i=0;i<rules.size();i++){
             getRuleCond(rules.get(i),i);
         }
@@ -50,6 +52,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 sat(i);
             }
         }
+        weight = 0;
         System.out.println("init done");
     }
 
@@ -142,6 +145,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.unsatRestricts = unsatRestricts;
         //不确定深复制对效率的影响
         cloned.activeRuleRestrict = activeRuleRestrict;
+        cloned.weight = weight;
         return cloned;
     }
 
@@ -198,6 +202,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                     activeRuleRestrict.put(lit,ruleIdxs);
                 }
             });
+            weight -= Math.pow(0.5,toRestrict.size());
             return true;
         }else if(toRestrict.size()==0){
             //合取无法被满足
@@ -231,7 +236,9 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                         int ori = satRestrict.restrict.get(nextCond.realLit);
                         if((ori&nextCond.cond)==0){
                             //合取式中无法被满足
+                            weight += Math.pow(0.5,satRestrict.restrict.size());
                             satRestrict.restrict.remove(nextCond.realLit);
+                            weight -= Math.pow(0.5,satRestrict.restrict.size());
                             if(satRestrict.restrict.size()==1){
                                 //合取式中仅剩一个条件可被满足
                                 conds.offer(new LitCond(satRestrict.restrict.keySet().iterator().next(),satRestrict.restrict.values().iterator().next()));
@@ -249,6 +256,9 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             if((ori&nextCond.cond)==0){
                 return false;
             }else{
+                if(ori==TRUE){
+                    weight -= 0.5;
+                }
                 atomRestrict.put(nextCond.realLit,ori&nextCond.cond);
             }
         }
@@ -280,6 +290,14 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
     public void setUnenumerable(Integer unenumerable){
         this.enumerable.remove(unenumerable);
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     private static class SATRestrict {

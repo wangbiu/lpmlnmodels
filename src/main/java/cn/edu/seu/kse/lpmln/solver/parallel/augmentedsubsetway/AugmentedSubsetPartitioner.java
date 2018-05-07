@@ -105,7 +105,7 @@ public class AugmentedSubsetPartitioner {
 
     public List<AugmentedSubset> heuristicPartition(LpmlnProgram lpmlnProgram,int count){
         List<AugmentedSubset> subsets = new ArrayList<>();
-        LinkedList<HeuristicAugmentedSubset> selectable = new LinkedList<>();
+        PriorityQueue<HeuristicAugmentedSubset> selectable = new PriorityQueue<>(Comparator.comparing(HeuristicAugmentedSubset::getWeight).reversed());
         Random rand = new Random();
         HeuristicAugmentedSubset subset = new HeuristicAugmentedSubset(lpmlnProgram);
         subsets.add(subset);
@@ -122,6 +122,9 @@ public class AugmentedSubsetPartitioner {
                 HeuristicAugmentedSubset positive = toSubstitute.clone();
                 HeuristicAugmentedSubset negative = toSubstitute.clone();
                 if(positive.sat(toEnum)&&negative.unsat(toEnum)){
+                    System.out.println("pop:"+toSubstitute.getWeight());
+                    System.out.println("push:"+positive.getWeight());
+                    System.out.println("push:"+negative.getWeight());
                     subsets.add(positive);
                     subsets.add(negative);
                     subsets.remove(toSubstitute);
