@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_HEURISTIC;
 import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_RANDOM;
+import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_SIMPLE;
 import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_BOT;
 import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_LIT;
 import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_ORIGINAL;
@@ -188,6 +189,9 @@ public class LPMLNApp {
                             switch (param[0]){
                                 case "h":
                                     ((AugmentedSolver) solver).setPolicy(DIVIDE_HEURISTIC);
+                                    break;
+                                case "s":
+                                    ((AugmentedSolver) solver).setPolicy(DIVIDE_SIMPLE);
                                     break;
                                 case "r":
                                     ((AugmentedSolver) solver).setPolicy(DIVIDE_RANDOM);
