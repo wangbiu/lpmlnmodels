@@ -37,13 +37,14 @@ public class GeneralTest {
     public void initSolvers(){
         LPMLNApp.semantics = "weak";
         testFilePaths = Arrays.asList(filePaths);
-        toCheck.add(asRandom());
-        toCheck.add(asHeuristic());
-        toCheck.add(spBot());
-        toCheck.add(spLit());
-        toCheck.add(ind());
-        toCheck.add(hybridISA());
-        toCheck.add(hybridIA());
+        toCheck.add(asSimple());
+        //toCheck.add(asRandom());
+        //toCheck.add(asHeuristic());
+        //toCheck.add(spBot());
+        //toCheck.add(spLit());
+        //toCheck.add(ind());
+        //toCheck.add(hybridISA());
+        //toCheck.add(hybridIA());
     }
 
     @Test
@@ -54,6 +55,12 @@ public class GeneralTest {
                 solverValidator.validate(paths);
             });
         });
+    }
+
+    public LPMLNSolver asSimple(){
+        AugmentedSolver solver = new AugmentedSolver();
+        solver.setPolicy(AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_SIMPLE);
+        return solver;
     }
 
     public LPMLNSolver asRandom(){

@@ -70,20 +70,20 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             equation(headLit);
             atomRestrict.put(headLit,TRUE);
             LitCond cond = getLitCond(headLit);
-            satRestrict.restrict.put(cond.realLit,cond.cond);
-            unsatRestrict.put(cond.realLit,TRUE^cond.cond);
+            satRestrict.restrict.put(cond.realLit,cond.cond|satRestrict.restrict.getOrDefault(cond.realLit,0));
+            unsatRestrict.put(cond.realLit,(TRUE^cond.cond)&satRestrict.restrict.getOrDefault(cond.realLit,TRUE));
         });
         r.getPositiveBody().forEach(bodyLit->{
             equation(bodyLit);
             LitCond cond = getLitCond(bodyLit);
-            satRestrict.restrict.put(cond.realLit,TRUE^cond.cond);
-            unsatRestrict.put(cond.realLit,cond.cond);
+            satRestrict.restrict.put(cond.realLit,(TRUE^cond.cond)|satRestrict.restrict.getOrDefault(cond.realLit,0));
+            unsatRestrict.put(cond.realLit,cond.cond&satRestrict.restrict.getOrDefault(cond.realLit,TRUE));
         });
         r.getNegativeBody().forEach(bodyLit->{
             equation(bodyLit);
             LitCond cond = getLitCond(bodyLit);
-            satRestrict.restrict.put(cond.realLit,TRUE^cond.cond);
-            unsatRestrict.put(cond.realLit,cond.cond);
+            satRestrict.restrict.put(cond.realLit,(TRUE^cond.cond)|satRestrict.restrict.getOrDefault(cond.realLit,0));
+            unsatRestrict.put(cond.realLit,cond.cond&satRestrict.restrict.getOrDefault(cond.realLit,TRUE));
         });
     }
 
