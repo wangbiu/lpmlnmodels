@@ -25,10 +25,16 @@ public class LPMLNTranslatorTest {
     //下面这俩是翻译生成的文件
     public String out = "./src/test/resources/asp/out.lp";
     public String out17 = "./src/test/resources/asp/out-17.lp";
+    public String monty40 = "./src/test/resources/benchmark/monty_hall/m-40.txt";
 
     @Before
     public void parse() throws IOException {
         program = SyntaxModule.parseLPMLN(new File(filePath));
+    }
+
+    @Test
+    public void effi() throws IOException {
+        program = SyntaxModule.parseLPMLN(new File(monty40));
     }
 
     @Test
