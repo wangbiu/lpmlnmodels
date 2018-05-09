@@ -20,6 +20,7 @@ public class UnionFindSet<T> {
         sth.forEach(item->{
             idxMap.put(item,idxMap.size());
             itemMap.put(itemMap.size(),item);
+            pre[idxMap.size()] = idxMap.size();
         });
     }
 
