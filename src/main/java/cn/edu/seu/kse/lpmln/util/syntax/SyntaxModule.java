@@ -28,18 +28,14 @@ public class SyntaxModule {
     private HashSet<String> relationnames;
 
     public static LpmlnProgram parseLPMLN(File file) throws IOException {
-        System.out.println("11:"+System.currentTimeMillis());
         LPMLNLexer lexer=new LPMLNLexer(new ANTLRFileStream(file.getAbsolutePath()));
         CommonTokenStream tokens=new CommonTokenStream(lexer);
         LPMLNParser parser=new LPMLNParser(tokens);
-        System.out.println("12:"+System.currentTimeMillis());
         ParseTree tree=parser.lpmln_rule();
-        System.out.println("13:"+System.currentTimeMillis());
         LPMLNTranslationVisitor tvisitor=new LPMLNTranslationVisitor();
         tvisitor.visit(tree);
 
         LpmlnProgram program = new LpmlnProgram(tvisitor.getRules(),tvisitor.getFactor(),tvisitor.getHerbrandUniverse(),tvisitor.getMetarule());
-        System.out.println("14:"+System.currentTimeMillis());
         return program;
     }
 
