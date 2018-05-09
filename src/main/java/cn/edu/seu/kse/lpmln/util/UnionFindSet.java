@@ -18,9 +18,9 @@ public class UnionFindSet<T> {
         idxMap = new HashMap<>();
         itemMap = new HashMap<>();
         sth.forEach(item->{
+            pre[idxMap.size()] = idxMap.size();
             idxMap.put(item,idxMap.size());
             itemMap.put(itemMap.size(),item);
-            pre[idxMap.size()] = idxMap.size();
         });
     }
 

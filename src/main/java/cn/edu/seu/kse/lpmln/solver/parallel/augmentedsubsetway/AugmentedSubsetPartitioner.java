@@ -111,51 +111,52 @@ public class AugmentedSubsetPartitioner {
         subsets.add(subset);
         selectable.offer(subset);
 
-        HeuristicAugmentedSubset toSubstitute = selectable.poll();
-        subsets.remove(toSubstitute);
-        HeuristicAugmentedSubset pos = toSubstitute.clone();
-        HeuristicAugmentedSubset neg = toSubstitute.clone();
-//        pos.sat(0);
-//        neg.unsat(0);
-        subsets.add(pos);
-        subsets.add(neg);
+//        HeuristicAugmentedSubset toSubstitute = selectable.poll();
+//        subsets.remove(toSubstitute);
+//        HeuristicAugmentedSubset pos = toSubstitute.clone();
+//        HeuristicAugmentedSubset neg = toSubstitute.clone();
+//        pos.unsat(1);
+//        pos.unsat(2);
+////        neg.unsat(0);
+//        subsets.add(pos);
+//        subsets.add(neg);
 
 
-//        while(subsets.size()<count && selectable.size()>0){
-//            //选择一个增强子集
-//            HeuristicAugmentedSubset toSubstitute = selectable.poll();
-//            Set<Integer> enumrable = toSubstitute.getEnumerable();
-//
-//            //选择一条要确定的规则
-//            while(enumrable.size()>0){
-//                int toEnum = toSubstitute.getRuleIdx();
-//                HeuristicAugmentedSubset positive = toSubstitute.clone();
-//                HeuristicAugmentedSubset negative = toSubstitute.clone();
-////                positive.sat(13);
-////                negative.unsat(13);
-////                while(enumrable.size()>0){
-////                    positive.refreshWeight();
-////                    negative.refreshWeight();
-////                }
-//                if(positive.sat(toEnum)&&negative.unsat(toEnum)){
-//                    System.out.println("pop:"+toSubstitute.getWeight());
-//                    System.out.println("sat:"+ Arrays.asList(toSubstitute.getSatIdx().stream().filter(i->toSubstitute.getLpmlnProgram().getRules().get(i).isSoft()).toArray()));
-//                    System.out.println("unsat:"+toSubstitute.getUnsatIdx());
-//                    System.out.println("push:"+positive.getWeight());
-//                    System.out.println("push:"+negative.getWeight());
-//                    subsets.add(positive);
-//                    subsets.add(negative);
-//                    subsets.remove(toSubstitute);
-//                    if(positive.getUnknownIdx().size()>0) {
-//                        selectable.offer(positive);
-//                        selectable.offer(negative);
-//                    }
-//                    break;
-//                }else{
-//                    toSubstitute.setUnenumerable(toEnum);
+        while(subsets.size()<count && selectable.size()>0){
+            //选择一个增强子集
+            HeuristicAugmentedSubset toSubstitute = selectable.poll();
+            Set<Integer> enumrable = toSubstitute.getEnumerable();
+
+            //选择一条要确定的规则
+            while(enumrable.size()>0){
+                int toEnum = toSubstitute.getRuleIdx();
+                HeuristicAugmentedSubset positive = toSubstitute.clone();
+                HeuristicAugmentedSubset negative = toSubstitute.clone();
+//                positive.sat(13);
+//                negative.unsat(13);
+//                while(enumrable.size()>0){
+//                    positive.refreshWeight();
+//                    negative.refreshWeight();
 //                }
-//            }
-//        }
+                if(positive.sat(toEnum)&&negative.unsat(toEnum)){
+                    System.out.println("pop:"+toSubstitute.getWeight());
+                    System.out.println("sat:"+ Arrays.asList(toSubstitute.getSatIdx().stream().filter(i->toSubstitute.getLpmlnProgram().getRules().get(i).isSoft()).toArray()));
+                    System.out.println("unsat:"+toSubstitute.getUnsatIdx());
+                    System.out.println("push:"+positive.getWeight());
+                    System.out.println("push:"+negative.getWeight());
+                    subsets.add(positive);
+                    subsets.add(negative);
+                    subsets.remove(toSubstitute);
+                    if(positive.getUnknownIdx().size()>0) {
+                        selectable.offer(positive);
+                        selectable.offer(negative);
+                    }
+                    break;
+                }else{
+                    toSubstitute.setUnenumerable(toEnum);
+                }
+            }
+        }
 
 
         //printStatus(subsets);

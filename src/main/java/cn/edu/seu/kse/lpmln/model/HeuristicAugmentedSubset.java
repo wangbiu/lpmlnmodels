@@ -54,6 +54,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
         init();
+        findLoops();
         List<Rule> rules = lpmlnProgram.getRules();
         for(int i=0;i<rules.size();i++){
             getRuleCond(rules.get(i),i);
@@ -64,6 +65,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 sat(i);
             }
         }
+
         System.out.println("init done");
     }
     private void init(){
@@ -135,7 +137,9 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 String next = toVisit.poll();
                 if(!end.contains(next)){
                     end.add(next);
-                    toVisit.addAll(pdg.get(next));
+                    if(pdg.containsKey(next)){
+                        toVisit.addAll(pdg.get(next));
+                    }
                 }
             }
         });
@@ -152,7 +156,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 HeuristicAugmentedSubset negative = this.clone();
                 if(positive.sat(i)&&negative.unsat(i)){
                     nextEval = positive.weight+negative.weight-Math.abs(positive.weight-negative.weight);
-                    System.out.println(""+positive.weight+"\t"+negative.weight);
+                    //System.out.println(""+positive.weight+"\t"+negative.weight);
                     if(nextEval>eval){
                         ans = i;
                         eval = nextEval;
