@@ -33,6 +33,16 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      */
     private static final int TRUE=7;
     private double weight;
+    private List<String> allLiterals;
+    private List<Loop> loops;
+    /**
+     * 文字到失败条件映射，满足失败条件会导致规则体部无法被满足，外部支持规则无法支持
+     */
+    private Map<String,Set<FailCond>> supConds;
+    /**
+     * 可能成立的外部支持规则,到loop的映射
+     */
+    private Map<Rule,Loop> supLoop = new HashMap<>();
 
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
@@ -41,8 +51,20 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         satRestricts = new SATRestrict[lpmlnProgram.getRules().size()];
         unsatRestricts = new HashMap[lpmlnProgram.getRules().size()];
         activeRuleRestrict = new HashMap<>();
+        loops = new ArrayList<>();
+        supLoop = new HashMap<>();
         List<Rule> rules = lpmlnProgram.getRules();
-        weight=0;
+        allLiterals = new ArrayList<>();
+        lpmlnProgram.getRules().forEach(r->{
+            r.getHead().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
+            r.getPositiveBody().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
+            r.getNegativeBody().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
+        });
+        allLiterals = new ArrayList<>(new HashSet<>(allLiterals));
+        supConds = new HashMap<>();
+        allLiterals.forEach(lit->{
+            supConds.put(lit,new HashSet<>());
+        });
         for(int i=0;i<rules.size();i++){
             getRuleCond(rules.get(i),i);
         }
@@ -52,8 +74,33 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 sat(i);
             }
         }
-        weight = 0;
         System.out.println("init done");
+    }
+
+//    private void findLoops(){
+//        Map<String,Set<String>>
+//    }
+
+    public int getRuleIdx(){
+        int ans=-1;
+        double eval=0;
+        for(int i=0;i<lpmlnProgram.getRules().size();i++){
+            if(unknownIdx.contains(i)){
+                double nextEval;
+                HeuristicAugmentedSubset positive = this.clone();
+                HeuristicAugmentedSubset negative = this.clone();
+                if(positive.sat(i)&&negative.unsat(i)){
+                    nextEval = positive.weight+negative.weight-Math.abs(positive.weight-negative.weight);
+                    System.out.println(""+positive.weight+"\t"+negative.weight);
+                    if(nextEval>eval){
+                        ans = i;
+                        eval = nextEval;
+                    }
+                }
+            }
+
+        }
+        return ans;
     }
 
     /**
@@ -66,24 +113,22 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         satRestricts[idx] = satRestrict;
         Map<String,Integer> unsatRestrict = new HashMap<>();
         unsatRestricts[idx] = unsatRestrict;
+        List<String> body = new ArrayList<>(r.getPositiveBody());
+        body.addAll(r.getNegativeBody());
         r.getHead().forEach(headLit->{
+            atomRestrict.put(getLitCond(headLit).realLit,TRUE);
             equation(headLit);
-            atomRestrict.put(headLit,TRUE);
             LitCond cond = getLitCond(headLit);
             satRestrict.restrict.put(cond.realLit,cond.cond|satRestrict.restrict.getOrDefault(cond.realLit,0));
-            unsatRestrict.put(cond.realLit,(TRUE^cond.cond)&satRestrict.restrict.getOrDefault(cond.realLit,TRUE));
+            unsatRestrict.put(cond.realLit,(TRUE^cond.cond)&unsatRestrict.getOrDefault(cond.realLit,TRUE));
         });
-        r.getPositiveBody().forEach(bodyLit->{
+        //TODO:这里暂时没考虑析取
+        body.forEach(bodyLit->{
             equation(bodyLit);
             LitCond cond = getLitCond(bodyLit);
             satRestrict.restrict.put(cond.realLit,(TRUE^cond.cond)|satRestrict.restrict.getOrDefault(cond.realLit,0));
-            unsatRestrict.put(cond.realLit,cond.cond&satRestrict.restrict.getOrDefault(cond.realLit,TRUE));
-        });
-        r.getNegativeBody().forEach(bodyLit->{
-            equation(bodyLit);
-            LitCond cond = getLitCond(bodyLit);
-            satRestrict.restrict.put(cond.realLit,(TRUE^cond.cond)|satRestrict.restrict.getOrDefault(cond.realLit,0));
-            unsatRestrict.put(cond.realLit,cond.cond&satRestrict.restrict.getOrDefault(cond.realLit,TRUE));
+            unsatRestrict.put(cond.realLit,cond.cond&unsatRestrict.getOrDefault(cond.realLit,TRUE));
+            supConds.get(cond.realLit).add(new FailCond(cond.cond,idx));
         });
     }
 
@@ -156,17 +201,38 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      */
     @Override
     public boolean sat(int idx){
-        return satable(idx)&super.sat(idx);
+        boolean result = satable(idx)&super.sat(idx);
+        refreshWeight();
+        return result;
     }
 
     /**
      * 根据规则unsat对原子进行约束，body and ！head
-     * @param idx   规则下标
+     * @param idx   规则下标g
      * @return sat结果
      */
     @Override
     public boolean unsat(int idx){
-        return unsatable(idx)&super.unsat(idx);
+        boolean result = unsatable(idx)&super.unsat(idx);
+        refreshWeight();
+        return result;
+    }
+
+    public void refreshWeight(){
+        weight=0;
+        for (Map.Entry<String,Integer> ent: atomRestrict.entrySet()) {
+            if(ent.getValue()!=TRUE){
+                weight += (1-(getCount(ent.getValue())/3));
+                //System.out.println(ent.getKey()+"weight:"+(1-(getCount(ent.getValue())/3))+"value:"+ent.getValue());
+            }
+            //weight += 1-(getCount(ent.getValue())/3)*;
+        }
+    }
+
+
+    private static final Integer[] COUNT = {0,1,1,2,1,2,2,3};
+    private double getCount(int n){
+        return COUNT[n];
     }
 
     /**
@@ -202,12 +268,12 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                     activeRuleRestrict.put(lit,ruleIdxs);
                 }
             });
-            weight -= Math.pow(0.5,toRestrict.size());
             return true;
         }else if(toRestrict.size()==0){
             //合取无法被满足
             return false;
         }else{
+            satRestrict.status = false;
             return restrictLit(toRestrict.keySet().iterator().next(),toRestrict.values().iterator().next());
         }
     }
@@ -225,6 +291,19 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         conds.offer(new LitCond(lit,status));
         while(conds.size()>0){
             LitCond nextCond = conds.poll();
+            //判断外部支持规则能否支持
+            supConds.get(nextCond.realLit).forEach(supCond -> {
+                if((supCond.stat&nextCond.cond)==0){
+
+                }
+            });
+            //根据unsat判断
+            int ori = atomRestrict.getOrDefault(nextCond.realLit,TRUE);
+            if((ori&nextCond.cond)==0){
+                return false;
+            }else{
+                atomRestrict.put(nextCond.realLit,ori&nextCond.cond);
+            }
             //根据sat判断
             Set<Integer> ruleIdxs = activeRuleRestrict.getOrDefault(nextCond.realLit,new HashSet<>());
             for (int idx : ruleIdxs) {
@@ -233,33 +312,25 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 if(satRestrict.status){
                     //规则中这个lit还可能被满足
                     if(satRestrict.restrict.containsKey(nextCond.realLit)){
-                        int ori = satRestrict.restrict.get(nextCond.realLit);
+                        ori = satRestrict.restrict.get(nextCond.realLit);
                         if((ori&nextCond.cond)==0){
                             //合取式中无法被满足
-                            weight += Math.pow(0.5,satRestrict.restrict.size());
                             satRestrict.restrict.remove(nextCond.realLit);
-                            weight -= Math.pow(0.5,satRestrict.restrict.size());
                             if(satRestrict.restrict.size()==1){
                                 //合取式中仅剩一个条件可被满足
                                 conds.offer(new LitCond(satRestrict.restrict.keySet().iterator().next(),satRestrict.restrict.values().iterator().next()));
                                 satRestrict.status = false;
                             }
                         }else{
-                            //加上约束后规则中这个lit还可能被满足
-                            satRestrict.restrict.put(nextCond.realLit,ori);
+                            if(((ori&nextCond.cond)|atomRestrict.get(nextCond.realLit))==(ori&nextCond.cond)){
+                                satRestrict.status = false;
+                            }else{
+                                //加上约束后规则中这个lit还可能被满足
+                                satRestrict.restrict.put(nextCond.realLit,ori);
+                            }
                         }
                     }
                 }
-            }
-            //根据unsat判断
-            int ori = atomRestrict.getOrDefault(nextCond.realLit,TRUE);
-            if((ori&nextCond.cond)==0){
-                return false;
-            }else{
-                if(ori==TRUE){
-                    weight -= 0.5;
-                }
-                atomRestrict.put(nextCond.realLit,ori&nextCond.cond);
             }
         }
         return true;
@@ -322,6 +393,24 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         LitCond(String realLit, Integer cond){
             this.realLit = realLit;
             this.cond = cond;
+        }
+    }
+
+    private static class FailCond{
+        int stat;
+        int ruleIdx;
+        FailCond(int stat,int ruleIdx){
+            this.stat = stat;
+            this.ruleIdx = ruleIdx;
+        }
+    }
+
+    private static class Loop{
+        Set<Integer> literalIdx;
+        int support;
+        Loop(){
+            literalIdx = new HashSet<>();
+            support = 0;
         }
     }
 }
