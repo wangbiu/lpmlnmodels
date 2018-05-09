@@ -1,5 +1,8 @@
 package cn.edu.seu.kse.lpmln.model;
 
+import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
+import cn.edu.seu.kse.lpmln.util.UnionFindSet;
+
 import java.util.*;
 
 /**
@@ -36,35 +39,18 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     private List<String> allLiterals;
     private List<Loop> loops;
     /**
-     * 文字到失败条件映射，满足失败条件会导致规则体部无法被满足，外部支持规则无法支持
+     * 文字到支持条件映射，破坏支持条件会导致规则体部无法被满足，外部支持规则无法支持
      */
-    private Map<String,Set<FailCond>> supConds;
+    private Map<String,Set<SupportCond>> supConds;
     /**
-     * 可能成立的外部支持规则,到loop的映射
+     * 支持条件到loop的映射，无支持条件会导致loop失败
      */
-    private Map<Rule,Loop> supLoop = new HashMap<>();
+    private Map<SupportCond,Loop> supLoop = new HashMap<>();
 
     public HeuristicAugmentedSubset(LpmlnProgram lpmlnProgram) {
         super(lpmlnProgram);
-        enumerable = new HashSet<>(unknownIdx);
-        atomRestrict = new HashMap<>();
-        satRestricts = new SATRestrict[lpmlnProgram.getRules().size()];
-        unsatRestricts = new HashMap[lpmlnProgram.getRules().size()];
-        activeRuleRestrict = new HashMap<>();
-        loops = new ArrayList<>();
-        supLoop = new HashMap<>();
+        init();
         List<Rule> rules = lpmlnProgram.getRules();
-        allLiterals = new ArrayList<>();
-        lpmlnProgram.getRules().forEach(r->{
-            r.getHead().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
-            r.getPositiveBody().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
-            r.getNegativeBody().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
-        });
-        allLiterals = new ArrayList<>(new HashSet<>(allLiterals));
-        supConds = new HashMap<>();
-        allLiterals.forEach(lit->{
-            supConds.put(lit,new HashSet<>());
-        });
         for(int i=0;i<rules.size();i++){
             getRuleCond(rules.get(i),i);
         }
@@ -76,10 +62,76 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         }
         System.out.println("init done");
     }
+    private void init(){
+        allLiterals = new ArrayList<>();
+        lpmlnProgram.getRules().forEach(r->{
+            r.getHead().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
+            r.getPositiveBody().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
+            r.getNegativeBody().forEach(lit->allLiterals.add(getLitCond(lit).realLit));
+        });
+        allLiterals = new ArrayList<>(new HashSet<>(allLiterals));
+        enumerable = new HashSet<>(unknownIdx);
+        atomRestrict = new HashMap<>();
+        satRestricts = new SATRestrict[lpmlnProgram.getRules().size()];
+        unsatRestricts = new HashMap[lpmlnProgram.getRules().size()];
+        activeRuleRestrict = new HashMap<>();
+        loops = new ArrayList<>();
+        supLoop = new HashMap<>();
+        supConds = new HashMap<>();
+        allLiterals.forEach(lit->{
+            supConds.put(lit,new HashSet<>());
+        });
+    }
 
-//    private void findLoops(){
-//        Map<String,Set<String>>
-//    }
+    private void findLoops(){
+        Map<String,Set<String>> pdg = LpmlnProgramHelper.getPostiveDependency(lpmlnProgram);
+        Map<String,Set<String>> reachable = getReachable(pdg);
+        Set<Set<String>> loopLits = getLoopLits(reachable);
+        loopLits.forEach(litSet->{
+            loops.add(new Loop(litSet));
+        });
+    }
+
+    private Set<Set<String>> getLoopLits(Map<String,Set<String>> reachable){
+        UnionFindSet<String> unionFindSet = new UnionFindSet<>(reachable.keySet());
+        reachable.forEach((from,toSet)->{
+            toSet.forEach(to->{
+                if(reachable.keySet().contains(to)&&reachable.get(to).contains(from)){
+                    unionFindSet.join(from,to);
+                }
+            });
+        });
+        Map<String,Set<String>> ansMap = new HashMap<>();
+        reachable.keySet().forEach(lit->{
+            String root = unionFindSet.find(lit);
+            Set<String> rootAim;
+            if(ansMap.containsKey(root)){
+                rootAim = ansMap.get(root);
+            }else{
+                rootAim = new HashSet<>();
+                ansMap.put(root,rootAim);
+            }
+            rootAim.add(lit);
+        });
+        return new HashSet<>(ansMap.values());
+    }
+
+    private Map<String,Set<String>> getReachable(Map<String,Set<String>> pdg){
+        Map<String,Set<String>> reachable = new HashMap<>();
+        pdg.keySet().forEach(start->{
+            Set<String> end = new HashSet<>();
+            reachable.put(start,end);
+            LinkedList<String> toVisit = new LinkedList<>(pdg.get(start));
+            while(toVisit.size()>0){
+                String next = toVisit.poll();
+                if(!end.contains(next)){
+                    end.add(next);
+                    toVisit.addAll(pdg.get(next));
+                }
+            }
+        });
+        return reachable;
+    }
 
     public int getRuleIdx(){
         int ans=-1;
@@ -396,20 +448,18 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         }
     }
 
-    private static class FailCond{
-        int stat;
-        int ruleIdx;
-        FailCond(int stat,int ruleIdx){
-            this.stat = stat;
-            this.ruleIdx = ruleIdx;
+    private static class SupportCond{
+        Map<String,Integer> support;
+        SupportCond(){
+            support = new HashMap<>();
         }
     }
 
     private static class Loop{
-        Set<Integer> literalIdx;
+        Set<String> literalIdx;
         int support;
-        Loop(){
-            literalIdx = new HashSet<>();
+        Loop(Set<String> literalIdx){
+            this.literalIdx = literalIdx;
             support = 0;
         }
     }
