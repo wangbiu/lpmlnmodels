@@ -259,20 +259,11 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         String var = visitSimpleterm(ctx.simpleterm());
         if(var!=null) vars.add(var);
         vars.addAll(visitFunction(ctx.function()));
-        vars.addAll(visitTuple(ctx.tuple()));
         vars.addAll(visitArithmethic_expr(ctx.arithmethic_expr()));
-        vars.addAll(visitPooling(ctx.pooling()));
-        vars.addAll(visitTerm(ctx.term()));
-        return vars;
-    }
+        ctx.term().forEach(termContext -> {
+            vars.addAll(visitTerm(termContext));
+        });
 
-    @Override
-    public HashSet<String> visitPooling(LPMLNParser.PoolingContext ctx){
-        HashSet<String> vars = new HashSet<>();
-        if(ctx==null) return vars;
-        for (LPMLNParser.TermContext tctx : ctx.term()) {
-            vars.add(tctx.getText());
-        }
         return vars;
     }
 
@@ -293,16 +284,6 @@ public class LPMLNTranslationVisitor extends LPMLNBaseVisitor {
         HashSet<String> vars=new HashSet<>();
         if(ctx==null) return vars;
         vars.addAll(visitTerm(ctx.term()));
-        return vars;
-    }
-
-    @Override
-    public HashSet<String> visitTuple(LPMLNParser.TupleContext ctx) {
-        HashSet<String> vars=new HashSet<>();
-        if(ctx==null) return vars;
-        for (LPMLNParser.TermContext tctx : ctx.term()) {
-            vars.addAll(visitTerm(tctx));
-        }
         return vars;
     }
 

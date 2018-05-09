@@ -158,26 +158,6 @@ public interface LPMLNListener extends ParseTreeListener {
 	 */
 	void exitSimpleterm(LPMLNParser.SimpletermContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#tuple}.
-	 * @param ctx the parse tree
-	 */
-	void enterTuple(LPMLNParser.TupleContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#tuple}.
-	 * @param ctx the parse tree
-	 */
-	void exitTuple(LPMLNParser.TupleContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LPMLNParser#pooling}.
-	 * @param ctx the parse tree
-	 */
-	void enterPooling(LPMLNParser.PoolingContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMLNParser#pooling}.
-	 * @param ctx the parse tree
-	 */
-	void exitPooling(LPMLNParser.PoolingContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LPMLNParser#term}.
 	 * @param ctx the parse tree
 	 */

@@ -144,17 +144,10 @@ arithmethic_expr:
 function : AT? IDENTIFIER LPAREN term RPAREN;
 //简单项，缺_,#sup,#inf
 simpleterm : integer | constant | STRING | VAR;
-//元组
-tuple : | COMMA | ( COMMA term )+ ;
-
-//范围枚举
-//interval : (integer | VAR) RANGE (integer | VAR);
-//逐个枚举
-pooling :  (SEMICOLON term)+;
 
 //项
 //term : VAR | CONSTANT | integer | arithmethic_expr | function | STRING;
-term : (simpleterm | function | arithmethic_expr | LPAREN term RPAREN) (tuple | pooling);
+term : simpleterm | function | arithmethic_expr | LPAREN term RPAREN | LPAREN term? (COMMA term?)* RPAREN | LPAREN term (SEMICOLON term)* RPAREN;
 
 //原子
 atom :

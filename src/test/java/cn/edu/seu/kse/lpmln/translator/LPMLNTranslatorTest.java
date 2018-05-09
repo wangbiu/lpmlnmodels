@@ -29,7 +29,7 @@ public class LPMLNTranslatorTest {
 
     @Before
     public void parse() throws IOException {
-        program = SyntaxModule.parseLPMLN(new File(filePath));
+        //program = SyntaxModule.parseLPMLN(new File(filePath));
     }
 
     @Test
