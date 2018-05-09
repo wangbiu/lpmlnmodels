@@ -122,6 +122,7 @@ public class AugmentedSubsetPartitioner {
 //        subsets.add(neg);
 
 
+        int i=0;
         while(subsets.size()<count && selectable.size()>0){
             //选择一个增强子集
             HeuristicAugmentedSubset toSubstitute = selectable.poll();
@@ -129,7 +130,9 @@ public class AugmentedSubsetPartitioner {
 
             //选择一条要确定的规则
             while(enumrable.size()>0){
+                System.out.println("2("+(i)+"):"+System.currentTimeMillis());
                 int toEnum = toSubstitute.getRuleIdx();
+                System.out.println("3("+(i)+"):"+System.currentTimeMillis());
                 HeuristicAugmentedSubset positive = toSubstitute.clone();
                 HeuristicAugmentedSubset negative = toSubstitute.clone();
 //                positive.sat(13);
@@ -139,11 +142,11 @@ public class AugmentedSubsetPartitioner {
 //                    negative.refreshWeight();
 //                }
                 if(positive.sat(toEnum)&&negative.unsat(toEnum)){
-                    System.out.println("pop:"+toSubstitute.getWeight());
-                    System.out.println("sat:"+ Arrays.asList(toSubstitute.getSatIdx().stream().filter(i->toSubstitute.getLpmlnProgram().getRules().get(i).isSoft()).toArray()));
-                    System.out.println("unsat:"+toSubstitute.getUnsatIdx());
-                    System.out.println("push:"+positive.getWeight());
-                    System.out.println("push:"+negative.getWeight());
+//                    System.out.println("pop:"+toSubstitute.getWeight());
+//                    System.out.println("sat:"+ Arrays.asList(toSubstitute.getSatIdx().stream().filter(i->toSubstitute.getLpmlnProgram().getRules().get(i).isSoft()).toArray()));
+//                    System.out.println("unsat:"+toSubstitute.getUnsatIdx());
+//                    System.out.println("push:"+positive.getWeight());
+//                    System.out.println("push:"+negative.getWeight());
                     subsets.add(positive);
                     subsets.add(negative);
                     subsets.remove(toSubstitute);
@@ -151,15 +154,20 @@ public class AugmentedSubsetPartitioner {
                         selectable.offer(positive);
                         selectable.offer(negative);
                     }
+                    System.out.println("4("+(i)+"):"+System.currentTimeMillis());
+                    i++;
                     break;
                 }else{
                     toSubstitute.setUnenumerable(toEnum);
                 }
+                System.out.println("4("+(i)+"):"+System.currentTimeMillis());
+                i++;
             }
         }
 
 
         //printStatus(subsets);
+        System.out.println("5:"+System.currentTimeMillis());
         return subsets;
     }
 

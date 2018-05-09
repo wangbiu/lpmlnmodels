@@ -100,6 +100,7 @@ public class LPMLNApp {
         Date exit=new Date();
 
         SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss.SSSS");
+        System.out.println("4:"+System.currentTimeMillis());
         System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
     }
 

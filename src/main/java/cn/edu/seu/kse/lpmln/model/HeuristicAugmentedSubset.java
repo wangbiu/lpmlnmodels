@@ -65,7 +65,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 sat(i);
             }
         }
-
+        System.out.println("1:"+System.currentTimeMillis());
         System.out.println("init done");
     }
     private void init(){
@@ -146,24 +146,36 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         return reachable;
     }
 
+
+    private int sattime;
+    private int unsattime;
+    private int restime;
     public int getRuleIdx(){
         int ans=-1;
         double eval=0;
-        for(int i=0;i<lpmlnProgram.getRules().size();i++){
-            if(unknownIdx.contains(i)){
-                double nextEval;
-                HeuristicAugmentedSubset positive = this.clone();
-                HeuristicAugmentedSubset negative = this.clone();
-                if(positive.sat(i)&&negative.unsat(i)){
-                    nextEval = positive.weight+negative.weight-Math.abs(positive.weight-negative.weight);
-                    //System.out.println(""+positive.weight+"\t"+negative.weight);
-                    if(nextEval>eval){
-                        ans = i;
-                        eval = nextEval;
-                    }
+        sattime = 0;
+        unsattime = 0;
+        restime = 0;
+        System.out.println("unknownIdx size:"+unknownIdx.size());
+        for (int i : unknownIdx) {
+            System.out.println("11:"+System.currentTimeMillis());
+            double nextEval;
+            HeuristicAugmentedSubset positive = this.clone();
+            HeuristicAugmentedSubset negative = this.clone();
+            System.out.println("12:"+System.currentTimeMillis());
+            boolean sat = positive.sat(i);
+            System.out.println("13:"+System.currentTimeMillis());
+            boolean unsat = negative.unsat(i);
+            System.out.println("14:"+System.currentTimeMillis());
+            if(sat&&unsat){
+                nextEval = positive.weight+negative.weight-Math.abs(positive.weight-negative.weight);
+                //System.out.println(""+positive.weight+"\t"+negative.weight);
+                if(nextEval>eval){
+                    ans = i;
+                    eval = nextEval;
                 }
             }
-
+            System.out.println("15:"+System.currentTimeMillis());
         }
         return ans;
     }
@@ -267,10 +279,11 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.atomRestrict = new HashMap<>(atomRestrict);
         cloned.enumerable = new HashSet<>(enumerable);
         cloned.satRestricts = new SATRestrict[satRestricts.length];
+        System.out.println("16:"+System.currentTimeMillis());
         for(int i=0;i<satRestricts.length;i++){
             cloned.satRestricts[i] = satRestricts[i].clone();
-            cloned.satRestricts[i].status = satRestricts[i].status;
         }
+        System.out.println("17"+System.currentTimeMillis());
         cloned.unsatRestricts = unsatRestricts;
         //不确定深复制对效率的影响
         cloned.activeRuleRestrict = activeRuleRestrict;
@@ -329,6 +342,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * @return true=有
      */
     private boolean satable(int idx){
+        long start = System.currentTimeMillis();
         SATRestrict satRestrict = satRestricts[idx];
         satRestrict.status = true;
         Map<String,Integer> toRestrict = new HashMap<>();
@@ -338,6 +352,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             if(nextStatus == ori){
                 //规则已经被满足
                 satRestrict.status = false;
+                sattime += System.currentTimeMillis()-start;
                 return true;
             }
             if(nextStatus!=0){
@@ -356,17 +371,18 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                     activeRuleRestrict.put(lit,ruleIdxs);
                 }
             });
+            sattime += System.currentTimeMillis()-start;
             return true;
         }else if(toRestrict.size()==0){
             //合取无法被满足
+            sattime += System.currentTimeMillis()-start;
             return false;
         }else{
             satRestrict.status = false;
+            sattime += System.currentTimeMillis()-start;
             return restrictLit(toRestrict.keySet().iterator().next(),toRestrict.values().iterator().next());
         }
     }
-
-    //这个函数需要优化一下
 
     /**
      * 约束一个lit到某个状态，可能应发一系列变化
@@ -375,6 +391,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * @return
      */
     private boolean restrictLit(String lit,int status){
+        long start = System.currentTimeMillis();
         LinkedList<LitCond> conds = new LinkedList<>();
         conds.offer(new LitCond(lit,status));
         while(conds.size()>0){
@@ -384,6 +401,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             //根据unsat判断
             int ori = atomRestrict.getOrDefault(nextCond.realLit,TRUE);
             if((ori&nextCond.cond)==0){
+                restime += System.currentTimeMillis()-start;
                 return false;
             }else{
                 atomRestrict.put(nextCond.realLit,ori&nextCond.cond);
@@ -417,6 +435,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 }
             }
         }
+        restime += System.currentTimeMillis()-start;
         return true;
     }
 
@@ -442,12 +461,15 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * @return true=有
      */
     private boolean unsatable(int idx){
+        long start = System.currentTimeMillis();
         Map<String,Integer> unsatMap = unsatRestricts[idx];
         for (Map.Entry<String,Integer> ent : unsatMap.entrySet()) {
             if(!restrictLit(ent.getKey(),ent.getValue())){
+                restime += System.currentTimeMillis()-start;
                 return false;
             }
         }
+        restime += System.currentTimeMillis()-start;
         return true;
     }
 
@@ -483,6 +505,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         public SATRestrict clone(){
             SATRestrict cloned = new SATRestrict();
             cloned.restrict = new HashMap<>(this.restrict);
+            cloned.status = status;
             return cloned;
         }
     }
