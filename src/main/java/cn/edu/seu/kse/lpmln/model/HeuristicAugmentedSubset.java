@@ -52,7 +52,8 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * literal到loop的映射，辅助用
      */
     private Map<String,Loop> litToLoop;
-    private Map<Loop,Set<SupportCond>> aliveSupport;
+    private Map<Loop,Set<SupportCond>> loopSupports;
+    private Set<SupportCond> failedConds;
     private Set<Integer> truthSatIdx;
     private Map<String,Integer> truthRes;
 
@@ -94,7 +95,8 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         supConds = new HashMap<>();
         litToLoop = new HashMap<>();
         truthRes = new HashMap<>();
-        aliveSupport = new HashMap<>();
+        loopSupports = new HashMap<>();
+        failedConds = new HashSet<>();
     }
 
     private void filtSatRestricts(){
@@ -141,9 +143,9 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             }
         });
         buildSupCond();
-        loops.forEach(loop->aliveSupport.put(loop,new HashSet<>()));
+        loops.forEach(loop-> loopSupports.put(loop,new HashSet<>()));
         supLoop.forEach((cond,loop)->{
-           aliveSupport.get(loop).add(cond);
+           loopSupports.get(loop).add(cond);
         });
     }
 
@@ -200,15 +202,15 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         for (int i : unknownIdx) {
             long clonestart = System.currentTimeMillis();
             double nextEval;
-            System.out.println("11:"+System.currentTimeMillis());
+            //System.out.println("11:"+System.currentTimeMillis());
             HeuristicAugmentedSubset positive = this.clone();
             HeuristicAugmentedSubset negative = this.clone();
             //sum += (System.currentTimeMillis()-clonestart);
-            System.out.println("12:"+System.currentTimeMillis());
+            //System.out.println("12:"+System.currentTimeMillis());
             boolean sat = positive.sat(i);
-            System.out.println("13:"+System.currentTimeMillis());
+            //System.out.println("13:"+System.currentTimeMillis());
             boolean unsat = negative.unsat(i);
-            System.out.println("14:"+System.currentTimeMillis());
+            //System.out.println("14:"+System.currentTimeMillis());
             if(sat&&unsat){
                 nextEval = positive.weight+negative.weight-Math.abs(positive.weight-negative.weight);
                 //System.out.println(""+positive.weight+"\t"+negative.weight);
@@ -217,7 +219,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                     eval = nextEval;
                 }
             }
-            System.out.println("15:"+System.currentTimeMillis());
+            //System.out.println("15:"+System.currentTimeMillis());
         }
         System.out.println("3:"+System.currentTimeMillis());
         return ans;
@@ -399,8 +401,8 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.litToLoop = litToLoop;
         cloned.truthSatIdx = truthSatIdx;
         cloned.truthRes = truthRes;
-        cloned.aliveSupport = new HashMap<>();
-        aliveSupport.forEach((k,v)->cloned.aliveSupport.put(k,new HashSet<>(v)));
+        cloned.loopSupports = loopSupports;
+        cloned.failedConds = (HashSet)((HashSet)failedConds).clone();
         //System.out.println("clone start:"+(System.currentTimeMillis()-start));
         return cloned;
     }
@@ -541,10 +543,17 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         List<LitCond> ans = new ArrayList<>();
         supConds.getOrDefault(start.realLit,new HashSet<>()).forEach(cond->{
             if((cond.support.get(start.realLit)&start.cond)==0&&supLoop.containsKey(cond)){
+                failedConds.add(cond);
                 Loop unsupLoop = supLoop.get(cond);
-                Set<SupportCond> supportConds = aliveSupport.get(unsupLoop);
-                supportConds.remove(cond);
-                if(supportConds.size()==0){
+                Set<SupportCond> supportConds = loopSupports.get(unsupLoop);
+                boolean supported = false;
+                for (SupportCond sup : supportConds) {
+                    if(!failedConds.contains(sup)){
+                        supported = true;
+                        break;
+                    }
+                }
+                if(!supported){
                     unsupLoop.literal.forEach(lit->{
                         ans.add(new LitCond(lit,4));
                     });
