@@ -122,17 +122,22 @@ public class AugmentedSubsetPartitioner {
 //        subsets.add(neg);
 
 
+        long start = System.currentTimeMillis();
         int i=0;
         while(subsets.size()<count && selectable.size()>0){
             //选择一个增强子集
             HeuristicAugmentedSubset toSubstitute = selectable.poll();
             Set<Integer> enumrable = toSubstitute.getEnumerable();
+            //boolean r1 = toSubstitute.sat(0);
+//            boolean r2 = toSubstitute.clone().sat(45);
+//            boolean r3 = toSubstitute.clone().unsat(45);
 
+            int toEnum;
             //选择一条要确定的规则
-            while(enumrable.size()>0){
-                System.out.println("2("+(i)+"):"+System.currentTimeMillis());
-                int toEnum = toSubstitute.getRuleIdx();
-                System.out.println("3("+(i)+"):"+System.currentTimeMillis());
+            while((toEnum = toSubstitute.getRuleIdx())!=-1){
+                //System.out.println("2("+(i)+"):"+System.currentTimeMillis());
+
+                //System.out.println("3("+(i)+"):"+System.currentTimeMillis());
                 HeuristicAugmentedSubset positive = toSubstitute.clone();
                 HeuristicAugmentedSubset negative = toSubstitute.clone();
 //                positive.sat(13);
@@ -154,20 +159,21 @@ public class AugmentedSubsetPartitioner {
                         selectable.offer(positive);
                         selectable.offer(negative);
                     }
-                    System.out.println("4("+(i)+"):"+System.currentTimeMillis());
+                    //System.out.println("4("+(i)+"):"+System.currentTimeMillis());
                     i++;
                     break;
                 }else{
                     toSubstitute.setUnenumerable(toEnum);
                 }
-                System.out.println("4("+(i)+"):"+System.currentTimeMillis());
+                //System.out.println("4("+(i)+"):"+System.currentTimeMillis());
                 i++;
             }
         }
 
 
         //printStatus(subsets);
-        System.out.println("5:"+System.currentTimeMillis());
+        //System.out.println("5:"+System.currentTimeMillis());
+        System.out.println("time Cost:"+(System.currentTimeMillis()-start));
         return subsets;
     }
 
