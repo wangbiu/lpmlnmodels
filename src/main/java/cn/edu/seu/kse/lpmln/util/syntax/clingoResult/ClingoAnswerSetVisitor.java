@@ -30,20 +30,8 @@ public class ClingoAnswerSetVisitor extends ClingoResultBaseVisitor {
             literals.add(lctx.getText());
         }
 
-        String weightstr=null;
-        int weight=0;
-        int cnt=0;
-
         for(int i=1;i>=0;i--){
-            weight= Integer.valueOf(wctx.integer(i).getText()) -1 ;
-            weights.add(weight);
-            if(i == 0){
-                maxLevel2 = Math.max(maxLevel2,weight);
-                minLevel2 = Math.min(minLevel2,weight);
-            }else if(i == 1){
-                maxLevel1 = Math.max(maxLevel1,weight);
-                minLevel1 = Math.min(minLevel1,weight);
-            }
+            weights.add( Integer.valueOf(wctx.integer(i).getText()) -1);
         }
 
         was.add(as);
@@ -58,13 +46,6 @@ public class ClingoAnswerSetVisitor extends ClingoResultBaseVisitor {
             visitWeighted_answer_set(wctx);
         }
 
-        int aimLevel=0;
-        aimLevel = minLevel2;
-        for(WeightedAnswerSet as : was){
-            if(as.getWeights().get(1) == aimLevel){
-                result.add(as);
-            }
-        }
-        return result;
+        return was;
     }
 }
