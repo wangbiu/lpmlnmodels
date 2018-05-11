@@ -94,4 +94,28 @@ public class LpmlnProgramHelper {
         });
         return reachable;
     }
+
+    public static Set<Set<String>> reachableToLitSets(Map<String,Set<String>> reachable){
+        UnionFindSet<String> unionFindSet = new UnionFindSet<>(reachable.keySet());
+        reachable.forEach((from,toSet)->{
+            toSet.forEach(to->{
+                if(reachable.keySet().contains(to)&&reachable.get(to).contains(from)){
+                    unionFindSet.join(from,to);
+                }
+            });
+        });
+        Map<String,Set<String>> ansMap = new HashMap<>();
+        reachable.keySet().forEach(lit->{
+            String root = unionFindSet.find(lit);
+            Set<String> rootAim;
+            if(ansMap.containsKey(root)){
+                rootAim = ansMap.get(root);
+            }else{
+                rootAim = new HashSet<>();
+                ansMap.put(root,rootAim);
+            }
+            rootAim.add(lit);
+        });
+        return new HashSet<>(ansMap.values());
+    }
 }

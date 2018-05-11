@@ -1,12 +1,8 @@
 package cn.edu.seu.kse.lpmln.model;
 
-import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
-import cn.edu.seu.kse.lpmln.util.UnionFindSet;
-
 import java.util.*;
 
-import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.dependToReachable;
-import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.getLiteral;
+import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.*;
 
 /**
  * @author 许鸿翔
@@ -135,9 +131,9 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     }
 
     private void findLoops(){
-        Map<String,Set<String>> pdg = LpmlnProgramHelper.getPostiveDependency(lpmlnProgram);
+        Map<String,Set<String>> pdg = getPostiveDependency(lpmlnProgram);
         Map<String,Set<String>> reachable = dependToReachable(pdg);
-        Set<Set<String>> loopLits = getLoopLits(reachable);
+        Set<Set<String>> loopLits = reachableToLitSets(reachable);
         loopLits.forEach(litSet->{
             Loop loop = new Loop(litSet);
             loops.add(loop);
@@ -156,32 +152,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             loopSupports.get(loop).add(cond);
         });
     }
-
-    private Set<Set<String>> getLoopLits(Map<String,Set<String>> reachable){
-        UnionFindSet<String> unionFindSet = new UnionFindSet<>(reachable.keySet());
-        reachable.forEach((from,toSet)->{
-            toSet.forEach(to->{
-                if(reachable.keySet().contains(to)&&reachable.get(to).contains(from)){
-                    unionFindSet.join(from,to);
-                }
-            });
-        });
-        Map<String,Set<String>> ansMap = new HashMap<>();
-        reachable.keySet().forEach(lit->{
-            String root = unionFindSet.find(lit);
-            Set<String> rootAim;
-            if(ansMap.containsKey(root)){
-                rootAim = ansMap.get(root);
-            }else{
-                rootAim = new HashSet<>();
-                ansMap.put(root,rootAim);
-            }
-            rootAim.add(lit);
-        });
-        return new HashSet<>(ansMap.values());
-    }
-
-
 
     public int getRuleIdx(){
         int ans=-1;
