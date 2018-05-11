@@ -201,35 +201,22 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
 
     public int getRuleIdx(){
-        //System.out.println("2:"+System.currentTimeMillis());
         int ans=-1;
         double eval=0;
-        //System.out.println("unknownIdx size:"+unknownIdx.size());
-        int sum=0;
         for (int i : unknownIdx) {
-            long clonestart = System.currentTimeMillis();
             double nextEval;
-            //System.out.println("11:"+System.currentTimeMillis());
             HeuristicAugmentedSubset positive = this.clone();
             HeuristicAugmentedSubset negative = this.clone();
-            //sum += (System.currentTimeMillis()-clonestart);
-            //System.out.println("12:"+System.currentTimeMillis());
             boolean sat = positive.sat(i);
-            //System.out.println("13:"+System.currentTimeMillis());
             boolean unsat = negative.unsat(i);
-            //System.out.println("14:"+System.currentTimeMillis());
             if(sat&&unsat){
                 nextEval = positive.weight+negative.weight-Math.abs(positive.weight-negative.weight);
-                //System.out.println(""+positive.weight+"\t"+negative.weight);
                 if(nextEval>eval){
                     ans = i;
                     eval = nextEval;
                 }
             }
-            //System.out.println("15:"+System.currentTimeMillis());
-            //System.out.println("");
         }
-        //System.out.println("3:"+System.currentTimeMillis());
         return ans;
     }
 
@@ -333,26 +320,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         return stat==(cond.cond&stat);
     }
 
-//    private void buildSupCond(Rule r,String supLit){
-//        SupportCond supCond = new SupportCond();
-//        //supLoop.put(supCond,litToLoop.get(supLit));
-//        r.getHead().forEach(headLit->{
-//            LitCond cond = getLitCond(headLit);
-//            if(!cond.realLit.equals(supLit)){
-//                supCond.support.put(cond.realLit,TRUE^cond.cond);
-//                supConds.get(cond.realLit).add(supCond);
-//            }
-//        });
-//        List<String> body = new ArrayList<>(r.getPositiveBody());
-//        body.addAll(r.getNegativeBody());
-//        body.forEach(bodyLit->{
-//            LitCond cond = getLitCond(bodyLit);
-//            supCond.support.put(cond.realLit,cond.cond);
-//            supConds.get(cond.realLit).add(supCond);
-//        });
-//        supConds = supConds.
-//    }
-
     //表达式比较，需要完善
     private boolean equation(String str){
         if(str.contains("!=")){
@@ -398,9 +365,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
     @Override
     public HeuristicAugmentedSubset clone(){
-        //long start = System.currentTimeMillis();
-        //System.out.println("clone start:"+start);
-        //System.out.println("18"+System.currentTimeMillis());
         HeuristicAugmentedSubset cloned = new HeuristicAugmentedSubset();
         cloned.setLpmlnProgram(lpmlnProgram);
         cloned.satIdx = (HashSet)((HashSet)satIdx).clone();
@@ -408,9 +372,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.unknownIdx = (HashSet)((HashSet)unknownIdx).clone();
         cloned.atomRestrict = (HashMap)((HashMap)atomRestrict).clone();
         cloned.satRestricts = satRestricts;
-        //System.out.println("17"+System.currentTimeMillis());
         cloned.unsatRestricts = unsatRestricts;
-        //不确定深复制对效率的影响
         cloned.activeRuleRestrict = activeRuleRestrict;
         cloned.weight = weight;
         cloned.loops = loops;
@@ -421,7 +383,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         cloned.truthRes = truthRes;
         cloned.loopSupports = loopSupports;
         cloned.failedConds = (HashSet)((HashSet)failedConds).clone();
-        //System.out.println("clone start:"+(System.currentTimeMillis()-start));
         return cloned;
     }
 
@@ -573,7 +534,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                 }
             }
         });
-        //System.out.println("loopinfo:"+ans.size());
         return ans;
     }
 
@@ -602,7 +562,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
      * @return true=有
      */
     private boolean unsatable(int idx){
-        long start = System.currentTimeMillis();
         Map<String,Integer> unsatMap = unsatRestricts[idx];
         for (Map.Entry<String,Integer> ent : unsatMap.entrySet()) {
             if(!restrictLit(ent.getKey(),ent.getValue())){
