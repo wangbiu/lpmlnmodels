@@ -85,4 +85,16 @@ public interface LPMLNSolver extends Runnable {
      */
     void setLpmlnProgram(LpmlnProgram lpmlnProgram);
 
+    /**
+     * 选择是否过滤掉概率为0的回答集，默认过滤
+     * @param filtResult true=过滤
+     */
+    void setFiltResult(boolean filtResult);
+
+    /**
+     * 选择是否计算概率,默认计算
+     * @param calculatePossibility true=计算
+     */
+    void setCalculatePossibility(boolean calculatePossibility);
+
 }

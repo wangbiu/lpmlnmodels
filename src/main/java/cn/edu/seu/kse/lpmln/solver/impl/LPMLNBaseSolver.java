@@ -93,9 +93,13 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
         lpmlnProgram = program;
         executeSolving();
-        List<WeightedAnswerSet> result;
-        result = calculateProbability(filtWas(weightedAs));
-        return result;
+        if(filtResult){
+            weightedAs = filtWas(weightedAs);
+        }
+        if(calculatePossibility){
+            weightedAs = calculateProbability(weightedAs);
+        }
+        return weightedAs;
     }
 
     public void executeSolving(){
@@ -349,6 +353,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         return filtResult;
     }
 
+    @Override
     public void setFiltResult(boolean filtResult) {
         this.filtResult = filtResult;
     }
@@ -357,6 +362,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         return calculatePossibility;
     }
 
+    @Override
     public void setCalculatePossibility(boolean calculatePossibility) {
         this.calculatePossibility = calculatePossibility;
     }

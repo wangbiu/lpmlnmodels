@@ -39,6 +39,8 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         topSolvers = new ArrayList<>();
         this.arch = arch;
         bottomSolver = chooseSolver(arch);
+        bottomSolver.setCalculatePossibility(false);
+        bottomSolver.setFiltResult(false);
     }
 
     @Override
