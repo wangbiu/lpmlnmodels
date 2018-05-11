@@ -5,6 +5,7 @@ import cn.edu.seu.kse.lpmln.util.UnionFindSet;
 
 import java.util.*;
 
+import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.dependToReachable;
 import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.getLiteral;
 
 /**
@@ -135,7 +136,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
     private void findLoops(){
         Map<String,Set<String>> pdg = LpmlnProgramHelper.getPostiveDependency(lpmlnProgram);
-        Map<String,Set<String>> reachable = getReachable(pdg);
+        Map<String,Set<String>> reachable = dependToReachable(pdg);
         Set<Set<String>> loopLits = getLoopLits(reachable);
         loopLits.forEach(litSet->{
             Loop loop = new Loop(litSet);
@@ -180,24 +181,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         return new HashSet<>(ansMap.values());
     }
 
-    private Map<String,Set<String>> getReachable(Map<String,Set<String>> pdg){
-        Map<String,Set<String>> reachable = new HashMap<>();
-        pdg.keySet().forEach(start->{
-            Set<String> end = new HashSet<>();
-            reachable.put(start,end);
-            LinkedList<String> toVisit = new LinkedList<>(pdg.get(start));
-            while(toVisit.size()>0){
-                String next = toVisit.poll();
-                if(!end.contains(next)){
-                    end.add(next);
-                    if(pdg.containsKey(next)){
-                        toVisit.addAll(pdg.get(next));
-                    }
-                }
-            }
-        });
-        return reachable;
-    }
 
 
     public int getRuleIdx(){

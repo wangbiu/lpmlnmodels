@@ -3,10 +3,7 @@ package cn.edu.seu.kse.lpmln.util;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author 许鸿翔
@@ -77,5 +74,24 @@ public class LpmlnProgramHelper {
             ans.add(LpmlnProgramHelper.getLiteral(lit));
         }
         return ans;
+    }
+
+    public static Map<String,Set<String>> dependToReachable(Map<String,Set<String>> dependency){
+        Map<String,Set<String>> reachable = new HashMap<>();
+        dependency.keySet().forEach(start->{
+            Set<String> end = new HashSet<>();
+            reachable.put(start,end);
+            LinkedList<String> toVisit = new LinkedList<>(dependency.get(start));
+            while(toVisit.size()>0){
+                String next = toVisit.poll();
+                if(!end.contains(next)){
+                    end.add(next);
+                    if(dependency.containsKey(next)){
+                        toVisit.addAll(dependency.get(next));
+                    }
+                }
+            }
+        });
+        return reachable;
     }
 }
