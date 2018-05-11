@@ -100,6 +100,13 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     }
 
     private void filtSatRestricts(){
+        //原子不存在头部，必然不存在
+        allLiterals.forEach(lit->{
+            if(!atomRestrict.containsKey(lit)){
+                atomRestrict.put(lit,4);
+            }
+        });
+        //根据事实筛选sat中的要求
         for(int i=0;i<satRestricts.length;i++){
             SATRestrict satRestrict = satRestricts[i];
             for (String lit : new HashSet<>(satRestrict.restrict.keySet())) {
@@ -145,12 +152,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         buildSupCond();
         loops.forEach(loop-> loopSupports.put(loop,new HashSet<>()));
         supLoop.forEach((cond,loop)->{
-            try{
-                loopSupports.get(loop).add(cond);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
+            loopSupports.get(loop).add(cond);
         });
     }
 
@@ -524,7 +526,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             }
             atomRestrict.put(nextCond.realLit,now);
             //判断外部支持规则能否支持
-
             restrictInLoop(nextCond).forEach(conds::offer);
             //根据sat判断
             Set<Integer> ruleIdxs = activeRuleRestrict.getOrDefault(nextCond.realLit,new HashSet<>());
