@@ -109,7 +109,8 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
                     satRestrict.restrict.remove(lit);
                 }
                 //规则已经成立
-                if(!(lpmlnProgram.getRules().get(i).isSoft())&&satisfied(current)){
+                if(satisfied(current)){
+                    unknownIdx.remove(i);
                     satIdx.add(i);
                     break;
                 }
@@ -320,7 +321,9 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
     }
 
     private boolean satisfiable(LitCond cond){
-        return (atomRestrict.getOrDefault(cond.realLit,TRUE)&cond.cond)!=0;
+        boolean atomRes =  (atomRestrict.getOrDefault(cond.realLit,TRUE)&cond.cond)!=0;
+        boolean truth = (truthRes.getOrDefault(cond.realLit,TRUE)&cond.cond)!=0;
+        return atomRes&truth;
     }
 
     private boolean satisfied(LitCond cond){
@@ -525,6 +528,7 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
             restrictInLoop(nextCond).forEach(conds::offer);
             //根据sat判断
             Set<Integer> ruleIdxs = activeRuleRestrict.getOrDefault(nextCond.realLit,new HashSet<>());
+            ruleIdxs.removeAll(unknownIdx);
             for (int idx : ruleIdxs) {
                 SATRestrict satRestrict = satRestricts[idx];
                 int resStat = satRestrict.restrict.get(nextCond.realLit);
