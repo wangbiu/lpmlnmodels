@@ -44,6 +44,8 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     protected ExperimentReport report = null;
     protected TimeCounter totalTime;
     protected TimeCounter solveTime;
+    private boolean filtResult = true;
+    private boolean calculatePossibility = true;
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
@@ -89,13 +91,20 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     @Override
     public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+        lpmlnProgram = program;
+        executeSolving();
+        List<WeightedAnswerSet> result;
+        result = calculateProbability(filtWas(weightedAs));
+        return result;
+    }
+
+    public void executeSolving(){
         List<WeightedAnswerSet> result;
         List<WeightedAnswerSet> aspResult;
-        lpmlnProgram = program;
 
         //翻译为ASP程序
         translator = new LPMLN2ASPTranslator();
-        String aspProgram = translator.translate(program);
+        String aspProgram = translator.translate(lpmlnProgram);
 
         //保留翻译后的文件
         FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix + LPSUFFIX), aspProgram);
@@ -103,10 +112,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         //ASP求解
         aspResult = aspSolver.solve(aspProgram);
 
-        result = calculateProbability(filtWas(aspResult));
-        weightedAs = result;
-
-        return result;
+        weightedAs = aspResult;
     }
 
     public LpmlnProgram parse(File ruleFile) {
@@ -337,5 +343,21 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     @Override
     public void setLpmlnProgram(LpmlnProgram lpmlnProgram) {
         this.lpmlnProgram = lpmlnProgram;
+    }
+
+    public boolean isFiltResult() {
+        return filtResult;
+    }
+
+    public void setFiltResult(boolean filtResult) {
+        this.filtResult = filtResult;
+    }
+
+    public boolean isCalculatePossibility() {
+        return calculatePossibility;
+    }
+
+    public void setCalculatePossibility(boolean calculatePossibility) {
+        this.calculatePossibility = calculatePossibility;
     }
 }

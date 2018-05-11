@@ -23,6 +23,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private String arch;
     private SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_LIT;
 
+    @Override
     public void run() {
         solveProgram(lpmlnProgram);
     }
@@ -41,10 +42,8 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     }
 
     @Override
-    public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+    public void executeSolving(){
         threadPool = new LpmlnThreadPool("SplittingSolver!");
-        lpmlnProgram = program;
-
         // 1. 分割程序，需要用到bottom、top、U
         Splitter splitter;
         switch (policy){
@@ -61,7 +60,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
                 splitter = new Splitter();
                 break;
         }
-        splitter.split(program, k);
+        splitter.split(lpmlnProgram, k);
         LpmlnProgram bottom = splitter.getBottom();
         LpmlnProgram top = splitter.getTop();
         Set<String> U = splitter.getU();
@@ -82,9 +81,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         threadPool.waitDone();
 
         // 5. 产生结果
-        weightedAs = calculateProbability(filtWas(collectWas()));
-
-        return weightedAs;
+        weightedAs = filtWas(collectWas());
     }
 
     protected List<WeightedAnswerSet> collectWas(){

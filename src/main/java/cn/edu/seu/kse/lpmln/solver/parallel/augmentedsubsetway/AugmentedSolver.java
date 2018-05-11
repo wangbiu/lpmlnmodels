@@ -50,11 +50,10 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
     }
 
     @Override
-    public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+    public void executeSolving(){
         threadPool = new LpmlnThreadPool("AugmentedSolver");
-        lpmlnProgram = program;
         //拆分为多个增强子集
-        augmentedSubsets = partitioner.partition(program,threadNums);
+        augmentedSubsets = partitioner.partition(lpmlnProgram,threadNums);
 
         solveTime.start();
         subsetSolvers.clear();
@@ -69,10 +68,8 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         threadPool.waitDone();
         solveTime.stop();
 
-        weightedAs =calculateProbability(filtWas(collectWas()));
-
         totalTime.stop();
-        return weightedAs;
+        weightedAs = collectWas();
     }
 
     protected List<WeightedAnswerSet> collectWas(){

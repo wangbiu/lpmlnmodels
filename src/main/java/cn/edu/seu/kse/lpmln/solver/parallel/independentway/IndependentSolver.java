@@ -35,13 +35,12 @@ public class IndependentSolver extends LPMLNBaseSolver{
     }
 
     @Override
-    public List<WeightedAnswerSet> solveProgram(LpmlnProgram program){
+    public void executeSolving(){
         threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
-        lpmlnProgram = program;
-        List<LpmlnProgram> subprograms = IndependentSplitter.split(program);
+        List<LpmlnProgram> subprograms = IndependentSplitter.split(lpmlnProgram);
         if(subprograms==null){
             subprograms = new ArrayList<>();
-            subprograms.add(program);
+            subprograms.add(lpmlnProgram);
         }
         logger.info("IndependentSolver into {} subprograms.",subprograms.size());
         solvers.clear();
@@ -55,8 +54,6 @@ public class IndependentSolver extends LPMLNBaseSolver{
 
         threadPool.waitDone();
         mergeResult();
-        weightedAs = calculateProbability(filtWas(weightedAs));
-        return weightedAs;
     }
 
     /**

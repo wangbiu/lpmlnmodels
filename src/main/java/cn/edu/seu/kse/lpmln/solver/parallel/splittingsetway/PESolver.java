@@ -26,6 +26,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         solver = chooseSolver(arch);
     }
 
+    @Override
     public void run() {
         generatePartialEvaluation();
         weightedAs = solver.solveProgram(partialEvaluation);
