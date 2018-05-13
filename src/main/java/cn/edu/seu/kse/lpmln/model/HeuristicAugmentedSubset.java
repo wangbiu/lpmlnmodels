@@ -544,6 +544,10 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         this.weight = weight;
     }
 
+    public Map<String, Integer> getTruthRes() {
+        return truthRes;
+    }
+
     @Override
     public Set<Integer> getSatIdx() {
         Set<Integer> result = new HashSet<>(satIdx);

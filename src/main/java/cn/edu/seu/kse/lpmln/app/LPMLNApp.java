@@ -24,9 +24,7 @@ import java.util.UUID;
 import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_HEURISTIC;
 import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_RANDOM;
 import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_SIMPLE;
-import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_BOT;
-import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_LIT;
-import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.SPLIT_ORIGINAL;
+import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.*;
 
 /**
  * Created by 王彬 on 2016/10/14.
@@ -197,6 +195,7 @@ public class LPMLNApp {
                                 case "r":
                                     ((AugmentedSolver) solver).setPolicy(DIVIDE_RANDOM);
                                 default:
+                                    System.out.println("no policy specified");
                                     break;
                             }
                             if(param.length>1){
@@ -217,11 +216,16 @@ public class LPMLNApp {
                                     break;
                                 case "b":
                                     ((SplittingSolver) solver).setPolicy(SPLIT_BOT);
+                                case "d":
+                                    ((SplittingSolver) solver).setPolicy(SPLIT_DYNAMIC);
                                     break;
                                 default:
+                                    System.out.println("no policy specified");
                                     break;
                             }
-                            ((SplittingSolver) solver).setK(Double.valueOf(param[1]));
+                            if(param.length>1){
+                                ((SplittingSolver) solver).setK(Double.valueOf(param[1]));
+                            }
                         }
                         break;
                     case "h":

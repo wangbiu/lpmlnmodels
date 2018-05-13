@@ -19,7 +19,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private List<PESolver> topSolvers;
     public double k=0.5;
     private LpmlnThreadPool threadPool;
-    public enum SPLIT_TYPE{SPLIT_ORIGINAL, SPLIT_LIT, SPLIT_BOT}
+    public enum SPLIT_TYPE{SPLIT_ORIGINAL, SPLIT_LIT, SPLIT_BOT,SPLIT_DYNAMIC}
     private String arch;
     private SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_LIT;
 
@@ -32,6 +32,10 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         bottomSolver = new LPMLNBaseSolver();
         topSolvers = new ArrayList<>();
         threadPool = new LpmlnThreadPool("SplittingSolver!");
+        bottomSolver = chooseSolver(arch);
+        bottomSolver.setCalculatePossibility(false);
+        bottomSolver.setFiltResult(false);
+        ((LPMLNBaseSolver) bottomSolver).getTranslator().setWeakTranslate(false);
         this.arch = "";
     }
 
@@ -41,6 +45,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         bottomSolver = chooseSolver(arch);
         bottomSolver.setCalculatePossibility(false);
         bottomSolver.setFiltResult(false);
+        ((LPMLNBaseSolver) bottomSolver).getTranslator().setWeakTranslate(false);
     }
 
     @Override
@@ -52,14 +57,8 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
             case SPLIT_ORIGINAL:
                 splitter = new Splitter();
                 break;
-            case SPLIT_LIT:
-                splitter = new KSplitter(SPLIT_TYPE.SPLIT_LIT);
-                break;
-            case SPLIT_BOT:
-                splitter = new KSplitter(SPLIT_TYPE.SPLIT_BOT);
-                break;
             default:
-                splitter = new Splitter();
+                splitter = new KSplitter(this.policy);
                 break;
         }
         splitter.split(lpmlnProgram, k);
@@ -89,34 +88,11 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     protected List<WeightedAnswerSet> collectWas(){
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
-        topSolvers.forEach(solver -> collectedWas.addAll(solver.getAllWeightedAs()));
+        topSolvers.forEach(solver -> {
+            System.out.println(solver.getAllWeightedAs().size()+" was collected");
+            collectedWas.addAll(solver.getAllWeightedAs());
+        });
         return collectedWas;
-    }
-
-    public static Set<String> getSplittingSet(LpmlnProgram program){
-//        Map<String,Set<String>> dependency = LpmlnProgramHelper.getDependency(program);
-//        Map<String,Set<String>> reachable = new HashMap<>();
-//        Set<String> u;
-//        int minDiff=program.getRules().size();
-//        int kpie = k*program.getRules().set();
-//        dependency.keySet().forEach(from->{
-//            Set<String> visited = new HashSet<>();
-//            LinkedList<String> togo = new LinkedList<>();
-//            visited.add(from);
-//            togo.offer(from);
-//            while(togo.size()>0){
-//                String next = togo.poll();
-//                if(!visited.contains(next)){
-//                    dependency.get(next).forEach(tovisit->togo.offer(tovisit));
-//                    visited.add(next);
-//                }
-//            }
-//            reachable.put(from,visited);
-//        });
-//        reachable.values().forEach(tempu->{
-//        });
-        //TODO:next
-        return null;
     }
 
     public SPLIT_TYPE getPolicy() {

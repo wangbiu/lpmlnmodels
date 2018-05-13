@@ -38,7 +38,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     final protected int UNIX = 0;
     protected SolverStats sta = new SolverStats();
     protected static final String LPSUFFIX = ".lp";
-    protected LPMLN2ASPTranslator translator;
+    protected LPMLN2ASPTranslator translator = new LPMLN2ASPTranslator();
     protected AspSolver aspSolver;
     protected LpmlnProgram lpmlnProgram;
     protected ExperimentReport report = null;
@@ -107,7 +107,6 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         List<WeightedAnswerSet> aspResult;
 
         //翻译为ASP程序
-        translator = new LPMLN2ASPTranslator();
         String aspProgram = translator.translate(lpmlnProgram);
 
         //保留翻译后的文件
@@ -284,6 +283,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         solveProgram(lpmlnProgram);
     }
 
+    //TODO:这里可以略过中间的概率计算来优化一下
     public LPMLNSolver chooseSolver(String arch) {
         arch += "D";
         switch (arch.charAt(0)) {
@@ -365,5 +365,9 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     @Override
     public void setCalculatePossibility(boolean calculatePossibility) {
         this.calculatePossibility = calculatePossibility;
+    }
+
+    public LPMLN2ASPTranslator getTranslator() {
+        return translator;
     }
 }

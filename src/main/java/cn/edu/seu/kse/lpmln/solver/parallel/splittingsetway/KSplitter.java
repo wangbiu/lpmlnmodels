@@ -1,13 +1,19 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway;
 
 import cn.edu.seu.kse.lpmln.model.DecisionUnit;
+import cn.edu.seu.kse.lpmln.model.HeuristicAugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
+import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
+import cn.edu.seu.kse.lpmln.util.UnionFindSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.reachableToLitSets;
 
 /**
  * @author 许鸿翔
@@ -15,8 +21,9 @@ import java.util.*;
  */
 public class KSplitter extends Splitter{
     private double k;
-    private LpmlnProgram program;
+    private LpmlnProgram lpmlnprogram;
     private Map<String,Set<String>> dependency;
+    private Map<String,Set<String>> reachable;
     private Set<String> programLiterals;
     private List<DecisionUnit> mdus;
     private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.SPLIT_LIT;
@@ -45,7 +52,7 @@ public class KSplitter extends Splitter{
     @Override
     public void split(LpmlnProgram program, double k) {
         this.k = k;
-        this.program = program;
+        this.lpmlnprogram = program;
         this.dependency = LpmlnProgramHelper.getDependency(program);
 
         this.mdus = generateMDUs();
@@ -57,63 +64,23 @@ public class KSplitter extends Splitter{
     }
 
     private List<DecisionUnit> generateMDUs(){
-        List<DecisionUnit> mdu = new ArrayList<>();
-        //已经被加到之前mdu里的元素
-        Set<String> used = new HashSet<>();
+        List<DecisionUnit> currentMdu = new ArrayList<>();
+        reachable = LpmlnProgramHelper.dependToReachable(dependency);
         programLiterals = new HashSet<>(dependency.keySet());
-        dependency.values().forEach(depend->programLiterals.addAll(depend));
-        programLiterals.forEach(lit->{
-            if(used.contains(lit)){
-                return;
-            }
-            //当前的mdu有的元素
-            Set<String> current = dfs(lit);
-            if(current==null){
-                return;
-            }
-            used.addAll(current);
-            mdu.add(new DecisionUnit(program,current));
-        });
-        return mdu;
-    }
-
-    private Set<String> dfs(String lit){
-        Set<String> current = new HashSet<>();
-        Set<String> visited = new HashSet<>();
-        if(!dependency.containsKey(lit)){
-            return null;
-        }
-        //深度优先，stack1记录顺序，stack记录目前访问的,path记录当前路径下
-        LinkedList<String> stack1 = new LinkedList<>();
-        LinkedList<Iterator<String>> stack2 = new LinkedList<>();
-        Set<String> path = new HashSet<>();
-        stack1.push(lit);
-        stack2.push(dependency.get(lit).iterator());
-        path.add(lit);
-        visited.add(lit);
-        while(stack2.size()>0){
-            if(stack2.peek().hasNext()){
-                String next = stack2.peek().next();
-                if(path.contains(next)||visited.contains(next)){
-                    if(next.equals(lit)){
-                        current.addAll(path);
-                    }
-                }else{
-                    stack1.push(next);
-                    if(dependency.containsKey(next)){
-                        stack2.push(dependency.get(next).iterator());
-                        path.add(next);
-                    }else{
-                        stack1.pop();
-                    }
+        dependency.values().forEach(programLiterals::addAll);
+        UnionFindSet<String> litDependencys = new UnionFindSet<>(programLiterals);
+        reachable.forEach((from,toSet)->{
+            toSet.forEach(to->{
+                if(reachable.keySet().contains(to)&&reachable.get(to).contains(from)){
+                    litDependencys.join(from,to);
                 }
-                visited.add(next);
-            }else{
-                stack2.pop();
-                path.remove(stack1.pop());
-            }
-        }
-        return current;
+            });
+        });
+
+        reachableToLitSets(reachable).forEach(litSet->{
+            currentMdu.add(new DecisionUnit(lpmlnprogram,litSet));
+        });
+        return currentMdu;
     }
 
     private void buildRelations(){
@@ -134,10 +101,17 @@ public class KSplitter extends Splitter{
                 }
             });
         });
+        mdus.forEach(mdu->{
+            mdu.getTo().remove(mdu);
+            mdu.getFrom().remove(mdu);
+        });
     }
 
     private void generateU(){
         switch (policy){
+            case SPLIT_DYNAMIC:
+                generateUDynamic();
+                break;
             case SPLIT_BOT:
                 generateUBot();
                 break;
@@ -147,6 +121,65 @@ public class KSplitter extends Splitter{
                 break;
         }
 
+    }
+
+    private void generateUDynamic(){
+        PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
+        mdus.forEach(mdu->{
+            if(mdu.getTo().size()==0){
+                nextQueue.offer(mdu);
+            }
+        });
+        //抽取程序中的事实，事实不会增加底部回答集数量，考虑换种方式抽事实
+        HeuristicAugmentedSubset heuristicAugmentedSubset = new HeuristicAugmentedSubset(lpmlnprogram);
+        Set<String> truth = heuristicAugmentedSubset.getTruthRes().keySet();
+        List<Rule> botRules = getBotRules();
+        int size = wasSize(botRules);
+        while(nextQueue.size()>0&&size<32){
+            DecisionUnit du = nextQueue.poll();
+            addMDUToU(du,nextQueue);
+            if(!truthMdu(du,truth)){
+                botRules = getBotRules();
+                size = wasSize(botRules);
+            }
+        }
+        if(size>320){
+            System.out.println("size of bot too large:"+size);
+            U.clear();
+        }
+    }
+
+    private boolean truthMdu(DecisionUnit mdu,Set<String> truthLits){
+        for (String lit : mdu.getLit()) {
+            if(!truthLits.contains(lit)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void addMDUToU(DecisionUnit mdu,PriorityQueue<DecisionUnit> nextQueue){
+        U.addAll(mdu.getLit());
+        mdu.getFrom().forEach(father->{
+            father.getTo().remove(mdu);
+            if(father.getTo().size()==0){
+                nextQueue.offer(father);
+            }
+        });
+    }
+
+    private List<Rule> getBotRules(){
+        return lpmlnprogram.getRules().stream().filter(this::isBotRule).collect(Collectors.toList());
+    }
+
+    private int wasSize(List<Rule> bottomRules){
+        LpmlnProgram bottom = new LpmlnProgram(bottomRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), "");
+        LPMLNBaseSolver baseSolver = new LPMLNBaseSolver();
+        baseSolver.setCalculatePossibility(false);
+        baseSolver.setFiltResult(false);
+        baseSolver.getTranslator().setWeakTranslate(false);
+        baseSolver.solveProgram(bottom);
+        return baseSolver.getAllWeightedAs().size();
     }
 
     private void generateULit(){
@@ -188,7 +221,7 @@ public class KSplitter extends Splitter{
         });
         while(nextQueue.size()>0){
             DecisionUnit next = nextQueue.poll();
-            if(next.getWr()+currentRules<Math.min(k*program.getRules().size(),limit)){
+            if(next.getWr()+currentRules<Math.min(k* lpmlnprogram.getRules().size(),limit)){
                 U.addAll(next.getLit());
                 currentRules += next.getWr();
                 next.getFrom().forEach(father->{
@@ -206,37 +239,41 @@ public class KSplitter extends Splitter{
     private void generateTopAndBottom(){
         List<Rule> bottomRules = new ArrayList<>();
         List<Rule> topRules = new ArrayList<>();
-        for (Rule rule : program.getRules()) {
-            boolean bot = false;
-            for (String headLit : rule.getHead()) {
-                if(U.contains(LpmlnProgramHelper.getLiteral(headLit))){
-                    bot = true;
-                    break;
-                }
-            }
-            if(rule.getHead().size()==0){
-                bot = true;
-                for (String bodyLit : rule.getNegativeBody()){
-                    if(!U.contains(LpmlnProgramHelper.getLiteral(bodyLit))){
-                        bot = false;
-                        break;
-                    }
-                }
-                for (String bodyLit : rule.getPositiveBody()){
-                    if(!U.contains(LpmlnProgramHelper.getLiteral(bodyLit))){
-                        bot = false;
-                        break;
-                    }
-                }
-            }
-            if(bot){
+        for (Rule rule : lpmlnprogram.getRules()) {
+            if(isBotRule(rule)){
                 bottomRules.add(rule);
             }else{
                 topRules.add(rule);
             }
         }
-        bottom = new LpmlnProgram(bottomRules, program.getFactor(), program.getHerbrandUniverse(), "");
-        top = new LpmlnProgram(topRules, program.getFactor(), program.getHerbrandUniverse(), program.getMetarule());
+        bottom = new LpmlnProgram(bottomRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), "");
+        top = new LpmlnProgram(topRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), lpmlnprogram.getMetarule());
+    }
+
+    public boolean isBotRule(Rule rule){
+        boolean bot = false;
+        for (String headLit : rule.getHead()) {
+            if(U.contains(LpmlnProgramHelper.getLiteral(headLit))){
+                bot = true;
+                break;
+            }
+        }
+        if(rule.getHead().size()==0){
+            bot = true;
+            for (String bodyLit : rule.getNegativeBody()){
+                if(!U.contains(LpmlnProgramHelper.getLiteral(bodyLit))){
+                    bot = false;
+                    break;
+                }
+            }
+            for (String bodyLit : rule.getPositiveBody()){
+                if(!U.contains(LpmlnProgramHelper.getLiteral(bodyLit))){
+                    bot = false;
+                    break;
+                }
+            }
+        }
+        return bot;
     }
 
 }
