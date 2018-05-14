@@ -70,8 +70,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
         findLoops();
         filtSatRestricts();
         refreshWeight();
-        System.out.println("1:"+System.currentTimeMillis());
-        System.out.println("init done");
     }
 
     private void init(){

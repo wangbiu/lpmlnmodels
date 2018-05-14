@@ -40,6 +40,7 @@ public class KSplitter extends Splitter{
         }
     };
     private Logger logger = LogManager.getLogger(KSplitter.class.getName());
+    private int aimBotSize = Runtime.getRuntime().availableProcessors();
 
     public KSplitter(){
 
@@ -131,13 +132,19 @@ public class KSplitter extends Splitter{
             }
         });
         //抽取程序中的事实，事实不会增加底部回答集数量，考虑换种方式抽事实
+        //TODO:涉及的事实是在若语义下的，强语义需要适配
         HeuristicAugmentedSubset heuristicAugmentedSubset = new HeuristicAugmentedSubset(lpmlnprogram);
         Set<String> truth = heuristicAugmentedSubset.getTruthRes().keySet();
         List<Rule> botRules = getBotRules();
         int size = wasSize(botRules);
-        while(nextQueue.size()>0&&size<32){
+        while(nextQueue.size()>0&&size<aimBotSize){
             DecisionUnit du = nextQueue.poll();
             addMDUToU(du,nextQueue);
+            if(U.size()>0.7*programLiterals.size()){
+                System.out.println("size of U too large:"+size);
+                U.clear();
+                return;
+            }
             if(!truthMdu(du,truth)){
                 botRules = getBotRules();
                 size = wasSize(botRules);
@@ -177,7 +184,6 @@ public class KSplitter extends Splitter{
         LPMLNBaseSolver baseSolver = new LPMLNBaseSolver();
         baseSolver.setCalculatePossibility(false);
         baseSolver.setFiltResult(false);
-        baseSolver.getTranslator().setWeakTranslate(false);
         baseSolver.solveProgram(bottom);
         return baseSolver.getAllWeightedAs().size();
     }
@@ -276,4 +282,11 @@ public class KSplitter extends Splitter{
         return bot;
     }
 
+    public int getAimBotSize() {
+        return aimBotSize;
+    }
+
+    public void setAimBotSize(int aimBotSize) {
+        this.aimBotSize = aimBotSize;
+    }
 }

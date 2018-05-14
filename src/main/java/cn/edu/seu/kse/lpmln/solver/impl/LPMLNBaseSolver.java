@@ -99,6 +99,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         if(calculatePossibility){
             weightedAs = calculateProbability(weightedAs);
         }
+        //System.out.println("solve done,was count: "+weightedAs.size());
         return weightedAs;
     }
 

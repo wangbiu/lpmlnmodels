@@ -35,7 +35,6 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         bottomSolver = chooseSolver(arch);
         bottomSolver.setCalculatePossibility(false);
         bottomSolver.setFiltResult(false);
-        ((LPMLNBaseSolver) bottomSolver).getTranslator().setWeakTranslate(false);
         this.arch = "";
     }
 
@@ -45,7 +44,6 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         bottomSolver = chooseSolver(arch);
         bottomSolver.setCalculatePossibility(false);
         bottomSolver.setFiltResult(false);
-        ((LPMLNBaseSolver) bottomSolver).getTranslator().setWeakTranslate(false);
     }
 
     @Override

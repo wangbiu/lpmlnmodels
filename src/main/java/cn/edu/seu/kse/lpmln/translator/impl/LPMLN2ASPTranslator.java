@@ -18,9 +18,9 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
     //Lee J, Talsania S, Wang Y. Computing LP MLN using ASP and MLN solvers[J]. Theory and Practice of Logic Programming, 2017, 17(5-6): 942-960.
     protected String satLabel;
     protected boolean isWeakTranslate;
-    protected List<String> satRules = new ArrayList<>();
-    protected List<String> unsatRules = new ArrayList<>();
-    protected List<String> unknownRules = new ArrayList<>();
+    protected List<String> satRules;
+    protected List<String> unsatRules;
+    protected List<String> unknownRules;
     protected String staticPart = "";
     protected LpmlnProgram program;
 
@@ -28,8 +28,15 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
         isWeakTranslate = "weak".equals(LPMLNApp.semantics);
     }
 
+    private void init(){
+        satRules = new ArrayList<>();
+        unsatRules = new ArrayList<>();
+        unknownRules = new ArrayList<>();
+    }
+
     @Override
     public String translate(LpmlnProgram program){
+        init();
         this.program = program;
         StringBuilder sb=new StringBuilder();
         String rulestr;
