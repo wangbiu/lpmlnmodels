@@ -80,14 +80,14 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         threadPool.waitDone();
 
         // 5. 产生结果
-        weightedAs = filtWas(collectWas());
+        weightedAs = collectWas();
     }
 
     protected List<WeightedAnswerSet> collectWas(){
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         topSolvers.forEach(solver -> {
-            System.out.println(solver.getAllWeightedAs().size()+" was collected");
+            System.out.println(solver.getAllWeightedAs().size()+"spl was collected");
             collectedWas.addAll(solver.getAllWeightedAs());
         });
         return collectedWas;

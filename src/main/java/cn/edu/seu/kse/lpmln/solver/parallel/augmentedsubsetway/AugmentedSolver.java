@@ -1,6 +1,9 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
-import cn.edu.seu.kse.lpmln.model.*;
+import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
+import cn.edu.seu.kse.lpmln.model.ExperimentReport;
+import cn.edu.seu.kse.lpmln.model.HeuristicAugmentedSubset;
+import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,9 +78,7 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         subsetSolvers.forEach(solver->{
-            logger.debug(solver.getAllWeightedAs().size()+" was collected");
-            System.out.println("sat:"+ Arrays.asList(solver.subset.getSatIdx().stream().filter(i->solver.getLpmlnProgram().getRules().get(i).isSoft()).toArray()));
-            System.out.println("unsat:"+solver.subset.getUnsatIdx());
+            logger.debug(solver.getAllWeightedAs().size()+"aug was collected");
             if(solver.subset instanceof HeuristicAugmentedSubset){
                 System.out.println("weight:"+((HeuristicAugmentedSubset)solver.subset).getWeight());
             }
