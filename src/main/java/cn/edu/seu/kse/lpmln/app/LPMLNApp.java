@@ -21,9 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_HEURISTIC;
-import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_RANDOM;
-import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.DIVIDE_SIMPLE;
+import static cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSubsetPartitioner.SPLIT_TYPE.*;
 import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver.SPLIT_TYPE.*;
 
 /**

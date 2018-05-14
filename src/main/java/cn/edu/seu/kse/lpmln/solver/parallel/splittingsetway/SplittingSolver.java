@@ -21,7 +21,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private LpmlnThreadPool threadPool;
     public enum SPLIT_TYPE{SPLIT_ORIGINAL, SPLIT_LIT, SPLIT_BOT,SPLIT_DYNAMIC}
     private String arch;
-    private SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_LIT;
+    private SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_DYNAMIC;
 
     @Override
     public void run() {
