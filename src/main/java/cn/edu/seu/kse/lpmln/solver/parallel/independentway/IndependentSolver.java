@@ -1,6 +1,5 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.independentway;
 
-import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
@@ -10,7 +9,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author 许鸿翔
@@ -59,7 +61,9 @@ public class IndependentSolver extends LPMLNBaseSolver{
     /**
      * 排列组合生成答案
      */
+    //TODO:factor处理
     private void mergeResult(){
+        System.out.println("1:"+System.currentTimeMillis());
         WeightedAnswerSet meta = new WeightedAnswerSet();
         meta.getWeights().add(0);
         meta.getWeights().add(0);
@@ -80,19 +84,58 @@ public class IndependentSolver extends LPMLNBaseSolver{
             weightedAs.add(meta);
             return;
         }
+        String[][][] litss = new String[subWeightedAs.size()][][];
+        int[][] weight0s = new int[subWeightedAs.size()][];
+        int[][] weight1s = new int[subWeightedAs.size()][];
+
+        for(int i=0;i<subWeightedAs.size();i++){
+            List<WeightedAnswerSet> wass = subWeightedAs.get(i);
+            litss[i] = new String[wass.size()][];
+            weight0s[i] = new int[wass.size()];
+            weight1s[i] = new int[wass.size()];
+            for(int j=0;j<wass.size();j++){
+                WeightedAnswerSet was = wass.get(j);
+                Set<String> litSet = was.getAnswerSet().getLiterals();
+                litss[i][j] = litSet.toArray(new String[litSet.size()]);
+                weight0s[i][j] = was.getWeights().get(0);
+                weight1s[i][j] = was.getWeights().get(1);
+            }
+        }
+
+        List<int[]> permutations = new ArrayList<>();
         int[] permutation = new int[subWeightedAs.size()];
-        do {
-            if(subWeightedAs.get(0).size()==0){
-                throw new SolveException("IndependentSolver no stable model.");
-            }
-            WeightedAnswerSet realAnswerSet = meta.clone();
-            for(int i=0;i<permutation.length;i++){
-                if(!merge(realAnswerSet,subWeightedAs.get(i).get(permutation[i]))){
-                    throw new SolveException("IndependentSolver merge fail");
-                }
-            }
-            weightedAs.add(realAnswerSet);
+        do{
+            permutations.add(permutation.clone());
         }while(nextPermutation(permutation));
+
+        weightedAs = permutations.stream().parallel().map(p->{
+            Set<String> metaLits = meta.getAnswerSet().getLiterals();
+            String[] realLits = metaLits.toArray(new String[metaLits.size()]);
+            String[][] litList = new String[p.length][];
+            int weight0 = meta.getWeights().get(0);
+            int weight1 = meta.getWeights().get(1);
+            for(int i=0;i<permutation.length;i++){
+                litList[i] = litss[i][p[i]];
+                weight0 += weight0s[i][p[i]];
+                weight1 += weight1s[i][p[i]];
+            }
+            realLits = concatAll(realLits,litList);
+            return new WeightedAnswerSet(realLits,weight0,weight1);
+        }).collect(Collectors.toList());
+    }
+
+    public static <T> T[] concatAll(T[] first, T[]... rest) {
+        int totalLength = first.length;
+        for (T[] array : rest) {
+            totalLength += array.length;
+        }
+        T[] result = Arrays.copyOf(first, totalLength);
+        int offset = first.length;
+        for (T[] array : rest) {
+            System.arraycopy(array, 0, result, offset, array.length);
+            offset += array.length;
+        }
+        return result;
     }
 
     private boolean merge(WeightedAnswerSet to,WeightedAnswerSet from){

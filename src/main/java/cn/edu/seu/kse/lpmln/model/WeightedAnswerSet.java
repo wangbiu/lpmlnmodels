@@ -1,6 +1,9 @@
 package cn.edu.seu.kse.lpmln.model;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,6 +19,13 @@ public class WeightedAnswerSet {
     public WeightedAnswerSet(){
         weights=new ArrayList<>();
         answerSet=new AnswerSet();
+    }
+
+    public WeightedAnswerSet(String[] strs,int weight0,int weight1){
+        this.answerSet = new AnswerSet();
+        CollectionUtils.addAll(answerSet.getLiterals(),strs);
+        Integer[] in = {weight0,weight1};
+        weights = Arrays.asList(in);
     }
 
     public List<Integer> getWeights() {
