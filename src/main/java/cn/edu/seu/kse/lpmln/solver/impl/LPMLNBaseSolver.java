@@ -194,12 +194,10 @@ public class LPMLNBaseSolver implements LPMLNSolver {
         List<WeightedAnswerSet> ans = new ArrayList<>(origin.size());
         //再次筛选level2上的最小值，并且将除factor以保证小数位数
         int minLevel2 = Integer.MAX_VALUE;
-        int maxLevel2 = Integer.MIN_VALUE;
-        int aimLevel2 = 0;
+        int aimLevel2;
         int factor = lpmlnProgram.getFactor();
         for (WeightedAnswerSet was : origin) {
             minLevel2 = Math.min(was.getWeights().get(1), minLevel2);
-            maxLevel2 = Math.max(was.getWeights().get(1), maxLevel2);
         }
         aimLevel2 = minLevel2;
         for (WeightedAnswerSet was : origin) {
