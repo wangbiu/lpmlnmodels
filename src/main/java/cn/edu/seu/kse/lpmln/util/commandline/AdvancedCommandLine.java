@@ -78,7 +78,7 @@ public class AdvancedCommandLine extends BaseCommandLine {
     @Override
     protected void stopResultProcess(){
         threadPool.waitDone();
-        logger.debug("command execution done.");
+        //logger.debug("command execution done.");
         was=new ArrayList<>();
         for(ClingoResultProcessor crp:processors){
             if(crp.getWas() != null){

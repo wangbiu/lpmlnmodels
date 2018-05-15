@@ -87,7 +87,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         topSolvers.forEach(solver -> {
-            System.out.println(solver.getAllWeightedAs().size()+"spl was collected");
+            System.out.println(solver.getAllWeightedAs().size()+" spl was collected");
             collectedWas.addAll(solver.getAllWeightedAs());
         });
         return collectedWas;

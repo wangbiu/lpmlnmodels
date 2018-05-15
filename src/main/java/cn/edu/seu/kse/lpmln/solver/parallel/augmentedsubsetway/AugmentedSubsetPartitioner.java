@@ -10,7 +10,7 @@ import java.util.*;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected SPLIT_TYPE policy = SPLIT_TYPE.DIVIDE_RANDOM;
+    protected SPLIT_TYPE policy = SPLIT_TYPE.DIVIDE_HEURISTIC;
 
     /**
      * DIVIDE_SIMPLE：二进制划分
@@ -133,7 +133,7 @@ public class AugmentedSubsetPartitioner {
                 }
             }
         }
-        System.out.println("Partition Cost:"+(System.currentTimeMillis()-start));
+        //System.out.println("Partition Cost:"+(System.currentTimeMillis()-start));
         return subsets;
     }
 

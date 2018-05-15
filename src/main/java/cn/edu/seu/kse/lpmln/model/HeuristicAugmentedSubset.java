@@ -203,9 +203,6 @@ public class HeuristicAugmentedSubset extends AugmentedSubset {
 
     private void buildSupCond(){
         lpmlnProgram.getRules().forEach(rule -> {
-            if(rule.getId()==5850){
-                System.out.println("");
-            }
             rule.getHead().forEach(supLit->{
                 String realSup = getLiteral(supLit);
                 if(unchangable(realSup)){

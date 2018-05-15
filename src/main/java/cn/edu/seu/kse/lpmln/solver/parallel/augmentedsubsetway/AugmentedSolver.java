@@ -2,7 +2,6 @@ package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
-import cn.edu.seu.kse.lpmln.model.HeuristicAugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
@@ -79,9 +78,6 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         subsetSolvers.forEach(solver->{
             logger.debug(solver.getAllWeightedAs().size()+"aug was collected");
-            if(solver.subset instanceof HeuristicAugmentedSubset){
-                System.out.println("weight:"+((HeuristicAugmentedSubset)solver.subset).getWeight());
-            }
             collectedWas.addAll(solver.getAllWeightedAs());
         });
         return collectedWas;

@@ -38,11 +38,12 @@ public class IndependentSolver extends LPMLNBaseSolver{
 
     @Override
     public void executeSolving(){
-        long start = System.currentTimeMillis();
         List<LpmlnProgram> subprograms = IndependentSplitter.split(lpmlnProgram);
-        System.out.println("ind split cost: "+(System.currentTimeMillis()-start));
         if(subprograms==null||subprograms.size()==1){
-            super.executeSolving();
+            System.out.println("unable to do independent split");
+            LPMLNSolver solver = chooseSolver(arch);
+            solver.solveProgram(lpmlnProgram);
+            this.weightedAs = solver.getAllWeightedAs();
             return;
         }
         threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
@@ -69,7 +70,6 @@ public class IndependentSolver extends LPMLNBaseSolver{
      */
     //TODO:factor处理
     private void mergeResult(){
-        System.out.println("1:"+System.currentTimeMillis());
         WeightedAnswerSet meta = new WeightedAnswerSet();
         meta.getWeights().add(0);
         meta.getWeights().add(0);
