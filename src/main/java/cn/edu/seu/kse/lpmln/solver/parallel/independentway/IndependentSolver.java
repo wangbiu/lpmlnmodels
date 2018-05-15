@@ -38,8 +38,14 @@ public class IndependentSolver extends LPMLNBaseSolver{
 
     @Override
     public void executeSolving(){
-        threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
+        long start = System.currentTimeMillis();
         List<LpmlnProgram> subprograms = IndependentSplitter.split(lpmlnProgram);
+        System.out.println("ind split cost: "+(System.currentTimeMillis()-start));
+        if(subprograms==null||subprograms.size()==1){
+            super.executeSolving();
+            return;
+        }
+        threadPool = new LpmlnThreadPool(THREAD_POOL_NAME);
         if(subprograms==null){
             subprograms = new ArrayList<>();
             subprograms.add(lpmlnProgram);
