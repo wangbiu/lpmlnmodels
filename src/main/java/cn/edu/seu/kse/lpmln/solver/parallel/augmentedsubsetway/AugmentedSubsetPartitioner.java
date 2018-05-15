@@ -133,7 +133,7 @@ public class AugmentedSubsetPartitioner {
                 }
             }
         }
-        //System.out.println("Partition Cost:"+(System.currentTimeMillis()-start));
+        System.out.println("Partition Cost:"+(System.currentTimeMillis()-start));
         return subsets;
     }
 
