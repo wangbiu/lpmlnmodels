@@ -175,4 +175,12 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         }
         return DS;
     }
+
+    public LPMLNSolver getSolver() {
+        return solver;
+    }
+
+    public void setSolver(LPMLNSolver solver) {
+        this.solver = solver;
+    }
 }

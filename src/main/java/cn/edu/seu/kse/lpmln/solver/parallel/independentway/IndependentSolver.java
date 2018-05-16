@@ -42,6 +42,8 @@ public class IndependentSolver extends LPMLNBaseSolver{
         if(subprograms==null||subprograms.size()==1){
             System.out.println("unable to do independent split");
             LPMLNSolver solver = chooseSolver(arch);
+            solver.setFiltResult(false);
+            solver.setCalculatePossibility(false);
             solver.solveProgram(lpmlnProgram);
             this.weightedAs = solver.getAllWeightedAs();
             return;
@@ -57,6 +59,8 @@ public class IndependentSolver extends LPMLNBaseSolver{
             //TODO:使用反射创建
             LPMLNSolver solver = chooseSolver(arch);
             solver.setLpmlnProgram(subprogram);
+            solver.setFiltResult(false);
+            solver.setCalculatePossibility(false);
             solvers.add(solver);
             threadPool.execute(solver);
         });

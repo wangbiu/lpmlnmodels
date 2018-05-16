@@ -15,7 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +39,7 @@ public class LPMLNApp {
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) {
         Date enter=new Date();
 
         CommandLine cmd = parseCmd(args);

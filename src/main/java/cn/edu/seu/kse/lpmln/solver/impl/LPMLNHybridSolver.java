@@ -1,10 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver.impl;
 
-import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
-import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
-
-import java.util.List;
 
 public class LPMLNHybridSolver extends LPMLNBaseSolver{
     private String arch;
@@ -21,11 +17,11 @@ public class LPMLNHybridSolver extends LPMLNBaseSolver{
     }
 
     @Override
-    public List<WeightedAnswerSet> solveProgram(LpmlnProgram program) {
-        lpmlnProgram = program;
+    public void executeSolving(){
+        System.out.println("2:"+System.currentTimeMillis());
         LPMLNSolver solver = chooseSolver(arch);
-        List<WeightedAnswerSet> result = solver.solveProgram(program);
-        weightedAs = calculateProbability(filtWas(result));
-        return weightedAs;
+        solver.setCalculatePossibility(false);
+        solver.setFiltResult(false);
+        weightedAs = solver.solveProgram(lpmlnProgram);
     }
 }
