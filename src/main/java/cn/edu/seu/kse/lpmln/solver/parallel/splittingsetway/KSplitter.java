@@ -150,6 +150,12 @@ public class KSplitter extends Splitter{
                 size = wasSize(botRules);
             }
         }
+        while(nextQueue.size()>0){
+            DecisionUnit du = nextQueue.poll();
+            if(truthMdu(du,truth)){
+                addMDUToU(du,nextQueue);
+            }
+        }
         if(size>320){
             System.out.println("size of bot too large:"+size);
             U.clear();

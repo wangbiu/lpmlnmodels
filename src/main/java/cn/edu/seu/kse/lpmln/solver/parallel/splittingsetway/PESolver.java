@@ -24,6 +24,8 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         this.x = x;
         this.arch = arch;
         solver = chooseSolver(arch);
+        solver.setFiltResult(false);
+        solver.setCalculatePossibility(false);
     }
 
     @Override

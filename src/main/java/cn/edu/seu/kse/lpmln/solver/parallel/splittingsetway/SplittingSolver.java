@@ -4,7 +4,6 @@ import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
-import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 
 import java.util.ArrayList;
@@ -76,9 +75,6 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
             topSolvers.add(solver);
             solver.setFiltResult(false);
             solver.setCalculatePossibility(false);
-            if(solver.getSolver() instanceof AugmentedSolver){
-                ((AugmentedSolver)solver.getSolver()).setThreadNums(Runtime.getRuntime().availableProcessors()*2/Xs.size());
-            }
             threadPool.execute(solver);
         });
 
