@@ -275,6 +275,16 @@ public class KSplitter extends Splitter{
                 break;
             }
         }
+        //TODO:临时优化
+        for (String bodyLit : rule.getPositiveBody()){
+            if(bodyLit.contains("!=")){
+                String[] tocomp = bodyLit.split("!=");
+                if(!tocomp[0].replaceAll(" ","").equals(tocomp[1].replaceAll(" ",""))){
+                    return true;
+                }
+            }
+        }
+
         if(rule.getHead().size()==0){
             bot = true;
             for (String bodyLit : rule.getNegativeBody()){
