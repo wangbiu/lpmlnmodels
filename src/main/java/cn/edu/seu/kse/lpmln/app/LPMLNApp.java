@@ -101,6 +101,7 @@ public class LPMLNApp {
     private static void printResult(LPMLNBaseSolver solver){
         List<WeightedAnswerSet> was = solver.getAllWeightedAs();
 
+        System.out.println("total was: "+was.size());
         if(isShowAll){
             System.out.println("all non-zero probability possible world ");
             System.out.println(was);
