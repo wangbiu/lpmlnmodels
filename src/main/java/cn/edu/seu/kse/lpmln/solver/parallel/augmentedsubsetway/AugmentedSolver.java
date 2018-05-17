@@ -61,6 +61,8 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         //增强子集求解
         augmentedSubsets.forEach(subset -> {
             AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver(subset);
+            subsetSolver.setFiltResult(false);
+            subsetSolver.setCalculatePossibility(false);
             subsetSolvers.add(subsetSolver);
             threadPool.execute(subsetSolver);
         });

@@ -42,12 +42,9 @@ public class AugmentedSubsetSolver extends LPMLNBaseSolver implements Runnable {
         FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix+"-"+Thread.currentThread().getId()+LPSUFFIX),aspProgram);
 
         //ASP求解
-        aspResult = aspSolver.solve(aspProgram);
+        weightedAs = aspSolver.solve(aspProgram);
 
-        result = calculateProbability(filtWas(aspResult));
-        weightedAs = result;
-
-        return result;
+        return weightedAs;
     }
 
 
