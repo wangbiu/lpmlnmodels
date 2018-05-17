@@ -30,7 +30,12 @@ public class KSplitter extends Splitter{
     private Comparator<DecisionUnit> comparatorLit = new Comparator<DecisionUnit>() {
         @Override
         public int compare(DecisionUnit o1, DecisionUnit o2) {
-            return o2.getWl()-o1.getWl();
+            int w1 = o2.getWl()-o1.getWl();
+            if(w1==0){
+                return o2.getFrom().size()-o1.getFrom().size();
+            }else{
+                return w1;
+            }
         }
     };
     private Comparator<DecisionUnit> comparatorRule = new Comparator<DecisionUnit>() {
