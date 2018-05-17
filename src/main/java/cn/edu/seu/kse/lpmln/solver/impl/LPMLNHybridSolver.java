@@ -18,7 +18,7 @@ public class LPMLNHybridSolver extends LPMLNBaseSolver{
 
     @Override
     public void executeSolving(){
-        System.out.println("2:"+System.currentTimeMillis());
+        //System.out.println("2:"+System.currentTimeMillis());
         LPMLNSolver solver = chooseSolver(arch);
         solver.setCalculatePossibility(false);
         solver.setFiltResult(false);
