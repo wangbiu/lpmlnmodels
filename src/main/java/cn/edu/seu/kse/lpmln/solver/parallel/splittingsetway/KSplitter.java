@@ -153,15 +153,17 @@ public class KSplitter extends Splitter{
         Set<String> truth = heuristicAugmentedSubset.getTruthRes().keySet();
         List<Rule> botRules = getBotRules();
         int size = wasSize(botRules);
+        int uWeight=0;
         while(nextQueue.size()>0&&size<aimBotSize){
             DecisionUnit du = nextQueue.poll();
             addMDUToU(du,nextQueue);
-            if(U.size()>0.7*programLiterals.size()){
+            if(uWeight>0.7*programLiterals.size()){
                 System.out.println("size of U too large:"+size);
                 U.clear();
                 return;
             }
             if(!truthMdu(du,truth)){
+                uWeight+=du.getLit().size();
                 botRules = getBotRules();
                 size = wasSize(botRules);
             }
