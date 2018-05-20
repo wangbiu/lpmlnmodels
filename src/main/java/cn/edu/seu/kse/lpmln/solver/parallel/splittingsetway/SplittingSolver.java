@@ -19,7 +19,7 @@ import java.util.Set;
 public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private LPMLNSolver bottomSolver;
     private List<PESolver> topSolvers;
-    public double k=32;
+    public double k=0.5;
     private LpmlnThreadPool threadPool;
     public enum SPLIT_TYPE{SPLIT_ORIGINAL, SPLIT_LIT, SPLIT_BOT,SPLIT_DYNAMIC}
     private String arch;
