@@ -58,6 +58,7 @@ public class KSplitter extends Splitter{
     @Override
     public void split(LpmlnProgram program, double k) {
         this.k = k;
+        this.aimBotSize = (int)k;
         this.lpmlnprogram = program;
         this.dependency = LpmlnProgramHelper.getDependency(program);
 
@@ -202,7 +203,6 @@ public class KSplitter extends Splitter{
     private void generateULit(){
         U = new HashSet<>();
         int currentLits=0;
-        int limit=10;
         PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
         mdus.forEach(mdu->{
             if(mdu.getTo().size()==0){
@@ -211,7 +211,7 @@ public class KSplitter extends Splitter{
         });
         while(nextQueue.size()>0){
             DecisionUnit next = nextQueue.poll();
-            if(next.getWl()+currentLits<Math.min(k*programLiterals.size(),limit)){
+            if(next.getWl()+currentLits<k*programLiterals.size()){
                 U.addAll(next.getLit());
                 currentLits += next.getLit().size();
                 next.getFrom().forEach(father->{
@@ -220,7 +220,6 @@ public class KSplitter extends Splitter{
                         nextQueue.offer(father);
                     }
                 });
-                limit-=1;
             }
         }
         logger.debug("splitting set: lit weight:{}",currentLits);
@@ -229,7 +228,6 @@ public class KSplitter extends Splitter{
     private void generateUBot(){
         U = new HashSet<>();
         int currentRules=0;
-        int limit=10;
         PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
         mdus.forEach(mdu->{
             if(mdu.getTo().size()==0){
@@ -238,7 +236,7 @@ public class KSplitter extends Splitter{
         });
         while(nextQueue.size()>0){
             DecisionUnit next = nextQueue.poll();
-            if(next.getWr()+currentRules<Math.min(k* lpmlnprogram.getRules().size(),limit)){
+            if(next.getWr()+currentRules<k* lpmlnprogram.getRules().size()){
                 U.addAll(next.getLit());
                 currentRules += next.getWr();
                 next.getFrom().forEach(father->{
@@ -247,7 +245,6 @@ public class KSplitter extends Splitter{
                         nextQueue.offer(father);
                     }
                 });
-                limit-=1;
             }
         }
         logger.debug("splitting set: bot weight:{}",currentRules);
