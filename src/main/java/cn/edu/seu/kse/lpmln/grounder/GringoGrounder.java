@@ -31,6 +31,11 @@ public class GringoGrounder implements LPMLNGrounder{
         cmd.call(cmdPrefix+randomFile.getAbsoluteFile());
         List<String> rules = Arrays.asList(cmd.getOutput().toString().split("\r\n"));
         rules.forEach(rule->{
+            if(rule.startsWith("#")){
+                //metarule
+                groundProgram.append(rule).append("\r\n");
+            }
+            StringBuilder toAppend = new StringBuilder();
             int idxUnsat = rule.indexOf(NOTUNSAT);
             int idxGet = rule.indexOf(GET);
             if(idxUnsat>0&&idxUnsat>idxGet){
@@ -40,20 +45,21 @@ public class GringoGrounder implements LPMLNGrounder{
                     //强规则
                 }else if(Integer.valueOf(params[params.length-2])==1){
                     //弱规则
-                    groundProgram.append(params[params.length-1]);
-                    groundProgram.append(" : ");
+                    toAppend.append(params[params.length-1]);
+                    toAppend.append(" : ");
                 }else{
                     throw new SolveException("rule param fail: "+rule);
                 }
                 rule = rule.substring(0,idxUnsat).trim();
                 if(rule.endsWith(",")){
-                    groundProgram.append(rule.substring(0, rule.length()-1));
+                    toAppend.append(rule.substring(0, rule.length()-1));
                 }else if(rule.endsWith(":-")){
-                    groundProgram.append(rule.substring(0, rule.length()-2));
+                    toAppend.append(rule.substring(0, rule.length()-2));
                 }else{
                     throw new SolveException("rule end fail: "+rule);
                 }
-                groundProgram.append(".\r\n");
+                toAppend.append(".\r\n");
+                groundProgram.append(toAppend.toString().replaceAll(":-"," :- "));
             }
         });
         return groundProgram.toString();
