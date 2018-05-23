@@ -20,7 +20,7 @@ public class CommonCmd extends BaseCommandLine{
         output = new StringBuilder();
         String line;
         while((line=br.readLine())!=null){
-            output.append(line);
+            output.append(line).append("\r\n");
         }
     }
 
