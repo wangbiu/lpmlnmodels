@@ -1,6 +1,8 @@
 package cn.edu.seu.kse.lpmln.solver.impl;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
+import cn.edu.seu.kse.lpmln.grounder.GringoGrounder;
+import cn.edu.seu.kse.lpmln.grounder.LPMLNGrounder;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
@@ -56,9 +58,14 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile) {
+        LPMLNGrounder grounder = new GringoGrounder();
+        String groundProgram = grounder.grounding(ruleFile);
+        File groundFile = FileHelper.randomFile();
+        FileHelper.writeFile(groundFile,groundProgram);
+
         totalTime.start();
         solveTime.start();
-        lpmlnProgram = parse(ruleFile);
+        lpmlnProgram = parse(groundFile);
         List<WeightedAnswerSet> result = solveProgram(lpmlnProgram);
         //结束计时
         solveTime.stop();
