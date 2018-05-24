@@ -21,6 +21,7 @@ public class Rule {
     private List<String> bodyContion;
     private String ruleLabel=null;
     private String originalrule;
+    private boolean unWeighted = false;
 
     public Rule(){
         vars=new HashSet<>();
@@ -154,6 +155,7 @@ public class Rule {
         cloned.bodyContion = new ArrayList<>(bodyContion);
         cloned.ruleLabel = ruleLabel;
         cloned.originalrule = originalrule;
+        cloned.unWeighted = unWeighted;
         return cloned;
     }
 
@@ -199,5 +201,13 @@ public class Rule {
 
     public void setRuleLabel(String ruleLabel) {
         this.ruleLabel = ruleLabel;
+    }
+
+    public boolean isUnWeighted() {
+        return unWeighted;
+    }
+
+    public void setUnWeighted(boolean unWeighted) {
+        this.unWeighted = unWeighted;
     }
 }

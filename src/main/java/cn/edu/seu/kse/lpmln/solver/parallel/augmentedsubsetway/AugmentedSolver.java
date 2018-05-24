@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
+import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.logging.log4j.LogManager;
@@ -22,12 +23,13 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
     //允许的子程序数量
     private int threadNums;
     private List<String> translatedFiles;
-    private List<AugmentedSubsetSolver> subsetSolvers;
+    private List<LPMLNSolver> subsetSolvers;
     private boolean deleteTranslatedFiles = true;
     private LpmlnThreadPool threadPool;
     private AugmentedSubsetPartitioner partitioner;
     private List<AugmentedSubset> augmentedSubsets;
     private Logger logger = LogManager.getLogger(AugmentedSolver.class.getName());
+    private String arch;
 
     public AugmentedSolver(){
         translatedFiles = new ArrayList<>();
@@ -36,6 +38,16 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         augmentedSubsets = new ArrayList<>();
         //设定划分方式
         partitioner = new AugmentedSubsetPartitioner();
+    }
+
+    public AugmentedSolver(String arch){
+        translatedFiles = new ArrayList<>();
+        threadNums = Runtime.getRuntime().availableProcessors();
+        subsetSolvers = new ArrayList<>();
+        augmentedSubsets = new ArrayList<>();
+        //设定划分方式
+        partitioner = new AugmentedSubsetPartitioner();
+        this.arch = arch;
     }
 
     @Override
@@ -60,7 +72,13 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         subsetSolvers.clear();
         //增强子集求解
         augmentedSubsets.forEach(subset -> {
-            AugmentedSubsetSolver subsetSolver = new AugmentedSubsetSolver(subset);
+            LPMLNSolver subsetSolver;
+            if(arch==null||arch.replaceAll("D","").length()==0){
+                subsetSolver = new AugmentedSubsetSolver(subset);
+            }else{
+                subsetSolver = chooseSolver(arch);
+                subsetSolver.setLpmlnProgram(subset.toLpmlnProgram());
+            }
             subsetSolver.setFiltResult(false);
             subsetSolver.setCalculatePossibility(false);
             subsetSolvers.add(subsetSolver);

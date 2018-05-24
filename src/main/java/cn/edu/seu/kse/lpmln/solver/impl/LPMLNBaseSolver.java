@@ -296,7 +296,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
             }
             case 'a': {}
             case 'A': {
-                return new AugmentedSolver();
+                return new AugmentedSolver(arch.substring(1));
             }
             default: return new LPMLNBaseSolver();
         }

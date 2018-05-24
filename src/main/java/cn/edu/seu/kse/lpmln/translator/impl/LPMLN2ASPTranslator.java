@@ -43,7 +43,8 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
         String unsatRulestr;
         //sb.append(translateDeclarationPart(program.getHerbrandUniverse()));
         for(Rule r:program.getRules()){
-            if(isWeakTranslate&&!r.isSoft()){
+            if(r.isUnWeighted()||
+                    (isWeakTranslate&&!r.isSoft())){
                 sb.append(r.getOriginalrule()).append(System.lineSeparator());
                 getSatRules().add("");
                 getUnknownRules().add("");
@@ -200,5 +201,13 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
 
     public void setWeakTranslate(boolean weakTranslate) {
         isWeakTranslate = weakTranslate;
+    }
+
+    public LpmlnProgram getProgram() {
+        return program;
+    }
+
+    public void setProgram(LpmlnProgram program) {
+        this.program = program;
     }
 }

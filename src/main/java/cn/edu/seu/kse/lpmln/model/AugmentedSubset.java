@@ -2,7 +2,9 @@ package cn.edu.seu.kse.lpmln.model;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
+import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +14,8 @@ import java.util.Set;
  * @date 2018/1/17
  */
 public class AugmentedSubset implements Cloneable{
+    private static final String NOT = "not ";
+    private static final String RULEEND = ".\r\n";
     protected Set<Integer> satIdx;
     protected Set<Integer> unsatIdx;
     protected Set<Integer> unknownIdx;
@@ -65,6 +69,38 @@ public class AugmentedSubset implements Cloneable{
         cloned.unsatIdx = new HashSet<>(unsatIdx);
         cloned.unknownIdx = new HashSet<>(unknownIdx);
         return cloned;
+    }
+
+    public LpmlnProgram toLpmlnProgram(){
+        LpmlnProgram aprogram = new LpmlnProgram();
+        StringBuilder facts = new StringBuilder();
+        List<Rule> originalRules = lpmlnProgram.getRules();
+        List<Rule> aRules = new ArrayList<>();
+        LPMLN2ASPTranslator aspTranslator = new LPMLN2ASPTranslator();
+        aspTranslator.setProgram(lpmlnProgram);
+
+        for(int i=0;i<originalRules.size();i++){
+            Rule toadd = originalRules.get(i).clone();
+            if(satIdx.contains(i)){
+                toadd.setUnWeighted(true);
+                aRules.add(toadd);
+            }else if(unsatIdx.contains(i)){
+                String unsatRule = aspTranslator.translateRuleUnsat(toadd);
+                facts.append(unsatRule);
+            }else{
+                aRules.add(toadd);
+            }
+        }
+        aprogram.setRules(aRules);
+        aprogram.setMetarule(lpmlnProgram.getMetarule()+facts.toString());
+        aprogram.setFactor(lpmlnProgram.getFactor());
+        aprogram.setHerbrandUniverse(lpmlnProgram.getHerbrandUniverse());
+        return aprogram;
+    }
+
+    public String getUnsatWeight(int i){
+        Rule rule = lpmlnProgram.getRules().get(i);
+        return ":~ #true.["+(rule.isSoft()?(int)rule.getWeight():1)+"@"+(rule.isSoft()?1:2)+","+i+"]\r\n";
     }
 
     public Set<Integer> getSatIdx() {
