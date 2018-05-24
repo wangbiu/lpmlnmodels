@@ -83,13 +83,12 @@ public class AugmentedSubset implements Cloneable{
             Rule toadd = originalRules.get(i).clone();
             if(satIdx.contains(i)){
                 toadd.setUnWeighted(true);
-                aRules.add(toadd);
             }else if(unsatIdx.contains(i)){
                 String unsatRule = aspTranslator.translateRuleUnsat(toadd);
-                facts.append(unsatRule);
-            }else{
-                aRules.add(toadd);
+                toadd.setOriginalrule(unsatRule);
+                toadd.setUnWeighted(true);
             }
+            aRules.add(toadd);
         }
         aprogram.setRules(aRules);
         aprogram.setMetarule(lpmlnProgram.getMetarule()+facts.toString());

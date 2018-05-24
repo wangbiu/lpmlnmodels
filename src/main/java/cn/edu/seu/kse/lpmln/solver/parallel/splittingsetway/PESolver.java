@@ -73,6 +73,10 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         // 2. 计算partial evaluation
         List<Rule> peRules = new ArrayList<>();
         for (Rule rule: top.getRules()) {
+            if(rule.isUnWeighted()){
+                peRules.add(rule);
+                continue;
+            }
 //            with deleting set as a hash set, question is how to calculate
 //            the hash code of a Rule
 //            if (deletingSet.contains(rule)) {

@@ -47,6 +47,7 @@ public class GeneralTest {
 //        toCheck.add(hybridISA());
 //        toCheck.add(hybridIA());
         toCheck.add(hybridAS());
+        toCheck.add(hybridAI());
     }
 
     @Test
@@ -114,6 +115,11 @@ public class GeneralTest {
 
     public LPMLNSolver hybridAS(){
         LPMLNHybridSolver solver = new LPMLNHybridSolver("AS");
+        return solver;
+    }
+
+    public LPMLNSolver hybridAI(){
+        LPMLNHybridSolver solver = new LPMLNHybridSolver("AI");
         return solver;
     }
 }
