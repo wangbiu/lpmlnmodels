@@ -2,6 +2,7 @@ package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
+import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
@@ -76,8 +77,9 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
             if(arch==null||arch.replaceAll("D","").length()==0){
                 subsetSolver = new AugmentedSubsetSolver(subset);
             }else{
-                subsetSolver = chooseSolver(arch);
-                subsetSolver.setLpmlnProgram(subset.toLpmlnProgram());
+                LpmlnProgram translatedProgram = subset.toLpmlnProgram();
+                subsetSolver = chooseSolver(arch,translatedProgram);
+                subsetSolver.setLpmlnProgram(translatedProgram);
             }
             subsetSolver.setFiltResult(false);
             subsetSolver.setCalculatePossibility(false);

@@ -50,6 +50,25 @@ public class LpmlnProgramHelper {
         return dependency;
     }
 
+    public static Map<String,Set<String>> getAtomDependency(LpmlnProgram program){
+        Map<String,Set<String>> dependency = new HashMap<>();
+        program.getRules().forEach(rule -> {
+            Set<String> head = new HashSet<>();
+            Set<String> depend = new HashSet<>();
+            rule.getHead().forEach(lit->head.add(getLiteral(lit)));
+            rule.getPositiveBody().forEach(lit->depend.add(getLiteral(lit)));
+            rule.getNegativeBody().forEach(lit->depend.add(getLiteral(lit)));
+            head.forEach(lit->{
+                if(dependency.containsKey(lit)){
+                    dependency.get(lit).addAll(depend);
+                }else{
+                    dependency.put(lit,depend);
+                }
+            });
+        });
+        return dependency;
+    }
+
     public static String getLiteral(String lit){
         lit = lit.trim();
         while(lit.startsWith("not")||lit.startsWith("-")){

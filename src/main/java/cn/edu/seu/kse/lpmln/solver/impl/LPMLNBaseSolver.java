@@ -46,6 +46,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     protected TimeCounter solveTime;
     private boolean filtResult = true;
     private boolean calculatePossibility = true;
+    private static final String DYNCHOOSE = "DYN";
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
@@ -283,7 +284,10 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     }
 
     //TODO:这里可以略过中间的概率计算来优化一下
-    public LPMLNSolver chooseSolver(String arch) {
+    public LPMLNSolver chooseSolver(String arch,LpmlnProgram program) {
+        if(arch!=null&&arch.equals(DYNCHOOSE)){
+            return choose(program);
+        }
         arch += "D";
         switch (arch.charAt(0)) {
             case 'i': {}
@@ -300,6 +304,9 @@ public class LPMLNBaseSolver implements LPMLNSolver {
             }
             default: return new LPMLNBaseSolver();
         }
+    }
+    public LPMLNSolver choose(LpmlnProgram program){
+        return new LPMLNBaseSolver();
     }
 
     @Override

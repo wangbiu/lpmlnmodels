@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway;
 
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
+import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
@@ -32,18 +33,12 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         bottomSolver = new LPMLNBaseSolver();
         topSolvers = new ArrayList<>();
         threadPool = new LpmlnThreadPool("SplittingSolver!");
-        bottomSolver = chooseSolver(arch);
-        bottomSolver.setCalculatePossibility(false);
-        bottomSolver.setFiltResult(false);
         this.arch = "";
     }
 
     public SplittingSolver(String arch) {
         topSolvers = new ArrayList<>();
         this.arch = arch;
-        bottomSolver = chooseSolver(arch);
-        bottomSolver.setCalculatePossibility(false);
-        bottomSolver.setFiltResult(false);
     }
 
     @Override
@@ -65,6 +60,9 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         Set<String> U = splitter.getU();
 
         // 2. 求解bottom
+        bottomSolver = chooseSolver(arch,bottom);
+        bottomSolver.setCalculatePossibility(false);
+        bottomSolver.setFiltResult(false);
         List<WeightedAnswerSet> Xs = bottomSolver.solveProgram(bottom);
 
         System.out.println("Bottom:"+Xs.size());
@@ -86,6 +84,16 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
 
         // 5. 产生结果
         weightedAs = collectWas();
+    }
+
+    private int countRule(List<Rule> rules){
+        int count=0;
+        for (Rule rule : rules) {
+            if (!rule.isUnWeighted()&&rule.isSoft()){
+                count++;
+            }
+        }
+        return count;
     }
 
     protected List<WeightedAnswerSet> collectWas(){

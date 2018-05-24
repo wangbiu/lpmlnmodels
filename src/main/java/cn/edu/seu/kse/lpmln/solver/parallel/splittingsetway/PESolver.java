@@ -23,14 +23,14 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         this.U = U;
         this.x = x;
         this.arch = arch;
-        solver = chooseSolver(arch);
-        solver.setFiltResult(false);
-        solver.setCalculatePossibility(false);
     }
 
     @Override
     public void run() {
         generatePartialEvaluation();
+        solver = chooseSolver(arch,partialEvaluation);
+        solver.setFiltResult(false);
+        solver.setCalculatePossibility(false);
         weightedAs = solver.solveProgram(partialEvaluation);
         combineAnswerSet();
     }
