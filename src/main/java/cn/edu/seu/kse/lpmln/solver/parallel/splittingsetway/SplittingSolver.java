@@ -23,6 +23,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     public enum SPLIT_TYPE{SPLIT_ORIGINAL, SPLIT_LIT, SPLIT_BOT,SPLIT_DYNAMIC}
     private String arch;
     private SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_DYNAMIC;
+    private Splitter outSplitter;
 
     @Override
     public void run() {
@@ -30,10 +31,14 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     }
 
     public SplittingSolver() {
-        bottomSolver = new LPMLNBaseSolver();
         topSolvers = new ArrayList<>();
-        threadPool = new LpmlnThreadPool("SplittingSolver!");
         this.arch = "";
+    }
+
+    public SplittingSolver(Splitter outSplitter) {
+        topSolvers = new ArrayList<>();
+        this.arch = "";
+        this.outSplitter = outSplitter;
     }
 
     public SplittingSolver(String arch) {
@@ -41,18 +46,29 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         this.arch = arch;
     }
 
+    public SplittingSolver(String arch,Splitter outSplitter) {
+        topSolvers = new ArrayList<>();
+        this.arch = arch;
+        this.outSplitter = outSplitter;
+    }
+
     @Override
     public void executeSolving(){
         threadPool = new LpmlnThreadPool("SplittingSolver!");
         // 1. 分割程序，需要用到bottom、top、U
         Splitter splitter;
-        switch (policy){
-            case SPLIT_ORIGINAL:
-                splitter = new Splitter();
-                break;
-            default:
-                splitter = new KSplitter(this.policy);
-                break;
+        if(outSplitter!=null){
+            splitter = outSplitter;
+            outSplitter = null;
+        }else{
+            switch (policy){
+                case SPLIT_ORIGINAL:
+                    splitter = new Splitter();
+                    break;
+                default:
+                    splitter = new KSplitter(this.policy);
+                    break;
+            }
         }
         splitter.split(lpmlnProgram, k);
         LpmlnProgram bottom = splitter.getBottom();

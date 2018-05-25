@@ -25,10 +25,17 @@ public class IndependentSolver extends LPMLNBaseSolver{
     private List<List<WeightedAnswerSet>> subWeightedAs;
     private static Logger logger = LogManager.getLogger(IndependentSolver.class.getName());
     private String arch;
+    private List<LpmlnProgram> outerSubs;
 
     public IndependentSolver() {
         solvers = new ArrayList<>();
         this.arch = "";
+    }
+
+    public IndependentSolver(List<LpmlnProgram> subprograms) {
+        solvers = new ArrayList<>();
+        this.arch = "";
+        outerSubs = subprograms;
     }
 
     public IndependentSolver(String arch){
@@ -36,9 +43,21 @@ public class IndependentSolver extends LPMLNBaseSolver{
         this.arch = arch;
     }
 
+    public IndependentSolver(String arch,List<LpmlnProgram> subprograms){
+        solvers = new ArrayList<>();
+        this.arch = arch;
+        outerSubs = subprograms;
+    }
+
     @Override
     public void executeSolving(){
-        List<LpmlnProgram> subprograms = IndependentSplitter.split(lpmlnProgram);
+        List<LpmlnProgram> subprograms;
+        if(outerSubs!=null){
+            subprograms = outerSubs;
+            outerSubs = null;
+        }else{
+            subprograms = IndependentSplitter.split(lpmlnProgram);
+        }
         if(subprograms==null||subprograms.size()==1){
             System.out.println("unable to do independent split");
             LPMLNSolver solver = chooseSolver(arch,lpmlnProgram);

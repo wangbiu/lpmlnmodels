@@ -1,8 +1,8 @@
 package cn.edu.seu.kse.lpmln.solver.impl;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
-import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
+import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.SolverStats;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
@@ -10,6 +10,8 @@ import cn.edu.seu.kse.lpmln.solver.AspSolver;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSplitter;
+import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.KSplitter;
 import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
@@ -47,6 +49,7 @@ public class LPMLNBaseSolver implements LPMLNSolver {
     private boolean filtResult = true;
     private boolean calculatePossibility = true;
     private static final String DYNCHOOSE = "DYN";
+    private static final String DYNHCHOOSE = "DYNH";
     //TODO:推理信息收集（时间）
 
     public LPMLNBaseSolver() {
@@ -285,8 +288,8 @@ public class LPMLNBaseSolver implements LPMLNSolver {
 
     //TODO:这里可以略过中间的概率计算来优化一下
     public LPMLNSolver chooseSolver(String arch,LpmlnProgram program) {
-        if(arch!=null&&arch.equals(DYNCHOOSE)){
-            return choose(program);
+        if(arch!=null&&(arch.equals(DYNCHOOSE)||arch.equals(DYNHCHOOSE))){
+            return choose(program,arch);
         }
         arch += "D";
         switch (arch.charAt(0)) {
@@ -305,8 +308,36 @@ public class LPMLNBaseSolver implements LPMLNSolver {
             default: return new LPMLNBaseSolver();
         }
     }
-    public LPMLNSolver choose(LpmlnProgram program){
-        return new LPMLNBaseSolver();
+
+
+    public LPMLNSolver choose(LpmlnProgram program,String arch){
+        if(arch.equals(DYNCHOOSE)){
+            List<LpmlnProgram> ind = IndependentSplitter.split(program);
+            if(ind!=null&&ind.size()>0){
+                System.out.println("choose Ind-solver");
+                return new IndependentSolver(ind);
+            }
+            KSplitter splitter = new KSplitter(program);
+            if(splitter.toSplit()){
+                splitter.setSkipConstruct(true);
+                System.out.println("choose SP-solver");
+                return new SplittingSolver(splitter);
+            }
+            System.out.println("choose AS-solver");
+            return new AugmentedSolver();
+        }else{
+            List<LpmlnProgram> ind = IndependentSplitter.split(program);
+            if(ind!=null&&ind.size()>0){
+                System.out.println("choose Ind-solver");
+                return new IndependentSolver(arch);
+            }
+            if(new KSplitter(program).toSplit()){
+                System.out.println("choose SP-solver");
+                return new SplittingSolver(arch);
+            }
+            System.out.println("choose AS-solver");
+            return new AugmentedSolver(arch);
+        }
     }
 
     @Override

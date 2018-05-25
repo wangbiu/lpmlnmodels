@@ -26,7 +26,7 @@ public class KSplitter extends Splitter{
     private Map<String,Set<String>> reachable;
     private Set<String> programLiterals;
     private List<DecisionUnit> mdus;
-    private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.SPLIT_LIT;
+    private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.SPLIT_DYNAMIC;
     private Comparator<DecisionUnit> comparatorLit = new Comparator<DecisionUnit>() {
         @Override
         public int compare(DecisionUnit o1, DecisionUnit o2) {
@@ -41,10 +41,12 @@ public class KSplitter extends Splitter{
     };
     private Logger logger = LogManager.getLogger(KSplitter.class.getName());
     private int aimBotSize = Runtime.getRuntime().availableProcessors();
+    private boolean skipConstruct = false;
 
     public KSplitter(){
 
     }
+    public KSplitter(LpmlnProgram program){this.lpmlnprogram = program;}
 
     public KSplitter(SplittingSolver.SPLIT_TYPE policy){
         this.policy = policy;
@@ -54,15 +56,40 @@ public class KSplitter extends Splitter{
     public void split(LpmlnProgram program, double k) {
         this.k = k;
         this.aimBotSize = (int)k;
-        this.lpmlnprogram = program;
-        this.dependency = LpmlnProgramHelper.getDependency(program);
+        if(!skipConstruct){
+            this.lpmlnprogram = program;
+            this.dependency = LpmlnProgramHelper.getDependency(program);
 
-        this.mdus = generateMDUs();
-        buildRelations();
+            this.mdus = generateMDUs();
+            buildRelations();
+        }
 
         generateU();
 
         generateTopAndBottom();
+    }
+
+    public boolean toSplit(){
+        this.dependency = LpmlnProgramHelper.getDependency(lpmlnprogram);
+        this.mdus = generateMDUs();
+        buildRelations();
+        int layers=0;
+        Set<DecisionUnit> currentLayer = new HashSet<>();
+        for (DecisionUnit mdu : mdus) {
+            if(mdu.getFrom().size()==0) {
+                currentLayer.add(mdu);
+            }
+        }
+        Set<DecisionUnit> nextLayer;
+        while(currentLayer.size()>0){
+            layers++;
+            nextLayer = new HashSet<>();
+            for (DecisionUnit mdu : currentLayer) {
+                nextLayer.addAll(mdu.getTo());
+            }
+            currentLayer = nextLayer;
+        }
+        return layers>2;
     }
 
     private List<DecisionUnit> generateMDUs(){
@@ -293,5 +320,13 @@ public class KSplitter extends Splitter{
 
     public void setAimBotSize(int aimBotSize) {
         this.aimBotSize = aimBotSize;
+    }
+
+    public boolean isSkipConstruct() {
+        return skipConstruct;
+    }
+
+    public void setSkipConstruct(boolean skipConstruct) {
+        this.skipConstruct = skipConstruct;
     }
 }

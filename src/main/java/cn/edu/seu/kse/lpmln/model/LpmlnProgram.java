@@ -14,10 +14,12 @@ public class LpmlnProgram {
     private int factor;
     private Set<String> herbrandUniverse;
     private String metarule;
+    private Set<Class> solversUsed;
 
     public LpmlnProgram(){
         rules = new ArrayList<>();
         herbrandUniverse = new HashSet<>();
+        solversUsed = new HashSet<>();
     }
 
     public LpmlnProgram(List<Rule> rules,int factor,Set<String> herbrandUniverse,String metarule){
@@ -25,6 +27,7 @@ public class LpmlnProgram {
         this.factor = factor;
         this.herbrandUniverse = herbrandUniverse;
         this.metarule = metarule;
+        solversUsed = new HashSet<>();
     }
 
     @Override
@@ -68,10 +71,22 @@ public class LpmlnProgram {
         this.metarule = metarule;
     }
 
+    public Set<Class> getSolversUsed() {
+        return solversUsed;
+    }
+
+    public void setSolversUsed(Set<Class> solversUsed) {
+        this.solversUsed = solversUsed;
+    }
+
     @Override
     public LpmlnProgram clone(){
         List<Rule> clonedRules = new ArrayList<>();
         rules.forEach(rule -> clonedRules.add(rule.clone()));
-        return new LpmlnProgram(clonedRules,factor,new HashSet<>(herbrandUniverse),metarule);
+        LpmlnProgram cloned = new LpmlnProgram(clonedRules,factor,new HashSet<>(herbrandUniverse),metarule);
+        cloned.solversUsed = this.solversUsed;
+        return cloned;
     }
+
+
 }
