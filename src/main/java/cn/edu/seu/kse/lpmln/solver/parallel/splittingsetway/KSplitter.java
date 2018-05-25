@@ -270,13 +270,15 @@ public class KSplitter extends Splitter{
         if(rule.getHead().size()==0){
             bot = true;
             for (String bodyLit : rule.getNegativeBody()){
-                if(!U.contains(LpmlnProgramHelper.getLiteral(bodyLit))){
+                String lit = LpmlnProgramHelper.getLiteral(bodyLit);
+                if(programLiterals.contains(lit)&&!U.contains(lit)){
                     bot = false;
                     break;
                 }
             }
             for (String bodyLit : rule.getPositiveBody()){
-                if(!U.contains(LpmlnProgramHelper.getLiteral(bodyLit))){
+                String lit = LpmlnProgramHelper.getLiteral(bodyLit);
+                if(programLiterals.contains(lit)&&!U.contains(lit)){
                     bot = false;
                     break;
                 }
