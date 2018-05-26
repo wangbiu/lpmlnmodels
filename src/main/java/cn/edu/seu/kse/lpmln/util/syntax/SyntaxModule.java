@@ -35,7 +35,7 @@ public class SyntaxModule {
         LPMLNTranslationVisitor tvisitor=new LPMLNTranslationVisitor();
         tvisitor.visit(tree);
 
-        LpmlnProgram program = new LpmlnProgram(tvisitor.getRules(),tvisitor.getFactor(),tvisitor.getHerbrandUniverse(),tvisitor.getMetarule());
+        LpmlnProgram program = new LpmlnProgram(tvisitor.getRules(),tvisitor.getFactor(),tvisitor.getHerbrandUniverse(),tvisitor.getMetarule(),new HashSet<>());
         return program;
     }
 

@@ -60,8 +60,8 @@ public class Splitter {
                 }
             }
         }
-        bottom = new LpmlnProgram(bottomRules, program.getFactor(), program.getHerbrandUniverse(), "");
-        top = new LpmlnProgram(topRules, program.getFactor(), program.getHerbrandUniverse(), program.getMetarule());
+        bottom = new LpmlnProgram(bottomRules, program.getFactor(), program.getHerbrandUniverse(), "",program.getSolversUsed());
+        top = new LpmlnProgram(topRules, program.getFactor(), program.getHerbrandUniverse(), program.getMetarule(),program.getSolversUsed());
     }
 
     private void formatSplittingSet(Set<Integer> sst) {

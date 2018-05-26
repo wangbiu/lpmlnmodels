@@ -30,7 +30,7 @@ public class IndependentSplitter {
                     subRules.add(rule);
                 }
             });
-            ind.add(new LpmlnProgram(subRules,program.getFactor(),program.getHerbrandUniverse(),program.getMetarule()));
+            ind.add(new LpmlnProgram(subRules,program.getFactor(),program.getHerbrandUniverse(),program.getMetarule(),program.getSolversUsed()));
         });
         int sum=0;
         for(int i=0;i<ind.size();i++){

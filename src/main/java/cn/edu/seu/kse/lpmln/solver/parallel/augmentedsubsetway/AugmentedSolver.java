@@ -78,6 +78,7 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
                 subsetSolver = new AugmentedSubsetSolver(subset);
             }else{
                 LpmlnProgram translatedProgram = subset.toLpmlnProgram();
+                translatedProgram.setSolversUsed(lpmlnProgram.getSolversUsed());
                 subsetSolver = chooseSolver(arch,translatedProgram);
                 subsetSolver.setLpmlnProgram(translatedProgram);
             }

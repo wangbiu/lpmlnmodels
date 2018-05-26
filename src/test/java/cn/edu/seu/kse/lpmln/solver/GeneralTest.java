@@ -48,8 +48,8 @@ public class GeneralTest {
 //        toCheck.add(hybridIA());
 //        toCheck.add(hybridAS());
 //        toCheck.add(hybridAI());
-        toCheck.add(hybridDYN());
-        //toCheck.add(hybridDYNH());
+        //toCheck.add(hybridDYN());
+        toCheck.add(hybridDYNH());
     }
 
     @Test

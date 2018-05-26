@@ -214,7 +214,7 @@ public class KSplitter extends Splitter{
     }
 
     private int wasSize(List<Rule> bottomRules){
-        LpmlnProgram bottom = new LpmlnProgram(bottomRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), "");
+        LpmlnProgram bottom = new LpmlnProgram(bottomRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), "",new HashSet<>());
         LPMLNBaseSolver baseSolver = new LPMLNBaseSolver();
         baseSolver.setCalculatePossibility(false);
         baseSolver.setFiltResult(false);
@@ -282,8 +282,8 @@ public class KSplitter extends Splitter{
                 topRules.add(rule);
             }
         }
-        bottom = new LpmlnProgram(bottomRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), "");
-        top = new LpmlnProgram(topRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), lpmlnprogram.getMetarule());
+        bottom = new LpmlnProgram(bottomRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), "",lpmlnprogram.getSolversUsed());
+        top = new LpmlnProgram(topRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), lpmlnprogram.getMetarule(),lpmlnprogram.getSolversUsed());
     }
 
     public boolean isBotRule(Rule rule){

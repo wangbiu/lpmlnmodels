@@ -326,17 +326,27 @@ public class LPMLNBaseSolver implements LPMLNSolver {
             System.out.println("choose AS-solver");
             return new AugmentedSolver();
         }else{
-            List<LpmlnProgram> ind = IndependentSplitter.split(program);
-            if(ind!=null&&ind.size()>0){
-                System.out.println("choose Ind-solver");
-                return new IndependentSolver(arch);
+            if(!program.getSolversUsed().contains(IndependentSolver.class)){
+                List<LpmlnProgram> ind = IndependentSplitter.split(program);
+                if(ind!=null&&ind.size()>0){
+                    program.getSolversUsed().add(IndependentSolver.class);
+                    System.out.println("choose Ind-solver");
+                    return new IndependentSolver(arch);
+                }
             }
-            if(new KSplitter(program).toSplit()){
-                System.out.println("choose SP-solver");
-                return new SplittingSolver(arch);
+            if(!program.getSolversUsed().contains(SplittingSolver.class)){
+                if(new KSplitter(program).toSplit()){
+                    program.getSolversUsed().add(SplittingSolver.class);
+                    System.out.println("choose SP-solver");
+                    return new SplittingSolver(arch);
+                }
             }
-            System.out.println("choose AS-solver");
-            return new AugmentedSolver(arch);
+            if(!program.getSolversUsed().contains(AugmentedSolver.class)){
+                program.getSolversUsed().add(AugmentedSolver.class);
+                System.out.println("choose AS-solver");
+                return new AugmentedSolver(arch);
+            }
+            return new LPMLNBaseSolver();
         }
     }
 

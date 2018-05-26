@@ -99,7 +99,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
                 peRules.add(rule);
             }
         }
-        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule()+botResult.toString());
+        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule()+botResult.toString(),top.getSolversUsed());
     }
 
     private int contains(List<Rule> rules, Rule rule) {

@@ -22,12 +22,12 @@ public class LpmlnProgram {
         solversUsed = new HashSet<>();
     }
 
-    public LpmlnProgram(List<Rule> rules,int factor,Set<String> herbrandUniverse,String metarule){
+    public LpmlnProgram(List<Rule> rules,int factor,Set<String> herbrandUniverse,String metarule,Set<Class> solversUsed){
         this.rules = rules;
         this.factor = factor;
         this.herbrandUniverse = herbrandUniverse;
         this.metarule = metarule;
-        solversUsed = new HashSet<>();
+        this.solversUsed = solversUsed;
     }
 
     @Override
@@ -83,8 +83,7 @@ public class LpmlnProgram {
     public LpmlnProgram clone(){
         List<Rule> clonedRules = new ArrayList<>();
         rules.forEach(rule -> clonedRules.add(rule.clone()));
-        LpmlnProgram cloned = new LpmlnProgram(clonedRules,factor,new HashSet<>(herbrandUniverse),metarule);
-        cloned.solversUsed = this.solversUsed;
+        LpmlnProgram cloned = new LpmlnProgram(clonedRules,factor,new HashSet<>(herbrandUniverse),metarule,solversUsed);
         return cloned;
     }
 
