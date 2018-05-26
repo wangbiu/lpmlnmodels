@@ -167,10 +167,11 @@ public class KSplitter extends Splitter{
         int size = wasSize(botRules);
         while(nextQueue.size()>0&&size<aimBotSize){
             DecisionUnit du = nextQueue.poll();
+            Set<String> lastU = new HashSet<>(U);
             addMDUToU(du,nextQueue);
             if(U.size()>0.7*programLiterals.size()){
                 System.out.println("size of U too large:"+size);
-                U.clear();
+                U = lastU;
                 return;
             }
             if(!truthMdu(du,truth)){
