@@ -37,18 +37,18 @@ public class GeneralTest {
     public void initSolvers(){
         LPMLNApp.semantics = "weak";
         testFilePaths = Arrays.asList(filePaths);
-//        toCheck.add(asSimple());
-//        toCheck.add(asRandom());
-//        toCheck.add(asHeuristic());
-////        toCheck.add(spBot());
-////        toCheck.add(spLit());
-//        toCheck.add(spDyn());
-//        toCheck.add(ind());
-//        toCheck.add(hybridISA());
-//        toCheck.add(hybridIA());
-//        toCheck.add(hybridAS());
-//        toCheck.add(hybridAI());
-        //toCheck.add(hybridDYN());
+        toCheck.add(asSimple());
+        toCheck.add(asRandom());
+        toCheck.add(asHeuristic());
+//        toCheck.add(spBot());
+//        toCheck.add(spLit());
+        toCheck.add(spDyn());
+        toCheck.add(ind());
+        toCheck.add(hybridISA());
+        toCheck.add(hybridIA());
+        toCheck.add(hybridAS());
+        toCheck.add(hybridAI());
+        toCheck.add(hybridDYN());
         toCheck.add(hybridDYNH());
     }
 

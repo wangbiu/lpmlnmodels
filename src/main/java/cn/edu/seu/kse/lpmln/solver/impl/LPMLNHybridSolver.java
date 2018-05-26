@@ -20,8 +20,8 @@ public class LPMLNHybridSolver extends LPMLNBaseSolver{
     public void executeSolving(){
         //System.out.println("2:"+System.currentTimeMillis());
         LPMLNSolver solver = chooseSolver(arch,lpmlnProgram);
-        solver.setCalculatePossibility(false);
-        solver.setFiltResult(false);
+//        solver.setCalculatePossibility(false);
+//        solver.setFiltResult(false);
         weightedAs = solver.solveProgram(lpmlnProgram);
     }
 }
