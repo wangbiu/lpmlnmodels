@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.translator;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.translator.impl.AugmentedSubsetTranslator;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
+import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2MLNTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 import org.junit.After;
@@ -29,7 +30,7 @@ public class LPMLNTranslatorTest {
 
     @Before
     public void parse() throws IOException {
-        //program = SyntaxModule.parseLPMLN(new File(filePath));
+        program = SyntaxModule.parseLPMLN(new File(filePath));
     }
 
     @Test
@@ -38,7 +39,7 @@ public class LPMLNTranslatorTest {
     }
 
     @Test
-    public void testTranslate() throws Exception {
+    public void testTranslate2ASP() {
         translator = new LPMLN2ASPTranslator();
         String result = translator.translate(program);
         String toComp = FileHelper.getFileContent(new File(out));
@@ -57,6 +58,13 @@ public class LPMLNTranslatorTest {
         String result = translator.translate(program);
         String toComp = FileHelper.getFileContent(new File(out17));
         assert toComp.equals(result);
+    }
+
+    @Test
+    public void testTranslate2MLN(){
+        translator = new LPMLN2MLNTranslator();
+        String result = translator.translate(program);
+        System.out.println("done");
     }
 
     @After
