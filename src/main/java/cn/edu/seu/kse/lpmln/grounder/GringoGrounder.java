@@ -19,6 +19,7 @@ public class GringoGrounder implements LPMLNGrounder{
     public static final String cmdPrefix = "gringo -t --keep-facts ";
     public static final String GET = ":-";
     public static final String NOTUNSAT = "not unsat(";
+    public static final String DOT = ".";
 
     //TODO:整理一下临时文件，主流程中尽量减少一点
     @Override
@@ -55,16 +56,33 @@ public class GringoGrounder implements LPMLNGrounder{
                 }else{
                     throw new SolveException("rule param fail: "+rule);
                 }
-                rule = rule.substring(0,idxUnsat).trim();
-                if(rule.endsWith(",")){
-                    toAppend.append(rule.substring(0, rule.length()-1));
-                }else if(rule.endsWith(":-")){
-                    toAppend.append(rule.substring(0, rule.length()-2));
-                }else{
-                    throw new SolveException("rule end fail: "+rule);
+
+                //+2: ),或者).
+                rule = rule.substring(0,idxUnsat)+rule.substring(rule.indexOf(")",idxUnsat)+2).trim();
+                if(rule.endsWith(GET)){
+                    //not unsat 是最后一个谓词
+                    rule = rule.substring(0,rule.length()-2);
+                }else if(rule.endsWith(",")){
+                    //not unsat 不是最后一个谓词
+                    rule = rule.substring(0,rule.length()-1);
                 }
+                if(!rule.endsWith(DOT)){
+                    rule = rule+DOT;
+                }
+
+                toAppend.append(rule);
+
+//                rule = rule.substring(0,idxUnsat).trim();
+//                if(rule.endsWith(",")){
+//                    toAppend.append(rule.substring(0, rule.length()-1));
+//                }else if(rule.endsWith(":-")){
+//                    toAppend.append(rule.substring(0, rule.length()-2));
+//                }else{
+//                    throw new SolveException("rule end fail: "+rule);
+//                }
+
                 //toAppend.append(".\r\n");
-                toAppend.append(".");
+
                 groundRules.add(toAppend.toString().replaceAll(":-"," :- "));
                 //groundProgram.append(toAppend.toString().replaceAll(":-"," :- "));
             }
