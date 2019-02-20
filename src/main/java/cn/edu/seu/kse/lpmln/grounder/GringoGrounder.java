@@ -9,8 +9,7 @@ import cn.edu.seu.kse.lpmln.util.syntax.SyntaxModule;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author 许鸿翔
@@ -21,9 +20,11 @@ public class GringoGrounder implements LPMLNGrounder{
     public static final String GET = ":-";
     public static final String NOTUNSAT = "not unsat(";
 
+    //TODO:整理一下临时文件，主流程中尽量减少一点
     @Override
     public String grounding(File fileToGround) {
-        StringBuilder groundProgram = new StringBuilder();
+        Set<String> groundRules = new LinkedHashSet<>();
+        //StringBuilder groundProgram = new StringBuilder();
         CommonCmd cmd = new CommonCmd();
         File randomFile = FileHelper.randomFile();
         String translated = translate(fileToGround);
@@ -33,7 +34,8 @@ public class GringoGrounder implements LPMLNGrounder{
         rules.forEach(rule->{
             if(rule.startsWith("#")){
                 //metarule
-                groundProgram.append(rule).append("\r\n");
+                groundRules.add(rule);
+                //groundProgram.append(rule).append("\r\n");
             }
             StringBuilder toAppend = new StringBuilder();
             int idxUnsat = rule.indexOf(NOTUNSAT);
@@ -61,11 +63,15 @@ public class GringoGrounder implements LPMLNGrounder{
                 }else{
                     throw new SolveException("rule end fail: "+rule);
                 }
-                toAppend.append(".\r\n");
-                groundProgram.append(toAppend.toString().replaceAll(":-"," :- "));
+                //toAppend.append(".\r\n");
+                toAppend.append(".");
+                groundRules.add(toAppend.toString().replaceAll(":-"," :- "));
+                //groundProgram.append(toAppend.toString().replaceAll(":-"," :- "));
             }
         });
-        return groundProgram.toString();
+        StringJoiner programJoinner = new StringJoiner("\r\n");
+        groundRules.forEach(programJoinner::add);
+        return programJoinner.toString();
     }
 
     private String translate(File fileToGround){

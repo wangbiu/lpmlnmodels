@@ -31,9 +31,11 @@ public class LPMLNTranslatorTest {
     public String monty40 = "./src/test/resources/benchmark/monty_hall/m-40.txt";
 
     @Before
+    @Test
     public void parse() throws IOException {
         LPMLNGrounder grounder = new GringoGrounder();
-        program = SyntaxModule.parseLPMLN(grounder.grounding(new File(filePath)));
+        String groundProgram = grounder.grounding(new File(filePath));
+        program = SyntaxModule.parseLPMLN(groundProgram);
     }
 
 //    @Test
