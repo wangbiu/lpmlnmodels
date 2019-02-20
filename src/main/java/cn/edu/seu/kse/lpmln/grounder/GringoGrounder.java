@@ -39,8 +39,11 @@ public class GringoGrounder implements LPMLNGrounder{
             int idxUnsat = rule.indexOf(NOTUNSAT);
             int idxGet = rule.indexOf(GET);
             if(idxUnsat>0&&idxUnsat>idxGet){
-                String weightList = rule.substring(idxUnsat+NOTUNSAT.length(),rule.length()-2);
+                //从unsat谓词提取权重
+                String weightList = rule.substring(idxUnsat+NOTUNSAT.length(),rule.indexOf(")",idxUnsat));
                 String[] params = weightList.split(",");
+
+                //添加权重
                 if(Integer.valueOf(params[params.length-2])==2){
                     //强规则
                 }else if(Integer.valueOf(params[params.length-2])==1){

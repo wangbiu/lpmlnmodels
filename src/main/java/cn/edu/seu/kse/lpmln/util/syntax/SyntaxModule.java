@@ -39,6 +39,18 @@ public class SyntaxModule {
         return program;
     }
 
+    public static LpmlnProgram parseLPMLN(String programStr) throws IOException {
+        LPMLNLexer lexer=new LPMLNLexer(new ANTLRInputStream(programStr));
+        CommonTokenStream tokens=new CommonTokenStream(lexer);
+        LPMLNParser parser=new LPMLNParser(tokens);
+        ParseTree tree=parser.lpmln_rule();
+        LPMLNTranslationVisitor tvisitor=new LPMLNTranslationVisitor();
+        tvisitor.visit(tree);
+
+        LpmlnProgram program = new LpmlnProgram(tvisitor.getRules(),tvisitor.getFactor(),tvisitor.getHerbrandUniverse(),tvisitor.getMetarule(),new HashSet<>());
+        return program;
+    }
+
     public List<WeightedAnswerSet> parseDLVResult(String result){
         List<WeightedAnswerSet> as=null;
         DLVResultLexer lexer=new DLVResultLexer(new ANTLRInputStream(result));

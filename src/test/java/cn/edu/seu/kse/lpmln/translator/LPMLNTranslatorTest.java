@@ -1,5 +1,7 @@
 package cn.edu.seu.kse.lpmln.translator;
 
+import cn.edu.seu.kse.lpmln.grounder.GringoGrounder;
+import cn.edu.seu.kse.lpmln.grounder.LPMLNGrounder;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.translator.impl.AugmentedSubsetTranslator;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
@@ -30,13 +32,14 @@ public class LPMLNTranslatorTest {
 
     @Before
     public void parse() throws IOException {
-        program = SyntaxModule.parseLPMLN(new File(filePath));
+        LPMLNGrounder grounder = new GringoGrounder();
+        program = SyntaxModule.parseLPMLN(grounder.grounding(new File(filePath)));
     }
 
-    @Test
-    public void effi() throws IOException {
-        program = SyntaxModule.parseLPMLN(new File(monty40));
-    }
+//    @Test
+//    public void effi() throws IOException {
+//        program = SyntaxModule.parseLPMLN(new File(monty40));
+//    }
 
     @Test
     public void testTranslate2ASP() {
