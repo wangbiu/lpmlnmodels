@@ -1,5 +1,7 @@
 package cn.edu.seu.kse.lpmln.solver;
 
+import cn.edu.seu.kse.lpmln.grounder.GringoGrounder;
+import cn.edu.seu.kse.lpmln.grounder.LPMLNGrounder;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
@@ -29,20 +31,12 @@ public class LPMLNBaseSolverTest {
 
     @Test
     public void testSolve() throws Exception {
-        List<WeightedAnswerSet> was = solver.solve(new File(birdPath));
+        LPMLNGrounder grounder = new GringoGrounder();
+        String groundProgram = grounder.grounding(new File(birdPath));
+        List<WeightedAnswerSet> was = solver.solve(groundProgram);
         String marginal = solver.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ");
         String result[] = marginal.split(" ");
         solver.getAllWeightedAs().forEach(System.out::println);
-        assert result[1].startsWith("0.909");
-        assert result[3].startsWith("0.909");
-        assert result[5].startsWith("0.909");
-    }
-
-    @Test
-    public void testSolve1() throws Exception {
-        List<WeightedAnswerSet> was = solver.solve(FileHelper.getFileContent(new File(birdPath)));
-        String marginal = solver.getMarginalDistribution().replaceAll("\r\n"," ").replaceAll("  "," ");
-        String result[] = marginal.split(" ");
         assert result[1].startsWith("0.909");
         assert result[3].startsWith("0.909");
         assert result[5].startsWith("0.909");

@@ -5,14 +5,8 @@
 1 : residentBird(3). 
 2 : migratoryBird(3).
 
-bird(1) :- residentBird(1).
-bird(2) :- residentBird(2).
-bird(3) :- residentBird(3).
-bird(1) :- migratoryBird(1).
-bird(2) :- migratoryBird(2).
-bird(3) :- migratoryBird(3).
- :- migratoryBird(1), residentBird(1).
- :- migratoryBird(2), residentBird(2).
- :- migratoryBird(3), residentBird(3).
+bird(X) :- residentBird(X).
+bird(X) :- migratoryBird(X).
+ :- migratoryBird(X), residentBird(X).
 
 #show bird/1.
