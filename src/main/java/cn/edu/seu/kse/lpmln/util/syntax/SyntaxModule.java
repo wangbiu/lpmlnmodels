@@ -39,7 +39,7 @@ public class SyntaxModule {
         return program;
     }
 
-    public static LpmlnProgram parseLPMLN(String programStr) throws IOException {
+    public static LpmlnProgram parseLPMLN(String programStr) {
         LPMLNLexer lexer=new LPMLNLexer(new ANTLRInputStream(programStr));
         CommonTokenStream tokens=new CommonTokenStream(lexer);
         LPMLNParser parser=new LPMLNParser(tokens);

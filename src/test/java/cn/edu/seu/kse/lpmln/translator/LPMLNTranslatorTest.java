@@ -66,6 +66,7 @@ public class LPMLNTranslatorTest {
 
     @Test
     public void testTranslate2MLN(){
+        //TODO:test写一下
         translator = new LPMLN2MLNTranslator();
         String result = translator.translate(program);
         System.out.println("done");
