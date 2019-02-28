@@ -29,6 +29,7 @@ public class LPMLN2MLNTranslator implements LPMLNTranslator{
     public static final String NEG = "-";
 
     private Map<String,Integer> literalMap = new HashMap<>();
+    private Map<Integer,String> reverseMapping = new HashMap<>();
 
 
     @Override
@@ -195,6 +196,11 @@ public class LPMLN2MLNTranslator implements LPMLNTranslator{
             }
         });
 
+        reverseMapping.clear();
+        literalMap.forEach((k,v)->{
+            reverseMapping.put(v,k);
+        });
+
         return "count={0,...,"+(literalMap.size()-1)+"}"+SEPARATOR+"entity(count)"+SEPARATOR;
     }
 
@@ -210,13 +216,5 @@ public class LPMLN2MLNTranslator implements LPMLNTranslator{
 
         sb.append("entity("+literalMap.get(literal)+")");
         return sb.toString();
-    }
-}
-
-class EntityCounter{
-    private int counter = 0;
-    public String getName(){
-        counter++;
-        return "entity" + counter;
     }
 }
