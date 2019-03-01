@@ -217,4 +217,8 @@ public class LPMLN2MLNTranslator implements LPMLNTranslator{
         sb.append("entity("+literalMap.get(literal)+")");
         return sb.toString();
     }
+
+    public Map<Integer, String> getReverseMapping() {
+        return reverseMapping;
+    }
 }

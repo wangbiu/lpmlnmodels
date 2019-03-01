@@ -6,7 +6,6 @@ import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
-import cn.edu.seu.kse.lpmln.translator.LPMLNTranslator;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2MLNTranslator;
 import cn.edu.seu.kse.lpmln.util.FileHelper;
 import cn.edu.seu.kse.lpmln.util.commandline.CommonCmd;
@@ -16,7 +15,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 反以为MLN程序求解，功能有限
@@ -28,6 +29,8 @@ import java.util.List;
 public class LPMLN2MLNSolver implements LPMLNSolver {
     private static Logger logger = LogManager.getLogger(LPMLN2MLNSolver.class.getName());
     private LpmlnProgram program;
+    private LPMLN2MLNTranslator translator = new LPMLN2MLNTranslator();
+    private Map<String,String> resultMap = new HashMap<>();
 
     private void groundAndParse(File ruleFile){
         LPMLNGrounder grounder = new GringoGrounder();
@@ -35,8 +38,8 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
         program = SyntaxModule.parseLPMLN(groundProgram);
     }
 
-    private static File translate(LpmlnProgram program){
-        LPMLNTranslator translator = new LPMLN2MLNTranslator();
+    private File translate(LpmlnProgram program){
+        translator = new LPMLN2MLNTranslator();
         String mlnProgram = translator.translate(program);
         File mlnFile = FileHelper.randomFile();
         FileHelper.writeFile(mlnFile,mlnProgram);
@@ -91,14 +94,27 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
         }
     }
 
-
+    public void processResult(String mlnResult){
+        //也可以根据翻译完的程序中的mapping part处理
+        resultMap.clear();
+        Map<Integer,String> mapping = translator.getReverseMapping();
+        String[] results = mlnResult.split("\r\n");
+        for (String str : results) {
+            String[] pair = str.split(" ");
+            String idx = pair[0].substring("entity(".length(),pair[0].length()-1);
+            String oriLiteral = mapping.get(Integer.valueOf(idx));
+            if(oriLiteral !=null){
+                resultMap.put(oriLiteral,pair[1]);
+            }
+        }
+    }
 
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile) {
         groundAndParse(ruleFile);
         File mlnProgram = translate(program);
         String alchemyResult = getAlchemyResult(mlnProgram);
-
+        processResult(alchemyResult);
         return null;
     }
 
@@ -140,7 +156,12 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
 
     @Override
     public String getMarginalDistribution() {
-        return null;
+        StringBuilder fres = new StringBuilder();
+        resultMap.forEach((k,v)->{
+            fres.append(k).append(" ");
+            fres.append(v).append(" ");
+        });
+        return fres.toString();
     }
 
     @Override
@@ -166,5 +187,9 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
     @Override
     public void run() {
 
+    }
+
+    public LPMLN2MLNTranslator getTranslator() {
+        return translator;
     }
 }
