@@ -16,7 +16,7 @@ public class CommonCmd extends BaseCommandLine{
     }
 
     @Override
-    protected void startResultProcess(BufferedReader br) throws IOException, InterruptedException {
+    protected void startResultProcess(BufferedReader br) throws IOException{
         output = new StringBuilder();
         String line;
         while((line=br.readLine())!=null){
