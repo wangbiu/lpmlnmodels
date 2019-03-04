@@ -4,6 +4,8 @@ import cn.edu.seu.kse.lpmln.exception.cmdlineexception.CommandLineException;
 import cn.edu.seu.kse.lpmln.experiment.util.ExperimentReporter;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
+import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
+import cn.edu.seu.kse.lpmln.solver.impl.LPMLN2MLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNHybridSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
@@ -34,7 +36,7 @@ public class LPMLNApp {
     private static boolean isShowAll=false;
     private static boolean isMax=false;
     private static boolean isMarginal=false;
-    private static LPMLNBaseSolver solver;
+    private static LPMLNSolver solver;
     private static String reportFileName = null;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
@@ -98,10 +100,10 @@ public class LPMLNApp {
         System.out.printf("%n总用时%nenter %s, exit %s, cost %d ms %n", sdf.format(enter),sdf.format(exit),exit.getTime()-enter.getTime());
     }
 
-    private static void printResult(LPMLNBaseSolver solver){
+    private static void printResult(LPMLNSolver solver){
         List<WeightedAnswerSet> was = solver.getAllWeightedAs();
 
-        System.out.println("total was: "+was.size());
+        //System.out.println("total was: "+was.size());
         if(isShowAll){
             System.out.println("all non-zero probability possible world ");
             System.out.println(was);
@@ -129,7 +131,7 @@ public class LPMLNApp {
 
     }
 
-    private static void printStatsInfo(LPMLNBaseSolver solver){
+    private static void printStatsInfo(LPMLNSolver solver){
         //TODO:收集推理信息
 //        System.out.println(solver.getStats());
 //        System.out.println(solver.getExecuteProfile());
@@ -239,15 +241,15 @@ public class LPMLNApp {
             solver = new LPMLNBaseSolver();
         }
 
-        //TODO:推理机使用的定义方式需要修改
+        //TODO:推理机使用的定义方式需要修改,mln并行
         if(cmd.hasOption("lpmln-solver")){
             String solverTag = cmd.getOptionValue("lpmln-solver");
             switch (solverTag){
-                case "a" :
-                    solver = new AugmentedSolver();
-                    break;
-                case "b" :
+                case "asp" :
                     solver = new LPMLNBaseSolver();
+                    break;
+                case "mln" :
+                    solver = new LPMLN2MLNSolver();
                     break;
                 default :
                     solver = new LPMLNBaseSolver();

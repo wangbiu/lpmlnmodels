@@ -96,6 +96,7 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
 
     public void processResult(String mlnResult){
         //也可以根据翻译完的程序中的mapping part处理
+        //TODO:根据#show规则筛选结果
         resultMap.clear();
         Map<Integer,String> mapping = translator.getReverseMapping();
         String[] results = mlnResult.split("\r\n");
@@ -159,7 +160,7 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
         StringBuilder fres = new StringBuilder();
         resultMap.forEach((k,v)->{
             fres.append(k).append(" ");
-            fres.append(v).append(" ");
+            fres.append(v).append("\r\n");
         });
         return fres.toString();
     }
