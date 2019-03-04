@@ -27,9 +27,12 @@ public class LPMLN2MLNTranslator implements LPMLNTranslator{
     public static final String SEPARATOR = "\r\n";
     public static final String GET = " => ";
     public static final String NEG = "-";
+    public static final String SHOW = "#show ";
 
     private Map<String,Integer> literalMap = new HashMap<>();
     private Map<Integer,String> reverseMapping = new HashMap<>();
+
+    private Set<String> query = new HashSet<>();
 
 
     @Override
@@ -56,7 +59,19 @@ public class LPMLN2MLNTranslator implements LPMLNTranslator{
         translatedStr.append(mappingPart());
         translatedStr.append(SEPARATOR);
 
+        processMeta(program.getMetarule());
+
         return translatedStr.toString();
+    }
+
+    private void processMeta(String metaRule){
+        //简单实现下，暂时不考虑参数数量
+        //TODO:考虑参数数量
+        String[] rules = metaRule.split("\r\n");
+        for (String rule : rules) {
+            String pred = rule.substring(SHOW.length(),rule.indexOf("/"));
+            query.add(pred);
+        }
     }
 
     /**
@@ -220,5 +235,9 @@ public class LPMLN2MLNTranslator implements LPMLNTranslator{
 
     public Map<Integer, String> getReverseMapping() {
         return reverseMapping;
+    }
+
+    public Set<String> getQuery() {
+        return query;
     }
 }

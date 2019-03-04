@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 反以为MLN程序求解，功能有限
@@ -35,7 +36,12 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
     private void groundAndParse(File ruleFile){
         LPMLNGrounder grounder = new GringoGrounder();
         String groundProgram = grounder.grounding(ruleFile);
+        groundProgram = replaceNot(groundProgram);
         program = SyntaxModule.parseLPMLN(groundProgram);
+    }
+
+    private String replaceNot(String program){
+        return program.replaceAll("not ","-");
     }
 
     private File translate(LpmlnProgram program){
@@ -96,18 +102,26 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
 
     public void processResult(String mlnResult){
         //也可以根据翻译完的程序中的mapping part处理
-        //TODO:根据#show规则筛选结果
         resultMap.clear();
+        Set<String> query = translator.getQuery();
         Map<Integer,String> mapping = translator.getReverseMapping();
         String[] results = mlnResult.split("\r\n");
         for (String str : results) {
             String[] pair = str.split(" ");
             String idx = pair[0].substring("entity(".length(),pair[0].length()-1);
             String oriLiteral = mapping.get(Integer.valueOf(idx));
-            if(oriLiteral !=null){
+            if(oriLiteral !=null && checkExist(oriLiteral)){
                 resultMap.put(oriLiteral,pair[1]);
             }
         }
+    }
+
+    private boolean checkExist(String lit){
+        int idx = lit.indexOf('(');
+        if(idx>0){
+            lit = lit.substring(0,idx);
+        }
+        return translator.getQuery().contains(lit);
     }
 
     @Override
