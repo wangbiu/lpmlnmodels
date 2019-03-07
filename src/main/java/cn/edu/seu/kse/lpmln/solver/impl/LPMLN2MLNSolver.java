@@ -15,10 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 反以为MLN程序求解，功能有限
@@ -32,6 +29,7 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
     private LpmlnProgram program;
     private LPMLN2MLNTranslator translator = new LPMLN2MLNTranslator();
     private Map<String,String> resultMap = new HashMap<>();
+    private File mlnFile;
 
     private void groundAndParse(File ruleFile){
         LPMLNGrounder grounder = new GringoGrounder();
@@ -57,20 +55,25 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
      * @param mlnFile mln
      * @return mln result
      */
-    private String getAlchemyResult(File mlnFile){
+    private String getAlchemyResult(File mlnFile, int flag){
         File outFile = FileHelper.randomFile();
         CommonCmd cmd = new CommonCmd();
-        String cmdStr = getCmd(mlnFile,outFile);
+        String cmdStr = getCmd(mlnFile,outFile,flag);
+
+        //System.out.println("cmd: "+cmdStr);
 
         cmd.call(cmdStr);
-        logger.debug("alchemy output:{}",cmd.getOutput().toString());
+        //logger.debug("alchemy output:{}",cmd.getOutput().toString());
         String mlnResult = FileHelper.getFileContent(outFile);
-        logger.debug("alchemy result:{}",mlnResult);
+        //logger.debug("alchemy result:{}",mlnResult);
         return mlnResult;
     }
 
-    //"infer -i test.mln -e empty.db -r out.txt -q entity"
-    private String getCmd(File mlnFile,File outFile){
+    //flag
+    //0: marginal   "infer -i test.mln -e empty.db -r out.txt -q entity"
+    //1: map        "infer -i test.mln -e empty.db -r out.txt -q entity -a"
+
+    private String getCmd(File mlnFile,File outFile,int flag){
         checkEmptyDBExist();
 
         StringBuilder cmdBuilder = new StringBuilder();
@@ -88,6 +91,10 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
         cmdBuilder.append(" -q ");
         cmdBuilder.append("entity");
 
+        if(flag==1){
+            cmdBuilder.append(" -a ");
+        }
+
         return cmdBuilder.toString();
     }
 
@@ -103,7 +110,6 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
     public void processResult(String mlnResult){
         //也可以根据翻译完的程序中的mapping part处理
         resultMap.clear();
-        Set<String> query = translator.getQuery();
         Map<Integer,String> mapping = translator.getReverseMapping();
         String[] results = mlnResult.split("\r\n");
         for (String str : results) {
@@ -127,9 +133,7 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
     @Override
     public List<WeightedAnswerSet> solve(File ruleFile) {
         groundAndParse(ruleFile);
-        File mlnProgram = translate(program);
-        String alchemyResult = getAlchemyResult(mlnProgram);
-        processResult(alchemyResult);
+        mlnFile = translate(program);
         return null;
     }
 
@@ -161,7 +165,18 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
 
     @Override
     public List<WeightedAnswerSet> findMaxWeightedAs() {
-        return null;
+        String alchemyResult = getAlchemyResult(mlnFile,1);
+        processResult(alchemyResult);
+        WeightedAnswerSet was = new WeightedAnswerSet();
+        was.getWeights().addAll(Arrays.asList(0,0));
+        resultMap.forEach((k,v)->{
+            if(v.equals("1")){
+                was.getAnswerSet().getLiterals().add(k);
+            }
+        });
+        List<WeightedAnswerSet> wasList = new ArrayList<>();
+        wasList.add(was);
+        return wasList;
     }
 
     @Override
@@ -171,6 +186,8 @@ public class LPMLN2MLNSolver implements LPMLNSolver {
 
     @Override
     public String getMarginalDistribution() {
+        String alchemyResult = getAlchemyResult(mlnFile,0);
+        processResult(alchemyResult);
         StringBuilder fres = new StringBuilder();
         resultMap.forEach((k,v)->{
             fres.append(k).append(" ");

@@ -103,7 +103,7 @@ public class LPMLNApp {
     private static void printResult(LPMLNSolver solver){
         List<WeightedAnswerSet> was = solver.getAllWeightedAs();
 
-        //System.out.println("total was: "+was.size());
+        System.out.println("total was: "+was.size());
         if(isShowAll){
             System.out.println("all non-zero probability possible world ");
             System.out.println(was);
@@ -193,6 +193,7 @@ public class LPMLNApp {
                                     break;
                                 case "r":
                                     ((AugmentedSolver) solver).setPolicy(DIVIDE_RANDOM);
+                                    break;
                                 default:
                                     System.out.println("no policy specified");
                                     break;
