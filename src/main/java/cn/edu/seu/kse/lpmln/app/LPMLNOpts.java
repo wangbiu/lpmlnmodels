@@ -89,6 +89,11 @@ public class LPMLNOpts {
         lpmlnReasoner.setOptionalArg(false);
         lpmlnReasoner.setArgName("lpmln-solver-name");
 
+        //debug mode
+        Option debug=new Option("d", "debug-mode",false,"optional, enable debug mode,display more info");
+        debug.setValueSeparator(' ');
+        debug.setRequired(false);
+
         Options opts=new Options();
         opts.addOption(help);
         opts.addOption(margianl);
@@ -103,6 +108,7 @@ public class LPMLNOpts {
         opts.addOption(experiment);
         opts.addOption(lpmlnReasoner);
         opts.addOption(external);
+        opts.addOption(debug);
 
         return opts;
     }

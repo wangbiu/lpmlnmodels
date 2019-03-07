@@ -38,6 +38,7 @@ public class LPMLNApp {
     private static boolean isMarginal=false;
     private static LPMLNSolver solver;
     private static String reportFileName = null;
+    private static boolean debugging = false;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
 
@@ -62,10 +63,16 @@ public class LPMLNApp {
             throw new CommandLineException("i and I are used once at a time");
         }
 
+        if(cmd.hasOption("debug-mode")){
+            LPMLNApp.setDebugging(true);
+        }
+
         //初始化参数
         initLpmlnmodels(cmd);
 
-        logger.debug("solve instance:{}",solver.getClass().getName());
+        if(LPMLNApp.isDebugging()) {
+            logger.debug("solve instance:{}", solver.getClass().getName());
+        }
         if(cmd.hasOption("input-file")){
             File lpmlnrulefile=new File(lpmlnfile);
 
@@ -288,5 +295,13 @@ public class LPMLNApp {
         HelpFormatter formatter=new HelpFormatter();
         formatter.setWidth(150);
         formatter.printHelp("lpmlnmodels <params>",LPMLNOpts.getCommandLineOptions());
+    }
+
+    public static boolean isDebugging() {
+        return debugging;
+    }
+
+    public static void setDebugging(boolean debugging) {
+        LPMLNApp.debugging = debugging;
     }
 }

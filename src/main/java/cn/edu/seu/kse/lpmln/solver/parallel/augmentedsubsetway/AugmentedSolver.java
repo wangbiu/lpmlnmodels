@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
@@ -100,7 +101,9 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         subsetSolvers.forEach(solver->{
-            //logger.debug(solver.getAllWeightedAs().size()+" aug was collected");
+            if(LPMLNApp.isDebugging()){
+                logger.debug(solver.getAllWeightedAs().size()+" aug was collected");
+            }
             collectedWas.addAll(solver.getAllWeightedAs());
         });
         return collectedWas;
