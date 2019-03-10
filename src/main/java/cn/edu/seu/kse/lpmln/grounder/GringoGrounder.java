@@ -16,7 +16,7 @@ import java.util.*;
  * @date 2018/5/22
  */
 public class GringoGrounder implements LPMLNGrounder{
-    public static final String cmdPrefix = "gringo -t --keep-facts ";
+    public static final String cmdPrefix = "gringo -t ";
     public static final String GET = ":-";
     public static final String NOTUNSAT = "not unsat(";
     public static final String DOT = ".";

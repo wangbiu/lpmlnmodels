@@ -2,6 +2,8 @@ package cn.edu.seu.kse.lpmln.app;
 
 import cn.edu.seu.kse.lpmln.exception.cmdlineexception.CommandLineException;
 import cn.edu.seu.kse.lpmln.experiment.util.ExperimentReporter;
+import cn.edu.seu.kse.lpmln.grounder.GringoGrounder;
+import cn.edu.seu.kse.lpmln.grounder.LPMLNGrounder;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
@@ -79,8 +81,11 @@ public class LPMLNApp {
         if(cmd.hasOption("input-file")){
             File lpmlnrulefile=new File(lpmlnfile);
 
+            LPMLNGrounder grounder = new GringoGrounder();
+            String groundProgram = grounder.grounding(lpmlnrulefile);
+
             //求解
-            solver.solve(lpmlnrulefile);
+            solver.solve(groundProgram);
 
             printResult(solver);
 
