@@ -201,6 +201,9 @@ public class LPMLNApp {
                                 case "r":
                                     ((AugmentedSolver) solver).setPolicy(DIVIDE_RANDOM);
                                     break;
+                                case "n":
+                                    ((AugmentedSolver) solver).setPolicy(DIVIDE_NOGOOD);
+                                    break;
                                 default:
                                     System.out.println("no policy specified");
                                     break;

@@ -3,6 +3,7 @@ package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.HeuristicAugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
+import cn.edu.seu.kse.lpmln.model.NogoodAugmentedSubset;
 
 import java.util.*;
 
@@ -16,8 +17,10 @@ public class AugmentedSubsetPartitioner {
      * DIVIDE_SIMPLE：二进制划分
      * DIVIDE_RANDOM：随机划分
      * DIVIDE_HEURISTIC：启发式划分
+     * DIVIDE_NOGOOD:使用nogood进行启发式划分
      */
-    public enum SPLIT_TYPE{DIVIDE_SIMPLE, DIVIDE_RANDOM, DIVIDE_HEURISTIC
+    public enum SPLIT_TYPE{
+        DIVIDE_SIMPLE, DIVIDE_RANDOM, DIVIDE_HEURISTIC,DIVIDE_NOGOOD
     }
 
     //输入：原规则，翻译后的规则文本
@@ -36,6 +39,9 @@ public class AugmentedSubsetPartitioner {
                 break;
             case DIVIDE_HEURISTIC:
                 subsets = heuristicPartition(lpmlnProgram,count);
+                break;
+            case DIVIDE_NOGOOD:
+                subsets = nogoodPartition(lpmlnProgram,count);
                 break;
             default:
                 subsets = simplePartition(lpmlnProgram,count);
@@ -134,6 +140,12 @@ public class AugmentedSubsetPartitioner {
             }
         }
         //System.out.println("Partition Cost:"+(System.currentTimeMillis()-start));
+        return subsets;
+    }
+
+    public List<AugmentedSubset> nogoodPartition(LpmlnProgram lpmlnProgram,int count){
+        List<AugmentedSubset> subsets = new ArrayList<>();
+        NogoodAugmentedSubset augmentedSubset = new NogoodAugmentedSubset(lpmlnProgram);
         return subsets;
     }
 
