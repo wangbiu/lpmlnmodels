@@ -19,7 +19,9 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     /**
      * lit到nogood的映射，在assign以及propagate要用
      */
-    private Map<String,List<Nogood>> litToNogood = new HashMap<>();
+    private Map<String,List<Integer>> litToNogood = new HashMap<>();
+
+    private List<Nogood> nogoods;
 
     /**
      * 应该是list，k为literal，v是not与否，不出现说明还没赋值
@@ -65,13 +67,14 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         //不共享部分
         //lit到nogood的映射，需要维护nogood中的元素数量
 //        long last = System.currentTimeMillis();
-        Map<String,List<Nogood>> litToNogoodClone = new HashMap<>();
+//        long all = System.currentTimeMillis();
+        Map<String,List<Integer>> litToNogoodClone = (Map<String, List<Integer>>) ((HashMap)litToNogood).clone();
         litToNogood.forEach((k,v)->{
-            List<Nogood> cur = new ArrayList<>();
-            v.forEach(nogood->cur.add(nogood.clone()));
-            litToNogoodClone.put(k,cur);
+            litToNogoodClone.put(k,(ArrayList<Integer>)((ArrayList<Integer>)v).clone());
         });
         clone.litToNogood = litToNogoodClone;
+        clone.nogoods = new ArrayList<>(nogoods.size());
+        nogoods.forEach(nogood -> {clone.nogoods.add(nogood.clone());});
 //        System.out.println("point1: "+(System.currentTimeMillis()-last));
 //        last = System.currentTimeMillis();
 
@@ -103,6 +106,12 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 //        System.out.println("point4: "+(System.currentTimeMillis()-last));
 //        last = System.currentTimeMillis();
 
+//        if((System.currentTimeMillis()-all)>3000){
+//            System.out.println(123);
+//        }
+//        System.out.println("point4: "+(System.currentTimeMillis()-all));
+//        all = System.currentTimeMillis();
+
 
         return clone;
     }
@@ -115,23 +124,32 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             return amount2-amount1;
         };
         PriorityQueue<Pair<NogoodAugmentedSubset,NogoodAugmentedSubset>> queue = new PriorityQueue<>(comparator);
+//        long last = System.currentTimeMillis();
         unknownIdx.forEach(idx->{
-//            long last = System.currentTimeMillis();
+//            long spl = System.currentTimeMillis();
+//            long last2 = System.currentTimeMillis();
             NogoodAugmentedSubset toSat = this.clone();
             NogoodAugmentedSubset toUnsat = this.clone();
-//            System.out.println("point1: "+(System.currentTimeMillis()-last));
-//            last = System.currentTimeMillis();
+//            System.out.println("point1: "+(System.currentTimeMillis()-last2));
+//            last2 = System.currentTimeMillis();
 
             toSat.sat(idx);
-//            System.out.println("point2: "+(System.currentTimeMillis()-last));
-//            last = System.currentTimeMillis();
+//            System.out.println("point2: "+(System.currentTimeMillis()-last2));
+//            last2 = System.currentTimeMillis();
 
             toUnsat.unsat(idx);
-//            System.out.println("point3: "+(System.currentTimeMillis()-last));
-//            last = System.currentTimeMillis();
+//            System.out.println("point3: "+(System.currentTimeMillis()-last2));
+//            last2 = System.currentTimeMillis();
 
             queue.offer(new Pair<>(toSat,toUnsat));
+//            if(System.currentTimeMillis()-spl>3000){
+//                System.out.println(123);
+//            }
+//            System.out.println("point4: "+(System.currentTimeMillis()-last2));
+//            last2 = System.currentTimeMillis();
         });
+//        System.out.println("point1: "+(System.currentTimeMillis()-last));
+//        last = System.currentTimeMillis();
 
         //queue为空则返回null，表示没有规则以供划分
         return queue.peek();
@@ -144,7 +162,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
         List<Nogood> nogoods = constructNogood();
 
-        Map<String,Boolean> toAssign = constructNogoodMap(nogoods,litToNogood);
+        Map<String,Boolean> toAssign = constructNogoodMap(litToNogood);
 
         toAssign.forEach(this::assign);
 
@@ -183,7 +201,10 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             toadd.getSignedLiterals().forEach((k,v)->assign(k,!v));
         }else{
             //将nogood添加到map中，size==0的时候不添加
-            toadd.getLiteralSet().forEach(lit->litToNogood.get(lit).add(toadd));
+            toadd.getLiteralSet().forEach(lit->litToNogood.get(lit).add(nogoods.size()));
+            if(toadd.getLiteralSet().size()!=0){
+                nogoods.add(toadd);
+            }
         }
 
         return super.sat(idx);
@@ -215,10 +236,10 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         assignment.put(literal,sign);
         checkSatisfiability(literal,sign);
 
-        Iterator<Nogood> nogoodIterator = litToNogood.get(literal).iterator();
+        Iterator<Integer> nogoodIterator = litToNogood.get(literal).iterator();
 
         while(nogoodIterator.hasNext()){
-            Nogood cur = nogoodIterator.next();
+            Nogood cur = nogoods.get(nogoodIterator.next());
             if(cur.isClear()){
                 nogoodIterator.remove();
                 continue;
@@ -256,11 +277,10 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
      * 根据nogood列表创建lit到nogood的映射
      * 比如nogood:{Ta,Fb}则a,b都指向它
      * 返回直接的result-unit比如{Ta}
-     * @param nogoods nogoods
      * @param map map
      * @return result-units
      */
-    private Map<String,Boolean> constructNogoodMap(List<Nogood> nogoods,Map<String,List<Nogood>> map){
+    private Map<String,Boolean> constructNogoodMap(Map<String,List<Integer>> map){
         //litToNogood
         Map<String,Boolean> toAssign = new HashMap<>();
         literals.forEach(lit->map.put(lit,new ArrayList<>()));
@@ -268,17 +288,17 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             map.put(getBodyPred(i),new ArrayList<>());
         }
 
-        nogoods.forEach(nogood -> {
+        for(int i=0;i<nogoods.size();i++){
+            Nogood nogood = nogoods.get(i);
             Set<String> litSet = nogood.getLiteralSet();
             if(litSet.size()==1){
                 nogood.getSignedLiterals().forEach((k,v)->toAssign.put(k,!v));
             }else{
-                litSet.forEach(lit->{
-                    map.getOrDefault(lit,new ArrayList<>()).add(nogood);
-                });
+                for (String lit : litSet) {
+                    map.getOrDefault(lit,new ArrayList<>()).add(i);
+                }
             }
-
-        });
+        }
         return toAssign;
     }
 
@@ -296,7 +316,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     }
 
     private List<Nogood> constructNogood(){
-        List<Nogood> nogoods = new ArrayList<>();
+        nogoods = new ArrayList<>();
 
         //解释一致性产出的nogood
         literals.forEach(literal->{
@@ -388,7 +408,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
      */
     private void checkNogoods(){
         Set<Nogood> all = new HashSet<>();
-        litToNogood.values().forEach(all::addAll);
+        all.addAll(nogoods);
         all.addAll(satNogoods);
         all.forEach(nogood -> {
             nogood.getLiteralSet().forEach(lit->{
