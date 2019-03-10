@@ -71,12 +71,12 @@ public class AugmentedSubset implements Cloneable{
 
     @Override
     public AugmentedSubset clone(){
-        AugmentedSubset cloned = new AugmentedSubset();
-        cloned.setLpmlnProgram(lpmlnProgram);
-        cloned.satIdx = new HashSet<>(satIdx);
-        cloned.unsatIdx = new HashSet<>(unsatIdx);
-        cloned.unknownIdx = new HashSet<>(unknownIdx);
-        return cloned;
+        AugmentedSubset clone = new AugmentedSubset();
+        clone.setLpmlnProgram(lpmlnProgram);
+        clone.satIdx = new HashSet<>(satIdx);
+        clone.unsatIdx = new HashSet<>(unsatIdx);
+        clone.unknownIdx = new HashSet<>(unknownIdx);
+        return clone;
     }
 
     public LpmlnProgram toLpmlnProgram(){
@@ -140,5 +140,10 @@ public class AugmentedSubset implements Cloneable{
 
     public void setUnknownIdx(Set<Integer> unknownIdx) {
         this.unknownIdx = unknownIdx;
+    }
+
+    @Override
+    public String toString(){
+        return "{"+unknownIdx+","+satIdx+","+unsatIdx+"}";
     }
 }

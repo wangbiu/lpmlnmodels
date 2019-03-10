@@ -1,9 +1,9 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway;
 
-import cn.edu.seu.kse.lpmln.model.AugmentedSubset;
-import cn.edu.seu.kse.lpmln.model.HeuristicAugmentedSubset;
-import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
-import cn.edu.seu.kse.lpmln.model.NogoodAugmentedSubset;
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
+import cn.edu.seu.kse.lpmln.model.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -12,6 +12,8 @@ import java.util.*;
  */
 public class AugmentedSubsetPartitioner {
     protected SPLIT_TYPE policy = SPLIT_TYPE.DIVIDE_HEURISTIC;
+
+    private static Logger logger = LogManager.getLogger(AugmentedSubsetPartitioner.class.getName());
 
     /**
      * DIVIDE_SIMPLE：二进制划分
@@ -144,9 +146,30 @@ public class AugmentedSubsetPartitioner {
     }
 
     public List<AugmentedSubset> nogoodPartition(LpmlnProgram lpmlnProgram,int count){
-        List<AugmentedSubset> subsets = new ArrayList<>();
-        NogoodAugmentedSubset augmentedSubset = new NogoodAugmentedSubset(lpmlnProgram);
-        return subsets;
+        Comparator<NogoodAugmentedSubset> comparator = (o1, o2) -> o1.getAssignmentSize()-o2.getAssignmentSize();
+        PriorityQueue<NogoodAugmentedSubset> queue = new PriorityQueue<>(comparator);
+        List<AugmentedSubset> result = new ArrayList<>();
+
+        queue.offer(new NogoodAugmentedSubset(lpmlnProgram));
+
+        //TODO:这里没考虑无法划分的情况
+        while (queue.size()<count&&queue.size()>0){
+            NogoodAugmentedSubset tosplit = queue.poll();
+            Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> splitResult = tosplit.split();
+            if(splitResult==null){
+                if(LPMLNApp.isDebugging()){
+                    logger.debug("当前增强子集规则已被划分完毕，队列剩余:{}", queue.size());
+                }
+                result.add(tosplit);
+            }else{
+                queue.offer(splitResult.getKey());
+                queue.offer(splitResult.getValue());
+            }
+        }
+
+        result.addAll(queue);
+
+        return result;
     }
 
     private void printStatus(List<AugmentedSubset> augmentedSubsets){

@@ -34,22 +34,22 @@ public class AugmentedSolver extends LPMLNBaseSolver implements Runnable {
     private String arch;
 
     public AugmentedSolver(){
-        translatedFiles = new ArrayList<>();
-        threadNums = Runtime.getRuntime().availableProcessors();
-        subsetSolvers = new ArrayList<>();
-        augmentedSubsets = new ArrayList<>();
-        //设定划分方式
-        partitioner = new AugmentedSubsetPartitioner();
+        init();
     }
 
     public AugmentedSolver(String arch){
+        init();
+        this.arch = arch;
+    }
+
+    private void init(){
         translatedFiles = new ArrayList<>();
         threadNums = Runtime.getRuntime().availableProcessors();
+        //threadNums = 32;
         subsetSolvers = new ArrayList<>();
         augmentedSubsets = new ArrayList<>();
         //设定划分方式
         partitioner = new AugmentedSubsetPartitioner();
-        this.arch = arch;
     }
 
     @Override

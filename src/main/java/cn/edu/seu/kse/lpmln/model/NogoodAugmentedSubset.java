@@ -77,6 +77,11 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         //lit_{\Pi}不会变化
         clone.literals = literals;
 
+        //super clone
+        clone.satIdx = new HashSet<>(satIdx);
+        clone.unsatIdx = new HashSet<>(unsatIdx);
+        clone.unknownIdx = new HashSet<>(unknownIdx);
+
 
         return clone;
     }
@@ -96,6 +101,8 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             toUnsat.unsat(idx);
             queue.offer(new Pair<>(toSat,toUnsat));
         });
+
+        //queue为空则返回null，表示没有规则以供划分
         return queue.peek();
     }
 
@@ -117,7 +124,6 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 }
             }
         }
-        System.out.println("");
     }
 
     private void init(){
@@ -238,7 +244,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 nogood.getSignedLiterals().forEach((k,v)->toAssign.put(k,!v));
             }else{
                 litSet.forEach(lit->{
-                    map.get(lit).add(nogood);
+                    map.getOrDefault(lit,new ArrayList<>()).add(nogood);
                 });
             }
 
@@ -332,9 +338,9 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
         //loop nogood指数级别，先不添加
 
-        if(LPMLNApp.isDebugging()){
-            System.out.println("nogood done");
-        }
+//        if(LPMLNApp.isDebugging()){
+//            System.out.println("nogood done");
+//        }
 
         return nogoods;
     }
