@@ -81,6 +81,24 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         return clone;
     }
 
+    public Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> split(){
+        //在这修改选择策略
+        Comparator<Pair<NogoodAugmentedSubset,NogoodAugmentedSubset>> comparator = (o1, o2) -> {
+            int amount1 = o1.getKey().getAssignmentSize()+o1.getValue().getAssignmentSize();
+            int amount2 = o2.getKey().getAssignmentSize()+o2.getValue().getAssignmentSize();
+            return amount2-amount1;
+        };
+        PriorityQueue<Pair<NogoodAugmentedSubset,NogoodAugmentedSubset>> queue = new PriorityQueue<>(comparator);
+        unknownIdx.forEach(idx->{
+            NogoodAugmentedSubset toSat = this.clone();
+            NogoodAugmentedSubset toUnsat = this.clone();
+            toSat.sat(idx);
+            toUnsat.unsat(idx);
+            queue.offer(new Pair<>(toSat,toUnsat));
+        });
+        return queue.peek();
+    }
+
     public NogoodAugmentedSubset(LpmlnProgram lpmlnProgram){
         super(lpmlnProgram);
 
@@ -323,6 +341,10 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
     private String getBodyPred(int i){
         return VB+i;
+    }
+
+    public int getAssignmentSize(){
+        return assignment.size();
     }
 }
 
