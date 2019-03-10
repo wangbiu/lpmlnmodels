@@ -118,11 +118,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         toAssign.forEach(this::assign);
 
         if(LPMLNApp.semantics.equals(LPMLNApp.SEMANTICS_WEAK)){
-            for (int i=0;i<lpmlnProgram.getRules().size();i++){
-                if(!unknownIdx.contains(i)){
-                    sat(i);
-                }
-            }
+            new ArrayList<>(satIdx).forEach(this::sat);
         }
     }
 
