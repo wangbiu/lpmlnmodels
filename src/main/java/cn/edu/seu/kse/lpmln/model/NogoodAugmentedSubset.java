@@ -37,6 +37,11 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     private List<Map<String,Boolean>> unsatAssign = new ArrayList<>();
 
     /**
+     * 文字到satNogoods中的nogood下标的映射
+     */
+    private Map<String,List<Integer>> litToSatCond = new HashMap<>();
+
+    /**
      * 文字集合,lit_{\Pi}
      */
     private Set<String> literals = new HashSet<>();
@@ -61,14 +66,17 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         clone.litToNogood = litToNogoodClone;
         //assign
         clone.assignment = (Map<String, Boolean>) ((HashMap)assignment).clone();
+        //添加时clone，所以可以共享
+        List<Nogood> satNogoodsClone = new ArrayList<>();
+        satNogoods.forEach(nogood -> satNogoodsClone.add(nogood.clone()));
+        clone.satNogoods = satNogoodsClone;
 
         //共享部分
         //规则unsat需要添加的signed-literal，相对程序固定
         clone.unsatAssign = unsatAssign;
         //lit_{\Pi}不会变化
         clone.literals = literals;
-        //添加时clone，所以可以共享
-        clone.satNogoods = satNogoods;
+
 
         return clone;
     }
@@ -83,12 +91,26 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         Map<String,Boolean> toAssign = constructNogoodMap(nogoods,litToNogood);
 
         toAssign.forEach(this::assign);
+
+        if(LPMLNApp.semantics.equals(LPMLNApp.SEMANTICS_WEAK)){
+            for (int i=0;i<lpmlnProgram.getRules().size();i++){
+                if(!unknownIdx.contains(i)){
+                    sat(i);
+                }
+            }
+        }
+        System.out.println("");
     }
 
     private void init(){
         bodyAssignment = new ArrayList<>(lpmlnProgram.getRules().size());
 
         getLiterals();
+
+        literals.forEach(lit->litToSatCond.put(lit,new ArrayList<>()));
+        for(int i=0;i<lpmlnProgram.getRules().size();i++){
+            litToSatCond.put(getBodyPred(i),new ArrayList<>());
+        }
 
         lpmlnProgram.getRules().forEach(r->{
             Map<String,Boolean> curUnsat = new HashMap<>();
@@ -102,12 +124,12 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     @Override
     public boolean sat(int idx){
         //impl3
-        Nogood toadd = satNogoods.get(idx).clone();
-        assignment.forEach(toadd::assign);
+        Nogood toadd = satNogoods.get(idx);
+        toadd.adapt(assignment);
 
         if(toadd.getLiteralSet().size()==1){
             //对应nogood已经可以产出result-unit
-            toadd.getSignedLiterals().forEach(this::assign);
+            toadd.getSignedLiterals().forEach((k,v)->assign(k,!v));
         }else{
             //将nogood添加到map中，size==0的时候不添加
             toadd.getLiteralSet().forEach(lit->litToNogood.get(lit).add(toadd));
@@ -119,9 +141,9 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     @Override
     public boolean unsat(int idx){
 
+        unsatAssign.get(idx).forEach(this::assign);
 
-
-        return true;
+        return super.unsat(idx);
     }
 
     /**
@@ -131,15 +153,25 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
      */
     private void assign(String literal,boolean sign){
         Boolean assigned = assignment.get(literal);
-        if(assigned!=sign){
-            throw new SolveException("literal assign conflict");
+        if(assigned!=null) {
+            if (assigned != sign) {
+                throw new SolveException("literal assign conflict");
+            } else {
+                return;
+            }
         }
 
         assignment.put(literal,sign);
+        checkSatisfiability(literal,sign);
 
         Iterator<Nogood> nogoodIterator = litToNogood.get(literal).iterator();
-        Nogood cur;
-        while((cur=nogoodIterator.next())!=null){
+
+        while(nogoodIterator.hasNext()){
+            Nogood cur = nogoodIterator.next();
+            if(cur.isClear()){
+                nogoodIterator.remove();
+                continue;
+            }
             SignedLiteral result = cur.assign(literal,sign);
             //propagation
             if(result==null){
@@ -147,9 +179,23 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 nogoodIterator.remove();
             }else if(!"".equals(result.literal)){
                 //result-unit
-                assign(result.literal,result.sign);
+                assign(result.literal,!result.sign);
             }
         }
+    }
+
+    private void checkSatisfiability(String literal,boolean sign){
+        litToSatCond.get(literal).forEach(idx->{
+            Nogood satNogood = satNogoods.get(idx);
+            SignedLiteral sLit = satNogood.assign(literal,sign);
+            if(sLit==null){
+                //satNogood已经无法被违反
+                super.sat(idx);
+            }else if(satNogood.getLiteralSet().size()==0){
+                //satNogood已经被违反
+                super.unsat(idx);
+            }
+        });
     }
 
     /**
@@ -164,11 +210,14 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         //litToNogood
         Map<String,Boolean> toAssign = new HashMap<>();
         literals.forEach(lit->map.put(lit,new ArrayList<>()));
+        for(int i=0;i<lpmlnProgram.getRules().size();i++){
+            map.put(getBodyPred(i),new ArrayList<>());
+        }
 
         nogoods.forEach(nogood -> {
             Set<String> litSet = nogood.getLiteralSet();
             if(litSet.size()==1){
-                nogood.getSignedLiterals().forEach(toAssign::put);
+                nogood.getSignedLiterals().forEach((k,v)->toAssign.put(k,!v));
             }else{
                 litSet.forEach(lit->{
                     map.get(lit).add(nogood);
@@ -218,10 +267,10 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 nogoods.add(impl1);
             }
             for (String nb : r.getNegativeBody()) {
-                Nogood implication1 = new Nogood();
-                implication1.add(getBodyPred(i),true);
-                implication1.add(nb.substring(NOT.length()),true);
-                nogoods.add(implication1);
+                Nogood impl1 = new Nogood();
+                impl1.add(getBodyPred(i),true);
+                impl1.add(nb.substring(NOT.length()),true);
+                nogoods.add(impl1);
             }
             //imp2: a1,a2,...,not am+1,not am+2,...->b
             //体部项都成立表示体部成立
@@ -229,6 +278,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             impl2.add(getBodyPred(i),false);
             r.getPositiveBody().forEach(pb-> impl2.add(pb,true));
             r.getNegativeBody().forEach(nb-> impl2.add(nb,false));
+            nogoods.add(impl2);
         }
 
         //atom-oriented nogood
@@ -237,10 +287,13 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         //规则成立性，SAT集合中才有此性质
         for(int i=0;i<lpmlnProgram.getRules().size();i++){
             Rule r = lpmlnProgram.getRules().get(i);
-
             Nogood impl3 = new Nogood();
-            r.getHead().forEach(h->impl3.add(h,false));
+            r.getHead().forEach(h->{
+                impl3.add(h,false);
+                litToSatCond.get(h).add(satNogoods.size());
+            });
             impl3.add(getBodyPred(i),true);
+            litToSatCond.get(getBodyPred(i)).add(satNogoods.size());
             satNogoods.add(impl3);
         }
         //impl4: a-> vb1 V vb2 V ...
@@ -279,6 +332,7 @@ class Nogood {
      * 原本应该是set，这里把signedLiteral写一起了
      */
     private Map<String,Boolean> signedLiterals = new HashMap<>();
+    private boolean clear = false;
 
     Nogood(){
 
@@ -288,6 +342,7 @@ class Nogood {
     protected Nogood clone(){
         Nogood clone = new Nogood();
         clone.signedLiterals = (HashMap<String,Boolean>)((HashMap<String,Boolean>)signedLiterals).clone();
+        clone.clear = clear;
         return clone;
     }
 
@@ -319,20 +374,41 @@ class Nogood {
      * @return 返回result-unit,返回null表示nogood已经可以移除,返回literal为""表示继续
      */
     SignedLiteral assign(String literal,boolean sign){
-        boolean cur = signedLiterals.get(literal);
-        if(sign==cur){
-            signedLiterals.remove(literal);
-            if(signedLiterals.size()==1){
-                Map.Entry<String,Boolean> entry = signedLiterals.entrySet().iterator().next();
-                return new SignedLiteral(entry.getKey(), entry.getValue());
+        try {
+            boolean cur = signedLiterals.get(literal);
+            if(sign==cur){
+                signedLiterals.remove(literal);
+                if(signedLiterals.size()==1){
+                    Map.Entry<String,Boolean> entry = signedLiterals.entrySet().iterator().next();
+                    return new SignedLiteral(entry.getKey(), entry.getValue());
+                }else{
+                    //暂时无法产出结果
+                    return new SignedLiteral("",true);
+                }
             }else{
-                //暂时无法产出结果
-                return new SignedLiteral("",true);
+                //nogood已经有节点违反，不用再考虑
+                this.clear = true;
+                return null;
             }
-        }else{
-            //nogood已经有节点违反，不用再考虑
-            return null;
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        return null;
+    }
+
+    /**
+     * 根据当前assignment调整nogood，避免冲突，也避免已经满足的nogood
+     * 需要在此nogood已经违反的时候直接添加到unsat集合中，或者已经满足的时候放到sat中
+     * 这里不考虑这种情况
+     * TODO:考虑弱语义下强规则发生冲突，暂不考虑
+     * @param assignment assignment
+     */
+    void adapt(Map<String,Boolean> assignment){
+        assignment.keySet().forEach(signedLiterals::remove);
+    }
+
+    public boolean isClear() {
+        return clear;
     }
 }
 

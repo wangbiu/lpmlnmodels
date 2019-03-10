@@ -31,6 +31,8 @@ public class AugmentedSubset implements Cloneable{
             }else{
                 if(rules.get(i).isSoft()){
                     unknownIdx.add(i);
+                }else{
+                    satIdx.add(i);
                 }
             }
         }
@@ -44,6 +46,9 @@ public class AugmentedSubset implements Cloneable{
     }
 
     public boolean sat(int idx){
+        if(satIdx.contains(idx)){
+            return true;
+        }
         if(unknownIdx.contains(idx)){
             satIdx.add(idx);
             unknownIdx.remove(idx);
@@ -53,6 +58,9 @@ public class AugmentedSubset implements Cloneable{
     }
 
     public boolean unsat(int idx){
+        if(unsatIdx.contains(idx)){
+            return true;
+        }
         if(unknownIdx.contains(idx)){
             unsatIdx.add(idx);
             unknownIdx.remove(idx);
