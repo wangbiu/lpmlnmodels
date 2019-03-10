@@ -51,12 +51,20 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
      */
     private List<Boolean> bodyAssignment;
 
+    /**
+     * 仅供clone用
+     */
+    private NogoodAugmentedSubset(){
+
+    }
+
     @Override
     public NogoodAugmentedSubset clone(){
-        NogoodAugmentedSubset clone = new NogoodAugmentedSubset(lpmlnProgram);
+        NogoodAugmentedSubset clone = new NogoodAugmentedSubset();
 
         //不共享部分
         //lit到nogood的映射，需要维护nogood中的元素数量
+//        long last = System.currentTimeMillis();
         Map<String,List<Nogood>> litToNogoodClone = new HashMap<>();
         litToNogood.forEach((k,v)->{
             List<Nogood> cur = new ArrayList<>();
@@ -64,23 +72,36 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             litToNogoodClone.put(k,cur);
         });
         clone.litToNogood = litToNogoodClone;
+//        System.out.println("point1: "+(System.currentTimeMillis()-last));
+//        last = System.currentTimeMillis();
+
         //assign
         clone.assignment = (Map<String, Boolean>) ((HashMap)assignment).clone();
+//        System.out.println("point2: "+(System.currentTimeMillis()-last));
+//        last = System.currentTimeMillis();
+
         //添加时clone，所以可以共享
         List<Nogood> satNogoodsClone = new ArrayList<>();
         satNogoods.forEach(nogood -> satNogoodsClone.add(nogood.clone()));
         clone.satNogoods = satNogoodsClone;
+//        System.out.println("point3: "+(System.currentTimeMillis()-last));
+//        last = System.currentTimeMillis();
 
         //共享部分
         //规则unsat需要添加的signed-literal，相对程序固定
         clone.unsatAssign = unsatAssign;
         //lit_{\Pi}不会变化
         clone.literals = literals;
+        clone.litToSatCond = litToSatCond;
 
         //super clone
         clone.satIdx = new HashSet<>(satIdx);
         clone.unsatIdx = new HashSet<>(unsatIdx);
         clone.unknownIdx = new HashSet<>(unknownIdx);
+        clone.lpmlnProgram = lpmlnProgram;
+
+//        System.out.println("point4: "+(System.currentTimeMillis()-last));
+//        last = System.currentTimeMillis();
 
 
         return clone;
@@ -95,10 +116,20 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         };
         PriorityQueue<Pair<NogoodAugmentedSubset,NogoodAugmentedSubset>> queue = new PriorityQueue<>(comparator);
         unknownIdx.forEach(idx->{
+//            long last = System.currentTimeMillis();
             NogoodAugmentedSubset toSat = this.clone();
             NogoodAugmentedSubset toUnsat = this.clone();
+//            System.out.println("point1: "+(System.currentTimeMillis()-last));
+//            last = System.currentTimeMillis();
+
             toSat.sat(idx);
+//            System.out.println("point2: "+(System.currentTimeMillis()-last));
+//            last = System.currentTimeMillis();
+
             toUnsat.unsat(idx);
+//            System.out.println("point3: "+(System.currentTimeMillis()-last));
+//            last = System.currentTimeMillis();
+
             queue.offer(new Pair<>(toSat,toUnsat));
         });
 
@@ -205,6 +236,9 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     }
 
     private void checkSatisfiability(String literal,boolean sign){
+        if(!litToSatCond.containsKey(literal)){
+            System.out.println("err");
+        }
         litToSatCond.get(literal).forEach(idx->{
             Nogood satNogood = satNogoods.get(idx);
             SignedLiteral sLit = satNogood.assign(literal,sign);
@@ -297,7 +331,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             Nogood impl2 = new Nogood();
             impl2.add(getBodyPred(i),false);
             r.getPositiveBody().forEach(pb-> impl2.add(pb,true));
-            r.getNegativeBody().forEach(nb-> impl2.add(nb,false));
+            r.getNegativeBody().forEach(nb-> impl2.add(nb.substring(NOT.length()),false));
             nogoods.add(impl2);
         }
 
@@ -347,6 +381,22 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
     public int getAssignmentSize(){
         return assignment.size();
+    }
+
+    /**
+     * 检查nogood异常，调试用
+     */
+    private void checkNogoods(){
+        Set<Nogood> all = new HashSet<>();
+        litToNogood.values().forEach(all::addAll);
+        all.addAll(satNogoods);
+        all.forEach(nogood -> {
+            nogood.getLiteralSet().forEach(lit->{
+                if(lit.startsWith(NOT)){
+                    throw new SolveException("nogood contain not: "+nogood.toString());
+                }
+            });
+        });
     }
 }
 

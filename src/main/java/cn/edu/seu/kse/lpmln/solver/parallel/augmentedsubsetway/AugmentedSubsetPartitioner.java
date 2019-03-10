@@ -160,6 +160,7 @@ public class AugmentedSubsetPartitioner {
                 if(LPMLNApp.isDebugging()){
                     logger.debug("当前增强子集规则已被划分完毕，队列剩余:{}", queue.size());
                 }
+
                 result.add(tosplit);
             }else{
                 queue.offer(splitResult.getKey());
