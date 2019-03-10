@@ -30,7 +30,10 @@ import static cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolv
  */
 public class LPMLNApp {
     private static  String lpmlnfile=null;
-    public static  String semantics="weak";
+    public static final String SEMANTICS_WEAK = "weak";
+    public static final String SEMANTICS_STRONG = "strong";
+    public static  String semantics=SEMANTICS_WEAK;
+
     public static  String translationFilePrefix=null;
     public static  boolean iskeeptranslation=false;
     private static boolean isShowAll=false;
@@ -152,7 +155,7 @@ public class LPMLNApp {
         lpmlnfile=cmd.getOptionValue("input-file");
         if(cmd.hasOption("lpmln-semantics")){
             semantics=cmd.getOptionValue("lpmln-semantics");
-            if(!semantics.equals("strong") && !semantics.equals("weak")){
+            if(!semantics.equals(LPMLNApp.SEMANTICS_STRONG) && !semantics.equals(LPMLNApp.SEMANTICS_WEAK)){
                 throw  new CommandLineException("unsupport lpmln semantics "+semantics);
             }
         }

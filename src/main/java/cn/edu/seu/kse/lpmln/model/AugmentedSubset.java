@@ -26,7 +26,7 @@ public class AugmentedSubset implements Cloneable{
         unknownIdx = new HashSet<>();
         List<Rule> rules = lpmlnProgram.getRules();
         for(int i=0;i<rules.size();i++){
-            if("strong".equals(LPMLNApp.semantics)&&rules.get(i).isSoft()&&!rules.get(i).isUnWeighted()){
+            if(LPMLNApp.SEMANTICS_STRONG.equals(LPMLNApp.semantics)&&rules.get(i).isSoft()&&!rules.get(i).isUnWeighted()){
                 unknownIdx.add(i);
             }else{
                 if(rules.get(i).isSoft()){

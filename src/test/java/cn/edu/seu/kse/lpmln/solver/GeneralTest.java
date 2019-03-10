@@ -35,7 +35,7 @@ public class GeneralTest {
 
     @Before
     public void initSolvers(){
-        LPMLNApp.semantics = "weak";
+        LPMLNApp.semantics = LPMLNApp.SEMANTICS_WEAK;
         testFilePaths = Arrays.asList(filePaths);
         toCheck.add(asSimple());
         toCheck.add(asRandom());

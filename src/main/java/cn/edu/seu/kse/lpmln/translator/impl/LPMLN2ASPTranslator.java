@@ -25,7 +25,7 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
     protected LpmlnProgram program;
 
     public LPMLN2ASPTranslator(){
-        isWeakTranslate = "weak".equals(LPMLNApp.semantics);
+        isWeakTranslate = LPMLNApp.SEMANTICS_WEAK.equals(LPMLNApp.semantics);
     }
 
     private void init(){
