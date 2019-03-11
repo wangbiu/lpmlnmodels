@@ -54,6 +54,13 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     private List<Boolean> bodyAssignment;
 
     /**
+     * 表示是否在尝试拆分
+     */
+    private boolean trySplitting;
+
+    private LinkedList operation = new LinkedList();
+
+    /**
      * 仅供clone用
      */
     private NogoodAugmentedSubset(){
@@ -124,14 +131,14 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             return amount2-amount1;
         };
         PriorityQueue<Pair<NogoodAugmentedSubset,NogoodAugmentedSubset>> queue = new PriorityQueue<>(comparator);
-//        long last = System.currentTimeMillis();
+        long last = System.currentTimeMillis();
         unknownIdx.forEach(idx->{
 //            long spl = System.currentTimeMillis();
-//            long last2 = System.currentTimeMillis();
+            long last2 = System.currentTimeMillis();
             NogoodAugmentedSubset toSat = this.clone();
             NogoodAugmentedSubset toUnsat = this.clone();
-//            System.out.println("point1: "+(System.currentTimeMillis()-last2));
-//            last2 = System.currentTimeMillis();
+            System.out.println("point1: "+(System.currentTimeMillis()-last2));
+            last2 = System.currentTimeMillis();
 
             toSat.sat(idx);
 //            System.out.println("point2: "+(System.currentTimeMillis()-last2));
@@ -148,8 +155,8 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 //            System.out.println("point4: "+(System.currentTimeMillis()-last2));
 //            last2 = System.currentTimeMillis();
         });
-//        System.out.println("point1: "+(System.currentTimeMillis()-last));
-//        last = System.currentTimeMillis();
+        System.out.println("point1: "+(System.currentTimeMillis()-last));
+        last = System.currentTimeMillis();
 
         //queue为空则返回null，表示没有规则以供划分
         return queue.peek();
@@ -201,7 +208,10 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             toadd.getSignedLiterals().forEach((k,v)->assign(k,!v));
         }else{
             //将nogood添加到map中，size==0的时候不添加
-            toadd.getLiteralSet().forEach(lit->litToNogood.get(lit).add(nogoods.size()));
+            toadd.getLiteralSet().forEach(lit->{
+                litToNogood.get(lit).add(nogoods.size());
+
+            });
             if(toadd.getLiteralSet().size()!=0){
                 nogoods.add(toadd);
             }
@@ -209,6 +219,8 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
         return super.sat(idx);
     }
+
+
 
     @Override
     public boolean unsat(int idx){
@@ -236,19 +248,19 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         assignment.put(literal,sign);
         checkSatisfiability(literal,sign);
 
-        Iterator<Integer> nogoodIterator = litToNogood.get(literal).iterator();
+        List<Integer> nogoodList = litToNogood.get(literal);
 
-        while(nogoodIterator.hasNext()){
-            Nogood cur = nogoods.get(nogoodIterator.next());
+        for(int i=0;i<nogoodList.size();i++){
+            Nogood cur = nogoods.get(nogoodList.get(i));
             if(cur.isClear()){
-                nogoodIterator.remove();
+                litToNogood.remove(i);
                 continue;
             }
             SignedLiteral result = cur.assign(literal,sign);
             //propagation
             if(result==null){
                 //nogood un-violable
-                nogoodIterator.remove();
+                litToNogood.remove(i);
             }else if(!"".equals(result.literal)){
                 //result-unit
                 assign(result.literal,!result.sign);
