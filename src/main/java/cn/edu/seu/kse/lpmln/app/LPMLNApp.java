@@ -46,9 +46,10 @@ public class LPMLNApp {
     private static boolean debugging = false;
 
     private static Logger logger = LogManager.getLogger(LPMLNApp.class.getName());
+    public static Date enter;
 
     public static void main(String args[]) {
-        Date enter=new Date();
+        enter=new Date();
 
         CommandLine cmd = parseCmd(args);
 

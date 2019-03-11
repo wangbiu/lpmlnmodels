@@ -49,10 +49,16 @@ public class AugmentedSubsetPartitioner {
                 subsets = simplePartition(lpmlnProgram,count);
                 break;
         }
+        if(LPMLNApp.isDebugging()){
+            System.out.println("partition cost: "+(System.currentTimeMillis()-LPMLNApp.enter.getTime()));
+        }
         return subsets;
     }
 
     public List<AugmentedSubset> randomPartition(LpmlnProgram lpmlnProgram,int count){
+        if(LPMLNApp.isDebugging()){
+            System.out.println("start randomPartition.");
+        }
         List<AugmentedSubset> subsets = new ArrayList<>();
         List<AugmentedSubset> selectable = new ArrayList<>();
         Random rand = new Random();
@@ -90,6 +96,9 @@ public class AugmentedSubsetPartitioner {
     }
 
     public List<AugmentedSubset> simplePartition(LpmlnProgram lpmlnProgram,int count){
+        if(LPMLNApp.isDebugging()){
+            System.out.println("start simplePartition.");
+        }
         List<AugmentedSubset> subsets = new ArrayList<>();
         int corepow2 = (int)(Math.log(count)/Math.log(2));
         ArrayList<Integer> unknown = new ArrayList<>(new AugmentedSubset(lpmlnProgram).getUnknownIdx());
@@ -112,6 +121,9 @@ public class AugmentedSubsetPartitioner {
     }
 
     public List<AugmentedSubset> heuristicPartition(LpmlnProgram lpmlnProgram,int count){
+        if(LPMLNApp.isDebugging()){
+            System.out.println("start heuristicPartition.");
+        }
         List<AugmentedSubset> subsets = new ArrayList<>();
         PriorityQueue<HeuristicAugmentedSubset> selectable = new PriorityQueue<>(Comparator.comparing(HeuristicAugmentedSubset::getWeight));
         HeuristicAugmentedSubset subset = new HeuristicAugmentedSubset(lpmlnProgram);
@@ -146,6 +158,9 @@ public class AugmentedSubsetPartitioner {
     }
 
     public List<AugmentedSubset> nogoodPartition(LpmlnProgram lpmlnProgram,int count){
+        if(LPMLNApp.isDebugging()){
+            System.out.println("start nogoodPartition.");
+        }
         Comparator<NogoodAugmentedSubset> comparator = (o1, o2) -> o1.getAssignmentSize()-o2.getAssignmentSize();
         PriorityQueue<NogoodAugmentedSubset> queue = new PriorityQueue<>(comparator);
         List<AugmentedSubset> result = new ArrayList<>();
