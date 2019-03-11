@@ -38,8 +38,10 @@ public class AugmentedSubsetSolver extends LPMLNBaseSolver implements Runnable {
 
         //System.out.println(subset.getSatIdx().toString()+subset.getUnsatIdx()+Thread.currentThread().getId());
 
+        File translated = new File(LPMLNApp.translationFilePrefix+"-"+Thread.currentThread().getId()+LPSUFFIX);
         //保留翻译后的文件
-        FileHelper.writeFile(new File(LPMLNApp.translationFilePrefix+"-"+Thread.currentThread().getId()+LPSUFFIX),aspProgram);
+        FileHelper.writeFile(translated,aspProgram);
+        FileHelper.addToCleanList(translated);
 
         //ASP求解
         weightedAs = aspSolver.solve(aspProgram);

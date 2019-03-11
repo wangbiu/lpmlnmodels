@@ -14,6 +14,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class FileHelper {
     public static List<File> tempFiles = new CopyOnWriteArrayList<>();
 
+    public static void addToCleanList(File file){
+        tempFiles.add(file);
+    }
+
     public static void cleanFiles(){
         if(LPMLNApp.iskeeptranslation){
             tempFiles.forEach(file -> {
