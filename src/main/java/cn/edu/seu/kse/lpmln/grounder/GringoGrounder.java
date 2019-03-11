@@ -1,5 +1,6 @@
 package cn.edu.seu.kse.lpmln.grounder;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
@@ -85,6 +86,8 @@ public class GringoGrounder implements LPMLNGrounder{
 
                 groundRules.add(toAppend.toString().replaceAll(":-"," :- "));
                 //groundProgram.append(toAppend.toString().replaceAll(":-"," :- "));
+            }else if(LPMLNApp.SEMANTICS_WEAK==LPMLNApp.semantics && !rule.contains("unsat") && !rule.contains("kse") && !rule.contains("[")){
+                groundRules.add(rule);
             }
         });
         StringJoiner programJoinner = new StringJoiner("\r\n");
@@ -95,7 +98,7 @@ public class GringoGrounder implements LPMLNGrounder{
     private String translate(File fileToGround){
         LpmlnProgram lpmlnProgram = null;
         LPMLN2ASPTranslator translator = new LPMLN2ASPTranslator();
-        translator.setWeakTranslate(false);
+
         try {
             lpmlnProgram = SyntaxModule.parseLPMLN(fileToGround);
         } catch (IOException e) {

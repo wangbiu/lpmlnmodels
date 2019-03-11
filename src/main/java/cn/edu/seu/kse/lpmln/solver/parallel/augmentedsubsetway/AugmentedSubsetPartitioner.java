@@ -163,12 +163,12 @@ public class AugmentedSubsetPartitioner {
         }
         Comparator<NogoodAugmentedSubset> comparator = (o1, o2) -> o1.getAssignmentSize()-o2.getAssignmentSize();
         PriorityQueue<NogoodAugmentedSubset> queue = new PriorityQueue<>(comparator);
-        List<AugmentedSubset> result = new ArrayList<>();
+        List<NogoodAugmentedSubset> result = new ArrayList<>();
 
         queue.offer(new NogoodAugmentedSubset(lpmlnProgram));
 
         //TODO:这里没考虑无法划分的情况
-        while (queue.size()<count&&queue.size()>0){
+        while (queue.size()+result.size()<count&&queue.size()>0){
             NogoodAugmentedSubset tosplit = queue.poll();
             Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> splitResult = tosplit.split();
             if(splitResult==null){
@@ -184,8 +184,9 @@ public class AugmentedSubsetPartitioner {
         }
 
         result.addAll(queue);
+        result.sort(comparator);
 
-        return result;
+        return new ArrayList<>(result);
     }
 
     private void printStatus(List<AugmentedSubset> augmentedSubsets){

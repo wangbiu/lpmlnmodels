@@ -34,17 +34,18 @@ public class Rule {
 
     @Override
     public String toString() {
-        StringBuilder sb=new StringBuilder();
-        String ls=System.lineSeparator();
-        sb.append("rule text ").append(text).append(ls);
-        sb.append("rule id ").append(id).append(ls);
-        sb.append("varialbes ").append(vars).append(ls);
-        sb.append("is soft rule ").append(isSoft).append(ls);
-        sb.append("weight ").append(weight).append(ls);
-        sb.append("rule body ").append(getBody()).append(ls);
-        sb.append("rule head ").append(head).append(ls);
-        sb.append("");
-        return sb.toString();
+//        StringBuilder sb=new StringBuilder();
+//        String ls=System.lineSeparator();
+//        sb.append("rule text ").append(text).append(ls);
+//        sb.append("rule id ").append(id).append(ls);
+//        sb.append("varialbes ").append(vars).append(ls);
+//        sb.append("is soft rule ").append(isSoft).append(ls);
+//        sb.append("weight ").append(weight).append(ls);
+//        sb.append("rule body ").append(getBody()).append(ls);
+//        sb.append("rule head ").append(head).append(ls);
+//        sb.append("");
+//        return sb.toString();
+        return getOriginalrule();
     }
 
     public int getInnerweight() {

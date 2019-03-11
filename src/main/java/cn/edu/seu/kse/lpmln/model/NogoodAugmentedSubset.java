@@ -1,6 +1,7 @@
 package cn.edu.seu.kse.lpmln.model;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
+import cn.edu.seu.kse.lpmln.exception.solveexception.AssignConflictException;
 import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
 
 import java.util.*;
@@ -56,9 +57,22 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     /**
      * 表示是否在尝试拆分
      */
-    private boolean trySplitting;
+    private boolean trySplitting = false;
 
-    private LinkedList operation = new LinkedList();
+    /**
+     * 恢复时的操作栈，记录操作的反向
+     * key:String
+     *  语法：target operation...
+     *  target : litToNogood|nogoods|assignment|satisfiability|satNogoods
+     *  operation:
+     *      litToNogood: (remove literal idx)|(add literal idx val)
+     *      nogoods: remove|set idx
+     *      assignment: remove literal
+     *      satisfiability: undosat|undounsat idx
+     *      satNogoods: set idx
+     * value:nogood
+     */
+    private LinkedList<Pair<String,Nogood>> recoverStack = new LinkedList();
 
     /**
      * 仅供clone用
@@ -123,43 +137,167 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         return clone;
     }
 
+    private static final String REMOVE = "remove";
+    private static final String ADD = "add";
+    private static final String SET = "set";
+    /**
+     * 恢复
+     * key:String
+     *  语法：target operation...
+     *  target : litToNogood|nogoods|assignment|satisfiability|satNogoods
+     *  operation:
+     *      litToNogood: (remove(1) literal(2) idx(3))|(add(1) litera(2) idx(3) val(4))
+     *      nogoods: remove(1) idx(2)
+     *      assignment: remove(1)
+     *      satisfiability: undosat(1)|undounsat(1) idx(2)
+     *      satNogoods: set(1)
+     * value:nogood
+     * @return t:成功 f:操作未记录，失败
+     */
+    private boolean recover(){
+        if(trySplitting){
+            trySplitting = false;
+
+            while(recoverStack.size()>0){
+                Pair<String,Nogood> f = recoverStack.pop();
+                String[] params = f.getKey().split(" ");
+                switch (params[0]){
+                    case "litToNogood":
+                        if(REMOVE.equals(params[1])){
+                            litToNogood.get(params[2]).remove((int)Integer.valueOf(params[3]));
+                        }else if (ADD.equals(params[2])){
+                            litToNogood.get(params[2]).add(Integer.valueOf(params[3]),Integer.valueOf(params[4]));
+                        }else{
+                            throw new SolveException("recover pattern unrecognized: "+f.getKey());
+                        }
+                        break;
+                    case "nogoods":
+                        if(REMOVE.equals(params[1])){
+                            nogoods.remove((int)Integer.valueOf(params[2]));
+                        }else if(SET.equals(params[1])){
+                            nogoods.set(Integer.valueOf(params[2]),f.getValue());
+                        }else{
+                            throw new SolveException("recover pattern unrecognized: "+f.getKey());
+                        }
+                        break;
+                    case "assignment":
+                        if(REMOVE.equals(params[1])){
+                            assignment.remove(params[2]);
+                        }else{
+                            throw new SolveException("recover pattern unrecognized: "+f.getKey());
+                        }
+                        break;
+                    case "satisfiability":
+                        int aim = Integer.valueOf(params[2]);
+                        if("undosat".equals(params[1])){
+                            satIdx.remove(aim);
+                            unknownIdx.add(aim);
+                        }else if("undounsat".equals(params[1])){
+                            unsatIdx.remove(aim);
+                            unknownIdx.add(aim);
+                        }else{
+                            throw new SolveException("recover pattern unrecognized: "+f.getKey());
+                        }
+                        break;
+                    case "satNogoods":
+                        if(SET.equals(params[1])){
+                            satNogoods.set(Integer.valueOf(params[2]),f.getValue());
+                        }else{
+                            throw new SolveException("recover pattern unrecognized: "+f.getKey());
+                        }
+                        break;
+                    default:
+                        throw new SolveException("recover pattern unrecognized: "+f.getKey());
+                }
+            }
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> split(){
-        //在这修改选择策略
-        Comparator<Pair<NogoodAugmentedSubset,NogoodAugmentedSubset>> comparator = (o1, o2) -> {
-            int amount1 = o1.getKey().getAssignmentSize()+o1.getValue().getAssignmentSize();
-            int amount2 = o2.getKey().getAssignmentSize()+o2.getValue().getAssignmentSize();
-            return amount2-amount1;
+        //返回值选择优先级，选择最低的
+        Comparator<Pair<Integer,Integer>> comparator = (o1, o2) -> {
+            return o1.getValue()-o2.getValue();
         };
-        PriorityQueue<Pair<NogoodAugmentedSubset,NogoodAugmentedSubset>> queue = new PriorityQueue<>(comparator);
-        long last = System.currentTimeMillis();
-        unknownIdx.forEach(idx->{
-//            long spl = System.currentTimeMillis();
-            long last2 = System.currentTimeMillis();
-            NogoodAugmentedSubset toSat = this.clone();
-            NogoodAugmentedSubset toUnsat = this.clone();
-            System.out.println("point1: "+(System.currentTimeMillis()-last2));
-            last2 = System.currentTimeMillis();
+        PriorityQueue<Pair<Integer,Integer>> queue = new PriorityQueue<>(comparator);
+        NogoodAugmentedSubset toSat = this.clone();
+        NogoodAugmentedSubset toUnsat = this.clone();
 
-            toSat.sat(idx);
-//            System.out.println("point2: "+(System.currentTimeMillis()-last2));
-//            last2 = System.currentTimeMillis();
+//        long t1 = System.currentTimeMillis();
+        for (int idx : unknownIdx) {
+//            long t2 = System.currentTimeMillis();
+            try{
+                toSat.setTrySplitting(true);
+                toSat.sat(idx);
 
-            toUnsat.unsat(idx);
-//            System.out.println("point3: "+(System.currentTimeMillis()-last2));
-//            last2 = System.currentTimeMillis();
+//                System.out.println("2-1:"+(System.currentTimeMillis()-t2));
+//                t2 = System.currentTimeMillis();
 
-            queue.offer(new Pair<>(toSat,toUnsat));
-//            if(System.currentTimeMillis()-spl>3000){
-//                System.out.println(123);
-//            }
-//            System.out.println("point4: "+(System.currentTimeMillis()-last2));
-//            last2 = System.currentTimeMillis();
-        });
-        System.out.println("point1: "+(System.currentTimeMillis()-last));
-        last = System.currentTimeMillis();
+                toUnsat.setTrySplitting(true);
+                toUnsat.unsat(idx);
+
+//                System.out.println("2-2:"+(System.currentTimeMillis()-t2));
+//                t2 = System.currentTimeMillis();
+
+//                AugmentedSubsetSolver solver1 = new AugmentedSubsetSolver(toSat);
+//                AugmentedSubsetSolver solver2 = new AugmentedSubsetSolver(toUnsat);
+//                if(solver1.solve().size()==0){
+//                    System.out.println(111);
+//                }
+//
+//                if(solver2.solve().size()==0){
+//                    System.out.println(222);
+//                }
+
+                toSat.recover();
+                toUnsat.recover();
+
+//                System.out.println("2-3:"+(System.currentTimeMillis()-t2));
+//                t2 = System.currentTimeMillis();
+
+                queue.offer(new Pair<>(idx,getEvaluation(toSat,toUnsat)));
+            }catch (AssignConflictException e){
+                if(LPMLNApp.isDebugging()){
+                    System.out.println("detect conflict, abandon this case");
+                }
+                //懒得优化了先这么写
+                toSat = this.clone();
+                toUnsat = this.clone();
+            }
+//            System.out.println("2:"+(System.currentTimeMillis()-t2));
+        }
+//        System.out.println("2:"+(System.currentTimeMillis()-t1));
+
+        if(queue.size()==0){
+            return null;
+        }
+
+        int rIdx = queue.peek().getKey();
+        try{
+            toSat.sat(rIdx);
+            toUnsat.unsat(rIdx);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         //queue为空则返回null，表示没有规则以供划分
-        return queue.peek();
+        return new Pair<>(toSat,toUnsat);
+    }
+
+    /**
+     * 返回值选择优先级，选择最低的
+     * @param sat sat
+     * @param unsat unsat
+     * @return 优化程度
+     */
+    private int getEvaluation(NogoodAugmentedSubset sat, NogoodAugmentedSubset unsat){
+        //在这修改选择策略
+//        return -(sat.getAssignmentSize()+unsat.getAssignmentSize());
+        return Math.abs(sat.getAssignmentSize()-unsat.getAssignmentSize());
     }
 
     public NogoodAugmentedSubset(LpmlnProgram lpmlnProgram){
@@ -167,15 +305,20 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
         init();
 
-        List<Nogood> nogoods = constructNogood();
+        constructNogood();
 
         Map<String,Boolean> toAssign = constructNogoodMap(litToNogood);
 
         toAssign.forEach(this::assign);
 
         if(LPMLNApp.semantics.equals(LPMLNApp.SEMANTICS_WEAK)){
-            new ArrayList<>(satIdx).forEach(this::sat);
+            unknownIdx.addAll(satIdx);
+            Set<Integer> toCheck = satIdx;
+            satIdx = new HashSet<>();
+            toCheck.forEach(this::sat);
         }
+
+        System.out.println();
     }
 
     private void init(){
@@ -199,9 +342,18 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
     @Override
     public boolean sat(int idx){
+        boolean res = super.sat(idx);
+        if(!res){
+            return false;
+        }
+
         //impl3
         Nogood toadd = satNogoods.get(idx);
-        toadd.adapt(assignment);
+
+//        if(trySplitting){
+//            recoverStack.push(new Pair<>("satNogoods set "+idx,toadd.clone()));
+//        }
+//        toadd.adapt(assignment);
 
         if(toadd.getLiteralSet().size()==1){
             //对应nogood已经可以产出result-unit
@@ -209,25 +361,42 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         }else{
             //将nogood添加到map中，size==0的时候不添加
             toadd.getLiteralSet().forEach(lit->{
+                if(trySplitting){
+                    recoverStack.push(new Pair<>("litToNogood remove "+lit+" "+litToNogood.get(lit).size(),null));
+                }
                 litToNogood.get(lit).add(nogoods.size());
-
             });
             if(toadd.getLiteralSet().size()!=0){
+                if(trySplitting){
+                    recoverStack.push(new Pair<>("nogoods remove "+nogoods.size(),null));
+                }
                 nogoods.add(toadd);
             }
         }
 
-        return super.sat(idx);
+
+        if(trySplitting){
+            recoverStack.push(new Pair<>("satisfiability undosat "+idx,null));
+        }
+        return res;
     }
 
 
 
     @Override
     public boolean unsat(int idx){
+        boolean res = super.unsat(idx);
+        if(!res){
+            return false;
+        }
 
         unsatAssign.get(idx).forEach(this::assign);
 
-        return super.unsat(idx);
+        if(trySplitting){
+            recoverStack.push(new Pair<>("satisfiability undounsat "+idx,null));
+        }
+
+        return res;
     }
 
     /**
@@ -239,28 +408,50 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         Boolean assigned = assignment.get(literal);
         if(assigned!=null) {
             if (assigned != sign) {
-                throw new SolveException("literal assign conflict");
+                throw new AssignConflictException("literal assign conflict");
             } else {
                 return;
             }
         }
 
+        if(trySplitting){
+            recoverStack.push(new Pair<>("assignment remove "+literal,null));
+        }
         assignment.put(literal,sign);
+
         checkSatisfiability(literal,sign);
 
         List<Integer> nogoodList = litToNogood.get(literal);
 
         for(int i=0;i<nogoodList.size();i++){
             Nogood cur = nogoods.get(nogoodList.get(i));
-            if(cur.isClear()){
-                litToNogood.remove(i);
-                continue;
+//            if(cur.isClear()){
+//                if(trySplitting){
+//                    recoverStack.push(new Pair<>("litToNogood add "+literal+" "+i+" "+nogoodList.get(i),cur.clone()));
+//                }
+//                nogoodList.remove(i);
+//                continue;
+//            }
+
+            if(trySplitting){
+                recoverStack.push(new Pair<>("nogoods set "+nogoodList.get(i),cur.clone()));
             }
+//            SignedLiteral result = null;
+//            try {
+//
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+
             SignedLiteral result = cur.assign(literal,sign);
+
             //propagation
             if(result==null){
-                //nogood un-violable
-                litToNogood.remove(i);
+//                //nogood un-violable
+//                if(trySplitting){
+//                    recoverStack.push(new Pair<>("litToNogood add "+literal+" "+i+" "+nogoodList.get(i),cur.clone()));
+//                }
+//                nogoodList.remove(i);
             }else if(!"".equals(result.literal)){
                 //result-unit
                 assign(result.literal,!result.sign);
@@ -272,15 +463,28 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         if(!litToSatCond.containsKey(literal)){
             System.out.println("err");
         }
-        litToSatCond.get(literal).forEach(idx->{
+        List<Integer> satIdx =  litToSatCond.get(literal);
+        if(satIdx==null){
+            System.out.println("err");
+        }
+        satIdx.forEach(idx->{
             Nogood satNogood = satNogoods.get(idx);
+            if(trySplitting){
+                recoverStack.push(new Pair<>("satNogoods set "+idx,satNogood.clone()));
+            }
             SignedLiteral sLit = satNogood.assign(literal,sign);
             if(sLit==null){
                 //satNogood已经无法被违反
-                super.sat(idx);
+                boolean res = super.sat(idx);
+                if(trySplitting && res){
+                    recoverStack.push(new Pair<>("satisfiability undosat "+idx,null));
+                }
             }else if(satNogood.getLiteralSet().size()==0){
                 //satNogood已经被违反
-                super.unsat(idx);
+                boolean res = super.unsat(idx);
+                if(trySplitting && res){
+                    recoverStack.push(new Pair<>("satisfiability undounsat "+idx,null));
+                }
             }
         });
     }
@@ -327,7 +531,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         });
     }
 
-    private List<Nogood> constructNogood(){
+    private void constructNogood(){
         nogoods = new ArrayList<>();
 
         //解释一致性产出的nogood
@@ -403,8 +607,6 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 //        if(LPMLNApp.isDebugging()){
 //            System.out.println("nogood done");
 //        }
-
-        return nogoods;
     }
 
     private String getBodyPred(int i){
@@ -429,6 +631,10 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 }
             });
         });
+    }
+
+    public void setTrySplitting(boolean trySplitting) {
+        this.trySplitting = trySplitting;
     }
 }
 
@@ -480,26 +686,21 @@ class Nogood {
      * @return 返回result-unit,返回null表示nogood已经可以移除,返回literal为""表示继续
      */
     SignedLiteral assign(String literal,boolean sign){
-        try {
-            boolean cur = signedLiterals.get(literal);
-            if(sign==cur){
-                signedLiterals.remove(literal);
-                if(signedLiterals.size()==1){
-                    Map.Entry<String,Boolean> entry = signedLiterals.entrySet().iterator().next();
-                    return new SignedLiteral(entry.getKey(), entry.getValue());
-                }else{
-                    //暂时无法产出结果
-                    return new SignedLiteral("",true);
-                }
+        boolean cur = signedLiterals.get(literal);
+        if(sign==cur){
+            signedLiterals.remove(literal);
+            if(signedLiterals.size()==1){
+                Map.Entry<String,Boolean> entry = signedLiterals.entrySet().iterator().next();
+                return new SignedLiteral(entry.getKey(), entry.getValue());
             }else{
-                //nogood已经有节点违反，不用再考虑
-                this.clear = true;
-                return null;
+                //暂时无法产出结果
+                return new SignedLiteral("",true);
             }
-        }catch (Exception e){
-            e.printStackTrace();
+        }else{
+            //nogood已经有节点违反，不用再考虑
+            this.clear = true;
+            return null;
         }
-        return null;
     }
 
     /**

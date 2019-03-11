@@ -1,7 +1,7 @@
 package cn.edu.seu.kse.lpmln.model;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
-import cn.edu.seu.kse.lpmln.exception.solveexception.SolveException;
+import cn.edu.seu.kse.lpmln.exception.solveexception.AssignConflictException;
 import cn.edu.seu.kse.lpmln.translator.impl.LPMLN2ASPTranslator;
 
 import java.util.ArrayList;
@@ -47,26 +47,26 @@ public class AugmentedSubset implements Cloneable{
 
     public boolean sat(int idx){
         if(satIdx.contains(idx)){
-            return true;
+            return false;
         }
         if(unknownIdx.contains(idx)){
             satIdx.add(idx);
             unknownIdx.remove(idx);
             return true;
         }
-        throw new SolveException("partition fail, Idx error");
+        throw new AssignConflictException("partition fail, Idx error");
     }
 
     public boolean unsat(int idx){
         if(unsatIdx.contains(idx)){
-            return true;
+            return false;
         }
         if(unknownIdx.contains(idx)){
             unsatIdx.add(idx);
             unknownIdx.remove(idx);
             return true;
         }
-        throw new SolveException("partition fail, Idx error");
+        throw new AssignConflictException("partition fail, Idx error");
     }
 
     @Override
