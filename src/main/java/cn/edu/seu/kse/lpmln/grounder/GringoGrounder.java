@@ -98,7 +98,7 @@ public class GringoGrounder implements LPMLNGrounder{
     private String translate(File fileToGround){
         LpmlnProgram lpmlnProgram = null;
         LPMLN2ASPTranslator translator = new LPMLN2ASPTranslator();
-
+        translator.setWeakTranslate(false);
         try {
             lpmlnProgram = SyntaxModule.parseLPMLN(fileToGround);
         } catch (IOException e) {
