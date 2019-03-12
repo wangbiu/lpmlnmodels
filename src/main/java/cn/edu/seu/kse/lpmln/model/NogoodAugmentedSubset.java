@@ -16,6 +16,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     public static final String NOT = "not ";
     public static final String NEGATION = "-";
     public static final String VB = "VB_";
+    private static Random rand = new Random(System.currentTimeMillis());
 
     /**
      * lit到nogood的映射，在assign以及propagate要用
@@ -226,66 +227,37 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         NogoodAugmentedSubset toSat = this.clone();
         NogoodAugmentedSubset toUnsat = this.clone();
 
-//        long t1 = System.currentTimeMillis();
-        for (int idx : unknownIdx) {
-//            long t2 = System.currentTimeMillis();
-            try{
-                toSat.setTrySplitting(true);
-                toSat.sat(idx);
+        List<Integer> candidate = new ArrayList<>(unknownIdx);
 
-//                System.out.println("2-1:"+(System.currentTimeMillis()-t2));
-//                t2 = System.currentTimeMillis();
+        while(candidate.size()>0){
+            int candidateidx = Math.abs(rand.nextInt())%candidate.size();
+            try {
+                int ruleIdx = candidate.get(candidateidx);
+                //toSat.setTrySplitting(true);
+                boolean satRes = toSat.sat(ruleIdx);
 
-                toUnsat.setTrySplitting(true);
-                toUnsat.unsat(idx);
 
-//                System.out.println("2-2:"+(System.currentTimeMillis()-t2));
-//                t2 = System.currentTimeMillis();
+                //toUnsat.setTrySplitting(true);
+                boolean unsatRes = toUnsat.unsat(ruleIdx);
 
-//                AugmentedSubsetSolver solver1 = new AugmentedSubsetSolver(toSat);
-//                AugmentedSubsetSolver solver2 = new AugmentedSubsetSolver(toUnsat);
-//                if(solver1.solve().size()==0){
-//                    System.out.println(111);
-//                }
-//
-//                if(solver2.solve().size()==0){
-//                    System.out.println(222);
-//                }
+                if(!satRes||!unsatRes){
+                    System.out.println("unexpected, continue");
+                    throw new AssignConflictException("");
+                }
 
-                toSat.recover();
-                toUnsat.recover();
-
-//                System.out.println("2-3:"+(System.currentTimeMillis()-t2));
-//                t2 = System.currentTimeMillis();
-
-                queue.offer(new Pair<>(idx,getEvaluation(toSat,toUnsat)));
-            }catch (AssignConflictException e){
-                if(LPMLNApp.isDebugging()){
+                return new Pair<>(toSat,toUnsat);
+            } catch (AssignConflictException e) {
+                if (LPMLNApp.isDebugging()) {
                     System.out.println("detect conflict, abandon this case");
                 }
                 //懒得优化了先这么写
                 toSat = this.clone();
                 toUnsat = this.clone();
+                candidate.remove(candidateidx);
             }
-//            System.out.println("2:"+(System.currentTimeMillis()-t2));
-        }
-//        System.out.println("2:"+(System.currentTimeMillis()-t1));
-
-        if(queue.size()==0){
-            return null;
         }
 
-        int rIdx = queue.peek().getKey();
-        try{
-            toSat.sat(rIdx);
-            toUnsat.unsat(rIdx);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-        //queue为空则返回null，表示没有规则以供划分
-        return new Pair<>(toSat,toUnsat);
+        return null;
     }
 
     /**
@@ -603,6 +575,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         });
 
         //loop nogood指数级别，先不添加
+        
 
 //        if(LPMLNApp.isDebugging()){
 //            System.out.println("nogood done");

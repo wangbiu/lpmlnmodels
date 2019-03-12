@@ -184,7 +184,6 @@ public class AugmentedSubsetPartitioner {
         }
 
         result.addAll(queue);
-        result.sort(comparator);
 
         return new ArrayList<>(result);
     }
