@@ -12,8 +12,8 @@ import java.util.List;
  * @date 2019/3/12
  */
 public class KSETest {
-    private List<Double> weights = Arrays.asList(0.85,0.85,0.85,0.85);
-    //private List<Double> weights = Arrays.asList(0.01,0.01,0.01,0.01);
+    //private List<Double> weights = Arrays.asList(0.85,0.85,0.85,0.85);
+    private List<Double> weights = Arrays.asList(0.9,0.3,0.3,0.3);
 
 
     private double calculate(List<Double> exist,List<Double> all){
@@ -34,7 +34,8 @@ public class KSETest {
     @Before
     public void preprocess(){
         for (int i=0;i<weights.size();i++){
-            double newWeight = Math.log(weights.get(i)+1);
+            double ori = weights.get(i);
+            double newWeight = Math.log(ori/(1-ori));
             weights.set(i,newWeight);
         }
     }
