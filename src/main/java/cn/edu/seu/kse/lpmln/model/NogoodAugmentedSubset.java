@@ -558,6 +558,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             litToSatCond.get(getBodyPred(i)).add(satNogoods.size());
             satNogoods.add(impl3);
         }
+
         //impl4: a-> vb1 V vb2 V ...
         //原子支持，loop nogood的特殊情形(|loop|=1)
         Map<String,Nogood> supNogoodMap = new HashMap<>();

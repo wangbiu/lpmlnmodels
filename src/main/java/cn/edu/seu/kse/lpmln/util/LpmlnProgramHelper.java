@@ -10,6 +10,7 @@ import java.util.*;
  * @date 2018/4/2
  */
 public class LpmlnProgramHelper {
+    protected static final String NOT = "not ";
     public static Map<String,Set<String>> getDependency(LpmlnProgram program){
         Map<String,Set<String>> dependency = new HashMap<>();
         program.getRules().forEach(rule -> {
@@ -39,6 +40,24 @@ public class LpmlnProgramHelper {
             Set<String> depend = new HashSet<>();
             rule.getHead().forEach(lit->head.add(getLiteral(lit)));
             rule.getPositiveBody().forEach(lit->depend.add(getLiteral(lit)));
+            head.forEach(lit->{
+                if(dependency.containsKey(lit)){
+                    dependency.get(lit).addAll(depend);
+                }else{
+                    dependency.put(lit,depend);
+                }
+            });
+        });
+        return dependency;
+    }
+
+    public static Map<String,Set<String>> getLiteralPostiveDependency(LpmlnProgram program){
+        Map<String,Set<String>> dependency = new HashMap<>();
+        program.getRules().forEach(rule -> {
+            Set<String> head = new HashSet<>();
+            Set<String> depend = new HashSet<>();
+            rule.getHead().forEach(lit->head.add(lit.startsWith(NOT)?lit.substring(NOT.length()):lit));
+            rule.getPositiveBody().forEach(lit->depend.add(lit.startsWith(NOT)?lit.substring(NOT.length()):lit));
             head.forEach(lit->{
                 if(dependency.containsKey(lit)){
                     dependency.get(lit).addAll(depend);

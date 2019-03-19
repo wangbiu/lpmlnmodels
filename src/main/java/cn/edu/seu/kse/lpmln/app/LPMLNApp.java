@@ -10,6 +10,7 @@ import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLN2MLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNHybridSolver;
+import cn.edu.seu.kse.lpmln.solver.impl.LPMLNLoopSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
@@ -270,6 +271,9 @@ public class LPMLNApp {
                     break;
                 case "mln" :
                     solver = new LPMLN2MLNSolver();
+                    break;
+                case "loop":
+                    solver = new LPMLNLoopSolver();
                     break;
                 default :
                     solver = new LPMLNBaseSolver();
