@@ -102,7 +102,7 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
         }
     }
 
-    static String SHOW = "#show ";
+    private static String SHOW = "#show ";
     private void generateMeta(){
         Set<String> allowedPreds = new HashSet<>();
         if(lpmlnProgram.getMetarule().length()>0){
@@ -139,10 +139,16 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
      * TODO:实现很水，需要优化
      */
     private void propagate(){
+        if(assignStack.isEmpty()){
+            return;
+        }
         LinkedList<String> toPropagate = new LinkedList<>();
         toPropagate.add(assignStack.peek());
         while(toPropagate.size()>0){
             String cur = toPropagate.poll();
+//            if(!nogoodMap.containsKey(cur)){
+//                System.out.println(123);
+//            }
             nogoodMap.get(cur).forEach(nogood -> {
                 SignedLiteral cons = nogood.check(assignment);
                 if(cons!=null){
@@ -200,22 +206,29 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
         was.setAnswerSet(as);
         Integer[] ini = {0,0};
         was.setWeights(Arrays.asList(ini));
+        Set<Integer> unsatRules = new HashSet<>();
         for(int i=0;i<satNogoods.size();i++){
             Nogood sat = satNogoods.get(i);
+            if(unsatRules.contains(sat.getRuleId())){
+                continue;
+            }
             try {
                 sat.check(assignment);
             }catch (AssignConflictException e){
-                //兼容翻译求解
-                Double w = weights.get(i);
-                if(w==null){
-                    //hard
-                    was.getWeights().set(1,was.getWeights().get(1)+1);
-                }else{
-                    //TODO:小数处理
-                    was.getWeights().set(0,was.getWeights().get(0)+w.intValue());
-                }
+                unsatRules.add(sat.getRuleId());
             }
         }
+        unsatRules.forEach(i->{
+            //兼容翻译求解
+            Double w = weights.get(i);
+            if(w==null){
+                //hard
+                was.getWeights().set(1,was.getWeights().get(1)+1);
+            }else{
+                //TODO:小数处理
+                was.getWeights().set(0,was.getWeights().get(0)+w.intValue());
+            }
+        });
         assignment.forEach((k,v)->{
             if(v&&!k.startsWith(VB)){
                 if(metaFilt==null||metaFilt.contains(k)){
@@ -237,30 +250,46 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
             }
         });
 
-        //body-oriented nogood
+        //支持性 nogood
         for(int i=0;i<lpmlnProgram.getRules().size();i++){
             Rule r = lpmlnProgram.getRules().get(i);
-            //imp1: VB->a1,a2,...,not am+1,not am+2,...
-            //体部成立表示体部项都成立
-            for (String pb : r.getPositiveBody()) {
-                Nogood impl1 = new Nogood();
-                impl1.add(getBodyPred(i),true);
-                impl1.add(pb,false);
-                nogoods.add(impl1);
+            for (String h : r.getHead()) {
+                //imp1: VB->a1,a2,...,not am+1,not am+2,...  v!heand-h
+                //体部成立表示体部项都成立
+                for (String pb : r.getPositiveBody()) {
+                    Nogood impl1 = new Nogood();
+                    impl1.add(getSupPred(i,h),true);
+                    impl1.add(pb,false);
+                    nogoods.add(impl1);
+                }
+                for (String nb : r.getNegativeBody()) {
+                    Nogood impl1 = new Nogood();
+                    impl1.add(getSupPred(i,h),true);
+                    impl1.add(nb.substring(NOT.length()),true);
+                    nogoods.add(impl1);
+                }
+                for (String hn : r.getHead()) {
+                    if(!hn.equals(h)){
+                        Nogood impl1 = new Nogood();
+                        impl1.add(getSupPred(i,h),true);
+                        impl1.add(hn,true);
+                        nogoods.add(impl1);
+                    }
+                }
+                //imp2: a1,a2,...,not am+1,not am+2,... ,!heand-h->Vb
+                //体部项都成立表示体部成立
+                Nogood impl2 = new Nogood();
+                impl2.add(getSupPred(i,h),false);
+                r.getPositiveBody().forEach(pb-> impl2.add(pb,true));
+                r.getNegativeBody().forEach(nb-> impl2.add(nb.substring(NOT.length()),false));
+                r.getHead().forEach(hn->{
+                    if(!hn.equals(h)){
+                        impl2.add(hn,false);
+                    }
+                });
+                nogoods.add(impl2);
             }
-            for (String nb : r.getNegativeBody()) {
-                Nogood impl1 = new Nogood();
-                impl1.add(getBodyPred(i),true);
-                impl1.add(nb.substring(NOT.length()),true);
-                nogoods.add(impl1);
-            }
-            //imp2: a1,a2,...,not am+1,not am+2,...->Vb
-            //体部项都成立表示体部成立
-            Nogood impl2 = new Nogood();
-            impl2.add(getBodyPred(i),false);
-            r.getPositiveBody().forEach(pb-> impl2.add(pb,true));
-            r.getNegativeBody().forEach(nb-> impl2.add(nb.substring(NOT.length()),false));
-            nogoods.add(impl2);
+
         }
 
         //atom-oriented nogood
@@ -269,17 +298,17 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
         //规则成立性，SAT集合中才有此性质
         for(int i=0;i<lpmlnProgram.getRules().size();i++){
             Rule r = lpmlnProgram.getRules().get(i);
-            Nogood impl3 = new Nogood();
-            r.getHead().forEach(h->{
+            for (String h : r.getHead()) {
+                Nogood impl3 = new Nogood();
                 impl3.add(h,false);
-                //litToSatCond.get(h).add(satNogoods.size());
-            });
-            impl3.add(getBodyPred(i),true);
-//            litToSatCond.get(getBodyPred(i)).add(satNogoods.size());
-            satNogoods.add(impl3);
-            if(LPMLNApp.semantics.equals(LPMLNApp.SEMANTICS_WEAK)&&!r.isSoft()){
-                //hard rule under weak semantics
-                nogoods.add(impl3);
+                impl3.add(getSupPred(i,h),true);
+                impl3.setRuleId(i);
+
+                satNogoods.add(impl3);
+                if(LPMLNApp.semantics.equals(LPMLNApp.SEMANTICS_WEAK)&&!r.isSoft()){
+                    //hard rule under weak semantics
+                    nogoods.add(impl3);
+                }
             }
             if(!r.isSoft()){
                 //hard rule
@@ -288,6 +317,7 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
                 //soft rules
                 weights.add(r.getWeight());
             }
+
         }
         //impl4: a-> vb1 V vb2 V ...
         //原子支持，loop nogood的特殊情形(|loop|=1)
@@ -296,7 +326,7 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
         for(int i=0;i<lpmlnProgram.getRules().size();i++){
             Rule r = lpmlnProgram.getRules().get(i);
             for (String h : r.getHead()) {
-                supNogoodMap.get(h).add(getBodyPred(i),false);
+                supNogoodMap.get(h).add(getSupPred(i,h),false);
             }
         }
         //加上Ta
@@ -320,7 +350,9 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
             nogoodMap.put(lit,new HashSet<>());
         });
         for(int i=0;i<lpmlnProgram.getRules().size();i++){
-            nogoodMap.put(getBodyPred(i),new HashSet<>());
+            for (String h : lpmlnProgram.getRules().get(i).getHead()) {
+                nogoodMap.put(getSupPred(i,h),new HashSet<>());
+            }
         }
         nogoods.forEach(nogood -> {
             nogood.getKeySet().forEach(lit->{
@@ -367,18 +399,17 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
         });
 
         candidates.forEach(candidate->{
-            for (String pb : lpmlnProgram.getRules().get(candidate).getPositiveBody()) {
+            Rule r = lpmlnProgram.getRules().get(candidate);
+            for (String pb : r.getPositiveBody()) {
                 if(loop.contains(pb)){
                     return;
                 }
             }
-            loopNogood.add(getBodyPred(candidate),false);
-            //TODO:not in head
-            for (String h : lpmlnProgram.getRules().get(candidate).getHead()) {
-                if(!loop.contains(h)){
-                    loopNogood.add(h,false);
+            r.getHead().forEach(h->{
+                if(loop.contains(h)){
+                    loopNogood.add(getSupPred(candidate,h),false);
                 }
-            }
+            });
         });
         return loopNogood;
     }
@@ -400,13 +431,21 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
         }
     }
 
-    private String getBodyPred(int i){
-        return VB+i;
+    private String getSupPred(int i,String lit){
+        return VB+i+"_"+lit;
     }
+
+//    private String getBodyPred(int i){
+//        return VB+i;
+//    }
 }
 
 class Nogood{
     private Map<String,Boolean> signedLiterals = new HashMap<>();
+    /**
+     *所属规则id，避免重复
+     */
+    private Integer ruleId = null;
 
     /**
      *
@@ -472,6 +511,13 @@ class Nogood{
         return signedLiterals.toString();
     }
 
+    public Integer getRuleId() {
+        return ruleId;
+    }
+
+    public void setRuleId(Integer ruleId) {
+        this.ruleId = ruleId;
+    }
 }
 
 class SignedLiteral{

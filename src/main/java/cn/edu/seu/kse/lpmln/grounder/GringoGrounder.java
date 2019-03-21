@@ -91,7 +91,10 @@ public class GringoGrounder implements LPMLNGrounder{
             }
         });
         StringJoiner programJoinner = new StringJoiner("\r\n");
-        groundRules.forEach(programJoinner::add);
+        //gringo中析取为分号而不是|
+        groundRules.forEach(rule->{
+            programJoinner.add(rule.replaceAll(";","|"));
+        });
         return programJoinner.toString();
     }
 
