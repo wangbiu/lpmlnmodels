@@ -330,7 +330,10 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
     }
 
     private void expandAndAddLF(Set<String> loop,List<Nogood> nogoods){
-        List<Boolean> cur = new ArrayList<>(loop.size());
+        List<Boolean> cur = new ArrayList<>();
+        for(int i=0;i<loop.size();i++){
+            cur.add(false);
+        }
         List<String> loopLits = new ArrayList<>(loop);
         while(nextPermutation(cur)){
             Set<String> subset = new HashSet<>();
@@ -369,7 +372,7 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
                     return;
                 }
             }
-            loopNogood.add(getBodyPred(candidate),true);
+            loopNogood.add(getBodyPred(candidate),false);
             //TODO:not in head
             for (String h : lpmlnProgram.getRules().get(candidate).getHead()) {
                 if(!loop.contains(h)){
