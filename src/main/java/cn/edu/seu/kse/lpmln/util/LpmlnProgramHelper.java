@@ -5,12 +5,13 @@ import cn.edu.seu.kse.lpmln.model.Rule;
 
 import java.util.*;
 
+import static cn.edu.seu.kse.lpmln.util.CommonStrings.NOT;
+
 /**
  * @author 许鸿翔
  * @date 2018/4/2
  */
 public class LpmlnProgramHelper {
-    protected static final String NOT = "not ";
     public static Map<String,Set<String>> getDependency(LpmlnProgram program){
         Map<String,Set<String>> dependency = new HashMap<>();
         program.getRules().forEach(rule -> {

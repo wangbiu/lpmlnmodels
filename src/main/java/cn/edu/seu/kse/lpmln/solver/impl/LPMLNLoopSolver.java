@@ -2,24 +2,21 @@ package cn.edu.seu.kse.lpmln.solver.impl;
 
 import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.exception.solveexception.AssignConflictException;
-import cn.edu.seu.kse.lpmln.model.AnswerSet;
-import cn.edu.seu.kse.lpmln.model.Rule;
-import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
+import cn.edu.seu.kse.lpmln.model.*;
 
 import java.util.*;
 
-import static cn.edu.seu.kse.lpmln.solver.impl.LPMLNLoopSolver.NEGATION;
+import static cn.edu.seu.kse.lpmln.util.CommonStrings.NEGATION;
+import static cn.edu.seu.kse.lpmln.util.CommonStrings.NOT;
+import static cn.edu.seu.kse.lpmln.util.CommonStrings.VB;
 import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.*;
 
 /**
- * DPLL简单实现,优化方式：ASP中的 & 2watch
+ * DPLL简单实现
  * @author 许鸿翔
  * @date 2019/3/19
  */
 public class LPMLNLoopSolver extends LPMLNBaseSolver{
-    protected static final String NOT = "not ";
-    protected static final String NEGATION = "-";
-    protected static final String VB = "VB_";
     /**
      * T:in
      * F:not in
@@ -440,99 +437,3 @@ public class LPMLNLoopSolver extends LPMLNBaseSolver{
 //    }
 }
 
-class Nogood{
-    private Map<String,Boolean> signedLiterals = new HashMap<>();
-    /**
-     *所属规则id，避免重复
-     */
-    private Integer ruleId = null;
-
-    /**
-     *
-     */
-    Nogood(){
-    }
-
-    void add(String literal,boolean sign){
-        signedLiterals.put(literal,sign);
-    }
-
-    /**
-     * 解释一致性产出的nogood
-     * @param atom atom
-     */
-    Nogood(String atom){
-        signedLiterals.put(atom,true);
-        signedLiterals.put(NEGATION+atom,true);
-    }
-
-    Set<String> getKeySet(){
-        return signedLiterals.keySet();
-    }
-
-    SignedLiteral check(Map<String,Boolean> assignment){
-        if(signedLiterals.size()==0){
-            return null;
-        }else if(signedLiterals.size()==1){
-            Map.Entry<String,Boolean> entry = signedLiterals.entrySet().iterator().next();
-            return new SignedLiteral(entry.getKey(),entry.getValue());
-        }else{
-            Iterator<Map.Entry<String,Boolean>> sgIterator = signedLiterals.entrySet().iterator();
-            int uncertainCount = 0;
-            SignedLiteral result = null;
-            while(sgIterator.hasNext()){
-                Map.Entry<String,Boolean> ent = sgIterator.next();
-                Boolean val = assignment.get(ent.getKey());
-                if(val==null){
-                    //不确定项
-                    uncertainCount++;
-                    if(result==null){
-                        result = new SignedLiteral(ent.getKey(),ent.getValue());
-                    }
-                }else if(val.equals(ent.getValue())){
-                    //此项满足
-                }else{
-                    //!val.equals(ent.getValue())
-                    //nogood已经违反
-                    return null;
-                }
-            }
-            if(uncertainCount==1){
-                return result;
-            }else if(uncertainCount==0){
-                throw new AssignConflictException("assign conflict");
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String toString(){
-        return signedLiterals.toString();
-    }
-
-    public Integer getRuleId() {
-        return ruleId;
-    }
-
-    public void setRuleId(Integer ruleId) {
-        this.ruleId = ruleId;
-    }
-}
-
-class SignedLiteral{
-    private String literal;
-    private boolean sign;
-    SignedLiteral(String literal,boolean sign){
-        this.literal = literal;
-        this.sign = sign;
-    }
-
-    public String getLiteral() {
-        return literal;
-    }
-
-    public boolean isSign() {
-        return sign;
-    }
-}

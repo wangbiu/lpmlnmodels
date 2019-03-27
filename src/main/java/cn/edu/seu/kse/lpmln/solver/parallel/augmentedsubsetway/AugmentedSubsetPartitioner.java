@@ -158,34 +158,35 @@ public class AugmentedSubsetPartitioner {
     }
 
     public List<AugmentedSubset> nogoodPartition(LpmlnProgram lpmlnProgram,int count){
-        if(LPMLNApp.isDebugging()){
-            System.out.println("start nogoodPartition.");
-        }
-        Comparator<NogoodAugmentedSubset> comparator = (o1, o2) -> o1.getAssignmentSize()-o2.getAssignmentSize();
-        PriorityQueue<NogoodAugmentedSubset> queue = new PriorityQueue<>(comparator);
-        List<NogoodAugmentedSubset> result = new ArrayList<>();
-
-        queue.offer(new NogoodAugmentedSubset(lpmlnProgram));
-
-        //TODO:这里没考虑无法划分的情况
-        while (queue.size()+result.size()<count&&queue.size()>0){
-            NogoodAugmentedSubset tosplit = queue.poll();
-            Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> splitResult = tosplit.split();
-            if(splitResult==null){
-                if(LPMLNApp.isDebugging()){
-                    logger.debug("当前增强子集规则已被划分完毕，队列剩余:{}", queue.size());
-                }
-
-                result.add(tosplit);
-            }else{
-                queue.offer(splitResult.getKey());
-                queue.offer(splitResult.getValue());
-            }
-        }
-
-        result.addAll(queue);
-
-        return new ArrayList<>(result);
+//        if(LPMLNApp.isDebugging()){
+//            System.out.println("start nogoodPartition.");
+//        }
+//        Comparator<NogoodAugmentedSubset> comparator = (o1, o2) -> o1.getAssignmentSize()-o2.getAssignmentSize();
+//        PriorityQueue<NogoodAugmentedSubset> queue = new PriorityQueue<>(comparator);
+//        List<NogoodAugmentedSubset> result = new ArrayList<>();
+//
+//        queue.offer(new NogoodAugmentedSubset(lpmlnProgram));
+//
+//        //TODO:这里没考虑无法划分的情况
+//        while (queue.size()+result.size()<count&&queue.size()>0){
+//            NogoodAugmentedSubset tosplit = queue.poll();
+//            Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> splitResult = tosplit.split();
+//            if(splitResult==null){
+//                if(LPMLNApp.isDebugging()){
+//                    logger.debug("当前增强子集规则已被划分完毕，队列剩余:{}", queue.size());
+//                }
+//
+//                result.add(tosplit);
+//            }else{
+//                queue.offer(splitResult.getKey());
+//                queue.offer(splitResult.getValue());
+//            }
+//        }
+//
+//        result.addAll(queue);
+//
+//        return new ArrayList<>(result);
+        return null;
     }
 
     private void printStatus(List<AugmentedSubset> augmentedSubsets){
