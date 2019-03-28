@@ -7,7 +7,7 @@ package cn.edu.seu.kse.lpmln.model;
 public class SignedLiteral{
     private String literal;
     private boolean sign;
-    SignedLiteral(String literal,boolean sign){
+    public SignedLiteral(String literal,boolean sign){
         this.literal = literal;
         this.sign = sign;
     }
