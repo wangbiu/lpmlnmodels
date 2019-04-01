@@ -29,4 +29,6 @@ public class CommonStrings {
      * 支持标识，满足则支持文字
      */
     public static final String SUP = "SUP_";
+
+    public static final String EXT_FALSE = EXT+"False";
 }

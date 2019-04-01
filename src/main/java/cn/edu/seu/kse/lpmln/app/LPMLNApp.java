@@ -7,10 +7,7 @@ import cn.edu.seu.kse.lpmln.grounder.LPMLNGrounder;
 import cn.edu.seu.kse.lpmln.model.ExperimentReport;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
-import cn.edu.seu.kse.lpmln.solver.impl.LPMLN2MLNSolver;
-import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
-import cn.edu.seu.kse.lpmln.solver.impl.LPMLNHybridSolver;
-import cn.edu.seu.kse.lpmln.solver.impl.LPMLNLoopSolver;
+import cn.edu.seu.kse.lpmln.solver.impl.*;
 import cn.edu.seu.kse.lpmln.solver.parallel.augmentedsubsetway.AugmentedSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.independentway.IndependentSolver;
 import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
@@ -274,6 +271,9 @@ public class LPMLNApp {
                     break;
                 case "loop":
                     solver = new LPMLNLoopSolver();
+                    break;
+                case "CDNL":
+                    solver = new LPMLNCDNLSolver();
                     break;
                 default :
                     solver = new LPMLNBaseSolver();

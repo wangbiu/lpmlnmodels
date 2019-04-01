@@ -19,4 +19,12 @@ public class SignedLiteral{
     public boolean isSign() {
         return sign;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof SignedLiteral){
+            return ((SignedLiteral) o).getLiteral().equals(literal)&&((SignedLiteral) o).isSign()==sign;
+        }
+        return false;
+    }
 }

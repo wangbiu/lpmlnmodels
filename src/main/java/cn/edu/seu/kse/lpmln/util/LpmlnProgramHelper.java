@@ -135,14 +135,11 @@ public class LpmlnProgramHelper {
     }
 
     public static Set<Set<String>> reachableToLitSets(Map<String,Set<String>> reachable){
-        UnionFindSet<String> unionFindSet = new UnionFindSet<>(reachable.keySet());
-        reachable.forEach((from,toSet)->{
-            toSet.forEach(to->{
-                if(reachable.keySet().contains(to)&&reachable.get(to).contains(from)){
-                    unionFindSet.join(from,to);
-                }
-            });
-        });
+        UnionFindSet<String> unionFindSet = reachableToUfs(reachable);
+        return ufsToLitSets(reachable,unionFindSet);
+    }
+
+    public static Set<Set<String>> ufsToLitSets(Map<String,Set<String>> reachable,UnionFindSet<String> unionFindSet){
         Map<String,Set<String>> ansMap = new HashMap<>();
         reachable.keySet().forEach(lit->{
             String root = unionFindSet.find(lit);
@@ -156,5 +153,17 @@ public class LpmlnProgramHelper {
             rootAim.add(lit);
         });
         return new HashSet<>(ansMap.values());
+    }
+
+    public static UnionFindSet<String> reachableToUfs(Map<String,Set<String>> reachable){
+        UnionFindSet<String> unionFindSet = new UnionFindSet<>(reachable.keySet());
+        reachable.forEach((from,toSet)->{
+            toSet.forEach(to->{
+                if(reachable.keySet().contains(to)&&reachable.get(to).contains(from)){
+                    unionFindSet.join(from,to);
+                }
+            });
+        });
+        return unionFindSet;
     }
 }

@@ -1,14 +1,12 @@
 package cn.edu.seu.kse.lpmln.solver.impl;
 
-import cn.edu.seu.kse.lpmln.exception.solveexception.AssignConflictException;
 import cn.edu.seu.kse.lpmln.model.*;
+import cn.edu.seu.kse.lpmln.util.UnionFindSet;
 
 import java.util.*;
 
 import static cn.edu.seu.kse.lpmln.util.CommonStrings.*;
-import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.dependToReachable;
-import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.getLiteralPostiveDependency;
-import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.reachableToLitSets;
+import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.*;
 
 /**
  * Conflict-Driven Disjunctive Answer Set Solving
@@ -39,6 +37,8 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     private Nogood conflictNogood = null;
 
+    private String conflictSigma = null;
+
     /**
      * decision level
      */
@@ -53,6 +53,11 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      * C_{\Pi}
      */
     private List<Set<String>> cPi = new ArrayList<>();
+
+    /**
+     * accessor
+     */
+    private UnionFindSet<String> cPiAccessor;
 
     /**
      * C_{\Pi}^{\vee}
@@ -90,12 +95,21 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
 
     private Set<String> literals = new HashSet<>();
 
+    private Map<String,List<String>> supporters;
+
+    private Map<String,Integer> dlMap = new HashMap<>();
+
+    private LinkedList<String> assignStack = new LinkedList<>();
+
+    private Map<String,Integer> stackPosition = new HashMap<>();
+
     /**
      * \sigma
      */
     private List<SignedLiteral> resultUnits = new LinkedList<>();
 
     public WeightedAnswerSet getSingleAs(LpmlnProgram program){
+        this.lpmlnProgram = program;
         init();
         while(true){
             propagation();
@@ -105,18 +119,10 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 }
                 analysisAndUndo();
             }else if(toassign.size()==0){
-                u.clear();
-                for (Set<String> c : cPi) {
-                    cdnl(c);
-                }
-                if(u.size()>0){
-
-                }else{
-                    return generate();
-                }
+                return generate();
             }
             else{
-
+                assert false;
             }
         }
     }
@@ -134,18 +140,18 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 for (SignedLiteral unit: resultUnits) {
                     Boolean cur = assignment.get(unit.getLiteral());
                     if(cur==null){
+                        assign(unit.getLiteral(),unit.isSign());
                         //还没分配
-                        assignment.put(unit.getLiteral(),unit.isSign());
-
-                        try {
-                            getResultUnit(unit.getLiteral(),ltnCompletion,nogoodCompletion);
-                            getResultUnit(unit.getLiteral(),ltnDynamic,nogoodDynamic);
-                        }catch(AssignConflictException a){
-                            //nogood引发冲突
-                            conflict = true;
+                        getResultUnit(unit.getLiteral(),ltnCompletion,nogoodCompletion);
+                        if(conflict){
+                            return;
+                        }
+                        getResultUnit(unit.getLiteral(),ltnDynamic,nogoodDynamic);
+                        if(conflict){
                             return;
                         }
                     }else if(!cur.equals(unit.isSign())){
+                        assert false;
                         //分配冲突
                         conflict = true;
                         return;
@@ -163,21 +169,71 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 unfoundedSet();
             }
 
+            u.forEach(lit->{
+                resultUnits.add(new SignedLiteral(lit,false));
+            });
+            //TODO:这里有没有必要更新动态nogood？
         }
     }
 
-    private void unfoundedSet(){
-
+    /**
+     * 分配使用此函数，处理首尾
+     * @param lit 文字
+     * @param val TF
+     */
+    private void assign(String lit,boolean val){
+        assignment.put(lit,val);
     }
 
-    private void getResultUnit(String key,Map<String,List<Integer>> map,List<Nogood> nogoodList) throws AssignConflictException {
-        map.get(key).forEach(idx->{
-            Nogood tocheck = nogoodList.get(idx);
-            SignedLiteral ru = tocheck.check(assignment);
-            if(ru!=null){
-                resultUnits.add(new SignedLiteral(ru.getLiteral(),!ru.isSign()));
+    /**
+     * 计算unfoundedSet
+     */
+    private void unfoundedSet(){
+        //这里u应该是空集
+        assert u.size()==0;
+        List<String> unfounded = new ArrayList<>();
+        toassign.forEach(lit->{
+            for (String sup : supporters.get(lit)) {
+                if(assignment.get(sup)==null||assignment.get(sup)){
+                    return;
+                }
+            }
+            unfounded.add(lit);
+        });
+
+        if(unfounded.size()==0){
+            return;
+        }
+
+        String root = cPiAccessor.find(unfounded.get(0));
+
+        unfounded.forEach(lit->{
+            if(cPiAccessor.find(lit).equals(root)){
+                u.add(lit);
             }
         });
+    }
+
+    /**
+     * 计算ru
+     * @param key 查找索引，文字
+     * @param map 从哪些nogood里找
+     * @param nogoodList map对应的nogoodlist
+     */
+    private void getResultUnit(String key,Map<String,List<Integer>> map,List<Nogood> nogoodList){
+        for (Integer idx : map.get(key)) {
+            Nogood tocheck = nogoodList.get(idx);
+            SignedLiteral ru = tocheck.getResultUnit(assignment);
+            if(ru!=null){
+                if(ru.getLiteral().equals(EXT_FALSE)){
+                    conflictNogood = tocheck;
+                    conflictSigma = key;
+                    conflict = true;
+                    return;
+                }
+                resultUnits.add(new SignedLiteral(ru.getLiteral(),!ru.isSign()));
+            }
+        }
     }
 
     private void init(){
@@ -199,7 +255,9 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
 
     private void initCPi(){
         cPi.clear();
-        Set<Set<String>> loops = reachableToLitSets(dependToReachable(getLiteralPostiveDependency(lpmlnProgram)));
+        Map<String,Set<String>> reachable = dependToReachable(getLiteralPostiveDependency(lpmlnProgram));
+        cPiAccessor = reachableToUfs(reachable);
+        Set<Set<String>> loops = ufsToLitSets(reachable,cPiAccessor);
         loops.removeIf(loop -> loop.size() < 2);
         cPi.addAll(loops);
     }
@@ -236,15 +294,15 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     private void initComp(){
         nogoodCompletion.clear();
         ltnCompletion.clear();
-        Map<String,List<String>> supported = new HashMap<>(literals.size());
-        literals.forEach(lit->supported.put(lit,new ArrayList<>()));
+        supporters = new HashMap<>(literals.size());
+        literals.forEach(lit->supporters.put(lit,new ArrayList<>()));
 
         for(int i=0;i<rules.size();i++){
             Rule r = rules.get(i);
             List<String> head = r.getHead();
             for (String curLit : head) {
                 String sup = getAtomSupport(i, curLit);
-                supported.get(curLit).add(sup);
+                supporters.get(curLit).add(sup);
 
                 //支持辅助谓词
                 //项都成立但支持不成立
@@ -284,7 +342,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         }
 
         //原子支持
-        supported.forEach((lit,supporter)->{
+        supporters.forEach((lit,supporter)->{
             Nogood n4 = new Nogood();
             n4.add(lit,true);
             supporter.forEach(p->n4.add(p,false));
@@ -304,23 +362,91 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      * output:  \varepsilon \k
      */
     private void analysisAndUndo(){
-
+        analysis();
+        //dl提前赋值
+        while(dlLevel(assignStack.peek())>dl){
+            resign(assignStack.poll());
+        }
     }
 
+    private void resign(String lit){
+        assignment.remove(lit);
+    }
+
+    /**
+     * conflict analysis
+     */
     private void analysis(){
-
+        PriorityQueue<SignedLiteral> delta = new PriorityQueue<>((o1, o2) -> stackPosition.get(o2.getLiteral())-stackPosition.get(o1.getLiteral()));
+        delta.addAll(conflictNogood.getSignedLiterals());
+        int k;
+        while(true){
+            //TODO:这边方式可能需要修改下
+            SignedLiteral sigma = delta.poll();
+            SignedLiteral remainMax = delta.peek();
+            k = dlLevel(remainMax);
+            if(dlLevel(sigma) == k){
+                resign(sigma.getLiteral());
+                delta.addAll(findSourceNogoodItems(sigma));
+            }else{
+                //analysis return
+                break;
+            }
+        }
+        dl = k;
+        Nogood toAdd = new Nogood();
+        delta.forEach(sl->toAdd.add(sl.getLiteral(),sl.isSign()));
+        nogoodDynamic.add(toAdd);
     }
 
-    private void undo(){
-
+    /**
+     * 查找文字的来源nogood，去除文字本身后返回剩余文字列表
+     * @param ru 文字
+     * @return 剩余列表
+     */
+    private List<SignedLiteral> findSourceNogoodItems(SignedLiteral ru){
+        List<SignedLiteral> result = new ArrayList<>();
+        SignedLiteral temp;
+        for (Integer idx : ltnCompletion.get(ru.getLiteral())) {
+            Nogood cur = nogoodCompletion.get(idx);
+            temp = cur.getResultUnit(assignment);
+            if(ru.equals(temp)){
+                cur.getSignedLiterals().forEach(s->{
+                    if(!s.getLiteral().equals(ru.getLiteral())){
+                        result.add(s);
+                    }
+                });
+                return result;
+            }
+        }
+        assert false;
+        return result;
     }
 
-    private void cdnl(Set<String> c){
-
+    private int dlLevel(String sigma){
+        return dlMap.get(sigma);
     }
+
+    private int dlLevel(SignedLiteral sigma){
+        return dlMap.get(sigma.getLiteral());
+    }
+
+//    private void cdnl(Set<String> c){
+//
+//    }
 
     private WeightedAnswerSet generate(){
-        return null;
+        WeightedAnswerSet was = new WeightedAnswerSet();
+        AnswerSet as = new AnswerSet();
+        was.setAnswerSet(as);
+        Integer[] ini = {0,0};
+        was.setWeights(Arrays.asList(ini));
+        assignment.forEach((k,v)->{
+            if(v&&!k.startsWith(EXT)){
+                as.add(k);
+            }
+        });
+        return was;
     }
 
 }
