@@ -27,4 +27,9 @@ public class SignedLiteral{
         }
         return false;
     }
+
+    @Override
+    public String toString(){
+        return literal+"="+sign;
+    }
 }

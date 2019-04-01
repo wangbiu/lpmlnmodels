@@ -1,10 +1,12 @@
 package cn.edu.seu.kse.lpmln.solver.impl;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.*;
 import cn.edu.seu.kse.lpmln.util.UnionFindSet;
 
 import java.util.*;
 
+import static cn.edu.seu.kse.lpmln.app.LPMLNApp.SEMANTICS_WEAK;
 import static cn.edu.seu.kse.lpmln.util.CommonStrings.*;
 import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.*;
 
@@ -23,9 +25,9 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     private Map<String,Boolean> assignment = new HashMap<>();
 
     /**
-     * 剩余需要分配的原子
+     * unassigned
      */
-    private Set<String> toassign = new HashSet<>();
+    private LinkedList<String> toAssign = new LinkedList<>();
 
     /**
      * 标识当前是否冲突
@@ -37,7 +39,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     private Nogood conflictNogood = null;
 
-    private String conflictSigma = null;
+    //private String conflictSigma = null;
 
     /**
      * decision level
@@ -59,10 +61,10 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     private UnionFindSet<String> cPiAccessor;
 
-    /**
-     * C_{\Pi}^{\vee}
-     */
-    private List<Set<String>> cPi_HCF = new ArrayList<>();
+//    /**
+//     * C_{\Pi}^{\vee}
+//     */
+//    private List<Set<String>> cPi_HCF = new ArrayList<>();
 
 
     /**
@@ -103,28 +105,47 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
 
     private Map<String,Integer> stackPosition = new HashMap<>();
 
+    private Set<String> toFlip = new HashSet<>();
+
+    private Set<String> metaFilt;
+
     /**
      * \sigma
      */
-    private List<SignedLiteral> resultUnits = new LinkedList<>();
+    private LinkedList<SignedLiteral> resultUnits = new LinkedList<>();
 
-    public WeightedAnswerSet getSingleAs(LpmlnProgram program){
-        this.lpmlnProgram = program;
+    @Override
+    public void executeSolving(){
         init();
         while(true){
             propagation();
             if(conflict){
                 if(dl==0){
-                    return null;
+                    return;
                 }
                 analysisAndUndo();
-            }else if(toassign.size()==0){
-                return generate();
+            }else if(toAssign.size()==0){
+                weightedAs.add(generate());
+                if(!backTrackAndFlip()){
+                    return;
+                }
             }
             else{
-                assert false;
+                decide();
             }
         }
+    }
+
+    private void decide(){
+        String next = toAssign.peek();
+        if(toFlip.contains(next)){
+            resultUnits.add(new SignedLiteral(next,false));
+        }else{
+            toFlip.add(next);
+            resultUnits.add(new SignedLiteral(next,true));
+        }
+        dl++;
+
     }
 
     /**
@@ -137,25 +158,23 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     private void propagation(){
         while(true){
             while(resultUnits.size()>0){
-                for (SignedLiteral unit: resultUnits) {
-                    Boolean cur = assignment.get(unit.getLiteral());
-                    if(cur==null){
-                        assign(unit.getLiteral(),unit.isSign());
-                        //还没分配
-                        getResultUnit(unit.getLiteral(),ltnCompletion,nogoodCompletion);
-                        if(conflict){
-                            return;
-                        }
-                        getResultUnit(unit.getLiteral(),ltnDynamic,nogoodDynamic);
-                        if(conflict){
-                            return;
-                        }
-                    }else if(!cur.equals(unit.isSign())){
-                        assert false;
-                        //分配冲突
-                        conflict = true;
+                SignedLiteral unit = resultUnits.poll();
+                Boolean cur = assignment.get(unit.getLiteral());
+                if(cur==null){
+                    assign(unit.getLiteral(),unit.isSign());
+                    //还没分配
+                    getResultUnit(unit.getLiteral(),ltnCompletion,nogoodCompletion);
+                    if(conflict){
                         return;
                     }
+                    getResultUnit(unit.getLiteral(),ltnDynamic,nogoodDynamic);
+                    if(conflict){
+                        return;
+                    }
+                }else if(!cur.equals(unit.isSign())){
+                    //分配冲突
+                    conflict = true;
+                    return;
                 }
             }
 
@@ -167,6 +186,10 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
 
             if(u.size()==0){
                 unfoundedSet();
+            }
+
+            if(u.size()==0){
+                return;
             }
 
             u.forEach(lit->{
@@ -183,7 +206,25 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     private void assign(String lit,boolean val){
         assignment.put(lit,val);
+        dlMap.put(lit,dl);
+        stackPosition.put(lit,assignStack.size());
+        assignStack.push(lit);
+        toAssign.remove(lit);
     }
+
+    /**
+     * 移除使用此函数，处理首尾
+     * @param lit 文字
+     */
+    private void resign(String lit){
+        assignment.remove(lit);
+        if(!lit.startsWith(EXT)){
+            toAssign.push(lit);
+        }
+        dlMap.remove(lit);
+        stackPosition.remove(lit);
+    }
+
 
     /**
      * 计算unfoundedSet
@@ -192,7 +233,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         //这里u应该是空集
         assert u.size()==0;
         List<String> unfounded = new ArrayList<>();
-        toassign.forEach(lit->{
+        toAssign.forEach(lit->{
             for (String sup : supporters.get(lit)) {
                 if(assignment.get(sup)==null||assignment.get(sup)){
                     return;
@@ -221,13 +262,15 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      * @param nogoodList map对应的nogoodlist
      */
     private void getResultUnit(String key,Map<String,List<Integer>> map,List<Nogood> nogoodList){
+        if(!map.containsKey(key)){
+            return;
+        }
         for (Integer idx : map.get(key)) {
             Nogood tocheck = nogoodList.get(idx);
             SignedLiteral ru = tocheck.getResultUnit(assignment);
             if(ru!=null){
                 if(ru.getLiteral().equals(EXT_FALSE)){
                     conflictNogood = tocheck;
-                    conflictSigma = key;
                     conflict = true;
                     return;
                 }
@@ -236,21 +279,48 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         }
     }
 
+    private static String SHOW = "#show ";
+    private void generateMeta(){
+        Set<String> allowedPreds = new HashSet<>();
+        if(lpmlnProgram.getMetarule().length()>0){
+            metaFilt = new HashSet<>();
+            String[] metas = lpmlnProgram.getMetarule().split("\n");
+            for (String meta : metas) {
+                int idx1 = meta.indexOf(SHOW);
+                int idx2 = meta.indexOf("/");
+                allowedPreds.add(meta.substring(idx1+SHOW.length(),idx2));
+            }
+        }
+
+        literals.forEach(lit->{
+            String predicate = null;
+            if(lit.indexOf("(")>0){
+                predicate = lit.substring(0,lit.indexOf("("));
+            }else{
+                predicate = lit;
+            }
+            if(allowedPreds.contains(predicate)){
+                metaFilt.add(lit);
+            }
+        });
+    }
+
     private void init(){
-        assignment = new HashMap<>();
-        toassign = new HashSet<>();
         conflict = false;
         dl = 0;
         conflictNogood = null;
-        u = new HashSet<>();
-        cPi = new ArrayList<>();
         rules = lpmlnProgram.getRules();
+        weightedAs = new ArrayList<>();
 
         initCPi();
 
         initLiterals();
 
+        toAssign.addAll(literals);
+
         initNogood();
+
+        generateMeta();
     }
 
     private void initCPi(){
@@ -308,8 +378,8 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 //项都成立但支持不成立
                 Nogood n1 = new Nogood();
                 n1.add(sup, false);
-                r.getPositiveBody().forEach(pb -> n1.add(pb, false));
-                r.getPositiveBody().forEach(nb -> n1.add(nb.substring(NOT.length()), true));
+                r.getPositiveBody().forEach(pb -> n1.add(pb, true));
+                r.getNegativeBody().forEach(nb -> n1.add(nb.substring(NOT.length()), false));
                 r.getHead().forEach(h -> {
                     if (!h.equals(curLit)) {
                         n1.add(h, true);
@@ -331,13 +401,25 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 });
 
                 //规则满足
-                r.getHead().forEach(h -> {
+                if(LPMLNApp.semantics.equals(SEMANTICS_WEAK)&&!r.isSoft()){
+                    r.getHead().forEach(h -> {
+                        Nogood n3 = new Nogood();
+                        n3.add(sup, true);
+                        //TODO:考虑头部not
+                        n3.add(h, false);
+                        nogoodCompletion.add(n3);
+                    });
+                }
+            }
+
+            //约束满足
+            if(LPMLNApp.semantics.equals(SEMANTICS_WEAK)&&!r.isSoft()){
+                if(r.getHead().size()==0){
                     Nogood n3 = new Nogood();
-                    n3.add(sup, true);
-                    //TODO:考虑头部not
-                    n3.add(h, false);
+                    r.getPositiveBody().forEach(pb -> n3.add(pb, true));
+                    r.getNegativeBody().forEach(nb -> n3.add(nb.substring(NOT.length()), false));
                     nogoodCompletion.add(n3);
-                });
+                }
             }
         }
 
@@ -353,7 +435,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     }
 
     private String getAtomSupport(int i,String atom){
-        return EXT+i+SUP+atom;
+        return EXT+i+'_'+SUP+atom;
     }
 
     /**
@@ -369,8 +451,22 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         }
     }
 
-    private void resign(String lit){
-        assignment.remove(lit);
+    /**
+     * 回溯
+     * @return T:continue F:end loop
+     */
+    private boolean backTrackAndFlip(){
+        while (assignStack.size()>0&&!toFlip.contains(assignStack.peek())){
+            resign(assignStack.poll());
+        }
+        if (assignStack.size()>0){
+            String flip = assignStack.poll();
+            resultUnits.add(new SignedLiteral(flip,false));
+            resign(flip);
+            toFlip.remove(flip);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -441,12 +537,39 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         was.setAnswerSet(as);
         Integer[] ini = {0,0};
         was.setWeights(Arrays.asList(ini));
+        rules.forEach(r->{
+            if(isViolated(r)){
+                //TODO:小数处理
+                was.getWeights().set(0,was.getWeights().get(0)+(int)r.getWeight());
+            }
+        });
         assignment.forEach((k,v)->{
             if(v&&!k.startsWith(EXT)){
-                as.add(k);
+                if(metaFilt==null||metaFilt.contains(k)){
+                    as.add(k);
+                }
             }
         });
         return was;
+    }
+
+    private boolean isViolated(Rule r){
+        for (String h : r.getHead()) {
+            if(assignment.get(h)){
+                return false;
+            }
+        }
+        for (String pb : r.getPositiveBody()) {
+            if(!assignment.get(pb)){
+                return false;
+            }
+        }
+        for (String nb : r.getNegativeBody()) {
+            if(assignment.get(nb)){
+                return false;
+            }
+        }
+        return true;
     }
 
 }

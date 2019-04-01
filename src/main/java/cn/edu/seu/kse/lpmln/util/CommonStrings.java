@@ -18,7 +18,7 @@ public class CommonStrings {
     /**
      * 表示为外加谓词，非程序中文字
      */
-    public static final String EXT = "EXT";
+    public static final String EXT = "EXT_";
 
     /**
      * 体部标识，满足则体部成立
