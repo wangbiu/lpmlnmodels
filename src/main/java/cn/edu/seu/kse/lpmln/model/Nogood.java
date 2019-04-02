@@ -15,7 +15,7 @@ public class Nogood{
     private Map<String,Boolean> signedLiterals = new HashMap<>();
     private String w1;
     private String w2;
-    private String watcherTobeRemoved;
+    private List<String> watcherTobeRemoved = new ArrayList<>();
     /**
      *所属规则id，避免重复
      */
@@ -131,8 +131,31 @@ public class Nogood{
         boolean eq1 = signedLiterals.get(w1).equals(assignment.get(w1));
         boolean eq2 = signedLiterals.get(w2).equals(assignment.get(w2));
         if(eq1 && eq2){
-            //watcher 都挂了，表示nogood挂了(满足)
-            return new SignedLiteral(EXT_FALSE,true);
+            //watcher 都挂了，表示nogood挂了(满足),重构watcher
+            getWatcherTobeRemoved().clear();
+            watcherChanged = false;
+            for (Map.Entry<String,Boolean> ent : signedLiterals.entrySet()) {
+                if(ent.getValue().equals(assignment.get(ent.getKey()))){
+                    continue;
+                }
+                if(!watcherChanged){
+                    w1 = ent.getKey();
+                    watcherTobeRemoved.add(w1);
+                }else{
+                    w2 = ent.getKey();
+                    watcherTobeRemoved.add(w2);
+                }
+                watcherChanged = true;
+
+            }
+
+            if(watcherTobeRemoved.size()==0){
+                return new SignedLiteral(EXT_FALSE,true);
+            }else if(watcherTobeRemoved.size()==1){
+                return new SignedLiteral(w1,signedLiterals.get(w1));
+            }else{
+                return null;
+            }
         }else if(!eq1 && !eq2){
             //俩watcher都活着，nogood没产出
             return null;
@@ -147,13 +170,14 @@ public class Nogood{
             }
 
             //尝试更换w2
+            getWatcherTobeRemoved().clear();
             watcherChanged = false;
             for (Map.Entry<String,Boolean> ent : signedLiterals.entrySet()) {
                 if(ent.getKey().equals(w1)||ent.getKey().equals(w2)){
                     continue;
                 }
                 if(!signedLiterals.get(ent.getKey()).equals(assignment.get(ent.getKey()))){
-                    watcherTobeRemoved = w2;
+                    watcherTobeRemoved.add(w2);
                     w2 = ent.getKey();
                     //找到一个活的w2
                     watcherChanged = true;
@@ -223,7 +247,7 @@ public class Nogood{
         this.w2 = w2;
     }
 
-    public String getWatcherTobeRemoved() {
+    public List<String> getWatcherTobeRemoved() {
         return watcherTobeRemoved;
     }
 

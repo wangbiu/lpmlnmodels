@@ -395,7 +395,9 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                     if(n.getW1()==null){
                         n.setW1(str);
                     }else{
-                        n.setW2(str);
+                        if(!str.equals(n.getW1())){
+                            n.setW2(str);
+                        }
                     }
                 }
                 if(n.getW1()!=null&&n.getW2()!=null){
@@ -470,8 +472,16 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             Nogood tocheck = nogoodList.get(idx);
             SignedLiteral ru = tocheck.getResultUnit(assignment);
             if(tocheck.isWatcherChanged()){
-                map.get(tocheck.getWatcherTobeRemoved()).remove(idx);
+                tocheck.getWatcherTobeRemoved().forEach(rmv->{
+                    if(!map.containsKey(rmv)){
+                        System.out.println(123);
+                    }
+                    map.get(rmv).remove(idx);
+                });
                 addIntoMap(map,tocheck.getW2(),idx);
+                if(tocheck.getWatcherTobeRemoved().size()>1){
+                    addIntoMap(map,tocheck.getW1(),idx);
+                }
             }
             if(ru!=null){
                 if(ru.getLiteral().equals(EXT_FALSE)){
@@ -730,25 +740,32 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         return false;
     }
 
+    private void backTrackToSigma(String literal){
+        while (assignStack.size()>0&&!assignStack.peek().equals(literal)){
+            resign(assignStack.pop());
+        }
+    }
+
     /**
      * conflict analysis
      */
     private int counter=0;
-    private void analysis(){
-        PriorityQueue<SignedLiteral> delta = new PriorityQueue<>(new Comparator<SignedLiteral>() {
-            @Override
-            public int compare(SignedLiteral o1, SignedLiteral o2) {
-                if(o1==null||o2==null||stackPosition.get(o1.getLiteral())==null||stackPosition.get(o2.getLiteral())==null){
-                    return 0;
-                }
-                return stackPosition.get(o2.getLiteral())-stackPosition.get(o1.getLiteral());
+    private Comparator<SignedLiteral> comparator = new Comparator<SignedLiteral>() {
+        @Override
+        public int compare(SignedLiteral o1, SignedLiteral o2) {
+            if(o1==null||o2==null||stackPosition.get(o1.getLiteral())==null||stackPosition.get(o2.getLiteral())==null){
+                return 0;
             }
-        });
+            return stackPosition.get(o2.getLiteral())-stackPosition.get(o1.getLiteral());
+        }
+    };
+    private void analysis(){
+        LinkedList<SignedLiteral> delta = new LinkedList<>();
         counter++;
-        findConflictNogood();
-        if(counter==21){
+        if(counter==2){
             System.out.println();
         }
+        findConflictNogood();
         if(conflictNogood==null){
             System.out.println();
         }
@@ -757,12 +774,19 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         boolean nogoodChanged = false;
         while(delta.size()>1){
             //TODO:这边方式可能需要修改下
+            delta.sort(comparator);
             SignedLiteral sigma = delta.poll();
             SignedLiteral remainMax = delta.peek();
+            if(sigma.equals(remainMax)){
+                delta.poll();
+                remainMax = delta.peek();
+            }
             k = dlLevel(remainMax);
             if(dlLevel(sigma) == k){
-                resign(sigma.getLiteral());
-                delta.addAll(findSourceNogoodItems(sigma));
+                backTrackToSigma(sigma.getLiteral());
+//                resign(sigma.getLiteral());
+                List<SignedLiteral> temp = findSourceNogoodItems(new SignedLiteral(sigma.getLiteral(),!sigma.isSign()));
+                delta.addAll(temp);
                 nogoodChanged = true;
             }else{
                 //analysis return
@@ -802,8 +826,20 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     private List<SignedLiteral> findSourceNogoodItems(SignedLiteral ru){
         List<SignedLiteral> result = new ArrayList<>();
         SignedLiteral temp;
-        for (Integer idx : ltnCompletion.get(ru.getLiteral())) {
+        for (Integer idx : ltnCompletion.getOrDefault(ru.getLiteral(),new HashSet<>())) {
             Nogood cur = nogoodCompletion.get(idx);
+            temp = cur.getResultUnit(assignment);
+            if(ru.equals(temp)){
+                cur.getSignedLiterals().forEach(s->{
+                    if(!s.getLiteral().equals(ru.getLiteral())){
+                        result.add(s);
+                    }
+                });
+                return result;
+            }
+        }
+        for (Integer idx : ltnDynamicWatch.getOrDefault(ru.getLiteral(),new HashSet<>())) {
+            Nogood cur = nogoodDynamic.get(idx);
             temp = cur.getResultUnit(assignment);
             if(ru.equals(temp)){
                 cur.getSignedLiterals().forEach(s->{
