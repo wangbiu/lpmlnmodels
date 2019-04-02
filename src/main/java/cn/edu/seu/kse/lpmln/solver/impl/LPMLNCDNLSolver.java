@@ -55,7 +55,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     private List<Set<String>> cPi = new ArrayList<>();
 
-    private Set<Set<String>> visitedUnfoundedSet = new HashSet<>();
+    private Set<Map<String,Boolean>> dynamicNogoodSet = new HashSet<>();
 
     /**
      * accessor
@@ -90,12 +90,12 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     /**
      * 文字到原子支持的下标
      */
-    private Map<String,List<Integer>> ltnCompletion = new HashMap<>();
+    private Map<String,Set<Integer>> ltnCompletion = new HashMap<>();
 
     /**
      * 文字到动态nogood的下标
      */
-    private Map<String,List<Integer>> ltnDynamic = new HashMap<>();
+    private Map<String,Set<Integer>> ltnDynamicWatch = new HashMap<>();
 
     private List<Rule> rules;
 
@@ -121,26 +121,43 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     private LinkedList<SignedLiteral> resultUnits = new LinkedList<>();
 
 
+    private long T1 = 0;
+    private long T3 = 0;
+    private long T5 = 0;
+    private long T7 = 0;
     @Override
     public void executeSolving(){
         init();
         generateFact();
         while(true){
+            long t1 = System.currentTimeMillis();
             propagation();
+            long t2 = System.currentTimeMillis();
+            T1 += t2-t1;
+//            System.out.println(t2-t1+" ms");
             if(conflict){
                 if(dl==0){
                     return;
                 }
+                long t3 = System.currentTimeMillis();
                 analysisAndUndo();
+                long t4 = System.currentTimeMillis();
+                T3 += t4-t3;
                 conflict = false;
             }else if(toAssign.size()==0){
+                long t5 = System.currentTimeMillis();
                 weightedAs.add(generate());
                 if(!backTrackAndFlip()){
                     return;
                 }
+                long t6 = System.currentTimeMillis();
+                T5 += t6-t5;
             }
             else{
+                long t7 = System.currentTimeMillis();
                 decide();
+                long t8 = System.currentTimeMillis();
+                T7 += t8-t7;
             }
         }
     }
@@ -189,22 +206,38 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      * input:   \Pi \nabla \A
      * output:  A \nabla
      */
+    private long T9 = 0;
+    private long T11 = 0;
+    private long T13 = 0;
+    private long T15 = 0;
     private void propagation(){
         while(true){
+            long t9 = System.currentTimeMillis();
             while(resultUnits.size()>0){
                 SignedLiteral unit = resultUnits.peek();
                 Boolean cur = assignment.get(unit.getLiteral());
                 if(cur==null){
                     assign(unit.getLiteral(),unit.isSign());
                     //还没分配
+                    long t13 = System.currentTimeMillis();
                     getResultUnit(unit.getLiteral(),ltnCompletion,nogoodCompletion);
                     if(conflict){
+                        long t14 = System.currentTimeMillis();
+                        T13 += t14-t13;
                         return;
                     }
-                    getResultUnit(unit.getLiteral(),ltnDynamic,nogoodDynamic);
+                    long t14 = System.currentTimeMillis();
+                    T13 += t14-t13;
+
+                    long t15 = System.currentTimeMillis();
+                    getResultUnit(unit.getLiteral(), ltnDynamicWatch,nogoodDynamic);
                     if(conflict){
+                        long t16 = System.currentTimeMillis();
+                        T15 += t16-t15;
                         return;
                     }
+                    long t16 = System.currentTimeMillis();
+                    T15 += t16-t15;
                 }else if(!cur.equals(unit.isSign())){
                     //分配冲突
                     conflict = true;
@@ -212,6 +245,9 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 }
                 resultUnits.poll();
             }
+            long t10 = System.currentTimeMillis();
+            T9 += t10-t9;
+            long t11 = System.currentTimeMillis();
 
             if(cPi.size()==0){
                 return;
@@ -227,11 +263,9 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 return;
             }
 
-            u.forEach(lit->{
-                resultUnits.add(new SignedLiteral(lit,false));
-            });
-
             u.clear();
+            long t12 = System.currentTimeMillis();
+            T11 += t12-t11;
         }
     }
 
@@ -302,16 +336,16 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                     }
                 }
                 if(!existSupporter){
-                    if(!visitedUnfoundedSet.contains(u)){
-                        for (String tempA : u) {
-                            Nogood dyn = new Nogood();
-                            ebp.forEach(idx->{
-                                dyn.add(getVB(idx),false);
-                            });
-                            dyn.add(tempA,true);
-                            putInDynamic(dyn);
-                        }
-                        visitedUnfoundedSet.add(new HashSet<>(u));
+                    u.forEach(lit->{
+                        resultUnits.add(new SignedLiteral(lit,false));
+                    });
+                    for (String tempA : u) {
+                        Nogood dyn = new Nogood();
+                        ebp.forEach(idx->{
+                            dyn.add(getVB(idx),false);
+                        });
+                        dyn.add(tempA,true);
+                        putInDynamic(dyn);
                     }
                     return;
                 }
@@ -347,16 +381,32 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     }
 
     private void putInDynamic(Nogood n){
-        for (String k : n.getKeySet()) {
-            List<Integer> nogoodIdx;
-            if(ltnDynamic.containsKey(k)){
-                nogoodIdx = ltnDynamic.get(k);
-            }else{
-                nogoodIdx = new ArrayList<>();
-                ltnDynamic.put(k,nogoodIdx);
-            }
-            nogoodIdx.add(nogoodDynamic.size());
+        if(dynamicNogoodSet.contains(n.getCore())){
+            return;
         }
+        dynamicNogoodSet.add(n.getCore());
+
+        n.findWatchers(assignment);
+        if(n.getW1()==null||n.getW2()==null){
+            //watcher 不完整
+            resultUnits.forEach(ru->assignStack.push(ru.getLiteral()));
+            for (String str : assignStack) {
+                if(n.getKeySet().contains(str)){
+                    if(n.getW1()==null){
+                        n.setW1(str);
+                    }else{
+                        n.setW2(str);
+                    }
+                }
+                if(n.getW1()!=null&&n.getW2()!=null){
+                    break;
+                }
+            }
+            resultUnits.forEach(ru->assignStack.pop());
+        }
+
+        addIntoMap(ltnDynamicWatch,n.getW1(),nogoodDynamic.size());
+        addIntoMap(ltnDynamicWatch,n.getW2(),nogoodDynamic.size());
         nogoodDynamic.add(n);
     }
 
@@ -412,18 +462,26 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      * @param map 从哪些nogood里找
      * @param nogoodList map对应的nogoodlist
      */
-    private void getResultUnit(String key,Map<String,List<Integer>> map,List<Nogood> nogoodList){
+    private void getResultUnit(String key,Map<String,Set<Integer>> map,List<Nogood> nogoodList){
         if(!map.containsKey(key)){
             return;
         }
-        for (Integer idx : map.get(key)) {
+        for (Integer idx : new ArrayList<>(map.get(key))) {
             Nogood tocheck = nogoodList.get(idx);
             SignedLiteral ru = tocheck.getResultUnit(assignment);
+            if(tocheck.isWatcherChanged()){
+                map.get(tocheck.getWatcherTobeRemoved()).remove(idx);
+                addIntoMap(map,tocheck.getW2(),idx);
+            }
             if(ru!=null){
                 if(ru.getLiteral().equals(EXT_FALSE)){
                     conflictNogood = tocheck;
                     conflict = true;
                     return;
+                }
+                if(assignment.containsKey(ru.getLiteral())&&
+                        assignment.get(ru.getLiteral())==!ru.isSign()){
+                    continue;
                 }
                 resultUnits.add(new SignedLiteral(ru.getLiteral(),!ru.isSign()));
             }
@@ -511,20 +569,24 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         initComp();
     }
 
-    private void constructMap(List<Nogood> nogoods,Map<String,List<Integer>> map){
+    private void constructMap(List<Nogood> nogoods,Map<String,Set<Integer>> map){
         for(int i=0;i<nogoods.size();i++){
             Nogood nogood = nogoods.get(i);
-            for (String k : nogood.getKeySet()) {
-                List<Integer> idxs;
-                if(map.containsKey(k)){
-                    idxs = map.get(k);
-                }else{
-                    idxs = new ArrayList<>();
-                    map.put(k,idxs);
-                }
-                idxs.add(i);
-            }
+            nogood.findWatchers(assignment);
+            addIntoMap(map,nogood.getW1(),i);
+            addIntoMap(map,nogood.getW2(),i);
         }
+    }
+
+    private void addIntoMap(Map<String,Set<Integer>> map,String k,int v){
+        Set<Integer> idxs;
+        if(map.containsKey(k)){
+            idxs = map.get(k);
+        }else{
+            idxs = new HashSet<>();
+            map.put(k,idxs);
+        }
+        idxs.add(v);
     }
 
     private void initComp(){
@@ -655,7 +717,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     private boolean backTrackAndFlip(){
         while (assignStack.size()>0&&!toFlip.contains(assignStack.peek())){
-            resign(assignStack.poll());
+            resign(assignStack.pop());
         }
         if (assignStack.size()>0){
             String flip = assignStack.poll();
@@ -671,6 +733,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     /**
      * conflict analysis
      */
+    private int counter=0;
     private void analysis(){
         PriorityQueue<SignedLiteral> delta = new PriorityQueue<>(new Comparator<SignedLiteral>() {
             @Override
@@ -681,7 +744,14 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 return stackPosition.get(o2.getLiteral())-stackPosition.get(o1.getLiteral());
             }
         });
+        counter++;
         findConflictNogood();
+        if(counter==21){
+            System.out.println();
+        }
+        if(conflictNogood==null){
+            System.out.println();
+        }
         delta.addAll(conflictNogood.getSignedLiterals());
         int k = dl;
         boolean nogoodChanged = false;
@@ -717,7 +787,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             getResultUnit(ru.getLiteral(),ltnCompletion,nogoodCompletion);
         }
         if(conflictNogood==null){
-            getResultUnit(ru.getLiteral(),ltnDynamic,nogoodDynamic);
+            getResultUnit(ru.getLiteral(), ltnDynamicWatch,nogoodDynamic);
         }
 //        if(conflictNogood==null){
 //
