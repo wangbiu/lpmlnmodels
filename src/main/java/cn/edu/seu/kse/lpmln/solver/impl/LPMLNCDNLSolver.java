@@ -129,6 +129,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                     return;
                 }
                 analysisAndUndo();
+                conflict = false;
             }else if(toAssign.size()==0){
                 weightedAs.add(generate());
                 if(!backTrackAndFlip()){
@@ -189,27 +190,25 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     private void propagation(){
         while(true){
             while(resultUnits.size()>0){
-                SignedLiteral unit = resultUnits.poll();
+                SignedLiteral unit = resultUnits.peek();
                 Boolean cur = assignment.get(unit.getLiteral());
                 if(cur==null){
                     assign(unit.getLiteral(),unit.isSign());
                     //还没分配
                     getResultUnit(unit.getLiteral(),ltnCompletion,nogoodCompletion);
                     if(conflict){
-                        resultUnits.clear();
                         return;
                     }
                     getResultUnit(unit.getLiteral(),ltnDynamic,nogoodDynamic);
                     if(conflict){
-                        resultUnits.clear();
                         return;
                     }
                 }else if(!cur.equals(unit.isSign())){
                     //分配冲突
                     conflict = true;
-                    resultUnits.clear();
                     return;
                 }
+                resultUnits.poll();
             }
 
             if(cPi.size()==0){
@@ -229,6 +228,8 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             u.forEach(lit->{
                 resultUnits.add(new SignedLiteral(lit,false));
             });
+
+            u.clear();
         }
     }
 
@@ -641,9 +642,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     private void analysisAndUndo(){
         analysis();
         //dl提前赋值
-        while(dlLevel(assignStack.peek())>dl){
-            resign(assignStack.poll());
-        }
+        backTrackAndFlip();
     }
 
     /**
@@ -667,11 +666,29 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     /**
      * conflict analysis
      */
+    private static int counter = 0;
     private void analysis(){
-        PriorityQueue<SignedLiteral> delta = new PriorityQueue<>((o1, o2) -> stackPosition.get(o2.getLiteral())-stackPosition.get(o1.getLiteral()));
+        PriorityQueue<SignedLiteral> delta = new PriorityQueue<>(new Comparator<SignedLiteral>() {
+            @Override
+            public int compare(SignedLiteral o1, SignedLiteral o2) {
+                if(o1==null||o2==null||stackPosition.get(o1.getLiteral())==null||stackPosition.get(o2.getLiteral())==null){
+                    return 0;
+                }
+                return stackPosition.get(o2.getLiteral())-stackPosition.get(o1.getLiteral());
+            }
+        });
+        counter++;
+        if(counter==2){
+            System.out.println();
+        }
+        findConflictNogood();
+        if(conflictNogood==null){
+            System.out.println();
+        }
         delta.addAll(conflictNogood.getSignedLiterals());
-        int k;
-        while(true){
+        int k = dl;
+        boolean nogoodChanged = false;
+        while(delta.size()>1){
             //TODO:这边方式可能需要修改下
             SignedLiteral sigma = delta.poll();
             SignedLiteral remainMax = delta.peek();
@@ -679,15 +696,35 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             if(dlLevel(sigma) == k){
                 resign(sigma.getLiteral());
                 delta.addAll(findSourceNogoodItems(sigma));
+                nogoodChanged = true;
             }else{
                 //analysis return
+                delta.add(sigma);
                 break;
             }
         }
         dl = k;
-        Nogood toAdd = new Nogood();
-        delta.forEach(sl->toAdd.add(sl.getLiteral(),sl.isSign()));
-        nogoodDynamic.add(toAdd);
+        if (nogoodChanged){
+            Nogood toAdd = new Nogood();
+            delta.forEach(sl->toAdd.add(sl.getLiteral(),sl.isSign()));
+            putInDynamic(toAdd);
+        }
+        resultUnits.clear();
+        conflictNogood = null;
+    }
+
+
+    private void findConflictNogood(){
+        SignedLiteral ru = resultUnits.peek();
+        if(conflictNogood==null){
+            getResultUnit(ru.getLiteral(),ltnCompletion,nogoodCompletion);
+        }
+        if(conflictNogood==null){
+            getResultUnit(ru.getLiteral(),ltnDynamic,nogoodDynamic);
+        }
+//        if(conflictNogood==null){
+//
+//        }
     }
 
     /**
@@ -719,6 +756,9 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     }
 
     private int dlLevel(SignedLiteral sigma){
+        if(sigma==null||!dlMap.containsKey(sigma.getLiteral())){
+            return 0;
+        }
         return dlMap.get(sigma.getLiteral());
     }
 
