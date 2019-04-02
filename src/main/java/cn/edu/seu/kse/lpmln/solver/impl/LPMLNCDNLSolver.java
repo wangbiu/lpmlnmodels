@@ -55,6 +55,8 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     private List<Set<String>> cPi = new ArrayList<>();
 
+    private Set<Set<String>> visitedUnfoundedSet = new HashSet<>();
+
     /**
      * accessor
      */
@@ -118,6 +120,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     private LinkedList<SignedLiteral> resultUnits = new LinkedList<>();
 
+
     @Override
     public void executeSolving(){
         init();
@@ -162,7 +165,6 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             resultUnits.add(new SignedLiteral(next,false));
         }
         dl++;
-
     }
 
 
@@ -260,7 +262,6 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         if(cPiAccessor.containsKey(lit)&&cPiAccessor.get(lit).size()>1){
             sourcePtr.put(lit,null);
         }
-
     }
 
 
@@ -301,13 +302,16 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                     }
                 }
                 if(!existSupporter){
-                    for (String tempA : u) {
-                        Nogood dyn = new Nogood();
-                        ebp.forEach(idx->{
-                            dyn.add(getVB(idx),false);
-                        });
-                        dyn.add(tempA,true);
-                        putInDynamic(dyn);
+                    if(!visitedUnfoundedSet.contains(u)){
+                        for (String tempA : u) {
+                            Nogood dyn = new Nogood();
+                            ebp.forEach(idx->{
+                                dyn.add(getVB(idx),false);
+                            });
+                            dyn.add(tempA,true);
+                            putInDynamic(dyn);
+                        }
+                        visitedUnfoundedSet.add(new HashSet<>(u));
                     }
                     return;
                 }
@@ -656,6 +660,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         if (assignStack.size()>0){
             String flip = assignStack.poll();
             resultUnits.add(new SignedLiteral(flip,true));
+            dl = dlMap.get(flip);
             resign(flip);
             toFlip.remove(flip);
             return true;
@@ -666,7 +671,6 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     /**
      * conflict analysis
      */
-    private static int counter = 0;
     private void analysis(){
         PriorityQueue<SignedLiteral> delta = new PriorityQueue<>(new Comparator<SignedLiteral>() {
             @Override
@@ -677,14 +681,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 return stackPosition.get(o2.getLiteral())-stackPosition.get(o1.getLiteral());
             }
         });
-        counter++;
-        if(counter==2){
-            System.out.println();
-        }
         findConflictNogood();
-        if(conflictNogood==null){
-            System.out.println();
-        }
         delta.addAll(conflictNogood.getSignedLiterals());
         int k = dl;
         boolean nogoodChanged = false;
