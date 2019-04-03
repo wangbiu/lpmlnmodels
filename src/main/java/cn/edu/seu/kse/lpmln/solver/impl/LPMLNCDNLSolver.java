@@ -475,13 +475,12 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 tocheck.getWatcherTobeRemoved().forEach(rmv->{
                     if(!map.containsKey(rmv)){
                         System.out.println(123);
+                        return;
                     }
                     map.get(rmv).remove(idx);
                 });
                 addIntoMap(map,tocheck.getW2(),idx);
-                if(tocheck.getWatcherTobeRemoved().size()>1){
-                    addIntoMap(map,tocheck.getW1(),idx);
-                }
+                addIntoMap(map,tocheck.getW1(),idx);
             }
             if(ru!=null){
                 if(ru.getLiteral().equals(EXT_FALSE)){
@@ -496,6 +495,18 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 resultUnits.add(new SignedLiteral(ru.getLiteral(),!ru.isSign()));
             }
         }
+    }
+
+    private boolean assertTrue(){
+        for (Nogood n : nogoodDynamic) {
+            if(!ltnDynamicWatch.containsKey(n.getW1())){
+                return false;
+            }
+            if(!ltnDynamicWatch.containsKey(n.getW2())){
+                return false;
+            }
+        }
+        return true;
     }
 
     private static String SHOW = "#show ";
@@ -607,6 +618,15 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             supportRule.put(lit,new HashSet<>());
         });
 
+        //解释一致性产出的nogood
+        literals.forEach(literal->{
+            if(literal.startsWith(NEGATION) &&
+                    literals.contains(literal.substring(NEGATION.length()))){
+                Nogood toadd = new Nogood(literal.substring(NEGATION.length()));
+                nogoodCompletion.add(toadd);
+            }
+        });
+
         for(int i=0;i<rules.size();i++){
             Rule r = rules.get(i);
             List<String> head = r.getHead();
@@ -642,7 +662,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 r.getNegativeBody().forEach(nb -> {
                     Nogood n2 = new Nogood();
                     n2.add(sup, true);
-                    n2.add(nb, true);
+                    n2.add(nb.substring(NOT.length()), true);
                     nogoodCompletion.add(n2);
                 });
 
@@ -676,7 +696,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             r.getNegativeBody().forEach(nb -> {
                 Nogood n2 = new Nogood();
                 n2.add(vb, true);
-                n2.add(nb, true);
+                n2.add(nb.substring(NOT.length()), true);
                 nogoodCompletion.add(n2);
             });
 
@@ -903,7 +923,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             }
         }
         for (String nb : r.getNegativeBody()) {
-            if(assignment.get(nb)){
+            if(assignment.get(nb.substring(NOT.length()))){
                 return false;
             }
         }

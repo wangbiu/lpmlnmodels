@@ -139,11 +139,11 @@ public class Nogood{
                     continue;
                 }
                 if(!watcherChanged){
-                    w1 = ent.getKey();
                     watcherTobeRemoved.add(w1);
+                    watcherTobeRemoved.add(w2);
+                    w1 = ent.getKey();
                 }else{
                     w2 = ent.getKey();
-                    watcherTobeRemoved.add(w2);
                 }
                 watcherChanged = true;
 
@@ -177,6 +177,7 @@ public class Nogood{
                     continue;
                 }
                 if(!signedLiterals.get(ent.getKey()).equals(assignment.get(ent.getKey()))){
+                    watcherTobeRemoved.add(w1);
                     watcherTobeRemoved.add(w2);
                     w2 = ent.getKey();
                     //找到一个活的w2
