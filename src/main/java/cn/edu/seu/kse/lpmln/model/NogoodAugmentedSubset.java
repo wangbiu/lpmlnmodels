@@ -43,16 +43,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         NogoodAugmentedSubset sat = this;
         NogoodAugmentedSubset unsat;
         if(copy==null){
-            unsat = pool.remove(pool.size()-1);
-            satIdx.forEach(i->{
-                unsat.sat(i);
-                unsat.evaluator.sat(i);
-            });
-            unsatIdx.forEach(i->{
-                unsat.unsat(i);
-                unsat.evaluator.unsat(i);
-            });
-            unsat.bannedIdx.addAll(bannedIdx);
+            unsat = copy();
             copy = unsat;
         }else{
             unsat = copy;
@@ -80,16 +71,19 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 unsat.evaluator.recover();
                 evaluationUpper = (int)Math.min(Math.log(as1+as2)/Math.log(2)+base,evaluationUpper);
                 return null;
-            }else if((sum/as1>aimCount||sum/as2>aimCount)&&
-                    Math.max(as1/as2,as2/as1)>aimCount){
-                //>< || <>
-                evaluationUpper = (int)Math.min(Math.log(as1+as2)/Math.log(2)+base,evaluationUpper);
-                if(as1/as2>aimCount||as2/as1>aimCount){
-                    bannedIdx.add(next);
-                }
-                sat.evaluator.recover();
-                unsat.evaluator.recover();
-            }else{
+            }
+//            else if((sum/as1>aimCount||sum/as2>aimCount)&&
+//                    Math.max(as1/as2,as2/as1)>aimCount){
+//                //>< || <>
+//                evaluationUpper = (int)Math.min(Math.log(as1+as2)/Math.log(2)+base,evaluationUpper);
+//                if(as1/as2>aimCount||as2/as1>aimCount){
+//                    bannedIdx.add(next);
+//                }
+//                sat.evaluator.recover();
+//                unsat.evaluator.recover();
+//                sum -= as1+as2;
+//            }
+            else{
                 //>>
                 copy = null;
                 sat.sat(next);
@@ -98,11 +92,28 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 unsat.evaluator.checkSatUnsat();
                 return new Pair<>(sat,unsat);
             }
-            sum -= as1+as2;
         }
 
         evaluationUpper = -1;
         return null;
+    }
+
+    private NogoodAugmentedSubset copy(){
+        NogoodAugmentedSubset unsat = pool.remove(pool.size()-1);
+        Set<Integer> toSat = new HashSet<>(satIdx);
+        Set<Integer> toUnsat = new HashSet<>(unsatIdx);
+        toSat.removeIf(idx->!unsat.unknownIdx.contains(idx));
+        toUnsat.removeIf(idx->!unsat.unknownIdx.contains(idx));
+        toSat.forEach(i->{
+            unsat.sat(i);
+            unsat.evaluator.sat(i);
+        });
+        toUnsat.forEach(i->{
+            unsat.unsat(i);
+            unsat.evaluator.unsat(i);
+        });
+        unsat.bannedIdx.addAll(bannedIdx);
+        return unsat;
     }
 
     private double getSum(List<NogoodAugmentedSubset> list){
@@ -210,6 +221,7 @@ class AugmentedSubsetEvaluator extends LPMLNCDNLSolver{
         Nogood rmvd = nogoodDynamic.remove(idx);
         removeWatch(rmvd.getW1(),idx);
         removeWatch(rmvd.getW2(),idx);
+        dynamicNogoodSet.remove(rmvd.getCore());
     }
 
     private void removeWatch(String str,Integer idx){

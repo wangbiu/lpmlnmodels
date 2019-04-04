@@ -29,6 +29,10 @@ public class AugmentedSubsetPartitioner {
     //输入：原规则，翻译后的规则文本
     //输出：增强子集文件列表，子集对应的额外权重
     public List<AugmentedSubset> partition(LpmlnProgram lpmlnProgram,int count){
+        long intoPritition = System.currentTimeMillis();
+        if(LPMLNApp.isDebugging()){
+            System.out.println("before partition: "+(intoPritition-LPMLNApp.enter.getTime()));
+        }
         List<AugmentedSubset> subsets;
         switch (policy){
             /**
@@ -51,7 +55,7 @@ public class AugmentedSubsetPartitioner {
                 break;
         }
         if(LPMLNApp.isDebugging()){
-            System.out.println("partition cost: "+(System.currentTimeMillis()-LPMLNApp.enter.getTime()));
+            System.out.println("partition cost: "+(System.currentTimeMillis()-intoPritition));
         }
         return subsets;
     }

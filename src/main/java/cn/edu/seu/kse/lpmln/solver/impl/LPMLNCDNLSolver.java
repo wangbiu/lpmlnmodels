@@ -120,6 +120,8 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      */
     protected LinkedList<SignedLiteral> resultUnits = new LinkedList<>();
 
+    private Set<String> facts = new HashSet<>();
+
 
     protected long T1 = 0;
     protected long T3 = 0;
@@ -196,6 +198,12 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
             }
         });
         return res;
+    }
+
+    protected List<SignedLiteral> unknownAssign(){
+        List<SignedLiteral> cur = curAssign();
+        cur.removeIf(a->facts.contains(a.getLiteral()));
+        return cur;
     }
 
     /**
@@ -554,6 +562,8 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         generateFact();
 
         propagation();
+
+        facts.addAll(assignment.keySet());
     }
 
     protected void initCPi(){
