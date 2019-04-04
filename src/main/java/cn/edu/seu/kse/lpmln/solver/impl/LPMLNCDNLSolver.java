@@ -130,6 +130,10 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     @Override
     public void executeSolving(){
         init();
+        doSolving();
+    }
+
+    public void doSolving(){
         while(true){
             long t1 = System.currentTimeMillis();
             propagation();
@@ -141,7 +145,10 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                     return;
                 }
                 long t3 = System.currentTimeMillis();
-                analysisAndUndo();
+                if(!analysisAndUndo()){
+                    return;
+                }
+
                 long t4 = System.currentTimeMillis();
                 T3 += t4-t3;
                 conflict = false;
@@ -363,7 +370,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                     if(!inAF(vb)){
                         List<String> coExist = new ArrayList<>();
                         rules.get(idx).getPositiveBody().forEach(pb->{
-                            if(cPiAccessor.get(a).contains(pb)&&s.contains(pb)){
+                            if(cPiAccessor.containsKey(a)&&cPiAccessor.get(a).contains(pb)&&s.contains(pb)){
                                 coExist.add(pb);
                             }
                         });
@@ -443,6 +450,9 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 continue;
             }
             sccVisited.add(scc);
+            if(scc==null){
+                continue;
+            }
             scc.forEach(a->{
                 if(!inAF(a)&&!s.contains(a)){
                     Integer idx = source(a);
@@ -583,7 +593,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     protected void establishSourcePointer(){
         sourcePtr.clear();
         literals.forEach(lit->{
-            if(cPiAccessor.get(lit).size()>1){
+            if(cPiAccessor.containsKey(lit)&&cPiAccessor.get(lit).size()>1){
                 //o
                 sourcePtr.put(lit,null);
             }
@@ -656,7 +666,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
                 r.getNegativeBody().forEach(nb -> n1.add(nb.substring(NOT.length()), false));
                 r.getHead().forEach(h -> {
                     if (!h.equals(curLit)) {
-                        n1.add(h, true);
+                        n1.add(h, false);
                         //夹杂一下
                         Nogood n2 = new Nogood();
                         n2.add(sup, true);
@@ -681,13 +691,11 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
 
                 //规则满足
                 if(LPMLNApp.semantics.equals(SEMANTICS_WEAK)&&!r.isSoft()){
-                    r.getHead().forEach(h -> {
-                        Nogood n3 = new Nogood();
-                        n3.add(sup, true);
-                        //TODO:考虑头部not
-                        n3.add(h, false);
-                        nogoodCompletion.add(n3);
-                    });
+                    Nogood n3 = new Nogood();
+                    n3.add(sup, true);
+                    //TODO:考虑头部not
+                    n3.add(curLit, false);
+                    nogoodCompletion.add(n3);
                 }
             }
 
@@ -748,10 +756,10 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
      * input:   \delta \Pi \nabla \A
      * output:  \varepsilon \k
      */
-    protected void analysisAndUndo(){
+    protected boolean analysisAndUndo(){
         analysis();
         //dl提前赋值
-        backTrackAndFlip();
+        return backTrackAndFlip();
     }
 
     /**

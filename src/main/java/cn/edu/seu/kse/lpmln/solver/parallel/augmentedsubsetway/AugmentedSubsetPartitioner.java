@@ -183,7 +183,7 @@ public class AugmentedSubsetPartitioner {
         Comparator<NogoodAugmentedSubset> comparator = new Comparator<NogoodAugmentedSubset>() {
             @Override
             public int compare(NogoodAugmentedSubset o1, NogoodAugmentedSubset o2) {
-                return o1.getEvaluation()-o2.getEvaluation();
+                return (o1.getEvaluation()>o2.getEvaluation())?1:-1;
             }
         };
 

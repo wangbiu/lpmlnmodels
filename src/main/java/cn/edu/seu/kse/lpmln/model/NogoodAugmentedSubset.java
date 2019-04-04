@@ -19,8 +19,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
     private Set<Integer> bannedIdx;
     private Integer aimCount;
     private NogoodAugmentedSubset copy = null;
-    private int evaluationUpper = Integer.MAX_VALUE;
-    private double base;
+    private double evaluationUpper = Double.MAX_VALUE;
     public NogoodAugmentedSubset(LpmlnProgram program){
         super(program);
         evaluator = new AugmentedSubsetEvaluator();
@@ -34,12 +33,12 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
     public Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> split(LinkedList<NogoodAugmentedSubset> load){
         load.removeLast();
-        if(load.size()==0){
-            base = 0;
-        }else{
-            base = load.peekLast().getEvaluation()-Math.log(aimCount)/Math.log(2);
-        }
-        double sum = getSum(load);
+//        if(load.size()==0){
+//            base = 0;
+//        }else{
+//            base = load.peekLast().getEvaluation()-Math.log(aimCount)/Math.log(2);
+//        }
+//        double sum = getSum(load);
         NogoodAugmentedSubset sat = this;
         NogoodAugmentedSubset unsat;
         if(copy==null){
@@ -62,14 +61,20 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 continue;
             }
 
-            double as1 = Math.pow(2,sat.getEvaluation()-base);
-            double as2 = Math.pow(2,unsat.getEvaluation()-base);
-            sum += as1+as2;
-            if(sum/as1>aimCount&&sum/as2>aimCount){
+            double as1 = sat.getEvaluation();
+            double as2 = unsat.getEvaluation();
+            if(load.size()>0 &&
+                    as1+as2<load.peek().getEvaluation()){
                 //<<
                 sat.evaluator.recover();
                 unsat.evaluator.recover();
-                evaluationUpper = (int)Math.min(Math.log(as1+as2)/Math.log(2)+base,evaluationUpper);
+                double bigger = Math.max(as1,as2);
+                double smaller = Math.min(as1,as2);
+                if(bigger-smaller>64){
+                    evaluationUpper = Math.min(bigger,evaluationUpper);
+                }else{
+                    evaluationUpper = Math.min(Math.log(Math.pow(2,bigger-smaller)+1)/Math.log(2)+smaller,evaluationUpper);
+                }
                 return null;
             }
 //            else if((sum/as1>aimCount||sum/as2>aimCount)&&
@@ -88,6 +93,13 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
                 copy = null;
                 sat.sat(next);
                 unsat.unsat(next);
+//                if(new AugmentedSubsetSolver(sat).solve().size()==0){
+//                    sat.evaluator.doSolving();
+//                    System.out.println();
+//                }
+//                if(new AugmentedSubsetSolver(unsat).solve().size()==0){
+//                    System.out.println();
+//                }
                 sat.evaluator.checkSatUnsat();
                 unsat.evaluator.checkSatUnsat();
                 return new Pair<>(sat,unsat);
@@ -116,17 +128,17 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
         return unsat;
     }
 
-    private double getSum(List<NogoodAugmentedSubset> list){
-        double result = 0;
-        for (NogoodAugmentedSubset val : list) {
-            result += Math.pow(2,val.getEvaluation()-base);
-        }
-        return result;
-    }
+//    private double getSum(List<NogoodAugmentedSubset> list){
+//        double result = 0;
+//        for (NogoodAugmentedSubset val : list) {
+//            result += Math.pow(2,val.getEvaluation()-base);
+//        }
+//        return result;
+//    }
 
-    public int getEvaluation(){
+    public double getEvaluation(){
         int remain = evaluator.getRemainSize();
-        return (int)Math.min(remain,evaluationUpper);
+        return Math.min(remain,evaluationUpper);
     }
 
     public void setPool(List<NogoodAugmentedSubset> pool) {
@@ -209,7 +221,7 @@ class AugmentedSubsetEvaluator extends LPMLNCDNLSolver{
     }
 
     public void recover(){
-        if(satNogoodIdx>0){
+        if(satNogoodIdx>=0){
             removeFromDyn(satNogoodIdx);
         }
         while(assignStack.size()> assignStackLastSize){
