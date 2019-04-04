@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by 许鸿翔 on 2017/9/23.
@@ -158,35 +159,55 @@ public class AugmentedSubsetPartitioner {
     }
 
     public List<AugmentedSubset> nogoodPartition(LpmlnProgram lpmlnProgram,int count){
-//        if(LPMLNApp.isDebugging()){
-//            System.out.println("start nogoodPartition.");
-//        }
-//        Comparator<NogoodAugmentedSubset> comparator = (o1, o2) -> o1.getAssignmentSize()-o2.getAssignmentSize();
-//        PriorityQueue<NogoodAugmentedSubset> queue = new PriorityQueue<>(comparator);
-//        List<NogoodAugmentedSubset> result = new ArrayList<>();
-//
-//        queue.offer(new NogoodAugmentedSubset(lpmlnProgram));
-//
-//        //TODO:这里没考虑无法划分的情况
-//        while (queue.size()+result.size()<count&&queue.size()>0){
-//            NogoodAugmentedSubset tosplit = queue.poll();
-//            Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> splitResult = tosplit.split();
-//            if(splitResult==null){
-//                if(LPMLNApp.isDebugging()){
-//                    logger.debug("当前增强子集规则已被划分完毕，队列剩余:{}", queue.size());
-//                }
-//
-//                result.add(tosplit);
-//            }else{
-//                queue.offer(splitResult.getKey());
-//                queue.offer(splitResult.getValue());
-//            }
-//        }
-//
-//        result.addAll(queue);
-//
-//        return new ArrayList<>(result);
-        return null;
+        if(LPMLNApp.isDebugging()){
+            System.out.println("start nogoodPartition.");
+        }
+
+        LinkedList<NogoodAugmentedSubset> load = new LinkedList<>();
+        List<NogoodAugmentedSubset> result = new ArrayList<>();
+        Set<Integer> bannedIdx = new HashSet<>();
+        List<Object> creator = new ArrayList<>(count*2);
+        for(int i=0;i<count*2;i++){
+            creator.add(new Object());
+        }
+        List<NogoodAugmentedSubset> pool = creator.parallelStream().map(n->new NogoodAugmentedSubset(lpmlnProgram)).collect(Collectors.toList());
+        pool.forEach(item->{
+            item.setAimCount(count);
+            item.setPool(pool);
+        });
+        load.offer(pool.remove(pool.size()-1));
+        Comparator<NogoodAugmentedSubset> comparator = new Comparator<NogoodAugmentedSubset>() {
+            @Override
+            public int compare(NogoodAugmentedSubset o1, NogoodAugmentedSubset o2) {
+                return o1.getEvaluation()-o2.getEvaluation();
+            }
+        };
+
+        //TODO:这里没考虑无法划分的情况
+        while (load.size()+result.size()<count&&load.size()>0){
+            load.sort(comparator);
+            NogoodAugmentedSubset tosplit = load.peekLast();
+            Pair<NogoodAugmentedSubset,NogoodAugmentedSubset> splitResult = tosplit.split(load);
+            if(splitResult==null){
+                if(tosplit.getEvaluation()==-1){
+                    if(LPMLNApp.isDebugging()){
+                        logger.debug("当前增强子集规则已被划分完毕，队列剩余:{}", load.size());
+                    }
+
+                    result.add(tosplit);
+                    continue;
+                }
+                load.offer(tosplit);
+
+            }else{
+                load.offer(splitResult.getKey());
+                load.offer(splitResult.getValue());
+            }
+        }
+
+        result.addAll(load);
+
+        return new ArrayList<>(result);
     }
 
     private void printStatus(List<AugmentedSubset> augmentedSubsets){
