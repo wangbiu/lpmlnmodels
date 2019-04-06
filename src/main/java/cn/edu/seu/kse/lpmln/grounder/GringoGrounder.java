@@ -21,6 +21,7 @@ public class GringoGrounder implements LPMLNGrounder{
     public static final String GET = ":-";
     public static final String NOTUNSAT = "not unsat(";
     public static final String DOT = ".";
+    private LpmlnProgram program;
 
     //TODO:整理一下临时文件，主流程中尽量减少一点
     @Override
@@ -52,7 +53,7 @@ public class GringoGrounder implements LPMLNGrounder{
                     //强规则
                 }else if(Integer.valueOf(params[params.length-2])==1){
                     //弱规则
-                    toAppend.append(params[params.length-1]);
+                    toAppend.append(String.format("%.4f",Double.valueOf(params[params.length-1])/Math.pow(10,program.getFactor())));
                     toAppend.append(" : ");
                 }else{
                     throw new SolveException("rule param fail: "+rule);
@@ -99,14 +100,14 @@ public class GringoGrounder implements LPMLNGrounder{
     }
 
     private String translate(File fileToGround){
-        LpmlnProgram lpmlnProgram = null;
+        program = null;
         LPMLN2ASPTranslator translator = new LPMLN2ASPTranslator();
         translator.setWeakTranslate(false);
         try {
-            lpmlnProgram = SyntaxModule.parseLPMLN(fileToGround);
+            program = SyntaxModule.parseLPMLN(fileToGround);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return translator.translate(lpmlnProgram);
+        return translator.translate(program);
     }
 }

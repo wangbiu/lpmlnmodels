@@ -127,13 +127,17 @@ public class Rule {
     }
 
     public String getRuleLabelPara(){
+        return getRuleLabelPara(0);
+    }
+
+    public String getRuleLabelPara(int factor){
         StringBuilder sb = new StringBuilder();
         sb.append(id);
         for(String v:vars){
             sb.append(", ").append(v);
         }
         if(isSoft){
-            sb.append(", 1, ").append((int)weight);
+            sb.append(", 1, ").append((int)(weight*Math.pow(10,factor)));
         }else {
             sb.append(", 2, 1");
         }

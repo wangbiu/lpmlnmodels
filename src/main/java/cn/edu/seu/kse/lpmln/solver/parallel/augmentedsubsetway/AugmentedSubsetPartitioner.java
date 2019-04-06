@@ -214,6 +214,10 @@ public class AugmentedSubsetPartitioner {
         return new ArrayList<>(result);
     }
 
+    private void printASCount(List<AugmentedSubset> subsets){
+        subsets.forEach(subset-> System.out.println(new AugmentedSubsetSolver(subset).solve().size()));
+    }
+
     private void printStatus(List<AugmentedSubset> augmentedSubsets){
         augmentedSubsets.forEach(augmentedSubset -> {
             String[] status = new String[augmentedSubset.getLpmlnProgram().getRules().size()];

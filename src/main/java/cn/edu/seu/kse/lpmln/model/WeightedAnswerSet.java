@@ -58,7 +58,9 @@ public class WeightedAnswerSet {
         String weightStr = String.valueOf(weights.get(0));
         String decWeight = "";
         if(factor!=0){
-            decWeight = weightStr.substring(0,weightStr.length()-factor)+"."+weightStr.substring(weightStr.length()-factor);
+            int len = Math.max(0,weightStr.length()-factor);
+            decWeight = String.format("%."+len+"f",Double.valueOf(weightStr)/Math.pow(10,factor));
+            //decWeight = weightStr.substring(0,weightStr.length()-factor)+"."+weightStr.substring(weightStr.length()-factor);
         }else{
             decWeight = weightStr;
         }

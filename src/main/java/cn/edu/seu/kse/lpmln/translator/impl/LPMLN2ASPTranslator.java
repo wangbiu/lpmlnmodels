@@ -149,7 +149,7 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
     }
 
     protected void setSatLabel(Rule rule){
-        StringBuilder sb = new StringBuilder().append("unsat(").append(rule.getRuleLabelPara()).append(")");
+        StringBuilder sb = new StringBuilder().append("unsat(").append(rule.getRuleLabelPara(program.getFactor())).append(")");
         satLabel = sb.toString();
         rule.setRuleLabel(satLabel);
     }
