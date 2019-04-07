@@ -23,7 +23,7 @@ public class PESolverTest {
         Set<String> U = splitter.getU();
         LPMLNBaseSolver s1 = new LPMLNBaseSolver();
         WeightedAnswerSet x = s1.solveProgram(bottom).get(0);
-        PESolver solver = new PESolver(top, U, x, "");
+        PESolver solver = new PESolver(top, U,null, x, "");
         solver.run();
         solver.getAllWeightedAs().forEach(System.out::println);
     }

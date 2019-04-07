@@ -28,6 +28,7 @@ public class KSplitter extends Splitter{
     private Set<String> programLiterals;
     private List<DecisionUnit> mdus;
     private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.SPLIT_DYNAMIC;
+    private Set<String> assertAtoms = new HashSet<>();
     private Comparator<DecisionUnit> comparatorLit = new Comparator<DecisionUnit>() {
         @Override
         public int compare(DecisionUnit o1, DecisionUnit o2) {
@@ -43,6 +44,8 @@ public class KSplitter extends Splitter{
     private Logger logger = LogManager.getLogger(KSplitter.class.getName());
     private int aimBotSize = Runtime.getRuntime().availableProcessors();
     private boolean skipConstruct = false;
+    private Set<Integer> in = new HashSet<>();
+    private Set<Integer> out = new HashSet<>();
 
     public KSplitter(){
 
@@ -65,9 +68,61 @@ public class KSplitter extends Splitter{
             buildRelations();
         }
 
+        generateInOut();
+
         generateU();
 
         generateTopAndBottom();
+    }
+
+    private void generateInOut(){
+        for(int i=0;i<lpmlnprogram.getRules().size();i++){
+            Rule r = lpmlnprogram.getRules().get(i);
+            if(inRule(r)){
+                in.add(i);
+            }
+            if(outRule(r)){
+                out.add(i);
+            }
+        }
+    }
+
+    private boolean outRule(Rule r){
+        Set<String> headLits = new HashSet<>();
+        r.getHead().forEach(l->headLits.add(getLiteral(l)));
+        Set<String> bodyPHeadLits = new HashSet<>(headLits);
+        r.getPositiveBody().forEach(l->bodyPHeadLits.add(getLiteral(l)));
+
+        headLits.removeAll(U);
+        if(headLits.size()==0){
+            return false;
+        }
+
+        bodyPHeadLits.retainAll(U);
+        if(bodyPHeadLits.size()==0){
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean inRule(Rule r){
+        Set<String> headLits = new HashSet<>();
+        r.getHead().forEach(l->headLits.add(getLiteral(l)));
+        Set<String> bodyPHeadLits = new HashSet<>(headLits);
+        r.getPositiveBody().forEach(l->bodyPHeadLits.add(getLiteral(l)));
+
+        headLits.retainAll(U);
+        if(headLits.size()==0){
+            return false;
+        }
+
+        bodyPHeadLits.removeAll(U);
+        if(bodyPHeadLits.size()==0){
+            return false;
+        }
+
+        return true;
     }
 
     public boolean toSplit(){
@@ -138,19 +193,23 @@ public class KSplitter extends Splitter{
     }
 
     private void generateU(){
-        switch (policy){
-            case SPLIT_DYNAMIC:
-                generateUDynamic();
-                break;
-            case SPLIT_BOT:
-                generateUBot();
-                break;
-            case SPLIT_LIT:
-            default:
-                generateULit();
-                break;
+//        switch (policy){
+//            case SPLIT_DYNAMIC:
+//                generateUDynamic();
+//                break;
+//            case SPLIT_BOT:
+//                generateUBot();
+//                break;
+//            case SPLIT_LIT:
+//            default:
+//                generateULit();
+//                break;
+//        }
+        U = new HashSet<>();
+        List<String> lits = new ArrayList<>(programLiterals);
+        for(int i=0;i<3;i++){
+            U.add(lits.get(2));
         }
-
     }
 
     private void generateUDynamic(){
@@ -277,21 +336,50 @@ public class KSplitter extends Splitter{
     private void generateTopAndBottom(){
         List<Rule> bottomRules = new ArrayList<>();
         List<Rule> topRules = new ArrayList<>();
-        for (Rule rule : lpmlnprogram.getRules()) {
+        for(int i=0;i<lpmlnprogram.getRules().size();i++){
+            Rule rule = lpmlnprogram.getRules().get(i);
             if(isBotRule(rule)){
                 bottomRules.add(rule);
-            }else{
+            }else if(!out.contains(i)){
                 topRules.add(rule);
             }
         }
+        List<Rule> ecu = getECU(bottomRules);
+        bottomRules.addAll(ecu);
         bottom = new LpmlnProgram(bottomRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), "",lpmlnprogram.getSolversUsed());
         top = new LpmlnProgram(topRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), lpmlnprogram.getMetarule(),lpmlnprogram.getSolversUsed());
+    }
+
+    private List<Rule> getECU(List<Rule> bottomRules){
+        List<Rule> ecu = new ArrayList<>();
+        assertAtoms = new HashSet<>();
+        bottomRules.forEach(r->{
+            r.getHead().forEach(l->{
+                assertAtoms.add(getLiteral(l));
+            });
+            r.getPositiveBody().forEach(l->{
+                assertAtoms.add(getLiteral(l));
+            });
+            r.getNegativeBody().forEach(l->{
+                assertAtoms.add(getLiteral(l));
+            });
+        });
+        assertAtoms.removeAll(U);
+        assertAtoms.forEach(l->{
+            Rule r = new Rule();
+            r.setSoft(false);
+            r.getHead().add(l);
+            r.getHead().add(NOT+l);
+            r.setOriginalrule(l+" | "+NOT+l+".");
+            ecu.add(r);
+        });
+        return ecu;
     }
 
     public boolean isBotRule(Rule rule){
         boolean bot = false;
         for (String headLit : rule.getHead()) {
-            if(U.contains(LpmlnProgramHelper.getLiteral(headLit))){
+            if(U.contains(getLiteral(headLit))){
                 bot = true;
                 break;
             }
@@ -299,14 +387,14 @@ public class KSplitter extends Splitter{
         if(rule.getHead().size()==0){
             bot = true;
             for (String bodyLit : rule.getNegativeBody()){
-                String lit = LpmlnProgramHelper.getLiteral(bodyLit);
+                String lit = getLiteral(bodyLit);
                 if(programLiterals.contains(lit)&&!U.contains(lit)){
                     bot = false;
                     break;
                 }
             }
             for (String bodyLit : rule.getPositiveBody()){
-                String lit = LpmlnProgramHelper.getLiteral(bodyLit);
+                String lit = getLiteral(bodyLit);
                 if(programLiterals.contains(lit)&&!U.contains(lit)){
                     bot = false;
                     break;
@@ -317,7 +405,7 @@ public class KSplitter extends Splitter{
     }
 
     private String getLiteral(String lit){
-        return lit.startsWith(NOT)?lit.substring(NOT.length()):lit;
+        return LpmlnProgramHelper.getLiteral(lit);
     }
 
     public int getAimBotSize() {
@@ -334,5 +422,20 @@ public class KSplitter extends Splitter{
 
     public void setSkipConstruct(boolean skipConstruct) {
         this.skipConstruct = skipConstruct;
+    }
+
+    @Override
+    public Set<String> getAssertAtoms() {
+        return assertAtoms;
+    }
+
+    @Override
+    public Set<Integer> getIn() {
+        return in;
+    }
+
+    @Override
+    public Set<Integer> getOut() {
+        return out;
     }
 }

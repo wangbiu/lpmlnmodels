@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static cn.edu.seu.kse.lpmln.util.CommonStrings.NOT;
+
 public class PESolver extends LPMLNBaseSolver implements Runnable {
     private LpmlnProgram top;
     private Set<String> U;
@@ -17,12 +19,18 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     private LpmlnProgram partialEvaluation;
     private String arch;
     private LPMLNSolver solver;
+    private Set<String> assertAtoms;
+    private Set<Integer> in;
+    private Set<Integer> out;
 
-    public PESolver(LpmlnProgram top, Set<String> U, WeightedAnswerSet x, String arch) {
+    public PESolver(LpmlnProgram top, Set<String> U,Splitter splitter, WeightedAnswerSet x, String arch) {
         this.top = top;
         this.U = U;
         this.x = x;
         this.arch = arch;
+        this.assertAtoms = splitter.getAssertAtoms();
+        this.in = splitter.getIn();
+        this.out = splitter.getOut();
     }
 
     @Override
@@ -99,7 +107,33 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
                 peRules.add(rule);
             }
         }
+
+        List<Rule> eccu = getECCU();
+        peRules.addAll(eccu);
+
         partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule()+botResult.toString(),top.getSolversUsed());
+    }
+
+    private List<Rule> getExternalRule(){
+
+    }
+
+    private List<Rule> getECCU(){
+        List<Rule> eccu = new ArrayList<>();
+        Set<String> xLits = x.getAnswerSet().getLiterals();
+        assertAtoms.forEach(l->{
+            Rule r = new Rule();
+            r.setSoft(false);
+            if(xLits.contains(l)){
+                r.getNegativeBody().add(NOT+l);
+                r.setOriginalrule(":- "+NOT+l+".");
+            }else{
+                r.getPositiveBody().add(l);
+                r.setOriginalrule(":- "+l+".");
+            }
+            eccu.add(r);
+        });
+        return eccu;
     }
 
     private int contains(List<Rule> rules, Rule rule) {

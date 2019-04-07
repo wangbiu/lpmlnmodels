@@ -248,4 +248,17 @@ public class Splitter {
     public Set<String> getU() {
         return U;
     }
+
+
+    public Set<String> getAssertAtoms() {
+        return null;
+    }
+
+    public Set<Integer> getIn() {
+        return null;
+    }
+
+    public Set<Integer> getOut() {
+        return null;
+    }
 }
