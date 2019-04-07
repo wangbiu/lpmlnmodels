@@ -231,6 +231,7 @@ public class LPMLNApp {
                                     break;
                                 case "b":
                                     ((SplittingSolver) solver).setPolicy(SPLIT_BOT);
+                                    break;
                                 case "d":
                                     ((SplittingSolver) solver).setPolicy(SPLIT_DYNAMIC);
                                     break;

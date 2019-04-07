@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static cn.edu.seu.kse.lpmln.util.CommonStrings.NOT;
 import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.reachableToLitSets;
 
 /**
@@ -313,6 +314,10 @@ public class KSplitter extends Splitter{
             }
         }
         return bot;
+    }
+
+    private String getLiteral(String lit){
+        return lit.startsWith(NOT)?lit.substring(NOT.length()):lit;
     }
 
     public int getAimBotSize() {

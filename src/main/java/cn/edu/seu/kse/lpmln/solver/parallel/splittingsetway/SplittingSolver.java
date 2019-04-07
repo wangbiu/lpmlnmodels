@@ -1,11 +1,14 @@
 package cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway;
 
+import cn.edu.seu.kse.lpmln.app.LPMLNApp;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private String arch;
     private SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_DYNAMIC;
     private Splitter outSplitter;
+    private Logger logger = LogManager.getLogger(SplittingSolver.class.getName());
 
     @Override
     public void run() {
@@ -116,7 +120,9 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         //收集过滤回答集
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         topSolvers.forEach(solver -> {
-            //System.out.println(solver.getAllWeightedAs().size()+"spl was collected");
+            if(LPMLNApp.isDebugging()){
+                logger.debug(solver.getAllWeightedAs().size()+" aug was collected");
+            }
             collectedWas.addAll(solver.getAllWeightedAs());
         });
         return collectedWas;
