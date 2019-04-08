@@ -5,6 +5,7 @@ import cn.edu.seu.kse.lpmln.model.HeuristicAugmentedSubset;
 import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.impl.LPMLNCDNLSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
 import cn.edu.seu.kse.lpmln.util.UnionFindSet;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +28,7 @@ public class KSplitter extends Splitter{
     private Map<String,Set<String>> reachable;
     private Set<String> programLiterals;
     private List<DecisionUnit> mdus;
-    private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.SPLIT_DYNAMIC;
+    private SplittingSolver.SPLIT_TYPE policy;
     private Set<String> assertAtoms = new HashSet<>();
     private Set<String> strongNegation = new HashSet<>();
     private Comparator<DecisionUnit> comparatorLit = new Comparator<DecisionUnit>() {
@@ -209,6 +210,7 @@ public class KSplitter extends Splitter{
             case SPLIT_LIT:
                 generateULit();
                 break;
+            case SPLIT_TEST:
             default:
                 generateTest();
                 break;
@@ -216,6 +218,129 @@ public class KSplitter extends Splitter{
     }
 
     private void generateTest(){
+        PriorityQueue<DecisionUnit> nextQueue = new PriorityQueue<>(comparatorLit);
+
+        //初始化U为事实集合
+        LPMLNCDNLSolver solver = new LPMLNCDNLSolver();
+        solver.setLpmlnProgram(lpmlnprogram);
+        solver.init();
+        U = new HashSet<>();
+        U.retainAll(solver.getFacts());
+        Set<String> facts = solver.getLiterals();
+        facts.retainAll(solver.getFacts());
+
+        mdus.forEach(mdu->{
+            if(truthMdu(mdu,U)){
+                addMDUToU(mdu,nextQueue);
+            }else if(mdu.getTo().size()==0){
+                nextQueue.offer(mdu);
+            }
+        });
+
+        int size=1;
+        List<Rule> botRules;
+        while(size<aimBotSize&&nextQueue.size()>0){
+            DecisionUnit du = nextQueue.poll();
+            Set<String> unitLiterals = du.getLit();
+            Map<String,Set<String>> subGraph = getSubDependency(unitLiterals);
+            LinkedList<String> remainNodes = new LinkedList<>(unitLiterals);
+            Set<String> enumSet = new HashSet<>();
+            Map<String,Integer> eval = new HashMap<>();
+            Comparator<String> graphCompare = new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    return eval.get(o1)-eval.get(o2);
+                }
+            };
+            unitLiterals.forEach(lit->{
+                if(facts.contains(lit)){
+                    U.add(lit);
+                    enumSet.addAll(subGraph.get(lit));
+                    removeFromGraph(lit,subGraph);
+                    remainNodes.remove(lit);
+                }
+            });
+
+            while(!remainNodes.isEmpty()&&size<aimBotSize){
+                Set<String> lastU = new HashSet<>(U);
+                refreshEval(eval,subGraph,enumSet);
+                remainNodes.sort(graphCompare);
+                //remain->U,enumSet
+                String cur = remainNodes.poll();
+                U.add(cur);
+                enumSet.addAll(subGraph.get(cur));
+                //graph remove
+                removeFromGraph(cur,subGraph);
+
+                refreshEval(eval,subGraph,enumSet);
+                remainNodes.sort(graphCompare);
+                while(remainNodes.size()>0&&eval.get(remainNodes.peek())<=0){
+                    //<0则肯定被enum过
+                    cur = remainNodes.poll();
+                    U.add(cur);
+                    enumSet.remove(cur);
+                    enumSet.addAll(subGraph.get(cur));
+                    //graph remove
+                    removeFromGraph(cur,subGraph);
+                }
+
+
+                if(U.size()>0.5*programLiterals.size()){
+                    System.out.println("size of U too large:"+size);
+                    U = lastU;
+                    return;
+                }
+                botRules = getBotRules();
+                size = wasSize(botRules);
+            }
+
+            du.getFrom().forEach(father->{
+                father.getTo().remove(du);
+                if(father.getTo().size()==0){
+                    nextQueue.offer(father);
+                }
+            });
+        }
+        while(nextQueue.size()>0){
+            DecisionUnit du = nextQueue.poll();
+            if(truthMdu(du,facts)){
+                addMDUToU(du,nextQueue);
+            }
+        }
+    }
+
+    private void removeFromGraph(String cur,Map<String,Set<String>> subGraph){
+        //graph remove
+        for (String to : subGraph.get(cur)) {
+            subGraph.get(to).remove(cur);
+        }
+        subGraph.remove(cur);
+    }
+
+    private void refreshEval(Map<String,Integer> eval,Map<String,Set<String>> subGraph,Set<String> enumSet){
+        eval.clear();
+        subGraph.forEach((k,v)->{
+            Set<String> extra = new HashSet<>(v);
+            extra.removeAll(enumSet);
+            if(enumSet.contains(k)){
+                eval.put(k,extra.size()-1);
+            }else{
+                eval.put(k,extra.size());
+            }
+        });
+    }
+
+    private Map<String,Set<String>> getSubDependency(Set<String> subset){
+        Map<String,Set<String>> subGraph = new HashMap<>();
+        subset.forEach(lit->subGraph.put(lit,new HashSet<>()));
+        subset.forEach(from->{
+            dependency.get(from).forEach(to->{
+                if(subset.contains(to)&&!from.equals(to)){
+                    subGraph.get(from).add(to);
+                }
+            });
+        });
+        return subGraph;
     }
 
     private void generateUDynamic(){
@@ -277,7 +402,15 @@ public class KSplitter extends Splitter{
     }
 
     private List<Rule> getBotRules(){
-        return lpmlnprogram.getRules().stream().filter(this::isBotRule).collect(Collectors.toList());
+        List<Rule> bottomRules = lpmlnprogram.getRules().stream().filter(this::isBotRule).collect(Collectors.toList());
+        expandBotRules(bottomRules);
+        List<Rule> ecu = getECU(bottomRules);
+        bottomRules.addAll(ecu);
+
+        for(int i=0;i<bottomRules.size();i++){
+            bottomRules.get(i).setId(i);
+        }
+        return bottomRules;
     }
 
     private int wasSize(List<Rule> bottomRules){

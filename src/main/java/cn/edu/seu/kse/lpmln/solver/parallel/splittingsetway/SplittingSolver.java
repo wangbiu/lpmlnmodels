@@ -23,9 +23,9 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
     private List<PESolver> topSolvers;
     public double k=Runtime.getRuntime().availableProcessors();
     private LpmlnThreadPool threadPool;
-    public enum SPLIT_TYPE{SPLIT_ORIGINAL, SPLIT_LIT, SPLIT_BOT,SPLIT_DYNAMIC}
+    public enum SPLIT_TYPE{SPLIT_ORIGINAL, SPLIT_LIT, SPLIT_BOT,SPLIT_DYNAMIC,SPLIT_TEST}
     private String arch;
-    private SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_DYNAMIC;
+    private SPLIT_TYPE policy = SPLIT_TYPE.SPLIT_TEST;
     private Splitter outSplitter;
     private Logger logger = LogManager.getLogger(SplittingSolver.class.getName());
 

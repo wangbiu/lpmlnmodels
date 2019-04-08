@@ -158,7 +158,9 @@ public class LPMLN2ASPTranslator implements LPMLNTranslator {
         StringBuilder sb = new StringBuilder();
         sb.append(getStaticPart());
         getUnknownRules().forEach(rule->{
-            sb.append(rule).append(System.lineSeparator());
+            if(rule.length()>0){
+                sb.append(rule).append(System.lineSeparator());
+            }
         });
         return sb.toString();
     }

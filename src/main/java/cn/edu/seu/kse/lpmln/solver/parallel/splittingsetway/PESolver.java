@@ -51,6 +51,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         solver.setFiltResult(false);
         solver.setCalculatePossibility(false);
         weightedAs = solver.solveProgram(partialEvaluation);
+//        System.out.println("was:"+weightedAs.size()+"\t"+Thread.currentThread().getId());
         combineAnswerSet();
     }
 
@@ -67,7 +68,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             answerSet.setWeights(weights);
             // 加入partial evaluation的SM的所有literal
             answerSet.getAnswerSet().setLiterals(AS.getAnswerSet().getLiterals());
-            answerSet.getAnswerSet().getLiterals().addAll(x.getAnswerSet().getLiterals());
+//            answerSet.getAnswerSet().getLiterals().addAll(x.getAnswerSet().getLiterals());
 //            x.getAnswerSet().getLiterals().forEach(lit -> {
 //                if (!lit.equals("kse_solve_trick")) {
 //                    answerSet.getAnswerSet().add(lit);
@@ -75,6 +76,9 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
 //            });
             // 将新的回答集加入最终结果
             result.add(answerSet);
+        });
+        result.parallelStream().forEach(res->{
+            res.getAnswerSet().getLiterals().addAll(res.getAnswerSet().getLiterals());
         });
         // 过滤并计算概率
 //        weightedAs = calculateProbability(filtWas(result));
@@ -130,6 +134,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             peRules.get(i).setId(i);
         }
 
+//        System.out.println("PE Done");
         partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule(),top.getSolversUsed());
     }
 

@@ -953,4 +953,8 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
     public Set<String> getFacts() {
         return facts;
     }
+
+    public Set<String> getLiterals() {
+        return literals;
+    }
 }
