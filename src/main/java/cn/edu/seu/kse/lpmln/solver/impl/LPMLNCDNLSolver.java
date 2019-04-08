@@ -194,10 +194,9 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
 
 
     /**
-     * debug用
      * @return assignment中的非辅助部分
      */
-    protected List<SignedLiteral> curAssign(){
+    public List<SignedLiteral> curAssign(){
         List<SignedLiteral> res = new ArrayList<>();
         assignment.forEach((k,v)->{
             if(!k.startsWith(EXT)){
@@ -951,4 +950,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         return true;
     }
 
+    public Set<String> getFacts() {
+        return facts;
+    }
 }

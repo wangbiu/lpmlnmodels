@@ -34,6 +34,30 @@ public class LpmlnProgramHelper {
         return dependency;
     }
 
+    public static Map<String,Set<String>> getDependency(LpmlnProgram program,Set<String> ignore){
+        Map<String,Set<String>> dependency = new HashMap<>();
+        program.getRules().forEach(rule -> {
+            Set<String> head = new HashSet<>();
+            Set<String> body = new HashSet<>();
+            Set<String> depend = new HashSet<>();
+            rule.getHead().forEach(lit->head.add(getLiteral(lit)));
+            rule.getPositiveBody().forEach(lit->body.add(getLiteral(lit)));
+            rule.getNegativeBody().forEach(lit->body.add(getLiteral(lit)));
+            head.removeAll(ignore);
+            depend.removeAll(ignore);
+            depend.addAll(head);
+            depend.addAll(body);
+            head.forEach(lit->{
+                if(dependency.containsKey(lit)){
+                    dependency.get(lit).addAll(depend);
+                }else{
+                    dependency.put(lit,depend);
+                }
+            });
+        });
+        return dependency;
+    }
+
     public static Map<String,Set<String>> getPostiveDependency(LpmlnProgram program){
         Map<String,Set<String>> dependency = new HashMap<>();
         program.getRules().forEach(rule -> {

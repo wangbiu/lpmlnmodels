@@ -5,12 +5,13 @@ import cn.edu.seu.kse.lpmln.model.Rule;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import static cn.edu.seu.kse.lpmln.util.CommonStrings.EXT;
 import static cn.edu.seu.kse.lpmln.util.CommonStrings.NOT;
+import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.getLiteral;
 
 public class PESolver extends LPMLNBaseSolver implements Runnable {
     private LpmlnProgram top;
@@ -22,6 +23,16 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     private Set<String> assertAtoms;
     private Set<Integer> in;
     private Set<Integer> out;
+    private Set<Set<String>> scc;
+    private Set<String> headInuP;
+    private Set<String> bodyPOutuP;
+    private Set<String> supportedLit = new HashSet<>();
+    private Map<Integer,String> supLit = new HashMap<>();
+    private Map<String,Integer> litToSL = new HashMap<>();
+    private List<Set<String>> sl = new ArrayList<>();
+    private List<Rule> eccu;
+    private List<Rule> external;
+
 
     public PESolver(LpmlnProgram top, Set<String> U,Splitter splitter, WeightedAnswerSet x, String arch) {
         this.top = top;
@@ -56,6 +67,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             answerSet.setWeights(weights);
             // 加入partial evaluation的SM的所有literal
             answerSet.getAnswerSet().setLiterals(AS.getAnswerSet().getLiterals());
+            answerSet.getAnswerSet().getLiterals().addAll(x.getAnswerSet().getLiterals());
 //            x.getAnswerSet().getLiterals().forEach(lit -> {
 //                if (!lit.equals("kse_solve_trick")) {
 //                    answerSet.getAnswerSet().add(lit);
@@ -70,17 +82,23 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     }
 
     private void generatePartialEvaluation() {
+        eccu = getECCU();
+        external = getExternalRule();
         // 1. 计算deleting set
         List<Rule> deletingSet = getDeletingSet();
 
-        StringBuilder botResult = new StringBuilder();
-        x.getAnswerSet().getLiterals().forEach(lit->{
-            botResult.append(lit).append(".").append(System.lineSeparator());
-        });
+//        StringBuilder botResult = new StringBuilder();
+//        x.getAnswerSet().getLiterals().forEach(lit->{
+//            botResult.append(lit).append(".").append(System.lineSeparator());
+//        });
 
         // 2. 计算partial evaluation
         List<Rule> peRules = new ArrayList<>();
-        for (Rule rule: top.getRules()) {
+        List<Rule> candidate = new ArrayList<>(top.getRules());
+        candidate.addAll(eccu);
+        candidate.addAll(external);
+
+        for (Rule rule: candidate) {
             if(rule.isUnWeighted()){
                 peRules.add(rule);
                 continue;
@@ -108,14 +126,112 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             }
         }
 
-        List<Rule> eccu = getECCU();
-        peRules.addAll(eccu);
+        for(int i=0;i<peRules.size();i++){
+            peRules.get(i).setId(i);
+        }
 
-        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule()+botResult.toString(),top.getSolversUsed());
+        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule(),top.getSolversUsed());
     }
 
     private List<Rule> getExternalRule(){
+        List<Rule> external = new ArrayList<>();
+        getSupport();
+        getDsl();
 
+        in.forEach(idx->{
+            String head = supLit.get(idx);
+            Integer slIdx = litToSL.get(head);
+            if(slIdx!=null){
+                Rule r = new Rule();
+                r.setSoft(false);
+                r.getPositiveBody().addAll(lpmlnProgram.getRules().get(idx).getPositiveBody());
+                r.getNegativeBody().addAll(lpmlnProgram.getRules().get(idx).getNegativeBody());
+                r.getHead().add(EXT+"xE_"+slIdx);
+                r.setOriginalrule(getText(r,true));
+                external.add(r);
+            }
+        });
+
+        out.forEach(idx->{
+            Rule original = lpmlnProgram.getRules().get(idx).clone();
+            Rule r = new Rule();
+            r.setSoft(original.isSoft());
+            r.setWeight(original.getWeight());
+            r.setPositiveBody(original.getPositiveBody());
+            r.setNegativeBody(original.getNegativeBody());
+            r.setHead(original.getHead());
+            original.getPositiveBody().forEach(pb->{
+                if(litToSL.containsKey(pb)){
+                    Integer slIdx = litToSL.get(pb);
+                    r.getPositiveBody().add(EXT+"xE_"+slIdx);
+                }
+            });
+            r.setOriginalrule(getText(r,true));
+            external.add(r);
+        });
+
+        return external;
+    }
+
+    private void getDsl(){
+        scc = LpmlnProgramHelper.reachableToLitSets(LpmlnProgramHelper.dependToReachable(LpmlnProgramHelper.getDependency(lpmlnProgram,supportedLit)));
+
+        headInuP = new HashSet<>();
+        bodyPOutuP = new HashSet<>();
+
+        in.forEach(idx->{
+            lpmlnProgram.getRules().get(idx).getHead().forEach(l->headInuP.add(getLiteral(l)));
+        });
+
+        out.forEach(idx->{
+            lpmlnProgram.getRules().get(idx).getPositiveBody().forEach(l->headInuP.add(getLiteral(l)));
+        });
+
+        scc.forEach(loop->{
+            Set<String> s1 = new HashSet<>(loop);
+            Set<String> s2 = new HashSet<>(loop);
+            s1.retainAll(headInuP);
+            s2.retainAll(bodyPOutuP);
+            if(s1.isEmpty()||s2.isEmpty()){
+                return;
+            }
+            loop.forEach(l->{
+                litToSL.put(l,sl.size());
+            });
+            sl.add(loop);
+        });
+    }
+
+    private void getSupport(){
+        for(int i=0;i<lpmlnProgram.getRules().size();i++){
+            Rule r = lpmlnProgram.getRules().get(i);
+            for (String pb : r.getPositiveBody()) {
+                pb = getLiteral(pb);
+                if(!x.getAnswerSet().getLiterals().contains(pb)){
+                    return;
+                }
+            }
+            for (String nb : r.getNegativeBody()) {
+                nb = getLiteral(nb);
+                if(!U.contains(nb)||x.getAnswerSet().getLiterals().contains(nb)){
+                    return;
+                }
+            }
+            String sup = null;
+            for (String h : r.getHead()) {
+                h = getLiteral(h);
+                if(x.getAnswerSet().getLiterals().contains(h)){
+                    if(sup!=null){
+                        return;
+                    }
+                    sup = h;
+                }
+            }
+            if(sup!=null){
+                supLit.put(i,sup);
+                supportedLit.add(sup);
+            }
+        }
     }
 
     private List<Rule> getECCU(){
@@ -181,7 +297,10 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         Set<String> X = x.getAnswerSet().getLiterals();
         X.removeIf(literal -> literal.equals("kse_solve_trick"));
         List<Rule> DS = new ArrayList<>();
-        for (Rule rule: top.getRules()) {
+        List<Rule> candidates = new ArrayList<>(top.getRules());
+        candidates.addAll(eccu);
+        candidates.addAll(external);
+        for (Rule rule: candidates) {
             boolean willAdd = false;
             boolean isNull = true;
             for (String pb: rule.getPositiveBody()) {
@@ -202,7 +321,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             willAdd = false;
             for (String nb: rule.getNegativeBody()) {
                 String[] nbs = nb.split(" ");
-                if (U.contains(nbs[1])) {
+                if (U.contains(getLiteral(nbs[1]))) {
                     if (X.contains(nbs[1])) {
                         willAdd = true;
                         break;

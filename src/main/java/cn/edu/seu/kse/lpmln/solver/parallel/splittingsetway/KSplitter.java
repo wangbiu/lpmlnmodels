@@ -29,6 +29,7 @@ public class KSplitter extends Splitter{
     private List<DecisionUnit> mdus;
     private SplittingSolver.SPLIT_TYPE policy = SplittingSolver.SPLIT_TYPE.SPLIT_DYNAMIC;
     private Set<String> assertAtoms = new HashSet<>();
+    private Set<String> strongNegation = new HashSet<>();
     private Comparator<DecisionUnit> comparatorLit = new Comparator<DecisionUnit>() {
         @Override
         public int compare(DecisionUnit o1, DecisionUnit o2) {
@@ -65,12 +66,17 @@ public class KSplitter extends Splitter{
             this.dependency = LpmlnProgramHelper.getDependency(program);
 
             this.mdus = generateMDUs();
+
+            lpmlnprogram.getRules().forEach(r->{
+                r.getHead().forEach(l->{ if (l.startsWith("-")) { strongNegation.add(getLiteral(l)); } });
+                r.getPositiveBody().forEach(l->{ if (l.startsWith("-")) { strongNegation.add(getLiteral(l)); } });
+            });
             buildRelations();
         }
 
-        generateInOut();
-
         generateU();
+
+        generateInOut();
 
         generateTopAndBottom();
     }
@@ -193,23 +199,23 @@ public class KSplitter extends Splitter{
     }
 
     private void generateU(){
-//        switch (policy){
-//            case SPLIT_DYNAMIC:
-//                generateUDynamic();
-//                break;
-//            case SPLIT_BOT:
-//                generateUBot();
-//                break;
-//            case SPLIT_LIT:
-//            default:
-//                generateULit();
-//                break;
-//        }
-        U = new HashSet<>();
-        List<String> lits = new ArrayList<>(programLiterals);
-        for(int i=0;i<3;i++){
-            U.add(lits.get(2));
+        switch (policy){
+            case SPLIT_DYNAMIC:
+                generateUDynamic();
+                break;
+            case SPLIT_BOT:
+                generateUBot();
+                break;
+            case SPLIT_LIT:
+                generateULit();
+                break;
+            default:
+                generateTest();
+                break;
         }
+    }
+
+    private void generateTest(){
     }
 
     private void generateUDynamic(){
@@ -344,10 +350,42 @@ public class KSplitter extends Splitter{
                 topRules.add(rule);
             }
         }
+        expandBotRules(bottomRules);
         List<Rule> ecu = getECU(bottomRules);
         bottomRules.addAll(ecu);
+
+        for(int i=0;i<bottomRules.size();i++){
+            bottomRules.get(i).setId(i);
+        }
+
         bottom = new LpmlnProgram(bottomRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), "",lpmlnprogram.getSolversUsed());
         top = new LpmlnProgram(topRules, lpmlnprogram.getFactor(), lpmlnprogram.getHerbrandUniverse(), lpmlnprogram.getMetarule(),lpmlnprogram.getSolversUsed());
+    }
+
+    private void expandBotRules(List<Rule> bottomRules){
+        Set<String> literals = new HashSet<>();
+        bottomRules.forEach(r->{
+            r.getHead().forEach(l->literals.add(getLiteral(l)));
+            r.getPositiveBody().forEach(l->literals.add(getLiteral(l)));
+            r.getNegativeBody().forEach(l->literals.add(getLiteral(l)));
+        });
+        lpmlnprogram.getRules().forEach(rule->{
+            if(rule.getHead().size()==0){
+                for (String bodyLit : rule.getNegativeBody()){
+                    String lit = getLiteral(bodyLit);
+                    if(programLiterals.contains(lit)&&!literals.contains(lit)){
+                        return;
+                    }
+                }
+                for (String bodyLit : rule.getPositiveBody()){
+                    String lit = getLiteral(bodyLit);
+                    if(programLiterals.contains(lit)&&!literals.contains(lit)){
+                        return;
+                    }
+                }
+                bottomRules.add(rule);
+            }
+        });
     }
 
     private List<Rule> getECU(List<Rule> bottomRules){
@@ -372,6 +410,14 @@ public class KSplitter extends Splitter{
             r.getHead().add(NOT+l);
             r.setOriginalrule(l+" | "+NOT+l+".");
             ecu.add(r);
+            if(strongNegation.contains(l)){
+                r = new Rule();
+                r.setSoft(false);
+                r.getHead().add("-"+l);
+                r.getHead().add(NOT+"-"+l);
+                r.setOriginalrule("-"+l+" | "+NOT+"-"+l+".");
+                ecu.add(r);
+            }
         });
         return ecu;
     }
@@ -382,23 +428,6 @@ public class KSplitter extends Splitter{
             if(U.contains(getLiteral(headLit))){
                 bot = true;
                 break;
-            }
-        }
-        if(rule.getHead().size()==0){
-            bot = true;
-            for (String bodyLit : rule.getNegativeBody()){
-                String lit = getLiteral(bodyLit);
-                if(programLiterals.contains(lit)&&!U.contains(lit)){
-                    bot = false;
-                    break;
-                }
-            }
-            for (String bodyLit : rule.getPositiveBody()){
-                String lit = getLiteral(bodyLit);
-                if(programLiterals.contains(lit)&&!U.contains(lit)){
-                    bot = false;
-                    break;
-                }
             }
         }
         return bot;

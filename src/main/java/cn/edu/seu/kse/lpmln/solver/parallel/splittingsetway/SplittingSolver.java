@@ -90,6 +90,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         // 3. 并行求Partial Evaluation
         Xs.forEach(AS -> {
             PESolver solver = new PESolver(top.clone(), U,splitter, AS,arch);
+            solver.setLpmlnProgram(lpmlnProgram);
             topSolvers.add(solver);
             solver.setFiltResult(false);
             solver.setCalculatePossibility(false);
@@ -121,7 +122,7 @@ public class SplittingSolver extends LPMLNBaseSolver implements Runnable {
         List<WeightedAnswerSet> collectedWas = new ArrayList<>();
         topSolvers.forEach(solver -> {
             if(LPMLNApp.isDebugging()){
-                logger.debug(solver.getAllWeightedAs().size()+" aug was collected");
+                logger.debug(solver.getAllWeightedAs().size()+" was collected");
             }
             collectedWas.addAll(solver.getAllWeightedAs());
         });
