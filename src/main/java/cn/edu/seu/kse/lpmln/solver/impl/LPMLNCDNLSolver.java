@@ -918,7 +918,7 @@ public class LPMLNCDNLSolver extends LPMLNBaseSolver{
         rules.forEach(r->{
             if(isViolated(r)){
                 //TODO:小数处理
-                was.getWeights().set(0,was.getWeights().get(0)+(int)r.getWeight());
+                was.getWeights().set(0,was.getWeights().get(0)+(int)(r.getWeight()*Math.pow(10,lpmlnProgram.getFactor())));
             }
         });
         assignment.forEach((k,v)->{
