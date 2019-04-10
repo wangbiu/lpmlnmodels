@@ -14,7 +14,7 @@ public class tsp {
     private static final int count=40;
     private static final String basePath = "/lpmlnexperiment/benchmark/tsp/";
     private static final Random rand = new Random();
-    private static final double k=0.6;
+    private static final double k=0.7;
 
     @Test
     public void exec(){

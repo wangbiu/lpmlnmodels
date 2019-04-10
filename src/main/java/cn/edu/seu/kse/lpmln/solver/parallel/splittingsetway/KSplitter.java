@@ -360,7 +360,7 @@ public class KSplitter extends Splitter{
             DecisionUnit du = nextQueue.poll();
             Set<String> lastU = new HashSet<>(U);
             addMDUToU(du,nextQueue);
-            if(U.size()>0.7*programLiterals.size()){
+            if(U.size()>0.5*programLiterals.size()){
                 System.out.println("size of U too large:"+size);
                 U = lastU;
                 return;
