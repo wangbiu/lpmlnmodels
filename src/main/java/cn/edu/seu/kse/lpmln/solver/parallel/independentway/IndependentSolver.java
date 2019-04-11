@@ -4,6 +4,7 @@ import cn.edu.seu.kse.lpmln.model.LpmlnProgram;
 import cn.edu.seu.kse.lpmln.model.WeightedAnswerSet;
 import cn.edu.seu.kse.lpmln.solver.LPMLNSolver;
 import cn.edu.seu.kse.lpmln.solver.impl.LPMLNBaseSolver;
+import cn.edu.seu.kse.lpmln.solver.parallel.splittingsetway.SplittingSolver;
 import cn.edu.seu.kse.lpmln.util.LpmlnThreadPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,7 +61,7 @@ public class IndependentSolver extends LPMLNBaseSolver{
         }
         if(subprograms==null||subprograms.size()==1){
             System.out.println("unable to do independent split");
-            LPMLNSolver solver = chooseSolver(arch,lpmlnProgram);
+            LPMLNSolver solver = new SplittingSolver();
             solver.setFiltResult(false);
             solver.setCalculatePossibility(false);
             solver.solveProgram(lpmlnProgram);
@@ -76,7 +77,7 @@ public class IndependentSolver extends LPMLNBaseSolver{
         solvers.clear();
         subprograms.forEach(subprogram -> {
             //TODO:使用反射创建
-            LPMLNSolver solver = chooseSolver(arch,subprogram);
+            LPMLNSolver solver = new SplittingSolver();
             solver.setLpmlnProgram(subprogram);
             solver.setFiltResult(false);
             solver.setCalculatePossibility(false);

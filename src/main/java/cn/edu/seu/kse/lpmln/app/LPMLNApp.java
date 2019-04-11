@@ -71,6 +71,7 @@ public class LPMLNApp {
 
         //初始化参数
         initLpmlnmodels(cmd);
+        solver = new IndependentSolver();
 
         if(LPMLNApp.isDebugging()) {
             logger.debug("solve instance:{}", solver.getClass().getName());

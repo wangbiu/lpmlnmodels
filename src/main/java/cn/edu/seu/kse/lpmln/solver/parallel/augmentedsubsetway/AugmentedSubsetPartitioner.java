@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * Created by 许鸿翔 on 2017/9/23.
  */
 public class AugmentedSubsetPartitioner {
-    protected SPLIT_TYPE policy = SPLIT_TYPE.DIVIDE_HEURISTIC;
+    protected SPLIT_TYPE policy = SPLIT_TYPE.DIVIDE_NOGOOD;
 
     private static Logger logger = LogManager.getLogger(AugmentedSubsetPartitioner.class.getName());
 

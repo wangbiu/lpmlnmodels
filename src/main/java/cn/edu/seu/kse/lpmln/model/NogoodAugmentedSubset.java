@@ -64,7 +64,7 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
             double as1 = sat.getEvaluation();
             double as2 = unsat.getEvaluation();
             if(load.size()>0 &&
-                    as1+as2<load.peek().getEvaluation()){
+                    less(as1,as2,load.peek().getEvaluation())){
                 //<<
                 sat.evaluator.recover();
                 unsat.evaluator.recover();
@@ -108,6 +108,20 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
         evaluationUpper = -1;
         return null;
+    }
+
+    private boolean less(double a1,double a2,double loadPk){
+        double bigger = Math.max(a1,a2);
+        double smaller = Math.min(a1,a2);
+        if(bigger<loadPk){
+            if(loadPk-bigger>1){
+                return true;
+            }else{
+                return Math.pow(2,loadPk-bigger)-1-Math.pow(2,smaller-bigger)>0;
+            }
+        }else{
+            return false;
+        }
     }
 
     private NogoodAugmentedSubset copy(){
