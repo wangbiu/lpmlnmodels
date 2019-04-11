@@ -53,13 +53,36 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         solver.setFiltResult(false);
         solver.setCalculatePossibility(false);
         weightedAs = solver.solveProgram(partialEvaluation);
+        filtX();
 //        System.out.println("was:"+weightedAs.size()+"\t"+Thread.currentThread().getId());
         combineAnswerSet();
+    }
+
+    private void filtX(){
+        String[] metas = lpmlnProgram.getMetarule().split("\r\n");
+        if(metas.length>0){
+            Set<String> filt = new HashSet<>();
+            for (String meta : metas) {
+                meta = meta.substring(SHOW.length());
+                meta = meta.substring(0,meta.indexOf("/"));
+                filt.add(meta);
+            }
+            Iterator<String> xiter = x.getAnswerSet().getLiterals().iterator();
+            while (xiter.hasNext()){
+                String str = xiter.next();
+                int aim = str.indexOf("(");
+                aim = aim>0?aim:str.length();
+                if(!filt.contains(str.substring(0,aim))){
+                    xiter.remove();
+                }
+            }
+        }
     }
 
     // TODO: following function might not be correct!
     private void combineAnswerSet() {
         weightedAs.forEach(AS -> {
+            AS.getAnswerSet().getLiterals().addAll(x.getAnswerSet().getLiterals());
             // 权重对应相加
             for (int i = 0; i < 2; i++) {
                 AS.getWeights().set(i,x.getWeights().get(i)+AS.getWeights().get(i));
@@ -119,7 +142,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         }
 
 //        System.out.println("PE Done");
-        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule()+botResult,top.getSolversUsed());
+        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule(),top.getSolversUsed());
     }
 
     private List<Rule> getExternalRule(){
