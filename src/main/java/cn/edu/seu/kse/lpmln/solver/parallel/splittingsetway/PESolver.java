@@ -32,6 +32,8 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     private List<Set<String>> sl = new ArrayList<>();
     private List<Rule> eccu;
     private List<Rule> external;
+    private Set<String> metaFilt = new HashSet<>();
+    private static final String SHOW = "#show ";
 
 
     public PESolver(LpmlnProgram top, Set<String> U,Splitter splitter, WeightedAnswerSet x, String arch) {
@@ -57,32 +59,12 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
 
     // TODO: following function might not be correct!
     private void combineAnswerSet() {
-        List<WeightedAnswerSet> result = new ArrayList<>();
         weightedAs.forEach(AS -> {
-            WeightedAnswerSet answerSet = new WeightedAnswerSet();
-            List<Integer> weights = new ArrayList<>();
             // 权重对应相加
             for (int i = 0; i < 2; i++) {
-                weights.add(x.getWeights().get(i) + AS.getWeights().get(i));
+                AS.getWeights().set(i,x.getWeights().get(i)+AS.getWeights().get(i));
             }
-            answerSet.setWeights(weights);
-            // 加入partial evaluation的SM的所有literal
-            answerSet.getAnswerSet().setLiterals(AS.getAnswerSet().getLiterals());
-//            answerSet.getAnswerSet().getLiterals().addAll(x.getAnswerSet().getLiterals());
-//            x.getAnswerSet().getLiterals().forEach(lit -> {
-//                if (!lit.equals("kse_solve_trick")) {
-//                    answerSet.getAnswerSet().add(lit);
-//                }
-//            });
-            // 将新的回答集加入最终结果
-            result.add(answerSet);
         });
-        result.parallelStream().forEach(res->{
-            res.getAnswerSet().getLiterals().addAll(res.getAnswerSet().getLiterals());
-        });
-        // 过滤并计算概率
-//        weightedAs = calculateProbability(filtWas(result));
-        weightedAs = result;
     }
 
     private void generatePartialEvaluation() {
@@ -91,10 +73,12 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         // 1. 计算deleting set
         List<Rule> deletingSet = getDeletingSet();
 
-//        StringBuilder botResult = new StringBuilder();
-//        x.getAnswerSet().getLiterals().forEach(lit->{
-//            botResult.append(lit).append(".").append(System.lineSeparator());
-//        });
+        StringBuilder botResult = new StringBuilder();
+        x.getAnswerSet().getLiterals().forEach(lit->{
+            if(U.contains(lit)){
+                botResult.append(lit).append(".").append(System.lineSeparator());
+            }
+        });
 
         // 2. 计算partial evaluation
         List<Rule> peRules = new ArrayList<>();
@@ -135,7 +119,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         }
 
 //        System.out.println("PE Done");
-        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule(),top.getSolversUsed());
+        partialEvaluation = new LpmlnProgram(peRules, top.getFactor(), top.getHerbrandUniverse(), top.getMetarule()+botResult,top.getSolversUsed());
     }
 
     private List<Rule> getExternalRule(){
