@@ -9,7 +9,6 @@ import cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper;
 
 import java.util.*;
 
-import static cn.edu.seu.kse.lpmln.util.CommonStrings.EXT;
 import static cn.edu.seu.kse.lpmln.util.CommonStrings.NOT;
 import static cn.edu.seu.kse.lpmln.util.LpmlnProgramHelper.getLiteral;
 
@@ -34,6 +33,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     private List<Rule> external;
     private Set<String> metaFilt = new HashSet<>();
     private static final String SHOW = "#show ";
+    private boolean splittingSet = false;
 
 
     public PESolver(LpmlnProgram top, Set<String> U,Splitter splitter, WeightedAnswerSet x, String arch) {
@@ -44,6 +44,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         this.assertAtoms = splitter.getAssertAtoms();
         this.in = splitter.getIn();
         this.out = splitter.getOut();
+        this.splittingSet = splitter.isSplittingSet();
     }
 
     @Override
@@ -91,8 +92,17 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     }
 
     private void generatePartialEvaluation() {
-        eccu = getECCU();
-        external = getExternalRule();
+        if(splittingSet){
+            eccu = new ArrayList<>();
+            external = new ArrayList<>();
+            out.forEach(idx->{
+                external.add(lpmlnProgram.getRules().get(idx).clone());
+            });
+        }else{
+            eccu = getECCU();
+            external = getExternalRule();
+        }
+
         // 1. 计算deleting set
         List<Rule> deletingSet = getDeletingSet();
 
@@ -158,7 +168,7 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
                 r.setSoft(false);
                 r.getPositiveBody().addAll(lpmlnProgram.getRules().get(idx).getPositiveBody());
                 r.getNegativeBody().addAll(lpmlnProgram.getRules().get(idx).getNegativeBody());
-                r.getHead().add(EXT+"xE_"+slIdx);
+                r.getHead().add("xE_"+slIdx);
                 r.setOriginalrule(getText(r,true));
                 external.add(r);
             }
@@ -169,13 +179,13 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
             Rule r = new Rule();
             r.setSoft(original.isSoft());
             r.setWeight(original.getWeight());
-            r.setPositiveBody(original.getPositiveBody());
-            r.setNegativeBody(original.getNegativeBody());
+            r.setPositiveBody(new ArrayList<>(original.getPositiveBody()));
+            r.setNegativeBody(new ArrayList<>(original.getNegativeBody()));
             r.setHead(original.getHead());
             original.getPositiveBody().forEach(pb->{
                 if(litToSL.containsKey(pb)){
                     Integer slIdx = litToSL.get(pb);
-                    r.getPositiveBody().add(EXT+"xE_"+slIdx);
+                    r.getPositiveBody().add("xE_"+slIdx);
                 }
             });
             r.setOriginalrule(getText(r,true));
@@ -186,7 +196,8 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
     }
 
     private void getDsl(){
-        scc = LpmlnProgramHelper.reachableToLitSets(LpmlnProgramHelper.dependToReachable(LpmlnProgramHelper.getDependency(lpmlnProgram,supportedLit)));
+        Map<String,Set<String>> gp = LpmlnProgramHelper.getDependency(lpmlnProgram);
+        scc = LpmlnProgramHelper.reachableToLitSets(LpmlnProgramHelper.dependToReachable(gp));
 
         headInuP = new HashSet<>();
         bodyPOutuP = new HashSet<>();
@@ -196,49 +207,167 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         });
 
         out.forEach(idx->{
-            lpmlnProgram.getRules().get(idx).getPositiveBody().forEach(l->headInuP.add(getLiteral(l)));
+            lpmlnProgram.getRules().get(idx).getPositiveBody().forEach(l->bodyPOutuP.add(getLiteral(l)));
         });
 
-        scc.forEach(loop->{
-            Set<String> s1 = new HashSet<>(loop);
-            Set<String> s2 = new HashSet<>(loop);
-            s1.retainAll(headInuP);
-            s2.retainAll(bodyPOutuP);
-            if(s1.isEmpty()||s2.isEmpty()){
-                return;
-            }
-            loop.forEach(l->{
-                litToSL.put(l,sl.size());
+        Set<Set<String>> s1s = subsets(headInuP);
+        Set<Set<String>> s2s = subsets(bodyPOutuP);
+
+        s1s.forEach(s1->{
+            s2s.forEach(s2->{
+                Set<String> induced = new HashSet<>(headInuP);
+                induced.addAll(bodyPOutuP);
+                induced.removeAll(s1);
+                induced.removeAll(s2);
+                Set<String> loop;
+                while(true){
+                    loop = scc(gp,induced,s1.iterator().next());
+                    if(loop.size()==0){
+                        return;
+                    }
+                    Set<String> e = new HashSet<>(loop);
+                    e.retainAll(U);
+                    Set<Integer> rNegIdxs = rNeg(e);
+                    if(x.getAnswerSet().getLiterals().containsAll(e)&&
+                            in.containsAll(rNegIdxs)){
+                        e.forEach(l->{
+                            litToSL.put(l,sl.size());
+                        });
+                        sl.add(e);
+                        return;
+                    }else{
+                        Set<String> s = new HashSet<>();
+                        rNegIdxs.forEach(idx->{
+                            lpmlnProgram.getRules().get(idx).getHead().forEach(h->{
+                                s.add(getLiteral(h));
+                            });
+                        });
+                        e.removeAll(x.getAnswerSet().getLiterals());
+                        s.addAll(e);
+                        induced.addAll(s);
+                    }
+                }
+
             });
-            sl.add(loop);
         });
+
+
+//        scc.forEach(loop->{
+//            Set<String> s1 = new HashSet<>(loop);
+//            Set<String> s2 = new HashSet<>(loop);
+//            s1.retainAll(headInuP);
+//            s2.retainAll(bodyPOutuP);
+//            if(s1.isEmpty()||s2.isEmpty()){
+//                return;
+//            }
+//            loop.forEach(l->{
+//                litToSL.put(l,sl.size());
+//            });
+//            sl.add(loop);
+//        });
+    }
+
+    private Set<Integer> rNeg(Set<String> e){
+        Set<Integer> idxs = new HashSet<>();
+        supLit.forEach((k,v)->{
+            if(e.contains(v)){
+                idxs.add(k);
+            }
+        });
+        return idxs;
+    }
+
+    private Set<String> scc(Map<String,Set<String>> gp, Set<String> induced, String key){
+        Set<String> scc = new HashSet<>();
+        if(induced.contains(key)){
+            return scc;
+        }
+        LinkedList<String> tovisit = new LinkedList<>();
+        tovisit.add(key);
+        scc.add(key);
+        while(!tovisit.isEmpty()){
+            String cur = tovisit.poll();
+            gp.getOrDefault(cur,new HashSet<>()).forEach(to->{
+                if(!induced.contains(to)&&!scc.contains(to)){
+                    tovisit.offer(to);
+                    scc.add(to);
+                }
+            });
+        }
+        return scc;
+    }
+
+    private Set<Set<String>> subsets(Set<String> sst){
+        List<String> eles = new ArrayList<>(sst);
+        Set<Set<String>> subs = new HashSet<>();
+        boolean[] permutation = new boolean[eles.size()];
+        //不要空集
+        while(next(permutation)){
+            Set<String> sub = new HashSet<>();
+            for(int i=0;i<eles.size();i++){
+                if(permutation[i]){
+                    sub.add(eles.get(i));
+                }
+            }
+            subs.add(sub);
+        }
+        return subs;
+    }
+
+    private boolean next(boolean[] permutation){
+        int idx=0;
+        while (idx<permutation.length){
+            if(!permutation[idx]){
+                permutation[idx] = true;
+                return true;
+            }else{
+                permutation[idx] = false;
+                idx++;
+            }
+        }
+        return false;
     }
 
     private void getSupport(){
+//        Set<String> aim = new HashSet<>();
+//        aim.add("fire(0,0)");
+//        aim.add("fire(0,2)");
+//        aim.add("fire(2,1)");
+//        aim.add("fire(2,0)");
+//        if(x.getAnswerSet().getLiterals().containsAll(aim)){
+//            System.out.println();
+//        }
         for(int i=0;i<lpmlnProgram.getRules().size();i++){
+            boolean nextRule = false;
             Rule r = lpmlnProgram.getRules().get(i);
             for (String pb : r.getPositiveBody()) {
                 pb = getLiteral(pb);
                 if(!x.getAnswerSet().getLiterals().contains(pb)){
-                    return;
+                    nextRule = true;
+                    break;
                 }
             }
+            if(nextRule) continue;
             for (String nb : r.getNegativeBody()) {
                 nb = getLiteral(nb);
                 if(!U.contains(nb)||x.getAnswerSet().getLiterals().contains(nb)){
-                    return;
+                    nextRule = true;
+                    break;
                 }
             }
+            if(nextRule) continue;
             String sup = null;
             for (String h : r.getHead()) {
                 h = getLiteral(h);
                 if(x.getAnswerSet().getLiterals().contains(h)){
                     if(sup!=null){
-                        return;
+                        nextRule = true;
+                        break;
                     }
                     sup = h;
                 }
             }
+            if(nextRule) continue;
             if(sup!=null){
                 supLit.put(i,sup);
                 supportedLit.add(sup);

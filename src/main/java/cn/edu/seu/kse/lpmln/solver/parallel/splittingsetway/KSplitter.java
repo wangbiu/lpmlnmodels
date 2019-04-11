@@ -48,6 +48,7 @@ public class KSplitter extends Splitter{
     private boolean skipConstruct = false;
     private Set<Integer> in = new HashSet<>();
     private Set<Integer> out = new HashSet<>();
+    private boolean splittingSet = false;
 
     public KSplitter(){
 
@@ -260,7 +261,9 @@ public class KSplitter extends Splitter{
                     remainNodes.remove(lit);
                 }
             });
-
+            if(remainNodes.size()>0){
+                splittingSet = false;
+            }
             while(!remainNodes.isEmpty()&&size<aimBotSize){
                 Set<String> lastU = new HashSet<>(U);
                 refreshEval(eval,subGraph,enumSet);
@@ -288,10 +291,16 @@ public class KSplitter extends Splitter{
                 if(U.size()>0.5*programLiterals.size()){
                     System.out.println("size of U too large:"+size);
                     U = lastU;
+                    if(remainNodes.size()==0){
+                        splittingSet = true;
+                    }
                     return;
                 }
                 botRules = getBotRules();
                 size = wasSize(botRules);
+            }
+            if(remainNodes.size()==0){
+                splittingSet = true;
             }
 
             du.getFrom().forEach(father->{
@@ -599,5 +608,9 @@ public class KSplitter extends Splitter{
     @Override
     public Set<Integer> getOut() {
         return out;
+    }
+
+    public boolean isSplittingSet() {
+        return splittingSet;
     }
 }

@@ -261,4 +261,8 @@ public class Splitter {
     public Set<Integer> getOut() {
         return null;
     }
+
+    public boolean isSplittingSet() {
+        return false;
+    }
 }
