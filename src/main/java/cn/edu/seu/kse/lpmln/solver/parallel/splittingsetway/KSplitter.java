@@ -48,7 +48,7 @@ public class KSplitter extends Splitter{
     private boolean skipConstruct = false;
     private Set<Integer> in = new HashSet<>();
     private Set<Integer> out = new HashSet<>();
-    private boolean splittingSet = false;
+    private boolean splittingSet = true;
 
     public KSplitter(){
 
