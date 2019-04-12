@@ -63,18 +63,20 @@ public class NogoodAugmentedSubset extends AugmentedSubset{
 
             double as1 = sat.getEvaluation();
             double as2 = unsat.getEvaluation();
+            double tempUpper;
+            double bigger = Math.max(as1,as2);
+            double smaller = Math.min(as1,as2);
+            if(bigger-smaller>64){
+                tempUpper = Math.min(bigger,evaluationUpper);
+            }else{
+                tempUpper = Math.min(Math.log(Math.pow(2,bigger-smaller)+1)/Math.log(2)+smaller,evaluationUpper);
+            }
             if(load.size()>0 &&
-                    less(as1,as2,load.peek().getEvaluation())){
+                    tempUpper<load.peek().getEvaluation()){
                 //<<
                 sat.evaluator.recover();
                 unsat.evaluator.recover();
-                double bigger = Math.max(as1,as2);
-                double smaller = Math.min(as1,as2);
-                if(bigger-smaller>64){
-                    evaluationUpper = Math.min(bigger,evaluationUpper);
-                }else{
-                    evaluationUpper = Math.min(Math.log(Math.pow(2,bigger-smaller)+1)/Math.log(2)+smaller,evaluationUpper);
-                }
+                evaluationUpper = tempUpper;
                 return null;
             }
 //            else if((sum/as1>aimCount||sum/as2>aimCount)&&

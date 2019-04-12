@@ -56,9 +56,9 @@ public class PESolver extends LPMLNBaseSolver implements Runnable {
         solver.setCalculatePossibility(false);
         weightedAs = solver.solveProgram(partialEvaluation);
         filtX();
-        if(weightedAs.size()!=new LPMLNBaseSolver().solveProgram(partialEvaluation).size()){
-            System.out.println(123);
-        }
+//        if(weightedAs.size()!=new LPMLNBaseSolver().solveProgram(partialEvaluation).size()){
+//            System.out.println(123);
+//        }
 //        System.out.println("was:"+weightedAs.size()+"\t"+Thread.currentThread().getId());
         combineAnswerSet();
     }
