@@ -48,7 +48,8 @@ public class WeightedAnswerSet {
         String weightStr = String.valueOf(weights.get(0));
         String decWeight = "";
         if(factor!=0){
-            decWeight = weightStr.substring(0,weightStr.length()-factor)+"."+weightStr.substring(weightStr.length()-factor);
+            double times = Math.pow(10,factor);
+            decWeight = String.format("%.4f",weights.get(0)/times);
         }else{
             decWeight = weightStr;
         }
